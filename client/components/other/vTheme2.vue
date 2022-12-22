@@ -19,13 +19,14 @@
     </button>
   </div>
 </template>
-<i class=""></i><i class="fa-solid fa-sun"></i>
+<i class=""></i>
+<i class="fa-solid fa-sun"></i>
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { themeChange } from "theme-change";
 const theme = ref();
 function settheme() {
-  theme.value = localStorage.getItem("theme") == "light" ? true : false;
+  theme.value = localStorage.getItem("theme") == "dark" ? true : false;
 }
 
 onMounted(() => {
