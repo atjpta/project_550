@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="z-0">
     upload ảnh
     <div class="w-64 mx-auto">
       <div @mouseenter="openIcon = true" class="w-64 mx-auto relative">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="z-0">
     <div>
       <input
         ref="input"

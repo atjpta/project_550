@@ -4,7 +4,7 @@
       <div class="md:w-4/5 mx-auto flex justify-between">
         <nuxt-link to="/" class="btn btn-ghost"> wblogit </nuxt-link>
         <div class="">
-          <div class="">
+          <div class="flex">
             <input
               type="text"
               placeholder="Search…"
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="flex">
-          <OtherVTheme2/>
+          <OtherVTheme2 />
           <OtherVAvatarDD />
         </div>
       </div>
@@ -25,12 +25,11 @@
 </template>
 
 <script setup>
-import { authStore } from '~~/stores/auth.store';
+import { authStore } from "~~/stores/auth.store";
 
 const useAuth = authStore();
-
-</script>>
-
+</script>
+>
 
 <style scoped>
 .router-link-exact-active {

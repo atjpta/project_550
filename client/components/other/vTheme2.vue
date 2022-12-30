@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex">
     <button
       @click="theme = !theme"
       class="btn btn-ghost mr-2"
@@ -7,7 +7,7 @@
       data-act-class="ACTIVECLASS"
     >
       <OtherVIcon
-        classIcon="text-2xl w-10"
+        classIcon="text-2xl"
         :icon="theme ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"
       />
       <input

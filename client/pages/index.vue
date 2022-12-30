@@ -4,12 +4,11 @@
     <div @click="openDialogSignin()" class="btn">
       nút này cần đăng nhập mới hiện thêm nội dung
     </div>
-    <div v-if="useAuth.isUserLoggedIn">
-      đang là nội dung cần đăng nhập mới xem dc
-    </div>
-    {{ useAuth.user }}
+    <div v-if="useAuth.isUserLoggedIn">đang là nội dung cần đăng nhập mới xem dc</div>
+    <div></div>
+    nội dung đăng nhập
 
-     <NuxtLink to="/test2" @click="openDialogSignin()" class="btn">
+    <NuxtLink to="/test2" @click="openDialogSignin()" class="btn">
       nút này cần đăng nhập mới qua được trang test2
     </NuxtLink>
   </div>
@@ -19,7 +18,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "../stores/dialog.store";
 const useAuth = authStore();
-const useDialog = dialogStore()
+const useDialog = dialogStore();
 
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -34,14 +33,12 @@ function openDialogSignin() {
         navigateTo("/auth/signin");
       }
     );
-  }
-  else { 
-    console.log('đã đăng nhập');
+  } else {
+    console.log("đã đăng nhập");
   }
 }
 
 onMounted(() => {});
 </script>
 
-<style>
-</style>
+<style></style>
