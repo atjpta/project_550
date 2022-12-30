@@ -29,7 +29,9 @@
                 <ul class="menu">
                   <div v-for="j in i.data" :key="j.name">
                     <li class="hover-bordered text-base">
-                      <nuxt-link :to="j.url" class="rounded-2xl">{{ j.name }}</nuxt-link>
+                      <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">{{
+                        j.name
+                      }}</nuxt-link>
                     </li>
                   </div>
                 </ul>
@@ -40,9 +42,9 @@
         </div>
 
         <!-- nội dung -->
-        <div class="flex">
+        <div class="flex md:w-4/5 mx-auto">
           <!-- cho máy tính -->
-          <div class="m-5 lg:flex hidden">
+          <div class="lg:flex hidden">
             <!-- Sidebar content here -->
             <div class="w-80 rounded-2xl bg-base-200">
               <div v-for="i in dataMenu" :key="i.title">
