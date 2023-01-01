@@ -6,7 +6,7 @@ const useAuth = authStore()
 export default defineNuxtRouteMiddleware((to, from) => {
     if (!useAuth.isUserLoggedIn) {
         useRoute.redirectedFrom = from.fullPath;
-        navigateTo('/auth/signin')
+        return navigateTo('/auth/signin')
     }
 
 })

@@ -49,13 +49,16 @@
             <div class="w-80 rounded-2xl bg-base-200">
               <div v-for="i in dataMenu" :key="i.title">
                 <div class="text-xl font-medium m-5">
+                  <OtherVIcon :icon="i.icon" />
                   {{ i.title }}
                   <ul class="menu">
                     <div v-for="j in i.data" :key="j.name">
                       <li class="hover-bordered text-base">
-                        <nuxt-link :to="j.url" class="rounded-2xl">{{
-                          j.name
-                        }}</nuxt-link>
+                        <nuxt-link :to="j.url" class="rounded-2xl">
+                          <OtherVIcon :icon="j.icon" />
+
+                          {{ j.name }}
+                        </nuxt-link>
                       </li>
                     </div>
                   </ul>
@@ -84,36 +87,50 @@ import VNavR from "~~/components/other/vNavR.vue";
 const dataMenu = ref([
   {
     title: "Chung",
+    icon: "fa-solid fa-house",
     data: [
       {
         name: "bài viết",
-        url: "/test1",
+        url: "/post",
+        icon: "fa-solid fa-file-lines",
       },
       {
         name: "câu hỏi",
         url: "/test2",
+        icon: "fa-solid fa-file-circle-question",
+      },
+      {
+        name: "tag",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-tag",
       },
     ],
   },
   {
     title: "Nhóm",
+    icon: "fa-solid fa-users",
+
     data: [
       {
         name: "nhóm 1",
-        url: "/test3",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-users",
       },
       {
         name: "nhóm 2",
-        url: "/test4",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-file-circle-question",
       },
     ],
   },
   {
     title: "Khác",
+    icon: "fa-solid fa-file-circle-question",
     data: [
       {
         name: "bài viết gerg",
-        url: "/test5",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-file-circle-question",
       },
     ],
   },
@@ -129,9 +146,37 @@ function closeMenu() {
 }
 </script>
 
-<style scoped>
+<style>
 .router-link-exact-active {
   color: white;
   background: rgba(120, 0, 255);
+}
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+/* .bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+} */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  /* 25% {
+    transform: scale(0.25);
+  }
+  50% {
+    transform: scale(0.5);
+  }
+  75% {
+    transform: scale(0.75);
+  } */
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
