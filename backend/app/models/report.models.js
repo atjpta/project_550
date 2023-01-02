@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
     {
-
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        },
+        content: String,
         post: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "post"
@@ -11,28 +15,19 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "question"
         },
-        answer: {
+        topic: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "answer"
+            ref: "topic"
         },
-        content: Object,
-        author: {
+        series: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "series"
+        },
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
-        },
-        cmt_child: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "comment"
-        }],
-        tag_name: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }]
+        }
     },
-
-    {
-        timestamps: true,
-    }
 );
 
 schema.method('toJSON', function () {
@@ -41,4 +36,4 @@ schema.method('toJSON', function () {
     return object;
 });
 
-module.exports = mongoose.model("comment", schema);
+module.exports = mongoose.model("report", schema);

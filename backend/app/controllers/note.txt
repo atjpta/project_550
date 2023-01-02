@@ -1,0 +1,2 @@
+// các chức năng chung là thêm(create), sửa (update), lấy tất cả (findAll), lấy theo id (findOne), xóa theo id (deleteOne), xóa tất cả(deleteAll)
+// sẽ có các chức năng khác đi kèm theo nữa tùy nào thực tế

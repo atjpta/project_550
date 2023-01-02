@@ -19,7 +19,10 @@ const schema = mongoose.Schema(
         password: String,
         name: String,
         introduce: String,
-
+        score: {
+            type: Intl,
+            default: 0,
+        },
         role: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Role"

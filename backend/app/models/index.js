@@ -12,6 +12,9 @@ const quenstion = require('./question.model')
 const topic = require('./topic.models')
 const comment = require('./comment.models')
 const notificationtypeM = require('./notificationtype.models')
+const report = require('./report.models')
+const vote = require('./vote.model')
+const tag = require('./tag.models')
 function innitDB (){
     roleM.initRole()
     statusM.initStatus()
@@ -38,5 +41,8 @@ module.exports = {
     topic,
     comment,
     notificationtype,
+    report,
+    vote,
+    tag,
     innitDB,
 }

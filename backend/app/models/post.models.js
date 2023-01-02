@@ -20,7 +20,7 @@ const schema = mongoose.Schema(
         }],
         title: String,
         content: Object,
-        cover_image_Url: {
+        cover_image_url: {
             type: String,
         },
         status: [{

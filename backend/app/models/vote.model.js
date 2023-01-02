@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
     {
-
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        },
+        val: Intl,
         post: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "post"
@@ -15,24 +19,11 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "answer"
         },
-        content: Object,
-        author: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        },
-        cmt_child: [{
+        comment: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "comment"
-        }],
-        tag_name: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }]
+        },
     },
-
-    {
-        timestamps: true,
-    }
 );
 
 schema.method('toJSON', function () {
@@ -41,4 +32,4 @@ schema.method('toJSON', function () {
     return object;
 });
 
-module.exports = mongoose.model("comment", schema);
+module.exports = mongoose.model("vote", schema);

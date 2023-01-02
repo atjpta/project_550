@@ -1,17 +1,17 @@
 const db = require('../models')
-const Hashtag = db.hashtag;
+const tag = db.tag;
 
-exports.checkDuplicateHashtag = (req, res, next) => {
+exports.check_tag = (req, res, next) => {
   // Username
-  Hashtag.findOne({
+  tag.findOne({
     name: req.body.name,
-  }).exec((err, Hashtag) => {
+  }).exec((err, tag) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
-    if (Hashtag) {
-      res.status(400).send({ message: "Failed! Hashtag đã được sử dụng!" });
+    if (tag) {
+      res.status(400).send({ message: "Failed! tag đã được sử dụng!" });
       return;
     }
    next();
