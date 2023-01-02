@@ -1,20 +1,20 @@
 <template>
-  <div class="bg-orange-100">
-  <div class="page bg-orange-100">
-    <h1 class="text-5xl mb-5">Post Page</h1>
-
-    <p class="mb-5">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora iure
-      cumque alias vero doloremque nihil asperiores ducimus laudantium sint fuga
-      at quas, repudiandae, voluptatum quibusdam debitis? Porro quasi, ex ipsam
-      cupiditate ab, eligendi molestias libero, laboriosam ad deserunt nostrum
-      aperiam adipisci! Aperiam, tempore? Quasi eius, nihil ducimus ad ipsa
-      magni? Rem illo excepturi exercitationem, perferendis laudantium nihil...
-
-    </p>
-
-    <nuxt-link class="bg-white p-2 m-2" to="/post/1">Read More</nuxt-link>
-    <nuxt-link class="bg-white p-2 m-2" to="/">Go Back</nuxt-link>
-  </div>
+  <div class="">
+    <!-- các nut lọc -->
+    <div class="flex justify-between">
+      <div class="space-x-1">
+        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
+          {{ i }} 0000
+        </div>
+      </div>
+      <nuxt-link to="" class="btn btn-outline btn-success btn-sm lg:btn-md">
+        tạo bài viết
+      </nuxt-link>
+    </div>
+    <div>
+      <div v-for="i in 10" :key="i">
+        <PostVMono />
+      </div>
+    </div>
   </div>
 </template>

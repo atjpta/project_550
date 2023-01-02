@@ -11,7 +11,7 @@
           <!-- btn mở -->
           <div
             @click="openMenu()"
-            class="w-fit btn btn-primary btn-outline flex lg:hidden mx-1"
+            class="w-fit btn btn-primary btn-outline flex lg:hidden mx-5 btn-sm"
           >
             <OtherVIcon icon="fa-solid fa-bars" />
           </div>
@@ -20,7 +20,7 @@
             <div v-if="open" class="w-80 rounded-2xl bg-base-200 absolute z-30">
               <div
                 @click="closeMenu()"
-                class="btn btn-primary btn-outline w-fit flex lg:hidden m-5"
+                class="btn btn-primary btn-outline w-fit flex btn-sm lg:hidden m-5"
               >
                 <OtherVIcon icon="fa-solid fa-x" />
               </div>
@@ -46,11 +46,12 @@
         </div>
 
         <!-- nội dung -->
-        <div class="flex md:w-4/5 mx-auto">
+        <div class="flex flex-row md:w-4/5 mx-auto">
           <!-- cho máy tính -->
-          <div class="lg:flex hidden">
+          <div class="lg:flex hidden basis-1/6">
             <!-- Sidebar content here -->
-            <div class="w-80 rounded-2xl bg-base-200">
+            <div class="w-60">s</div>
+            <div class="rounded-2xl bg-base-200 h-fit w-60 fixed">
               <div v-for="i in dataMenu" :key="i.title">
                 <div class="text-xl font-medium m-5">
                   <OtherVIcon :icon="i.icon" />
@@ -71,9 +72,11 @@
             </div>
           </div>
 
-          <div class="m-5 z-0">
+          <div class="mx-5 z-0 w-full lg:basis-2/3">
             <slot />
           </div>
+
+          <div class="basis-1/6 lg:flex hidden bg-base-200 rounded-2xl"></div>
         </div>
       </div>
     </div>
@@ -159,10 +162,6 @@ function closeMenu() {
 @keyframes bounce-in {
   0% {
     transform: scale(0);
-  }
-
-  50% {
-    transform: scale(1.2);
   }
 
   /* 25% {
