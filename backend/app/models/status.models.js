@@ -12,65 +12,58 @@ schema.method('toJSON', function () {
     return object;
 });
 
-const Role = mongoose.model("Role", schema)
+const status = mongoose.model("status", schema)
 
-function initRole() {
-    Role.estimatedDocumentCount((err, count) => {
+function initStatus() {
+    status.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
-            new Role({
-                name: "user"
+            new status({
+                name: "public"
             }).save(err => {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'user' to roles collection");
+                console.log("added 'public' to status collection");
             });
-            new Role({
-                name: "moderator"
+            new status({
+                name: "private"
             }).save(err => {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'moderator' to roles collection");
+                console.log("added 'private' to status collection");
             });
-            new Role({
-                name: "admin"
+            new status({
+                name: "ban"
             }).save(err => {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'admin' to roles collection");
+                console.log("added 'ban' to status collection");
             });
-            new Role({
-                name: "chief"
+            new status({
+                name: "answer"
             }).save(err => {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'chief' to roles collection");
+                console.log("added 'ban' to status collection");
             });
-            new Role({
-                name: "handler"
+            new status({
+                name: "seen"
             }).save(err => {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'handler' to roles collection");
+                console.log("added 'seen' to status collection");
             });
-            new Role({
-                name: "member"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-                console.log("added 'member' to roles collection");
-            });
+            
         }
     });
 }
 
 
 module.exports = {
-    Role,
-    initRole,
+    status,
+    initStatus,
 };

@@ -2,32 +2,17 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
     {
-        username: {
-            type: String,
-            require: [true, "username is required"],
-        },
-        avatar_Url: {
+        image_cover_url: {
             type: String,
             default: 'http://localhost:8088/api/image/meo.jpg'
         },
-        email: {
-            type: String,
-            trim: true,
-            lowercas: true,
-        },
-
-        password: String,
         name: String,
         introduce: String,
-
-        role: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Role"
-        },
-        status: {
+        status: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "status"
-        },
+        }],
+        
     },
 
     {
@@ -42,4 +27,4 @@ schema.method('toJSON', function () {
 });
 
 
-module.exports = mongoose.model("user", schema);
+module.exports = mongoose.model("team", schema);

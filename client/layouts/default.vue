@@ -13,32 +13,36 @@
             @click="openMenu()"
             class="w-fit btn btn-primary btn-outline flex lg:hidden mx-1"
           >
-            <VIcon icon="fa-solid fa-bars" />
+            <OtherVIcon icon="fa-solid fa-bars" />
           </div>
-          <!-- Sidebar content here -->
-          <div v-if="open" class="w-80 rounded-2xl bg-base-200 absolute z-30">
-            <div
-              @click="closeMenu()"
-              class="btn btn-primary btn-outline w-fit flex lg:hidden m-5"
-            >
-              <VIcon icon="fa-solid fa-x" />
-            </div>
-            <div v-for="i in dataMenu" :key="i.title">
-              <div class="text-xl font-medium m-5">
-                {{ i.title }}
-                <ul class="menu">
-                  <div v-for="j in i.data" :key="j.name">
-                    <li class="hover-bordered text-base">
-                      <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">{{
-                        j.name
-                      }}</nuxt-link>
-                    </li>
-                  </div>
-                </ul>
-                <div class="divider"></div>
+          <transition name="bounce">
+            <!-- Sidebar content here -->
+            <div v-if="open" class="w-80 rounded-2xl bg-base-200 absolute z-30">
+              <div
+                @click="closeMenu()"
+                class="btn btn-primary btn-outline w-fit flex lg:hidden m-5"
+              >
+                <OtherVIcon icon="fa-solid fa-x" />
+              </div>
+              <div v-for="i in dataMenu" :key="i.title">
+                <div class="text-xl font-medium m-5">
+                  <OtherVIcon :icon="i.icon" />
+                  {{ i.title }}
+                  <ul class="menu">
+                    <div v-for="j in i.data" :key="j.name">
+                      <li class="hover-bordered text-base">
+                        <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">
+                          <OtherVIcon :icon="j.icon" />
+                          {{ j.name }}
+                        </nuxt-link>
+                      </li>
+                    </div>
+                  </ul>
+                  <div class="divider"></div>
+                </div>
               </div>
             </div>
-          </div>
+          </transition>
         </div>
 
         <!-- nội dung -->
@@ -56,7 +60,6 @@
                       <li class="hover-bordered text-base">
                         <nuxt-link :to="j.url" class="rounded-2xl">
                           <OtherVIcon :icon="j.icon" />
-
                           {{ j.name }}
                         </nuxt-link>
                       </li>
@@ -73,17 +76,13 @@
           </div>
         </div>
       </div>
-      <!-- <VNavR /> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import VHeader from "~~/components/other/vHeader.vue";
-import VIcon from "~~/components/other/vIcon.vue";
-import VNavL from "~~/components/other/vNavL.vue";
-import VNavR from "~~/components/other/vNavR.vue";
-
+const test = ref(false);
 const dataMenu = ref([
   {
     title: "Chung",

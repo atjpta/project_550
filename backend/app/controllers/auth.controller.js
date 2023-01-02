@@ -1,6 +1,7 @@
 const config = require("../config");
-const User = require("../models/user.models");
-const Role = require("../models/role.models");
+const Models = require("../models/");
+const User = Models.user;
+const Role = Models.role;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
