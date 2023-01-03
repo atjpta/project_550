@@ -18,6 +18,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.2",
     "@pinia/nuxt": "^0.4.6",
+    "@vueup/vue-quill": "^1.0.1",
     "daisyui": "^2.45.0",
     "theme-change": "^2.2.0",
     "vee-validate": "^4.7.3",

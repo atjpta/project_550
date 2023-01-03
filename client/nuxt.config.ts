@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     alias: {
         pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
     },
-    css: [
+    css: [  
         '@fortawesome/fontawesome-svg-core/styles.css'
     ],
     plugins: [
@@ -16,4 +16,5 @@ export default defineNuxtConfig({
     app: {
         pageTransition: { name: 'bounce'}
     },
+    ssr: false,
 })

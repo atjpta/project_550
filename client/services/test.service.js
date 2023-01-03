@@ -18,7 +18,7 @@ export default {
             useAlert.setError(error.value.data.message)
             throw new Error(error.value.data.message);
         }
-        useAlert.setSuccess("test thành công");
+        // useAlert.setSuccess("test thành công");
         return data.value
     },
 } 

@@ -7,7 +7,7 @@
           {{ i }} 0000
         </div>
       </div>
-      <nuxt-link to="" class="btn btn-outline btn-success btn-sm lg:btn-md">
+      <nuxt-link to="/post/edit" class="btn btn-outline btn-success btn-sm lg:btn-md">
         tạo bài viết
       </nuxt-link>
     </div>

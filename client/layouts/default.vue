@@ -17,7 +17,10 @@
           </div>
           <transition name="bounce">
             <!-- Sidebar content here -->
-            <div v-if="open" class="w-80 rounded-2xl bg-base-200 absolute z-30">
+            <div
+              v-if="open"
+              class="w-80 rounded-2xl bg-base-200 absolute z-30 min-h-screen"
+            >
               <div
                 @click="closeMenu()"
                 class="btn btn-primary btn-outline w-fit flex btn-sm lg:hidden m-5"
@@ -163,16 +166,6 @@ function closeMenu() {
   0% {
     transform: scale(0);
   }
-
-  /* 25% {
-    transform: scale(0.25);
-  }
-  50% {
-    transform: scale(0.5);
-  }
-  75% {
-    transform: scale(0.75);
-  } */
   100% {
     transform: scale(1);
   }
