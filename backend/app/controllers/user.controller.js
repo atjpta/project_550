@@ -8,7 +8,7 @@ exports.findAll = async (req, res, next) => {
         const document = await model.find({ _id: { $ne: req.params.id } }).select([
             "name",
             "id",
-            "avatar_Url",
+            "avatar_url",
         ]);
         return res.json(document);
     } catch (error) {
@@ -28,7 +28,7 @@ exports.findOne = async (req, res, next) => {
         const document = await model.findOne(condition).select([
             "name",
             "id",
-            "avatar_Url",
+            "avatar_url",
         ]);
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));

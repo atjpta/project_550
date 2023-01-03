@@ -6,7 +6,7 @@ const schema = mongoose.Schema(
             type: String,
             require: [true, "username is required"],
         },
-        avatar_Url: {
+        avatar_url: {
             type: String,
             default: 'http://localhost:8088/api/image/meo.jpg'
         },

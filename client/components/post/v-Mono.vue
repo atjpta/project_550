@@ -15,7 +15,7 @@
               <div class="text-2xl mx-3">
                 <!-- {{ data.author.name }} -->
                 geioger
-                <div class="text-sm">
+                <div class="text-sm italic">
                   <!-- <i>{{ data.createdAt }}</i> -->
                   ngày giờ
                 </div>

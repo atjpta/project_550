@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import authService from '~~/services/auth.service'
+// import { userStore } from "./user.store";
 export const authStore = defineStore("authStore", {
     id: 'auth',
     state() {
         return {
-            user: null,
+            user: {},
         };
     },
     getters: {

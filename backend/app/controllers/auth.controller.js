@@ -5,7 +5,7 @@ const Role = Models.role;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+exports.signup = (req, res, next) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
@@ -13,14 +13,14 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
   });
 
-  Role.findOne({ name: req.body.role || 'user' }, (err, role) => {
-    if (err) {
-      return res.status(500).send({ message: err + 'không tìm thấy role do' });
+  Role.findOne({ name: req.body.role || 'user' }, (err, doc_role) => {
+    if (err || doc_role == null ) {
+      return next(res.status(500).send({ message: err + 'không tìm thấy role do' }));
     }
-    user.role = role.id
+    user.role = doc_role.id
     user.save(err => {
       if (err) {
-        return res.status(500).send({ message: err + 'khong thể tạo acc user' });
+        return next(res.status(500).send({ message: err + 'khong thể tạo acc user' }));
       }
       res.send({ message: "Đăng kí tài khoản thành công!" });
     });
@@ -54,10 +54,7 @@ exports.signin = (req, res) => {
       });
       res.status(200).send({
         id: user._id,
-        name: user.name,
-        role: user.role,
         accessToken: token,
-        avatar_Url: user.avatar_Url,
       });
     });
 };

@@ -10,7 +10,7 @@
       </nuxtLink>
       <div v-if="useAuth.isUserLoggedIn" class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-          <img class="w-12 h-12 rounded-full" src="~/assets/images/meo.jpg" />
+          <img class="w-12 h-12 rounded-full" :src="useUser.user.avatar_url" />
         </label>
 
         <ul
@@ -19,9 +19,9 @@
         >
           <div class="avatar">
             <div class="w-12 h-12 rounded-full">
-              <img src="~/assets/images/meo.jpg" />
+              <img :src="useUser.user.avatar_url" />
             </div>
-            <p class="mt-3 px-2">{{ useAuth.user.name }}</p>
+            <p class="mt-3 px-2">{{ useUser.user.name }}</p>
           </div>
           <li></li>
 
@@ -43,7 +43,8 @@
 
 <script setup>
 import { authStore } from "~~/stores/auth.store";
-
+import { userStore } from "~~/stores/user.store";
+const useUser = userStore();
 const useAuth = authStore();
 const dataAvatar = ref([
   {
@@ -76,10 +77,14 @@ const dataAvatar = ref([
 
 function logout() {
   useAuth.logout();
+  useUser.clear();
 }
 
 onMounted(() => {
   useAuth.loadAuthState();
+  if (useAuth.user) {
+    useUser.findOne(useAuth.user.id);
+  }
 });
 </script>
 

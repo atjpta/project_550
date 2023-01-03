@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div class="fixed top-20 right-5">
+  <div class="">
+    <div class="fixed top-20 right-5 z-50">
       <!-- thông báo bình thường -->
-      <div v-if="useAlert.info.set > 0" class="alert alert-info shadow-lg">
+      <div v-if="useAlert.info.set > 0" class="alert alert-info shadow-lg z-50">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@
 
       <!-- thông báo thành công -->
       <div v-if="useAlert.success.set > 0" class="">
-        <div class="alert alert-success shadow-lg">
+        <div class="alert alert-success shadow-lg z-50">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="stroke-current flex-shrink-0 h-6 w-6"
@@ -44,7 +44,7 @@
       </div>
 
       <!-- lỗi -->
-      <div v-if="useAlert.error.set > 0" class="alert alert-error shadow-lg">
+      <div v-if="useAlert.error.set > 0" class="alert alert-error shadow-lg z-50">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@
 
       <!-- cảnh báo -->
 
-      <div v-if="useAlert.warning.set > 0" class="alert alert-warning shadow-lg">
+      <div v-if="useAlert.warning.set > 0" class="alert alert-warning shadow-lg z-50">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"

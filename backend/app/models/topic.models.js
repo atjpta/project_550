@@ -8,7 +8,7 @@ const schema = mongoose.Schema(
         },
         title: String,
         content: String,
-        cover_image_Url: {
+        image_cover_url: {
             type: String,
         },
         tag: [{

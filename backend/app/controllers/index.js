@@ -4,6 +4,8 @@ const user = require('./user.controller')
 const tag = require('./tag.controller')
 const post = require('./post.controller')
 const comment = require('./comment.controller')
+const team = require('./team.controller')
+const series = require('./series.controller')
 module.exports = {
     auth,
     image,
@@ -11,4 +13,6 @@ module.exports = {
     tag,
     post,
     comment,
+    team,
+    series,
 }

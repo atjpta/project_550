@@ -11,8 +11,7 @@
         <div class="mx-auto">
           <div class="p-2 flex mx-auto w-11/12 lg:w-3/5">
             <div class="">
-            <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-user"/>
-
+              <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-user" />
             </div>
             <Field
               placeholder="nhập tài khoản của bạn"
@@ -28,7 +27,7 @@
 
         <div class="p-2 flex justify-center w-11/12 lg:w-3/5 mx-auto">
           <div class="">
-            <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-lock"/>
+            <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-lock" />
           </div>
           <Field
             placeholder="nhập password bạn"
@@ -48,9 +47,12 @@
         </div>
 
         <div class="p-5 text-center">
-          <button :class="[loading ? 'loading' :'']" class="btn btn-primary btn-outline w-44">
-          đăng nhập
-        </button>
+          <button
+            :class="[loading ? 'loading' : '']"
+            class="btn btn-primary btn-outline w-44"
+          >
+            đăng nhập
+          </button>
         </div>
       </div>
     </Form>
@@ -62,12 +64,14 @@ import * as Yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { authStore } from "@/stores/auth.store";
 import { alertStore } from "@/stores/alert.store";
-import { routeStore } from "~~/stores/route.store"
+import { routeStore } from "~~/stores/route.store";
+import { userStore } from "~~/stores/user.store";
 
-const useRoute = routeStore()
+const useRoute = routeStore();
 const useAuth = authStore();
+const useUser = userStore();
 const useAlertStore = alertStore();
-const loading = ref()
+const loading = ref();
 const FormSchema = Yup.object().shape({
   username: Yup.string()
     .required("Tên phải có giá trị.")
@@ -79,24 +83,21 @@ const FormSchema = Yup.object().shape({
 });
 
 async function handleLogin(user) {
-  loading.value = true
+  loading.value = true;
   try {
     await useAuth.signin(user);
-
+    useUser.findOne(useAuth.user.id);
     const redirectPath = useRoute.redirectedFrom || {
       path: "/",
     };
-    navigateTo(redirectPath)
+
+    navigateTo(redirectPath);
   } catch (err) {
     console.log(err);
-  }
-  finally { 
-    loading.value = false
+  } finally {
+    loading.value = false;
   }
 }
 
-
-
-onMounted(() => { 
-})
+onMounted(() => {});
 </script>

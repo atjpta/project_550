@@ -1,15 +1,15 @@
-// có 6 chức năng chung là thêm(create), sửa (update), lấy tất cả (findAll), lấy theo id (findOne), xóa theo id (deleteOne), xóa tất cả(deleteAll)
-// sẽ có các chức năng khác đi kèm theo nữa tùy nào thực tế
-// chú ý chỉnh model, hàm create, select lại
-
 const mongoose = require("mongoose");
 const DB = require("../models");
-const model = DB.team;
+const model = DB.series;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
         name: req.body.name,
+        content: req.body.content,
+        image_cover_url: req.body.image_cover_url,
+        team: req.body.team,
+        status: req.body.status,
     })
     try {
         const document = modelO.save();
@@ -23,10 +23,7 @@ exports.create = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find({ _id: { $ne: req.params.id } }).select([
-            "name",
-            "id",
-        ]);
+        const document = await model.find({ _id: { $ne: req.params.id } })
         return res.json(document);
     } catch (error) {
         return next(
@@ -35,6 +32,25 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+exports.findByUser = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.find({ author: id }).populate({
+            path: 'team'
+        })
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
+
 exports.findOne = async (req, res, next) => {
     const { id } = req.params;
     const condition = {
@@ -42,10 +58,7 @@ exports.findOne = async (req, res, next) => {
     };
 
     try {
-        const document = await model.findOne(condition).select([
-            "name",
-            "id",
-        ]);
+        const document = await model.findOne(condition)
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }

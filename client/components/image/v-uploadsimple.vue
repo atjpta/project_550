@@ -13,7 +13,7 @@
     <!-- input ảnh -->
     <div class="flex justify-between">
       <input
-        @change="useImage.previewFiles($event)"
+        @change="previewFiles($event)"
         accept="image/*"
         type="file"
         class="file-input file-input-bordered file-input-primary file-input-sm w-full max-w-xs"
@@ -51,6 +51,10 @@ function saveImage() {
   }
 }
 
+async function previewFiles(event) {
+  useImage.previewFiles(event);
+}
+
 function cancel() {
   useImage.reset();
 }
@@ -60,9 +64,7 @@ function cancel() {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
-.bounce-leave-active {
-  animation: bounce-in 0.5s reverse;
-}
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);

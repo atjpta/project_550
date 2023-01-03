@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
     {
-        team_id: {
+        team: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "team"
         },
-        user_id: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },

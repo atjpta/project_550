@@ -6,10 +6,12 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },
-        title: String,
+
+        name: String,
         content: String,
-        cover_image_Url: {
+        image_cover_url: {
             type: String,
+            default: 'http://localhost:8088/api/image/meo.jpg'
         },
         tag: [{
             type: mongoose.Schema.Types.ObjectId,

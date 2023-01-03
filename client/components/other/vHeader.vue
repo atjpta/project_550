@@ -24,12 +24,7 @@
   </div>
 </template>
 
-<script setup>
-import { authStore } from "~~/stores/auth.store";
-
-const useAuth = authStore();
-</script>
->
+<script setup></script>
 
 <style scoped>
 .router-link-exact-active {

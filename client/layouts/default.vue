@@ -19,7 +19,7 @@
             <!-- Sidebar content here -->
             <div
               v-if="open"
-              class="w-80 rounded-2xl bg-base-200 absolute z-30 min-h-screen"
+              class="w-80 rounded-2xl absolute z-30 min-h-screen shadow-md glass"
             >
               <div
                 @click="closeMenu()"
@@ -53,8 +53,8 @@
           <!-- cho máy tính -->
           <div class="lg:flex hidden basis-1/6">
             <!-- Sidebar content here -->
-            <div class="w-60">s</div>
-            <div class="rounded-2xl bg-base-200 h-fit w-60 fixed">
+            <div class="w-60"></div>
+            <div class="rounded-2xl bg-base-200 glass h-fit w-60 fixed shadow-md">
               <div v-for="i in dataMenu" :key="i.title">
                 <div class="text-xl font-medium m-5">
                   <OtherVIcon :icon="i.icon" />
@@ -79,7 +79,7 @@
             <slot />
           </div>
 
-          <div class="basis-1/6 lg:flex hidden bg-base-200 rounded-2xl"></div>
+          <div class="basis-1/6 lg:flex hidden bg-base-200 glass rounded-2xl"></div>
         </div>
       </div>
     </div>
