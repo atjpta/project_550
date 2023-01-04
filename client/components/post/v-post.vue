@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="bg-base-200 rounded-2xl">
     <!-- các tùy chọn -->
     <div
-      class="glass rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
+      class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
     >
       <div class="w-fit">
         <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
@@ -45,10 +45,14 @@
       </div>
     </div>
     <!-- bài viết -->
-    <div>
-      <img class="rounded-2xl" :src="data.image_cover" alt="" />
+    <div class="">
+      <img
+        class="rounded-2xl"
+        :src="useImage.previewImage || data.image_cover_url"
+        alt=""
+      />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
-      <div class="-z-10">
+      <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
       </div>
       <!-- tag -->
@@ -73,7 +77,7 @@
 
     <div id="comment">
       <div class="text-2xl font-semibold mb-2">Nhập bình luận</div>
-      <div class="-z-10">
+      <div class="-z-30">
         <QuillEditor theme="snow" toolbar="full" />
       </div>
       <div class="btn btn-primary btn-outline btn-sm my-2">
@@ -88,10 +92,13 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-
+import { imageStore } from "~~/stores/image.store";
+const useImage = imageStore();
 const props = defineProps({
   data: Object,
 });
+
+let mark = 0;
 
 const quill = ref();
 
@@ -101,6 +108,13 @@ const setContent = () => {
 
 watch(props.data, (newContent) => {
   setContent();
+});
+
+onUpdated(() => {
+  if (mark == 0 && props.data.content) {
+    setContent();
+    mark = 1;
+  }
 });
 </script>
 

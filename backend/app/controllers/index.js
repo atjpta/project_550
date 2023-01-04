@@ -6,6 +6,7 @@ const post = require('./post.controller')
 const comment = require('./comment.controller')
 const team = require('./team.controller')
 const series = require('./series.controller')
+const status = require('./status.controller')
 module.exports = {
     auth,
     image,
@@ -15,4 +16,5 @@ module.exports = {
     comment,
     team,
     series,
+    status,
 }

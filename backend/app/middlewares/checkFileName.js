@@ -8,7 +8,7 @@ exports.ckeckNameImage = async (req, res, next) => {
             filename: filename,
         })
         if (file) {
-            return res.status(400).send(`ảnh đã có trong db`);
+            return res.status(400).send({message : `ảnh đã có trong db`});
         }
         else return next();
     } catch (error) {

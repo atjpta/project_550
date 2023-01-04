@@ -1,5 +1,6 @@
+
 const controller = require("../controllers");
-const ctl = controller.tag;
+const ctl = controller.status;
 
 const middlewares = require("../middlewares");
 const verifySignUp = middlewares.verifySignUp;
@@ -12,18 +13,16 @@ module.exports = (app) => {
     const router = express.Router();
     router.route("/")
         .get(ctl.findAll)
-        .post([checkDuplicate.check_tag], ctl.create)
+        .post(ctl.create)
         .delete(ctl.deleteAll)
 
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
-    
-    router.route('/all')
-        .post(ctl.createAll)
 
-    app.use("/api/tag", router);
+
+    app.use("/api/status", router);
 
 
 };

@@ -9,14 +9,15 @@ exports.create = async (req, res, next) => {
         title: req.body.title,
         content: req.body.content,
         tag: req.body.tag,
-        cover_image_url: req.body.cover_image_url,
+        image_cover_url: req.body.image_cover_url,
         series: req.body.series,
         team: req.body.team,
         status: req.body.status,
     })
     try {
-        const document = modelO.save();
-        return res.send({ Message: 'tạo thành công model' });
+        const document = modelO.save().then(savedDoc => {
+            return res.send(savedDoc.id);
+        });
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể create model' + error })
@@ -38,7 +39,10 @@ exports.getLength = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find()
+        const document = await model.find().populate({
+            path: 'author series team tag status',
+            select: 'name id avatar_url'
+        }).sort({'createdAt': -1})
         return res.json(document);
     } catch (error) {
         return next(
@@ -54,7 +58,10 @@ exports.findOne = async (req, res, next) => {
     };
 
     try {
-        const document = await model.findOne(condition)
+        const document = await model.findOne(condition).populate({
+            path: 'author series team tag status',
+            select: 'name id avatar_url'
+        })
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }

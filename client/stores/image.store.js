@@ -30,7 +30,7 @@ export const imageStore = defineStore("imageStore", {
                 theReader.readAsDataURL(file[i]);
                 let formData = new FormData();
                 this.listImage.append('image', file[i]);
-                this.listUrl.push(config.url.api + '/image/' + file[i].name)
+                this.listUrl.push(config.url.apiimage + '/' + file[i].name)
             };
         },
         async uploadListImage() {
@@ -50,7 +50,7 @@ export const imageStore = defineStore("imageStore", {
             theReader.readAsDataURL(file);
             this.image = new FormData();
             this.image.append("image", file);
-            this.url = config.url.api + '/image/' + file.name;
+            this.url = config.url.apiimage + '/' + file.name;
             this.name = file.name;
             console.log(this.url);
 

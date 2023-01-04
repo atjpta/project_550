@@ -4,11 +4,10 @@
 
 const mongoose = require("mongoose");
 const DB = require("../models");
-const model = DB.team;
+const model = DB.status;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
-        author: req.body.author,
         name: req.body.name,
     })
     try {

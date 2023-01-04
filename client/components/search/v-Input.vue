@@ -46,7 +46,7 @@ const dataResult = computed(() => {
   if (input_data.value.length > 0) {
     list = props.data.filter((e) => {
       if (e.name) {
-        return e.name.toLowerCase().indexOf(input_data.value) > -1;
+        return e.name.toLowerCase().indexOf(input_data.value.toLowerCase()) > -1;
       }
       return false;
     });

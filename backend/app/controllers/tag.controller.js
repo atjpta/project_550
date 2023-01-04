@@ -2,6 +2,18 @@ const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.tag;
 
+exports.createAll = async (req, res, next) => {
+    console.log(req.body);
+    try {
+        const document = model.insertMany(req.body);
+        return res.send({ Message: 'tạo thành công' });
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể create model' + error })
+        )
+    }
+};
+
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,

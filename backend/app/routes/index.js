@@ -6,6 +6,7 @@ const post = require('./post.routes')
 const comment = require('./comment.routes')
 const team = require('./team.routes')
 const series = require('./series.routes')
+const status = require('./status.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -15,4 +16,5 @@ exports.Start = (app) => {
     comment(app)
     team(app)
     series(app)
+    status(app)
 }

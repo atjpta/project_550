@@ -3,11 +3,25 @@ import config from "~~/config";
 import { authStore } from "~~/stores/auth.store";
 const useAuth = authStore()
 const useAlert = alertStore()
-const url = config.url.api + '/tag'
+const url = config.url.api + '/post'
 
 export default {
     findAll: async () => {
         const { data: data, error } = await useFetch(url + '', {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data.message)
+            throw new Error(error.value.data.message);
+        }
+        return data.value
+    },
+    findOne: async (id) => {
+        const { data: data, error } = await useFetch(url + `/${id}`, {
             headers: {
                 authorization: authStore().getToken
             },
@@ -35,23 +49,7 @@ export default {
             throw new Error(error.value.data.message);
         }
         useAlert.setSuccess("tạo thành công");
-        return data.value
-    },
-
-    createAll: async (dataO) => {
-        const { data: data, error } = await useFetch(url + '/all', {
-            headers: {
-                authorization: authStore().getToken
-            },
-            body: dataO,
-            method: "post",
-        })
-
-        if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
-        }
-        useAlert.setSuccess("tạo thành công");
+        console.log(data.value);
         return data.value
     },
 } 

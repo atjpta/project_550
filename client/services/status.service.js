@@ -3,36 +3,38 @@ import config from "~~/config";
 import { authStore } from "~~/stores/auth.store";
 const useAuth = authStore()
 const useAlert = alertStore()
-const url = config.url.api + '/image'
+const url = config.url.api + '/status'
 
 export default {
-    uploadImage: async (image, name) => {
-        const { data: data, error } = await useFetch(url+`/${name}` , {
-            method: "POST",
-            body: image
+    findAll: async () => {
+        const { data: data, error } = await useFetch(url + '', {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
         })
 
         if (error.value) {
-            if (error.value.status == 400) {
-                return;
-            }
             useAlert.setError(error.value.data.message)
             throw new Error(error.value.data.message);
         }
-        useAlert.setSuccess("tải ảnh lên thành công");
+        // useAlert.setSuccess("test thành công");
         return data.value
     },
-    uploadImageMulti: async (list) => {
-        const { data: data, error } = await useFetch(url + '/upload/multi', {
-            method: "POST",
-            body: list
+    create: async (dataO) => {
+        const { data: data, error } = await useFetch(url + '', {
+            headers: {
+                authorization: authStore().getToken
+            },
+            body: dataO,
+            method: "post",
         })
 
         if (error.value) {
             useAlert.setError(error.value.data.message)
             throw new Error(error.value.data.message);
         }
-        useAlert.setSuccess("tải ảnh lên thành công");
+        useAlert.setSuccess("tạo thành công");
         return data.value
     },
 } 

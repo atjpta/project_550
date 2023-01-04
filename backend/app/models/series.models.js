@@ -11,7 +11,7 @@ const schema = mongoose.Schema(
         content: String,
         image_cover_url: {
             type: String,
-            default: 'http://localhost:8088/api/image/meo.jpg'
+            default: 'https://api-project-550.vercel.app/api/image/meo.jpg'
         },
         tag: [{
             type: mongoose.Schema.Types.ObjectId,

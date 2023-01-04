@@ -9,15 +9,13 @@
             <div class="flex">
               <div class="avatar">
                 <div class="w-12 h-12 rounded-full">
-                  <img src="../../assets/images/meo.jpg" />
+                  <img :src="data.author.avatar_url" />
                 </div>
               </div>
               <div class="text-2xl mx-3">
-                <!-- {{ data.author.name }} -->
-                geioger
+                {{ data.author.name }}
                 <div class="text-sm italic">
-                  <!-- <i>{{ data.createdAt }}</i> -->
-                  ngày giờ
+                  <i>{{ data.createdAt }}</i>
                 </div>
               </div>
             </div>
@@ -68,20 +66,20 @@
           </div>
         </div>
         <!-- ảnh bìa và tiêu đề -->
-        <nuxt-link to="/user/1">
+        <nuxt-link :to="'/post/' + data.id">
           <div class="hover:scale-105 duration-500">
-            <img
-              class="rounded-2xl my-2 mx-auto"
-              src="../../assets/images/ling-xiang-9.jpg"
-              alt=""
-            />
-            <div class="font-bold text-4xl">tiêu đề nè - phần n</div>
+            <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
+            <div class="font-bold text-4xl">{{ data.title }}</div>
           </div>
         </nuxt-link>
         <!-- tag -->
         <div class="mt-4">
-          <div v-for="i in 5" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
-            #cntt
+          <div
+            v-for="i in data.tag"
+            :key="i._id"
+            class="btn btn-outline btn-sm mr-1 mt-1"
+          >
+            {{ "#" + i.name }}
           </div>
         </div>
         <!-- các trạng thái của bài viết  -->
@@ -105,6 +103,10 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  data: Object,
+});
+</script>
 
 <style></style>

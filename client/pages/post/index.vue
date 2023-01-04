@@ -12,9 +12,21 @@
       </nuxt-link>
     </div>
     <div>
-      <div v-for="i in 10" :key="i">
-        <PostVMono />
+      <div v-for="i in usePost.list" :key="i.id">
+        <PostVMono :data="i" />
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { postStore } from "~~/stores/post.store";
+
+const usePost = postStore();
+
+onMounted(() => {
+  usePost.findAll();
+});
+</script>
+
+<style></style>

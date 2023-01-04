@@ -2,7 +2,7 @@
   <div>
     <!-- list đã chọn -->
     <div class="flex flex-wrap">
-      <div v-for="i in list_select_tag" :key="i.id">
+      <div v-for="i in data" :key="i.id">
         <div
           @click="removetag(i)"
           :class="[i.id ? '' : 'btn-secondary']"
@@ -29,21 +29,16 @@
 import { tagStore } from "~~/stores/tag.store";
 
 const props = defineProps({
-  data: Array,
+  data: Set,
 });
 const usetag = tagStore();
-const list_select_tag = ref(new Set());
 function addtag(data) {
-  if (list_select_tag.value.size < 5) {
-    list_select_tag.value.add(data);
-  }
-  props.data.splice(0, props.data.length);
-  for (const item of list_select_tag.value) {
-    props.data.push(item);
+  if (props.data.size < 5) {
+    props.data.add(data);
   }
 }
 function removetag(data) {
-  list_select_tag.value.delete(data);
+  props.data.delete(data);
 }
 onMounted(() => {
   usetag.findAll();

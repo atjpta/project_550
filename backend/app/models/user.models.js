@@ -8,7 +8,7 @@ const schema = mongoose.Schema(
         },
         avatar_url: {
             type: String,
-            default: 'http://localhost:8088/api/image/meo.jpg'
+            default: 'https://api-project-550.vercel.app/api/image/meo.jpg'
         },
         email: {
             type: String,
