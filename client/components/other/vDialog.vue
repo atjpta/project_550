@@ -70,10 +70,10 @@ const loading = ref(false);
 const useDialog = dialogStore();
 const inputData = ref("");
 
-function triggerCb() {
+async function triggerCb() {
   loading.value = true;
   try {
-    useDialog.cb();
+    await useDialog.cb();
   } catch (error) {
     console.log(rerror);
     console.log("có lỗi khi triggerCb");
@@ -83,10 +83,10 @@ function triggerCb() {
   }
 }
 
-function triggerCbInput(input) {
+async function triggerCbInput(input) {
   loading.value = true;
   try {
-    useDialog.cb(input);
+    await useDialog.cb(input);
   } catch (error) {
     console.log(rerror);
     console.log("có lỗi khi triggerCb");
