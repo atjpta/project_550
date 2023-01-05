@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="mr-10">
     <!-- các nut lọc -->
     <div class="flex justify-between">
       <div class="space-x-1">

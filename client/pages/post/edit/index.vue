@@ -8,14 +8,16 @@
 import { imageStore } from "~~/stores/image.store";
 import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
+
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
-const post = usePost.post;
+let post;
 const loading = ref(false);
-function formatData() {
+
+function formatData(listtag) {
   const array = Array.from(post.tag);
-  const tag = [];
+  const tag = listtag;
   array.forEach((e) => {
     tag.push(e.id);
   });
@@ -27,16 +29,21 @@ function formatData() {
     tag: tag,
     title: post.title,
     team: post.team._id,
-    image_cover_url: useImage.url,
   };
 }
 
 async function save() {
+  post = usePost.post_edit;
   loading.value = true;
   try {
-    await useTag.createAll(post.tag);
-    await useImage.uploadImage();
-    const id = await usePost.create(formatData());
+    const listtag = await useTag.createAll(post.tag);
+    const data = formatData(listtag);
+    if (useImage.url) {
+      await useImage.uploadImage();
+      data.image_cover_url = useImage.url;
+    }
+    const id = await usePost.create(data);
+    usePost.resetPostEdit();
     navigateTo(`/post/${id}`);
   } catch (error) {
     console.log(error);

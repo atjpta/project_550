@@ -57,9 +57,11 @@ export const imageStore = defineStore("imageStore", {
         },
 
         async uploadImage() {
-            await imageService.uploadImage(this.image, this.name);
-            this.previewImage = null
-            this.image = null
+            if (this.image) {
+                await imageService.uploadImage(this.image, this.name);
+                this.previewImage = null
+                this.image = null
+            }
             return this.url;
         },
 

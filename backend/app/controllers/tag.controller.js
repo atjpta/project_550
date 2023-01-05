@@ -5,8 +5,14 @@ const model = DB.tag;
 exports.createAll = async (req, res, next) => {
     console.log(req.body);
     try {
-        const document = model.insertMany(req.body);
-        return res.send({ Message: 'tạo thành công' });
+        const document = model.insertMany(req.body, (error, docs) => {
+            let list=[];
+            docs.forEach((e) => {
+                list.push(e.id);
+            })
+            return res.send(list);
+
+        });
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể create model' + error })

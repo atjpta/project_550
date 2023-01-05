@@ -27,7 +27,8 @@ export const tagStore = defineStore("tagStore", {
                 }
             })
             if (newtag.length > 0) {
-                await tagService.createAll(newtag);
+                const list = await tagService.createAll(newtag);
+                return list;
             }
         }
     }

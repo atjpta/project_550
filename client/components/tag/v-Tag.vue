@@ -5,7 +5,7 @@
       <div v-for="i in data" :key="i.id">
         <div
           @click="removetag(i)"
-          :class="[i.id ? '' : 'btn-secondary']"
+          :class="[i.id || i._id ? '' : 'btn-secondary']"
           class="btn btn-outline btn-sm m-1"
         >
           {{ i.name }}

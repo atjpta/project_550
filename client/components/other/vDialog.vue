@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="useDialog.data.title"
-      class="min-h-screen w-screen indicator bg-base-100/50 fixed z-50"
+      class="min-h-screen w-screen indicator bg-red-100/50 fixed z-50"
     >
       <div
         class="indicator-item indicator-middle indicator-center card w-96 h-fit bg-base-200 shadow-xl"
@@ -29,7 +29,7 @@
 
     <div
       v-if="useDialog.dataInput.title"
-      class="min-h-screen w-screen indicator bg-base-100/50 fixed z-50 inset-0"
+      class="min-h-screen w-screen indicator bg-red-100/50 fixed z-50 inset-0"
     >
       <div
         class="indicator-item indicator-middle indicator-center card w-96 h-fit bg-base-200 shadow-xl"
@@ -69,6 +69,7 @@ import { ref, watch } from "vue";
 const loading = ref(false);
 const useDialog = dialogStore();
 const inputData = ref("");
+
 function triggerCb() {
   loading.value = true;
   try {

@@ -1,9 +1,56 @@
 <template>
-  <div>đây là trang sửa bài viết</div>
+  <div>
+    <PostVEdit @save="saveEdit" :loading="loading" />
+  </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { imageStore } from "~~/stores/image.store";
+import { postStore } from "~~/stores/post.store";
+import { tagStore } from "~~/stores/tag.store";
+
+const useImage = imageStore();
+const useTag = tagStore();
+const usePost = postStore();
+let post = usePost.post_edit;
+const loading = ref(false);
+function formatData(listtag) {
+  const array = Array.from(post.tag);
+  const tag = listtag;
+  array.forEach((e) => {
+    tag.push(e.id);
+  });
+  return {
+    id: post.id,
+    content: post.content,
+    series: post.series.id,
+    status: [post.status.id],
+    tag: tag,
+    title: post.title,
+    team: post.team._id,
+    image_cover_url: useImage.url ?? post.image_cover_url,
+  };
+}
+
+async function saveEdit() {
+  post = usePost.post_edit;
+  loading.value = true;
+  try {
+    const listtag = await useTag.createAll(post.tag);
+    const data = formatData(listtag);
+    if (useImage.url) {
+      await useImage.uploadImage();
+      data.image_cover_url = useImage.url;
+    }
+    await usePost.update(data);
+    usePost.resetPostEdit();
+    navigateTo(`/post/${data.id}`);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+}
 </script>
 
 <style></style>

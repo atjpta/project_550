@@ -7,7 +7,7 @@
         <div>
           <div class="text-xl font-semibold mt-5">Tiêu đề</div>
           <input
-            v-model="data.title"
+            v-model="usePost.post_edit.title"
             placeholder="nhập tiêu đề"
             type="text"
             class="p-1 bg-inherit border-0 border-b-2 border-primary w-full"
@@ -18,7 +18,7 @@
         <div class="text-xl font-semibold mt-5">
           Ảnh bìa cho bài viết
           <div>
-            <ImageVUploadsimple :data="data.image_cover_url" />
+            <ImageVUploadsimple :data="usePost.post_edit.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
@@ -31,13 +31,13 @@
               </div>
             </div>
           </div>
-          <TagVTag v-model:data="data.tag" />
+          <TagVTag v-model:data="usePost.post_edit.tag" />
         </div>
         <!-- phần chọn serise -->
         <div>
           <div class="text-xl font-semibold mt-5 mb-2">Chọn chuỗi bài viết của bạn</div>
           <select
-            v-model="data.series"
+            v-model="usePost.post_edit.series"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Không có</option>
@@ -52,8 +52,8 @@
         <div>
           <div class="text-xl font-semibold mt-5 mb-2">Chọn nhóm muốn đăng</div>
           <select
-            v-model="data.team"
-            v-if="!data.series.team && list_team.length != 0"
+            v-model="usePost.post_edit.team"
+            v-if="!usePost.post_edit.series.team && list_team.length != 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Chung</option>
@@ -61,7 +61,7 @@
           </select>
           <select
             disabled
-            v-if="data.series.team || list_team.length == 0"
+            v-if="usePost.post_edit.series.team || list_team.length == 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option v-if="list_team.length == 0">Chung</option>
@@ -82,7 +82,7 @@
           </div>
 
           <select
-            v-model="data.status"
+            v-model="usePost.post_edit.status"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="i" v-for="i in list_status" :key="i">
@@ -109,7 +109,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div v-show="preview == true">
-        <PostVPost :data="data" />
+        <PostVPost :data="usePost.post_edit" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -165,12 +165,11 @@ const useImage = imageStore();
 const useTeam = teamStore();
 const useSeries = seriesStore();
 const usePost = postStore();
-const data = usePost.post;
-
+const route = useRoute();
 const list_status = computed(() => {
   useStatus.getPost.forEach((e) => {
     if (e.name == "public") {
-      data.status = e;
+      usePost.post_edit.status = e;
     }
   });
   return useStatus.getPost;
@@ -178,13 +177,13 @@ const list_status = computed(() => {
 
 const list_team = computed(() => {
   let list = [];
-  if (data.series.id) {
-    if (data.series.team) {
-      list.push(data.series.team);
-      data.team = data.series.team;
+  if (usePost.post_edit.series.name) {
+    if (usePost.post_edit.series.team) {
+      list.push(usePost.post_edit.series.team);
+      usePost.post_edit.team = usePost.post_edit.series.team;
     } else {
       list = [];
-      data.team = {};
+      usePost.post_edit.team = {};
     }
   } else list = useTeam.List_team_ByUser;
   return list;
@@ -193,10 +192,8 @@ const list_team = computed(() => {
 const emit = defineEmits(["save"]);
 
 function getdata() {
-  if (data.author) {
-    data.author = useUser.user;
-  }
-  data.content = quill.value.getContents();
+  usePost.post_edit.author = useUser.user;
+  usePost.post_edit.content = quill.value.getContents();
 }
 
 function save() {
@@ -205,32 +202,30 @@ function save() {
 }
 
 function showPreview() {
-  preview.value = true;
   getdata();
+  preview.value = true;
 }
 
 const setContent = () => {
-  quill.value.setContents(data.content);
+  quill.value.setContents(usePost.post_edit.content);
 };
+
+async function getApi() {
+  if (route.params.id) {
+    await usePost.findOne(route.params.id);
+    usePost.post_edit = usePost.post;
+    setContent();
+  } else {
+    usePost.resetPostEdit();
+  }
+}
 
 onMounted(() => {
   useTeam.findByUser(useAuth.user.id);
   useSeries.findByUser(useAuth.user.id);
   useStatus.findAll();
-  setContent();
+  getApi();
 });
 </script>
 
-<style>
-.bounce-enter-active {
-  animation: bounce-in 0.5s;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-</style>
+<style></style>

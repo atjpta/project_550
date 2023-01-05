@@ -20,6 +20,7 @@
     "@pinia/nuxt": "^0.4.6",
     "@vueup/vue-quill": "^1.0.1",
     "daisyui": "^2.45.0",
+    "dayjs": "^1.11.7",
     "theme-change": "^2.2.0",
     "vee-validate": "^4.7.3",
     "yup": "^0.32.11"

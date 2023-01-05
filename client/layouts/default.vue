@@ -1,47 +1,55 @@
 <template>
   <div>
     <VHeader />
-    <OtherVAlert />
     <OtherVDialog />
+    <OtherVAlert />
 
     <div class="m-5 mx-auto space-x-5">
       <div>
         <!-- cho dt -->
-        <div class="my-5 flex lg:hidden">
+        <div class="my-5 flex lg:hidden min-h-full">
           <!-- btn mở -->
           <div
             @click="openMenu()"
-            class="w-fit btn btn-primary btn-outline flex lg:hidden mx-5 btn-sm"
+            class="w-fit btn btn-primary btn-outline flex mx-5 btn-sm"
           >
             <OtherVIcon icon="fa-solid fa-bars" />
           </div>
           <transition name="bounce">
             <!-- Sidebar content here -->
-            <div
-              v-if="open"
-              class="w-80 rounded-2xl absolute z-30 min-h-screen shadow-md bg-base-300/50 glass"
-            >
+
+            <div v-if="open" class="absolute flex z-30 min-h-full min-w-full top-0">
+              <!-- bg nền -->
               <div
                 @click="closeMenu()"
-                class="btn btn-primary btn-outline w-fit flex btn-sm lg:hidden m-5"
+                class="z-20 min-h-full min-w-full bg-red-300/20"
+              ></div>
+              <!-- phần nội dung -->
+              <div
+                class="w-80 absolute rounded-2xl z-30 shadow-md bg-base-300/50 glass p-5 min-h-screen"
               >
-                <OtherVIcon icon="fa-solid fa-x" />
-              </div>
-              <div v-for="i in dataMenu" :key="i.title">
-                <div class="text-xl font-medium m-5">
-                  <OtherVIcon :icon="i.icon" />
-                  {{ i.title }}
-                  <ul class="menu">
-                    <div v-for="j in i.data" :key="j.name">
-                      <li class="hover-bordered text-base">
-                        <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">
-                          <OtherVIcon :icon="j.icon" />
-                          {{ j.name }}
-                        </nuxt-link>
-                      </li>
-                    </div>
-                  </ul>
-                  <div class="divider"></div>
+                <div
+                  @click="closeMenu()"
+                  class="btn btn-primary btn-outline w-fit flex btn-sm"
+                >
+                  <OtherVIcon icon="fa-solid fa-x" />
+                </div>
+                <div v-for="i in dataMenu" :key="i.title">
+                  <div class="text-xl font-medium m-5">
+                    <OtherVIcon :icon="i.icon" />
+                    {{ i.title }}
+                    <ul class="menu">
+                      <div v-for="j in i.data" :key="j.name">
+                        <li class="hover-bordered text-base">
+                          <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">
+                            <OtherVIcon :icon="j.icon" />
+                            {{ j.name }}
+                          </nuxt-link>
+                        </li>
+                      </div>
+                    </ul>
+                    <div class="divider"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -75,7 +83,7 @@
             </div>
           </div>
 
-          <div class="mx-5 z-0 w-full lg:basis-2/3">
+          <div class="m-5 z-0 w-full lg:basis-2/3">
             <slot />
           </div>
 
@@ -159,9 +167,9 @@ function closeMenu() {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
-/* .bounce-leave-active {
+.bounce2-leave-active {
   animation: bounce-in 0.5s reverse;
-} */
+}
 @keyframes bounce-in {
   0% {
     transform: scale(0);

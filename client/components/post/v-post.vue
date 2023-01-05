@@ -62,12 +62,12 @@
         </div>
       </div>
       <!-- phần series -->
-      <div v-if="data.series.name" class="mt-5">
+      <div v-if="Object.keys(data.series).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">series</div>
         <div class="btn btn-ghost justify-start">{{ data.series.name }}</div>
       </div>
       <!-- phần team -->
-      <div v-if="data.team.name" class="mt-5">
+      <div v-if="Object.keys(data.team).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">nhóm</div>
         <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
       </div>
@@ -96,6 +96,7 @@ import { imageStore } from "~~/stores/image.store";
 const useImage = imageStore();
 const props = defineProps({
   data: Object,
+  change: Object,
 });
 
 let mark = 0;
@@ -106,7 +107,7 @@ const setContent = () => {
   quill.value.setContents(props.data.content);
 };
 
-watch(props.data, (newContent) => {
+watch(props, (newContent) => {
   setContent();
 });
 
