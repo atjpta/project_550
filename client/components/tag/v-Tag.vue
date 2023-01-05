@@ -32,10 +32,20 @@ const props = defineProps({
   data: Set,
 });
 const usetag = tagStore();
+
 function addtag(data) {
-  if (props.data.size < 5) {
-    props.data.add(data);
-  }
+  if (props.data.size > 0 && props.data.size < 5) {
+    let double = 0;
+    props.data.forEach((value) => {
+      if (value.name == data.name) {
+        double = 1;
+        return;
+      }
+    });
+    if (double == 0) {
+      props.data.add(data);
+    }
+  } else props.data.add(data);
 }
 function removetag(data) {
   props.data.delete(data);

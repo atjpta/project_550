@@ -26,7 +26,7 @@
             </nuxtLink>
 
             <!-- edit cho tác giả -->
-            <div v-if="useAuth.user.id == data.author._id">
+            <div v-if="isAuthor">
               <div class="space-x-2 static flex">
                 <nuxtLink :to="`/post/edit/${data.id}`">
                   <div class="btn btn-outline btn-primary">
@@ -40,10 +40,7 @@
             </div>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div
-              v-if="useAuth.user.id != data.author._id"
-              class="dropdown dropdown-end z-10"
-            >
+            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
               <label tabindex="0" class="btn btn-outline btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
@@ -121,6 +118,12 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
+
+const isAuthor = computed(() => {
+  if (useAuth.user && props.data.author) {
+    return useAuth.user.id == props.data.author._id;
+  }
+});
 
 function openDialogDelete() {
   if (useAuth.isUserLoggedIn) {

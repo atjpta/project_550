@@ -83,7 +83,7 @@
             </div>
           </div>
 
-          <div class="m-5 z-0 w-full lg:basis-2/3">
+          <div class="mx-5 z-0 w-full lg:basis-2/3">
             <slot />
           </div>
 

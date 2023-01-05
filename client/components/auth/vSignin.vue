@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 lg:w-3/5 p-5 mx-auto">
+  <div class="md:w-96 mx-auto">
     <Form
       @submit="handleLogin"
       :validation-schema="FormSchema"
@@ -74,11 +74,11 @@ const useAlertStore = alertStore();
 const loading = ref();
 const FormSchema = Yup.object().shape({
   username: Yup.string()
-    .required("Tên phải có giá trị.")
+    .required("vui lòng điền tài khoản.")
     .min(2, "Tên phải ít nhất 2 ký tự.")
     .max(50, "Tên có nhiều nhất 50 ký tự."),
   password: Yup.string()
-    .required("mật khẩu phải có giá trị.")
+    .required("vui lòng điền mật khẩu.")
     .min(2, "mật phải ít nhất 2 ký tự."),
 });
 

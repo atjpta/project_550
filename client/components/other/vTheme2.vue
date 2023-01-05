@@ -2,7 +2,7 @@
   <div class="flex">
     <button
       @click="theme = !theme"
-      class="btn btn-ghost mr-2"
+      class="btn btn-ghost"
       data-toggle-theme="dark,light"
       data-act-class="ACTIVECLASS"
     >
@@ -10,12 +10,12 @@
         classIcon="text-2xl"
         :icon="theme ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"
       />
-      <input
+      <!-- <input
         v-model="theme"
         type="checkbox"
         class="toggle toggle-primary toggle-lg"
         checked
-      />
+      /> -->
     </button>
   </div>
 </template>

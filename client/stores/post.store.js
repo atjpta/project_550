@@ -51,6 +51,7 @@ export const postStore = defineStore("postStore", {
                 content: {},
             }
         },
+        
         check() {
             if (!this.post.series) {
                 this.post.series = {}

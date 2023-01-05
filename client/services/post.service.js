@@ -26,9 +26,7 @@ export default {
 
     findAll: async () => {
         const { data: data, error } = await useFetch(url + '', {
-            headers: {
-                authorization: authStore().getToken
-            },
+            
             method: "get",
         })
 

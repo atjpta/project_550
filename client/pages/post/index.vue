@@ -7,9 +7,12 @@
           {{ i }} 0000
         </div>
       </div>
-      <nuxt-link to="/post/edit" class="btn btn-outline btn-success btn-sm lg:btn-md">
+      <button
+        @click="openDialogSignin()"
+        class="btn btn-outline btn-success btn-sm lg:btn-md"
+      >
         tạo bài viết
-      </nuxt-link>
+      </button>
     </div>
     <div>
       <div v-for="i in usePost.list" :key="i.id">
@@ -20,10 +23,30 @@
 </template>
 
 <script setup>
+import { authStore } from "~~/stores/auth.store";
 import { postStore } from "~~/stores/post.store";
+import { dialogStore } from "../../stores/dialog.store";
 
 const usePost = postStore();
-
+const useAuth = authStore();
+const useDialog = dialogStore();
+function openDialogSignin() {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để tạo bài viết",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+      }
+    );
+  } else {
+    navigateTo("/post/edit");
+  }
+}
 onMounted(() => {
   usePost.findAll();
 });

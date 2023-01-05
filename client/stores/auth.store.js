@@ -5,7 +5,9 @@ export const authStore = defineStore("authStore", {
     id: 'auth',
     state() {
         return {
-            user: {},
+            user: {
+               
+            },
         };
     },
     getters: {

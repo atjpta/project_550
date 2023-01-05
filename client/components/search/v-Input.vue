@@ -2,16 +2,13 @@
   <div>
     <div class="">
       <input
-        @keyup.enter="select_data({ name: input_data })"
+        @keyup.enter="select_data()"
         placeholder="nhập tag"
         v-model="input_data"
         type="text"
         class="relative p-1 bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
       />
-      <div
-        @click="select_data({ name: input_data })"
-        class="btn btn-sm mb-1 btn-primary btn-outline"
-      >
+      <div @click="select_data()" class="btn btn-sm mb-1 btn-primary btn-outline">
         {{ btnInput.name }}
       </div>
     </div>
@@ -46,7 +43,9 @@ const dataResult = computed(() => {
   if (input_data.value.length > 0) {
     list = props.data.filter((e) => {
       if (e.name) {
-        return e.name.toLowerCase().indexOf(input_data.value.toLowerCase()) > -1;
+        return (
+          e.name.toLowerCase().trim().indexOf(input_data.value.toLowerCase().trim()) > -1
+        );
       }
       return false;
     });
@@ -56,9 +55,22 @@ const dataResult = computed(() => {
 
 const emit = defineEmits(["select_data"]);
 
-function select_data(data) {
+function check(data) {
+  dataResult.value.forEach((e) => {
+    if (data.name.toLowerCase().trim() == e.name.toLowerCase().trim()) {
+      data = e;
+      return;
+    }
+  });
+  return data;
+}
+
+function select_data() {
+  const data = {
+    name: input_data.value,
+  };
   if (data.name.length > 0) {
-    emit("select_data", data);
+    emit("select_data", check(data));
     input_data.value = "";
   }
 }

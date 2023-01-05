@@ -203,6 +203,7 @@ function save() {
 
 function showPreview() {
   getdata();
+  console.log(usePost.post_edit);
   preview.value = true;
 }
 
