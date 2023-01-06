@@ -1,20 +1,16 @@
 <template>
   <div class="md:w-96 mx-auto">
-    <Form
-      @submit="handleLogin"
-      :validation-schema="FormSchema"
-      class="bg-base-200 rounded-2xl"
-    >
+    <Form @submit="handleLogin" :validation-schema="FormSchema">
       <div class="text-center text-5xl py-10">Đăng nhập</div>
 
       <div>
         <div class="mx-auto">
-          <div class="p-2 flex mx-auto w-11/12 lg:w-3/5">
+          <div class="p-2 flex justify-center px-5 mx-auto">
             <div class="">
               <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-user" />
             </div>
             <Field
-              placeholder="nhập tài khoản của bạn"
+              placeholder="tài khoản"
               name="username"
               type="text"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
@@ -25,16 +21,28 @@
           </div>
         </div>
 
-        <div class="p-2 flex justify-center w-11/12 lg:w-3/5 mx-auto">
+        <div class="p-2 flex justify-center px-5 mx-auto relative">
           <div class="">
             <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-lock" />
           </div>
           <Field
-            placeholder="nhập password bạn"
+            placeholder="mật khẩu"
             name="password"
-            type="password"
+            :type="showPassWord"
             class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
           />
+          <div @click="show()" class="btn btn-sm btn-ghost absolute w-fit right-5">
+            <OtherVIcon
+              v-if="showPassWord == 'password'"
+              class-icon="text-xl "
+              icon="fa-solid fa-eye"
+            />
+            <OtherVIcon
+              v-if="showPassWord == 'text'"
+              class-icon="text-xl "
+              icon="fa-solid fa-eye-slash"
+            />
+          </div>
         </div>
         <div class="text-red-900 text-center">
           <ErrorMessage name="password" class="error-feedback" />
@@ -72,6 +80,7 @@ const useAuth = authStore();
 const useUser = userStore();
 const useAlertStore = alertStore();
 const loading = ref();
+const showPassWord = ref("password");
 const FormSchema = Yup.object().shape({
   username: Yup.string()
     .required("vui lòng điền tài khoản.")
@@ -97,6 +106,12 @@ async function handleLogin(user) {
   } finally {
     loading.value = false;
   }
+}
+
+function show() {
+  if (showPassWord.value == "text") {
+    showPassWord.value = "password";
+  } else showPassWord.value = "text";
 }
 
 onMounted(() => {});

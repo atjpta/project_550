@@ -2,11 +2,9 @@
   <div>
     <div
       v-if="useDialog.data.title"
-      class="min-h-screen w-screen indicator bg-red-100/50 fixed z-50"
+      class="min-h-screen w-screen bg-red-100/50 fixed z-50"
     >
-      <div
-        class="indicator-item indicator-middle indicator-center card w-96 h-fit bg-base-200 shadow-xl"
-      >
+      <div class="card w-96 h-fit bg-base-200 shadow-xl mt-40 mx-auto">
         <div class="card-body mt-5">
           <h2 class="card-title">{{ useDialog.data.title }}</h2>
           <p>{{ useDialog.data.content }}</p>
@@ -29,11 +27,9 @@
 
     <div
       v-if="useDialog.dataInput.title"
-      class="min-h-screen w-screen indicator bg-red-100/50 fixed z-50 inset-0"
+      class="min-h-screen w-screen bg-red-100/50 fixed z-50 inset-0"
     >
-      <div
-        class="indicator-item indicator-middle indicator-center card w-96 h-fit bg-base-200 shadow-xl"
-      >
+      <div class="card w-96 h-fit bg-base-200 shadow-xl mt-40 mx-auto">
         <div class="card-body mt-5">
           <h2 class="card-title">{{ useDialog.dataInput.title }}</h2>
           <p>{{ useDialog.dataInput.content }}</p>

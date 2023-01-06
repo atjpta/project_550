@@ -25,10 +25,3 @@
 </template>
 
 <script setup></script>
-
-<style scoped>
-.router-link-exact-active {
-  color: white;
-  background: rgb(120, 0, 255);
-}
-</style>

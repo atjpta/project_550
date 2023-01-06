@@ -25,11 +25,13 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 
 const usePost = postStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
+const useRoute = routeStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -41,6 +43,7 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
+        useRoute.redirectedFrom = "/post/edit";
       }
     );
   } else {

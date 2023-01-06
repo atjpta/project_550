@@ -4,7 +4,7 @@
       <nuxtLink
         to="/auth/signin"
         v-if="!useAuth.isUserLoggedIn"
-        class="btn btn-primary btn-outline mb-1"
+        class="btn btn-outline mb-1"
       >
         đăng nhập
       </nuxtLink>
@@ -26,14 +26,14 @@
           <li></li>
 
           <li class="hover-bordered" v-for="i in dataAvatar" :key="i">
-            <router-link v-if="i.name != 'Đăng xuất'" :to="i.url">
+            <nuxtLink v-if="i.name != 'Đăng xuất'" :to="i.url">
               <OtherVIcon :icon="i.icon"></OtherVIcon>
               {{ i.name }}
-            </router-link>
-            <router-link @click="logout()" v-if="i.name == 'Đăng xuất'" :to="i.url">
+            </nuxtLink>
+            <nuxtLink @click="logout()" v-if="i.name == 'Đăng xuất'" :to="i.url">
               <OtherVIcon :icon="i.icon"></OtherVIcon>
               {{ i.name }}
-            </router-link>
+            </nuxtLink>
           </li>
         </ul>
       </div>
@@ -88,4 +88,9 @@ onMounted(() => {
 });
 </script>
 
-<style></style>
+<style>
+.nuxtLink-exact-active {
+  color: white;
+  background: rgb(120, 0, 255);
+}
+</style>

@@ -1,10 +1,6 @@
 <template>
   <div class="md:w-96 mx-auto">
-    <Form
-      @submit="handleRegister"
-      :validation-schema="userFormSchema"
-      class="bg-base-200 rounded-2xl"
-    >
+    <Form @submit="handleRegister" :validation-schema="userFormSchema" class="">
       <div class="text-center text-5xl py-10">Đăng kí</div>
       <div>
         <div class="mx-auto">
@@ -14,7 +10,7 @@
             </div>
             <Field
               v-model="user.username"
-              placeholder="nhập tài khoản của bạn"
+              placeholder="Tài khoản"
               name="username"
               type="text"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
@@ -32,7 +28,7 @@
             </div>
             <Field
               v-model="user.name"
-              placeholder="nhập tên của bạn"
+              placeholder="Tên"
               name="name"
               type="text"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
@@ -50,7 +46,7 @@
             </div>
             <Field
               v-model="user.email"
-              placeholder="nhập E-mail của bạn"
+              placeholder="E-mail"
               name="email"
               type="text"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
@@ -62,17 +58,29 @@
         </div>
 
         <div class="mx-auto">
-          <div class="p-2 flex justify-center px-5 mx-auto">
+          <div class="p-2 flex justify-center px-5 mx-auto relative">
             <div class="">
               <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-lock" />
             </div>
             <Field
               v-model="user.password"
-              placeholder="nhập mật khẩu của bạn"
+              placeholder="Mật khẩu"
               name="password"
               :type="showPassWord"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
             />
+            <div @click="show()" class="btn btn-sm btn-ghost absolute w-fit right-5">
+              <OtherVIcon
+                v-if="showPassWord == 'password'"
+                class-icon="text-xl "
+                icon="fa-solid fa-eye"
+              />
+              <OtherVIcon
+                v-if="showPassWord == 'text'"
+                class-icon="text-xl "
+                icon="fa-solid fa-eye-slash"
+              />
+            </div>
           </div>
           <div class="text-red-900 text-center">
             <ErrorMessage name="password" class="error-feedback" />
@@ -80,16 +88,28 @@
         </div>
 
         <div class="mx-auto">
-          <div class="p-2 flex justify-center px-5 mx-auto">
+          <div class="p-2 flex justify-center px-5 mx-auto relative">
             <div class="">
               <OtherVIcon class-icon="text-xl mt-2 mr-5" icon="fa-solid fa-lock" />
             </div>
             <Field
-              placeholder="nhập lại mật khẩu của bạn"
+              placeholder="Nhập lại mật khẩu"
               name="repassword"
               :type="showPassWord"
               class="bg-white/5 border-0 border-b-2 border-primary text-xl mb-5 w-full"
             />
+            <div @click="show()" class="btn btn-sm btn-ghost absolute w-fit right-5">
+              <OtherVIcon
+                v-if="showPassWord == 'password'"
+                class-icon="text-xl "
+                icon="fa-solid fa-eye"
+              />
+              <OtherVIcon
+                v-if="showPassWord == 'text'"
+                class-icon="text-xl "
+                icon="fa-solid fa-eye-slash"
+              />
+            </div>
           </div>
           <div class="text-red-900 text-center">
             <ErrorMessage name="repassword" class="error-feedback" />
@@ -107,7 +127,7 @@
             :class="[loading ? 'loading' : '']"
             class="btn btn-primary btn-outline w-44"
           >
-            đăng nhập
+            đăng kí
           </button>
         </div>
       </div>
@@ -161,5 +181,10 @@ async function handleRegister(user) {
   } finally {
     loading.value = false;
   }
+}
+function show() {
+  if (showPassWord.value == "text") {
+    showPassWord.value = "password";
+  } else showPassWord.value = "text";
 }
 </script>

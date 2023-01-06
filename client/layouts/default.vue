@@ -1,7 +1,7 @@
 <template>
   <div>
-    <VHeader />
     <OtherVDialog />
+    <VHeader />
     <OtherVAlert />
 
     <div class="m-5 mx-auto space-x-5">
