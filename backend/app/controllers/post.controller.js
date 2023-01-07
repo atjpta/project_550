@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.post;
 const status = DB.status
-
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
@@ -42,7 +41,7 @@ exports.findAll = async (req, res, next) => {
         const document = await model.find().populate({
             path: 'author series team tag status',
             select: 'name id avatar_url'
-        }).sort({'createdAt': -1})
+        }).sort({ 'createdAt': -1 })
         return res.json(document);
     } catch (error) {
         return next(
@@ -52,16 +51,27 @@ exports.findAll = async (req, res, next) => {
 };
 
 exports.findOne = async (req, res, next) => {
+
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
     };
 
     try {
-        const document = await model.findOne(condition).populate({
-            path: 'author series team tag status',
-            select: 'name id avatar_url'
-        })
+        const document = await model.findOne(condition)
+            
+            .populate({
+                path: 'author team tag status',
+                select: 'name id avatar_url ',
+            })
+            .populate({
+                path: 'series',
+                select: 'name id team',
+                populate: {
+                    path: 'team',
+                    select: 'name id'
+                }
+            })
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }

@@ -41,7 +41,7 @@
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Không có</option>
-            <option :value="i" v-for="i in useSeries.List_series_ByUser" :key="i">
+            <option :value="i" v-for="i in list_series" :key="i">
               {{ i.name }}
             </option>
           </select>
@@ -175,12 +175,25 @@ const list_status = computed(() => {
   return useStatus.getPost;
 });
 
+const list_series = computed(() => {
+  let list = [];
+  useSeries.List_series_ByUser.forEach((e) => {
+    if (e.id == usePost.post_edit.series._id) {
+      list.push(usePost.post_edit.series);
+    } else list.push(e);
+  });
+  return list;
+});
+
 const list_team = computed(() => {
   let list = [];
   if (usePost.post_edit.series.name) {
     if (usePost.post_edit.series.team) {
       list.push(usePost.post_edit.series.team);
-      usePost.post_edit.team = usePost.post_edit.series.team;
+      usePost.post_edit.team = {
+        name: usePost.post_edit.series.team.name,
+        id: usePost.post_edit.series.team._id,
+      };
     } else {
       list = [];
       usePost.post_edit.team = {};

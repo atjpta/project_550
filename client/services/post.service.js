@@ -65,6 +65,7 @@ export default {
             throw new Error(error.value.data.message);
         }
         // useAlert.setSuccess("test thành công");
+        console.log(data.value);
         return data.value
     },
     create: async (dataO) => {
