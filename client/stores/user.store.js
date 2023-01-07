@@ -5,6 +5,7 @@ export const userStore = defineStore("userStore", {
     state() {
         return {
             user: {},
+            list_user: [],
         };
     },
     getters: {
@@ -16,6 +17,9 @@ export const userStore = defineStore("userStore", {
         },
         clear() {
             this.user = {};
-        }
+        },
+        async findAll() {
+            this.list_user = await userService.findAll();
+        },
     }
 });

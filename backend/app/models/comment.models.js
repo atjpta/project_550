@@ -20,10 +20,10 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },
-        cmt_child: [{
+        cmt_parent: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "comment"
-        }],
+        },
         tag_name: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"

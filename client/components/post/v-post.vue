@@ -23,23 +23,27 @@
         </nuxtLink>
       </div>
       <!-- các btn -->
-      <div class="flex">
-        <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+      <div class="flex justify-evenly">
+        <div class="flex justify-evenly mr-2">
+          <div class="btn-sm lg:btn-md btn btn-circle btn-outline">
+            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+          </div>
+          <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
+            <div class="text-2xl">0</div>
+          </div>
+          <div class="btn-sm lg:btn-md btn btn-circle btn-outline">
+            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+          </div>
         </div>
-        <div class="text-2xl font-medium lg:mt-2">0</div>
-        <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+        <div class="btn-sm lg:btn-md btn btn-outline btn-square">
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
         <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bookmark" />
-        </div>
-        <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-2xl mr-1" icon="fa-solid fa-eye" />
+          <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-eye" />
           <div class="text-2xl">0</div>
         </div>
-        <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost text-2xl">
-          <OtherVIcon class-icon="text-2xl mr-1" icon="fa-solid fa-comments" />
+        <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
+          <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-comments" />
           <div class="text-2xl">0</div>
         </a>
       </div>
@@ -75,14 +79,12 @@
 
     <div class="divider"></div>
 
-    <div id="comment">
-      <div class="text-2xl font-semibold mb-2">Nhập bình luận</div>
-      <div class="-z-30">
-        <QuillEditor theme="snow" toolbar="full" />
-      </div>
-      <div class="btn btn-primary btn-outline btn-sm my-2">
-        <OtherVIcon class-icon="mr-1" icon="fa-solid fa-paper-plane" />
-        gửi
+    <div id="comment" class="text-2xl font-semibold mb-2">
+      Nhập bình luận
+      <div class="tooltip" data-tip="gõ @ để tag tên">
+        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+        </div>
       </div>
     </div>
   </div>

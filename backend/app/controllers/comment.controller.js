@@ -8,13 +8,22 @@ exports.getBy = async (req, res, next) => {
         let document;
         switch (type) {
             case 'post':
-                document = await model.find({ post: id })
+                document = await model.find({ post: id }).populate({
+                    path: 'author tag_name',
+                    select: 'id name avatar_url'
+                })
                 break;
             case 'question':
-                document = await model.find({ question: id })
+                document = await model.find({ question: id }).populate({
+                    path: 'author tag_name',
+                    select: 'id name avatar_url'
+                })
                 break;
             case 'answer':
-                document = await model.find({ answer: id })
+                document = await model.find({ answer: id }).populate({
+                    path: 'author tag_name',
+                    select: 'id name avatar_url'
+                })
                 break;
         }
         if (!document) {
