@@ -59,7 +59,7 @@
 import { computed, onMounted, onUpdated, ref } from "vue";
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { userStore } from "~~/stores/User.store";
+import { userStore } from "~~/stores/user.store";
 
 const useUser = userStore();
 const quill = ref();
