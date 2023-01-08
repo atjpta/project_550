@@ -36,5 +36,5 @@ export default {
             throw new Error(error.value.data.message);
         }
         return data.value
-    }
+    },
 } 

@@ -1,29 +1,260 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.comment;
-
+const ObjectId = mongoose.Types.ObjectId;
 exports.getBy = async (req, res, next) => {
     const { id, type } = req.params;
     try {
         let document;
         switch (type) {
             case 'post':
-                document = await model.find({ post: id }).populate({
-                    path: 'author tag_name',
-                    select: 'id name avatar_url'
-                })
+                document = await model.aggregate([
+                    // lọc ra các phần muốn lấy
+                    {
+                        $match: {
+                            post: ObjectId(id),
+                            cmt_parent: null,
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'author',
+                            foreignField: '_id',
+                            as: 'author',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'tag_name',
+                            foreignField: '_id',
+                            as: 'tag_name',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'comments',
+                            localField: '_id',
+                            foreignField: 'cmt_parent',
+                            as: 'child',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$cmt_parent',
+                                        count: { $sum: 1 },
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $project: {
+                            "_id": 1,
+                            "post": 1,
+                            'content': 1,
+                            'child': 1,
+                            'createdAt': 1,
+                            "author._id": 1,
+                            "author.name": 1,
+                            'author.avatar_url': 1,
+                            "tag_name._id": 1,
+                            "tag_name.name": 1,
+                            'tag_name.avatar_url': 1,
+                        }
+                    },
+                    {
+                        $sort: { 'createdAt': -1 }
+                    }
+                ])
                 break;
             case 'question':
-                document = await model.find({ question: id }).populate({
+                document = await model.aggregate([
+                    // lọc ra các phần muốn lấy
+                    {
+                        $match: {
+                            question: ObjectId(id)
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'author',
+                            foreignField: '_id',
+                            as: 'author',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'tag_name',
+                            foreignField: '_id',
+                            as: 'tag_name',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'comments',
+                            localField: '_id',
+                            foreignField: 'cmt_parent',
+                            as: 'child',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$cmt_parent',
+                                        count: { $sum: 1 },
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $project: {
+                            "_id": 1,
+                            "post": 1,
+                            'content': 1,
+                            'child': 1,
+                            'createdAt': 1,
+                            "author._id": 1,
+                            "author.name": 1,
+                            'author.avatar_url': 1,
+                            "tag_name._id": 1,
+                            "tag_name.name": 1,
+                            'tag_name.avatar_url': 1,
+                        }
+                    },
+                    {
+                        $sort: { 'createdAt': -1 }
+                    }
+                ])
+                break;
+            case 'answer':
+                document = await model.aggregate([
+                    // lọc ra các phần muốn lấy
+                    {
+                        $match: {
+                            answer: ObjectId(id)
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'author',
+                            foreignField: '_id',
+                            as: 'author',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'tag_name',
+                            foreignField: '_id',
+                            as: 'tag_name',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'comments',
+                            localField: '_id',
+                            foreignField: 'cmt_parent',
+                            as: 'child',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$cmt_parent',
+                                        count: { $sum: 1 },
+                                    }
+                                }
+
+                            ]
+                        },
+                    },
+                    {
+                        $project: {
+                            "_id": 1,
+                            "post": 1,
+                            'content': 1,
+                            'child': 1,
+                            'createdAt': 1,
+                            "author._id": 1,
+                            "author.name": 1,
+                            'author.avatar_url': 1,
+                            "tag_name._id": 1,
+                            "tag_name.name": 1,
+                            'tag_name.avatar_url': 1,
+                        }
+                    },
+                    {
+                        $sort: { 'createdAt': -1 }
+                    }
+                ])
+                break;
+            case 'test':
+                document = await model.find({ cmt_parent: id }).populate({
                     path: 'author tag_name',
                     select: 'id name avatar_url'
                 })
                 break;
-            case 'answer':
-                document = await model.find({ answer: id }).populate({
-                    path: 'author tag_name',
-                    select: 'id name avatar_url'
-                })
+            case 'child':
+                document = await model.aggregate([
+                    // lọc ra các phần muốn lấy
+                    {
+                        $match: {
+                            cmt_parent: ObjectId(id)
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'author',
+                            foreignField: '_id',
+                            as: 'author',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'tag_name',
+                            foreignField: '_id',
+                            as: 'tag_name',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'comments',
+                            localField: '_id',
+                            foreignField: 'cmt_parent',
+                            as: 'child',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$cmt_parent',
+                                        count: { $sum: 1 },
+                                    }
+                                }
+
+                            ]
+                        },
+                    },
+                    {
+                        $project: {
+                            "_id": 1,
+                            "post": 1,
+                            'content': 1,
+                            'child': 1,
+                            'createdAt': 1,
+                            "author._id": 1,
+                            "author.name": 1,
+                            'author.avatar_url': 1,
+                            "tag_name._id": 1,
+                            "tag_name.name": 1,
+                            'tag_name.avatar_url': 1,
+                        }
+                    },
+                    {
+                        $sort: { 'createdAt': -1 }
+                    }
+                ])
                 break;
         }
         if (!document) {
@@ -45,7 +276,7 @@ exports.create = async (req, res, next) => {
         answer: req.body.answer,
         content: req.body.content,
         author: req.body.author,
-        cmt_child: req.body.cmt_child,
+        cmt_parent: req.body.cmt_parent,
         tag_name: req.body.tag_name,
     })
     try {
@@ -87,6 +318,7 @@ exports.findOne = async (req, res, next) => {
         )
     }
 }
+
 
 exports.update = async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {

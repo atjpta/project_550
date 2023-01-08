@@ -1,13 +1,9 @@
 <template>
-  <div>test1</div>
+  <div>
+    <v-test />
+  </div>
 </template>
 
-<script setup>
-definePageMeta({
-  middleware: ["auth"],
-
-  // or middleware: 'auth'
-});
-</script>
+<script setup></script>
 
 <style></style>

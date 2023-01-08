@@ -22,6 +22,8 @@ module.exports = (app) => {
     
     router.route('/:type/:id')
         .get(ctl.getBy)
+    
+    
 
 
     app.use("/api/comment", router);
