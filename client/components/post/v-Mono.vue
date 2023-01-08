@@ -68,12 +68,12 @@
             </div>
           </div>
           <!-- ảnh bìa và tiêu đề -->
-          <nuxt-link :to="'/post/' + data.id">
+          <div @click="goReadPost()">
             <div class="hover:scale-105 duration-500">
               <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.title }}</div>
             </div>
-          </nuxt-link>
+          </div>
           <!-- tag -->
           <div class="mt-4">
             <div
@@ -97,7 +97,7 @@
             </div>
             <div>
               <OtherVIcon icon="fa-solid fa-eye" />
-              0
+              {{ data.view }}
             </div>
           </div>
         </div>
@@ -140,5 +140,13 @@ function openDialogDelete() {
       }
     );
   }
+}
+
+async function goReadPost() {
+  await usePost.update({
+    id: props.data.id,
+    view: props.data.view + 1,
+  });
+  navigateTo(`/post/${props.data.id}`);
 }
 </script>

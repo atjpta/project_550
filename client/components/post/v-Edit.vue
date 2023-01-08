@@ -31,7 +31,7 @@
               </div>
             </div>
           </div>
-          <TagVTag v-model:data="usePost.post_edit.tag" />
+          <TagVTag :data="usePost.post_edit.tag" />
         </div>
         <!-- phần chọn serise -->
         <div>

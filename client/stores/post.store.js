@@ -87,5 +87,6 @@ export const postStore = defineStore("postStore", {
         async update(data) {
             await postService.update(data);
         }
+        
     }
 });

@@ -66,10 +66,14 @@ async function send() {
   }
 }
 
+async function getApi() {
+  await usePost.findOne(route.params.id);
+  await useUser.findAll();
+  await useCmt.getBy("post", route.params.id);
+}
+
 onMounted(() => {
-  usePost.findOne(route.params.id);
-  useUser.findAll();
-  useCmt.getBy("post", route.params.id);
+  getApi();
 });
 </script>
 

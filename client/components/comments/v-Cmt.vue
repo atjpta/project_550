@@ -176,6 +176,10 @@ async function getBy() {
     list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
   });
 }
+
+onUnmounted(() => {
+  useCmt.list_cmt = [];
+});
 </script>
 
 <style></style>

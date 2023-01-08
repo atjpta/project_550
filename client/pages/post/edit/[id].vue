@@ -15,21 +15,24 @@ const usePost = postStore();
 let post = usePost.post_edit;
 const loading = ref(false);
 function formatData(listtag) {
-  const array = Array.from(post.tag);
-  const tag = listtag;
-  array.forEach((e) => {
-    tag.push(e.id);
-  });
-  return {
+  const data = {
     id: post.id,
     content: post.content,
     series: post.series.id,
     status: [post.status.id],
-    tag: tag,
     title: post.title,
     team: post.team._id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
+  if (listtag) {
+    const array = Array.from(post.tag);
+    const tag = listtag;
+    array.forEach((e) => {
+      tag.push(e.id);
+    });
+    data.tag = tag;
+  }
+  return data;
 }
 
 async function saveEdit() {

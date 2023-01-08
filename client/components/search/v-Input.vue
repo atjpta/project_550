@@ -20,7 +20,7 @@
         <div v-if="dataResult.length == 0" class="text-center">không có dữ liệu</div>
         <div v-for="i in dataResult" :key="i" class="">
           <div
-            @click="select_data(i)"
+            @click="select_data2(i)"
             class="bg-base-100 my-1 btn btn-block btn-ghost justify-start shadow-sm shadow-primary"
           >
             {{ i.name }}
@@ -71,6 +71,13 @@ function select_data() {
   };
   if (data.name.length > 0) {
     emit("select_data", check(data));
+    input_data.value = "";
+  }
+}
+
+function select_data2(data) {
+  if (data.name.length > 0) {
+    emit("select_data", data);
     input_data.value = "";
   }
 }

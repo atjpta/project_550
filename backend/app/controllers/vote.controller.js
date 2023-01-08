@@ -1,47 +1,30 @@
+
 const mongoose = require("mongoose");
 const DB = require("../models");
-const model = DB.post;
-const status = DB.status
+const model = DB.vote;
+
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
-        title: req.body.title,
-        content: req.body.content,
-        tag: req.body.tag,
-        image_cover_url: req.body.image_cover_url,
-        series: req.body.series,
-        team: req.body.team,
-        status: req.body.status,
+        val: req.body.val,
+        post: req.body.post,
+        question: req.body.question,
+        answer: req.body.answer,
+        comment: req.body.comment,
     })
     try {
-        const document = modelO.save().then(savedDoc => {
-            return res.send(savedDoc.id);
-        });
+        const document = modelO.save();
+        return res.send({ Message: 'tạo thành công' });
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể create model' + error })
         )
     }
-}
-
-exports.getLength = async (req, res, next) => {
-    try {
-        const document = await model.find()
-        return res.json(document.length);
-    } catch (error) {
-        return next(
-            res.status(500).json({ Message: 'không  thể  lấy getLength' + error })
-        )
-    }
 };
-
 
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find().populate({
-            path: 'author series team tag status view',
-            select: 'name id avatar_url'
-        }).sort({ 'createdAt': -1 })
+        const document = await model.find()
         return res.json(document);
     } catch (error) {
         return next(
@@ -51,7 +34,6 @@ exports.findAll = async (req, res, next) => {
 };
 
 exports.findOne = async (req, res, next) => {
-
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
@@ -59,19 +41,6 @@ exports.findOne = async (req, res, next) => {
 
     try {
         const document = await model.findOne(condition)
-            
-            .populate({
-                path: 'author team tag status',
-                select: 'name id avatar_url ',
-            })
-            .populate({
-                path: 'series',
-                select: 'name id team',
-                populate: {
-                    path: 'team',
-                    select: 'name id'
-                }
-            })
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
