@@ -13,11 +13,11 @@
               <div class="flex">
                 <div class="avatar">
                   <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author.avatar_url" />
+                    <img :src="data.author[0].avatar_url" />
                   </div>
                 </div>
                 <div class="text-2xl mx-3">
-                  {{ data.author.name }}
+                  {{ data.author[0].name }}
                   <div class="text-sm italic">
                     <i>{{ data.createdAt }}</i>
                   </div>
@@ -68,7 +68,7 @@
             </div>
           </div>
           <!-- ảnh bìa và tiêu đề -->
-          <div @click="goReadPost()">
+          <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:scale-105 duration-500">
               <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.title }}</div>
@@ -88,12 +88,12 @@
           <div class="flex justify-around mt-2 text-2xl">
             <div>
               <OtherVIcon icon="fa-solid fa-caret-down" />
-              0
+              {{ valVote }}
               <OtherVIcon icon="fa-solid fa-caret-up" />
             </div>
             <div>
               <OtherVIcon icon="fa-solid fa-comments" />
-              0
+              {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
             <div>
               <OtherVIcon icon="fa-solid fa-eye" />
@@ -121,8 +121,22 @@ const usePost = postStore();
 
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
-    return useAuth.user.id == props.data.author._id;
+    return useAuth.user.id == props.data.author[0]._id;
   }
+});
+
+const valVote = computed(() => {
+  if (props.data.vote) {
+    let val = props.data.vote[0]?.val;
+    if (val != undefined) {
+      if (val > 0) {
+        return "+" + val;
+      } else if (val == 0) {
+        return 0;
+      } else return val;
+    }
+  }
+  return 0;
 });
 
 function openDialogDelete() {
@@ -135,7 +149,7 @@ function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await usePost.deleteOne(props.data.id);
+        await usePost.deleteOne(props.data._id);
         await usePost.findAll();
       }
     );
@@ -144,9 +158,9 @@ function openDialogDelete() {
 
 async function goReadPost() {
   await usePost.update({
-    id: props.data.id,
+    id: props.data._id,
     view: props.data.view + 1,
   });
-  navigateTo(`/post/${props.data.id}`);
+  navigateTo(`/post/${props.data._id}`);
 }
 </script>

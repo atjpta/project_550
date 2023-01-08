@@ -3,7 +3,7 @@ const DB = require("../models");
 const model = DB.comment;
 const ObjectId = mongoose.Types.ObjectId;
 exports.getBy = async (req, res, next) => {
-    const { id, type } = req.params;
+    const { id, type, user } = req.params;
     try {
         let document;
         switch (type) {
@@ -49,6 +49,39 @@ exports.getBy = async (req, res, next) => {
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$comment',
+                                        val: { $sum: '$val' },
+
+                                    },
+
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        author: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
                         $project: {
                             "_id": 1,
                             "post": 1,
@@ -61,6 +94,8 @@ exports.getBy = async (req, res, next) => {
                             "tag_name._id": 1,
                             "tag_name.name": 1,
                             'tag_name.avatar_url': 1,
+                            'vote_user': 1,
+                            'vote': 1,
                         }
                     },
                     {
@@ -109,6 +144,54 @@ exports.getBy = async (req, res, next) => {
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$comment',
+                                        val: { $sum: '$val' },
+
+                                    },
+
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        author: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'post',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        question: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
                         $project: {
                             "_id": 1,
                             "post": 1,
@@ -121,6 +204,8 @@ exports.getBy = async (req, res, next) => {
                             "tag_name._id": 1,
                             "tag_name.name": 1,
                             'tag_name.avatar_url': 1,
+                            'vote_user': 1,
+                            'vote': 1,
                         }
                     },
                     {
@@ -170,6 +255,54 @@ exports.getBy = async (req, res, next) => {
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$comment',
+                                        val: { $sum: '$val' },
+
+                                    },
+
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'post',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        answer: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        author: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
                         $project: {
                             "_id": 1,
                             "post": 1,
@@ -182,6 +315,8 @@ exports.getBy = async (req, res, next) => {
                             "tag_name._id": 1,
                             "tag_name.name": 1,
                             'tag_name.avatar_url': 1,
+                            'vote_user': 1,
+                            'vote': 1,
                         }
                     },
                     {
@@ -237,6 +372,39 @@ exports.getBy = async (req, res, next) => {
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote',
+                            pipeline: [
+                                {
+                                    $group: {
+                                        _id: '$comment',
+                                        val: { $sum: '$val' },
+
+                                    },
+
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'votes',
+                            localField: '_id',
+                            foreignField: 'comment',
+                            as: 'vote_user',
+                            pipeline: [
+                                {
+                                    $match: {
+                                        author: ObjectId(user)
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
                         $project: {
                             "_id": 1,
                             "post": 1,
@@ -249,6 +417,8 @@ exports.getBy = async (req, res, next) => {
                             "tag_name._id": 1,
                             "tag_name.name": 1,
                             'tag_name.avatar_url': 1,
+                            'vote_user': 1,
+                            'vote': 1,
                         }
                     },
                     {
@@ -341,7 +511,6 @@ exports.update = async (req, res, next) => {
         return res.send({ message: "đã update thành công", body: req.body });
     }
     catch (error) {
-        console.log(error);
         return next(
             res.status(500).json({ Message: ` không thể update model với id = ${req.params.id} ` })
         )

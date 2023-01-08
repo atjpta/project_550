@@ -16,8 +16,8 @@ export default {
             if (error.value.status == 400) {
                 return;
             }
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("tải ảnh lên thành công");
         return data.value
@@ -29,8 +29,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("tải ảnh lên thành công");
         return data.value

@@ -17,8 +17,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
@@ -31,8 +31,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         return data.value
     },
@@ -46,14 +46,14 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         return data.value
     },
 
-    findOne: async (id) => {
-        const { data: data, error } = await useFetch(url + `/${id}`, {
+    findOne: async (id, user) => {
+        const { data: data, error } = await useFetch(url + `/${id}/${user}`, {
             headers: {
                 authorization: authStore().getToken
             },
@@ -61,8 +61,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
@@ -77,8 +77,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("tạo thành công");
         console.log(data.value);

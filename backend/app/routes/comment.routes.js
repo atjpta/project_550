@@ -20,7 +20,7 @@ module.exports = (app) => {
         .put(ctl.update)
         .delete(ctl.delete)
     
-    router.route('/:type/:id')
+    router.route('/:type/:id/:user')
         .get(ctl.getBy)
     
     

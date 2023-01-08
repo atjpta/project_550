@@ -15,8 +15,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
@@ -31,8 +31,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
@@ -48,8 +48,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("tạo thành công");
         return data.value

@@ -13,8 +13,9 @@ exports.create = async (req, res, next) => {
         comment: req.body.comment,
     })
     try {
-        const document = modelO.save();
-        return res.send({ Message: 'tạo thành công' });
+        const document = modelO.save().then(savedDoc => {
+            return res.send(savedDoc.id);
+        });
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể create model' + error })
@@ -51,6 +52,8 @@ exports.findOne = async (req, res, next) => {
         )
     }
 }
+
+
 
 exports.update = async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {

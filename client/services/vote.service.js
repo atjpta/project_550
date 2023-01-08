@@ -3,9 +3,27 @@ import config from "~~/config";
 import { authStore } from "~~/stores/auth.store";
 const useAuth = authStore()
 const useAlert = alertStore()
-const url = config.url.api + '/user'
+const url = config.url.api + '/vote'
 
 export default {
+
+    create: async (dataO) => {
+        const { data: data, error } = await useFetch(url + '', {
+            headers: {
+                authorization: authStore().getToken
+            },
+            body: dataO,
+            method: "post",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        useAlert.setSuccess("đánh giá thành công");
+        return data.value
+    },
+
     findOne: async (id) => {
         const { data: data, error } = await useFetch(url + `/${id}`, {
             headers: {
@@ -22,12 +40,13 @@ export default {
         return data.value
     },
 
-    findAll: async (id) => {
-        const { data: data, error } = await useFetch(url, {
+    update: async (dataO, id) => {
+        const { data: data, error } = await useFetch(url + `/${id}`, {
             headers: {
                 authorization: authStore().getToken
             },
-            method: "get",
+            body: dataO,
+            method: "put",
         })
 
         if (error.value) {
@@ -37,5 +56,4 @@ export default {
         // useAlert.setSuccess("test thành công");
         return data.value
     },
-    
 } 

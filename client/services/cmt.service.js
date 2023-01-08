@@ -17,14 +17,14 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("gửi bình luận thành công");
         return data.value
     },
-    getBy: async (type, id) => {
-        const { data: data, error } = await useFetch(url + `/${type}/${id}`, {
+    getBy: async (type, id, user) => {
+        const { data: data, error } = await useFetch(url + `/${type}/${id}/${user}`, {
             headers: {
                 authorization: authStore().getToken
             },
@@ -32,8 +32,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         return data.value
     },

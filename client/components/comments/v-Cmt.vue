@@ -6,13 +6,31 @@
         <div class="flex">
           <!-- các btn -->
           <div class="flex flex-col mr-2 space-y-1">
-            <div class="btn-sm btn-circle btn btn-outline">
+            <div
+              v-if="loadingVote != 'up'"
+              @click="up()"
+              :class="classUp"
+              class="btn-sm btn-circle btn btn-outline"
+            >
               <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
             </div>
-            <div class="btn-sm btn-circle btn btn-ghost no-animation">0</div>
-            <div class="btn-sm btn-circle btn btn-outline">
+            <div
+              v-if="loading == 'up'"
+              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            ></div>
+            <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
+            <div
+              v-if="loadingVote != 'down'"
+              @click="down()"
+              :class="classDown"
+              class="btn-sm btn-circle btn btn-outline"
+            >
               <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
             </div>
+            <div
+              v-if="loading == 'down'"
+              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            ></div>
             <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
               <OtherVIcon class-icon="" icon="fa-solid fa-share" />
             </div>
@@ -26,11 +44,11 @@
               <div class="flex">
                 <div class="avatar">
                   <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author.avatar_url" />
+                    <img :src="data.author[0].avatar_url" />
                   </div>
                 </div>
                 <div class="mx-3">
-                  {{ data.author.name }}
+                  {{ data.author[0].name }}
                   <div class="text-sm italic">
                     <i>{{ data.createdAt || "vừa xong" }}</i>
                   </div>
@@ -90,7 +108,7 @@
     <!-- cmt con -->
     <transition name="bounce">
       <div v-if="childCmt" class="ml-5">
-        <div v-for="i in list_child" :key="i.id">
+        <div v-for="i in list_child" :key="i._id">
           <CommentsVCmt :data="i" />
         </div>
       </div>
@@ -106,9 +124,13 @@ import { postStore } from "~~/stores/post.store";
 import { userStore } from "~~/stores/user.store";
 import { cmtStore } from "~~/stores/cmt.store";
 import cmtService from "~~/services/cmt.service";
+import { authStore } from "~~/stores/auth.store";
+import { voteStore } from "~~/stores/vote.store";
 const usePost = postStore();
 const useUser = userStore();
 const useCmt = cmtStore();
+const useAuth = authStore();
+const useVote = voteStore();
 
 const props = defineProps({
   data: Object,
@@ -124,6 +146,172 @@ const list_child = ref();
 const loading = ref(false);
 const inputRep = ref(false);
 const childCmt = ref(false);
+
+const loadingVote = ref("");
+
+const valVote = computed(() => {
+  if (props.data.vote) {
+    let val = props.data.vote[0]?.val;
+    if (val != undefined) {
+      if (val > 0) {
+        return "+" + val;
+      } else if (val == 0) {
+        return 0;
+      } else return val;
+    }
+  }
+  return 0;
+});
+
+const classUp = computed(() => {
+  if (props.data.author) {
+    if (props.data.author[0]?._id == useAuth.user.id) {
+      return "btn-disabled";
+    }
+  }
+  if (props.data.vote_user) {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == 1) {
+        return "btn-primary";
+      }
+    }
+  }
+  return "";
+});
+
+const classDown = computed(() => {
+  if (props.data.author) {
+    if (props.data.author[0]?._id == useAuth.user.id) {
+      return "btn-disabled";
+    }
+  }
+  if (props.data.vote_user) {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == -1) {
+        return "btn-primary";
+      }
+    }
+  }
+  return "";
+});
+
+async function up() {
+  loading.value = "up";
+  try {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == 1) {
+        await useVote.update(
+          {
+            val: parseInt(0),
+          },
+          props.data.vote_user[0]._id
+        );
+        props.data.vote_user[0].val -= 1;
+        props.data.vote[0].val -= 1;
+      } else {
+        await useVote.update(
+          {
+            val: parseInt(1),
+          },
+          props.data.vote_user[0]._id
+        );
+        if (props.data.vote_user[0].val == 0) {
+          props.data.vote[0].val += 1;
+        } else {
+          props.data.vote[0].val += 2;
+        }
+        props.data.vote_user[0].val = 1;
+      }
+    } else {
+      let id = await useVote.create({
+        author: useAuth.user.id,
+        val: parseInt(1),
+        post: props.data._id,
+      });
+      if (props.data.vote.length > 0) {
+        props.data.vote_user[0].val += 1;
+        props.data.vote[0].val += 1;
+      } else {
+        await useVote.findOne(id);
+        props.data.vote_user = [];
+        props.data.vote_user.push(useVote.vote);
+        props.data.vote = [];
+        props.data.vote.push({
+          val: 1,
+          _id: props.data._id,
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
+
+async function down() {
+  loading.value = "down";
+  try {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == -1) {
+        await useVote.update(
+          {
+            val: parseInt(0),
+          },
+          props.data.vote_user[0]._id
+        );
+        props.data.vote_user[0].val += 1;
+        props.data.vote[0].val += 1;
+      } else {
+        await useVote.update(
+          {
+            val: parseInt(-1),
+          },
+          props.data.vote_user[0]._id
+        );
+        if (props.data.vote_user[0].val == 0) {
+          props.data.vote[0].val -= 1;
+        } else {
+          props.data.vote[0].val -= 2;
+        }
+        props.data.vote_user[0].val = -1;
+      }
+    } else {
+      await useVote.create({
+        author: useAuth.user.id,
+        val: parseInt(1),
+        comment: props.data._id,
+      });
+      if (props.data.vote.length > 0) {
+        props.data.vote_user[0].val -= 1;
+        props.data.vote[0].val -= 1;
+      } else {
+        let id = await useVote.create({
+          author: useAuth.user.id,
+          val: parseInt(-1),
+          post: props.data._id,
+        });
+        if (props.data.vote.length > 0) {
+          props.data.vote_user[0].val -= 1;
+          props.data.vote[0].val -= 1;
+        } else {
+          await useVote.findOne(id);
+          props.data.vote_user = [];
+          props.data.vote_user.push(useVote.vote);
+          props.data.vote = [];
+          props.data.vote.push({
+            val: -1,
+            _id: props.data._id,
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
 
 function openInputRep() {
   inputRep.value = !inputRep.value;
@@ -171,10 +359,19 @@ async function rep() {
 }
 
 async function getBy() {
-  list_child.value = await cmtService.getBy("child", props.data._id);
+  list_child.value = await cmtService.getBy("child", props.data._id, useAuth.user.id);
   list_child.value.forEach((e, i) => {
     list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
   });
+  console.log(list_child.value);
+}
+
+async function getBy2(id) {
+  list_child.value = await cmtService.getBy("child", id, useAuth.user.id);
+  list_child.value.forEach((e, i) => {
+    list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
+  });
+  console.log(list_child.value);
 }
 
 onUnmounted(() => {

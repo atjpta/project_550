@@ -11,8 +11,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("Đăng nhập thành công ");
         return data.value
@@ -24,8 +24,8 @@ export default {
             body: user
         })
         if (error.value) {
-            useAlert.setError(error.value.data.message)
-            throw new Error(error.value.data.message);
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
         }
         useAlert.setSuccess("Đăng kí thành công ");
         return data.value

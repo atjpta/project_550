@@ -10,11 +10,11 @@
           <div class="flex">
             <div class="avatar">
               <div class="w-12 h-12 rounded-full">
-                <img :src="data.author.avatar_url" />
+                <img :src="data.author[0]?.avatar_url" />
               </div>
             </div>
             <div class="text-2xl mx-3">
-              {{ data.author.name }}
+              {{ data.author[0]?.name }}
               <div class="text-sm italic">
                 <i>{{ data.createdAt || "vừa xong" }}</i>
               </div>
@@ -25,26 +25,53 @@
       <!-- các btn -->
       <div class="flex justify-evenly">
         <div class="flex justify-evenly mr-2">
-          <div class="btn-sm lg:btn-md btn btn-circle btn-outline">
+          <div
+            v-if="loading != 'up'"
+            @click="up()"
+            :class="classUp"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline"
+          >
             <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
           </div>
+          <div
+            v-if="loading == 'up'"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+          ></div>
+
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
-            <div class="text-2xl">0</div>
+            <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div class="btn-sm lg:btn-md btn btn-circle btn-outline">
+          <div
+            v-if="loading != 'down'"
+            @click="down()"
+            :class="classDown"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline"
+          >
             <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
           </div>
+          <div
+            v-if="loading == 'down'"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+          ></div>
         </div>
-        <div class="btn-sm lg:btn-md btn btn-outline btn-square">
+        <div
+          @click="save()"
+          :class="classSave"
+          class="btn-sm lg:btn-md btn btn-outline btn-square"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
         <div class="btn-sm lg:btn-md btn btn-ghost">
           <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-eye" />
-          <div class="text-2xl">0</div>
+          <div class="text-2xl">
+            {{ data.view }}
+          </div>
         </div>
         <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
           <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-comments" />
-          <div class="text-2xl">0</div>
+          <div class="text-2xl">
+            {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
+          </div>
         </a>
       </div>
     </div>
@@ -95,10 +122,73 @@ import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { imageStore } from "~~/stores/image.store";
+import { authStore } from "~~/stores/auth.store";
+import { voteStore } from "~~/stores/vote.store";
+import { postStore } from "~~/stores/post.store";
 const useImage = imageStore();
+const useAuth = authStore();
+const useVote = voteStore();
+const usePost = postStore();
 const props = defineProps({
   data: Object,
   change: Object,
+});
+
+const loading = ref("");
+
+const valVote = computed(() => {
+  if (props.data.vote) {
+    let val = props.data.vote[0]?.val;
+    if (val != undefined) {
+      if (val > 0) {
+        return "+" + val;
+      } else if (val == 0) {
+        return 0;
+      } else return val;
+    }
+  }
+  return 0;
+});
+
+const classUp = computed(() => {
+  if (props.data.author) {
+    if (props.data.author[0]?._id == useAuth.user.id) {
+      return "btn-disabled";
+    }
+  }
+  if (props.data.vote_user) {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == 1) {
+        return "btn-primary";
+      }
+    }
+  }
+  return "";
+});
+
+const classDown = computed(() => {
+  if (props.data.author) {
+    if (props.data.author[0]?._id == useAuth.user.id) {
+      return "btn-disabled";
+    }
+  }
+  if (props.data.vote_user) {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == -1) {
+        return "btn-primary";
+      }
+    }
+  }
+  return "";
+});
+
+const classSave = computed(() => {
+  if (props.data.author) {
+    if (props.data.author[0]?._id == useAuth.user.id) {
+      return "btn-disabled";
+    }
+  }
+  return "";
 });
 
 let mark = 0;
@@ -108,6 +198,118 @@ const quill = ref();
 const setContent = () => {
   quill.value.setContents(props.data.content);
 };
+
+function test() {
+  console.log("test");
+}
+
+async function up() {
+  loading.value = "up";
+  try {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == 1) {
+        await useVote.update(
+          {
+            val: parseInt(0),
+          },
+          props.data.vote_user[0]._id
+        );
+        props.data.vote_user[0].val -= 1;
+        props.data.vote[0].val -= 1;
+      } else {
+        await useVote.update(
+          {
+            val: parseInt(1),
+          },
+          props.data.vote_user[0]._id
+        );
+        if (props.data.vote_user[0].val == 0) {
+          props.data.vote[0].val += 1;
+        } else {
+          props.data.vote[0].val += 2;
+        }
+        props.data.vote_user[0].val = 1;
+      }
+    } else {
+      let id = await useVote.create({
+        author: useAuth.user.id,
+        val: parseInt(1),
+        post: props.data._id,
+      });
+      if (props.data.vote.length > 0) {
+        props.data.vote_user[0].val += 1;
+        props.data.vote[0].val += 1;
+      } else {
+        await useVote.findOne(id);
+        props.data.vote_user = [];
+        props.data.vote_user.push(useVote.vote);
+        props.data.vote = [];
+        props.data.vote.push({
+          val: 1,
+          _id: props.data._id,
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
+
+async function down() {
+  loading.value = "down";
+  try {
+    if (props.data.vote_user[0]?.author == useAuth.user.id) {
+      if (props.data.vote_user[0].val == -1) {
+        await useVote.update(
+          {
+            val: parseInt(0),
+          },
+          props.data.vote_user[0]._id
+        );
+        props.data.vote_user[0].val += 1;
+        props.data.vote[0].val += 1;
+      } else {
+        await useVote.update(
+          {
+            val: parseInt(-1),
+          },
+          props.data.vote_user[0]._id
+        );
+        if (props.data.vote_user[0].val == 0) {
+          props.data.vote[0].val -= 1;
+        } else {
+          props.data.vote[0].val -= 2;
+        }
+        props.data.vote_user[0].val = -1;
+      }
+    } else {
+      let id = await useVote.create({
+        author: useAuth.user.id,
+        val: parseInt(-1),
+        post: props.data._id,
+      });
+      if (props.data.vote.length > 0) {
+        props.data.vote_user[0].val -= 1;
+        props.data.vote[0].val -= 1;
+      } else {
+        await useVote.findOne(id);
+        props.data.vote_user = [];
+        props.data.vote_user.push(useVote.vote);
+        props.data.vote = [];
+        props.data.vote.push({
+          val: -1,
+          _id: props.data._id,
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
 
 watch(props, (newContent) => {
   setContent();

@@ -18,10 +18,14 @@ module.exports = (app) => {
     router.route('/maxlength')
         .get(ctl.getLength)
     
-    router.route('/:id')
+    router.route('/:id/:user')
         .get(ctl.findOne)
+    
+    router.route('/:id/')
         .put(ctl.update)
         .delete(ctl.delete)
+    
+    
 
 
     app.use("/api/post", router);

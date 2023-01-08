@@ -5,9 +5,11 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import vi from 'dayjs/locale/vi'
+import { authStore } from "./auth.store";
 dayjs.extend(localizedFormat);
 dayjs.locale(vi);
 const useUser = userStore()
+const useAuth = authStore()
 export const postStore = defineStore("postStore", {
     id: 'post',
     state() {
@@ -18,7 +20,7 @@ export const postStore = defineStore("postStore", {
                 series: {},
                 team: {},
                 status: {},
-                content: { },
+                content: {},
             },
             post: {
                 author: {},
@@ -32,7 +34,7 @@ export const postStore = defineStore("postStore", {
         };
     },
     getters: {
-        
+
     },
     actions: {
 
@@ -51,7 +53,7 @@ export const postStore = defineStore("postStore", {
                 content: {},
             }
         },
-        
+
         check() {
             if (!this.post.series) {
                 this.post.series = {}
@@ -65,13 +67,14 @@ export const postStore = defineStore("postStore", {
                 this.post.tag = new Set()
             }
         },
-        
+
         async create(data) {
             const id = await postService.create(data);
             return id;
         },
         async findOne(id) {
-            this.post = await postService.findOne(id);
+            this.post = await postService.findOne(id, useAuth.user.id);
+            this.post = this.post[0];
             this.post.createdAt = this.setTime(this.post.createdAt)
             this.check()
         },
@@ -82,11 +85,11 @@ export const postStore = defineStore("postStore", {
             });
         },
         async deleteOne(id) {
-            await postService.deleteOne(id);  
+            await postService.deleteOne(id);
         },
         async update(data) {
             await postService.update(data);
         }
-        
+
     }
 });

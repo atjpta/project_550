@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.post;
+const ObjectId = mongoose.Types.ObjectId;
 const status = DB.status
 exports.create = async (req, res, next) => {
     const modelO = new model({
@@ -36,7 +37,7 @@ exports.getLength = async (req, res, next) => {
 };
 
 
-exports.findAll = async (req, res, next) => {
+exports.findAll2 = async (req, res, next) => {
     try {
         const document = await model.find().populate({
             path: 'author series team tag status view',
@@ -50,28 +51,209 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+exports.findAll = async (req, res, next) => {
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    team: null,
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                                
+                            },
+                           
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
 exports.findOne = async (req, res, next) => {
 
-    const { id } = req.params;
+    const { id, user } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
     };
 
     try {
-        const document = await model.findOne(condition)
-            
-            .populate({
-                path: 'author team tag status',
-                select: 'name id avatar_url ',
-            })
-            .populate({
-                path: 'series',
-                select: 'name id team',
-                populate: {
-                    path: 'team',
-                    select: 'name id'
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    _id: ObjectId(id),
                 }
-            })
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote_user',
+                    pipeline: [
+                        {
+                            $match: {
+                                author: ObjectId(user)
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'content': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    'vote_user': 1,
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
