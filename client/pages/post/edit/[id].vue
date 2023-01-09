@@ -16,7 +16,7 @@ let post = usePost.post_edit;
 const loading = ref(false);
 function formatData(listtag) {
   const data = {
-    id: post.id,
+    id: post._id,
     content: post.content,
     series: post.series.id,
     status: [post.status.id],

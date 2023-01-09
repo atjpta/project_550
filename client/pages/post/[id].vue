@@ -40,7 +40,7 @@ async function send() {
   });
   const data = {
     author: useUser.user.id,
-    post: usePost.post.id,
+    post: usePost.post._id,
     content: dataInput.value.content,
     tag_name: list,
   };
@@ -53,7 +53,7 @@ async function send() {
       data.tag_name.length
     ) {
       await useCmt.create(data);
-      await useCmt.getBy("post", usePost.post.id);
+      await useCmt.getBy("post", usePost.post._id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;
@@ -67,6 +67,7 @@ async function send() {
 }
 
 async function getApi() {
+  useCmt.list_cmt = [];
   await usePost.findOne(route.params.id);
   await useUser.findAll();
   await useCmt.getBy("post", route.params.id);

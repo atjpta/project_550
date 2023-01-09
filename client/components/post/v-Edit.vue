@@ -98,6 +98,7 @@
 
         <div class="-z-10">
           <QuillEditor
+            :modules="modules"
             placeholder="nhập nội dung"
             ref="quill"
             theme="snow"
@@ -151,7 +152,32 @@ import { authStore } from "~~/stores/auth.store";
 import { imageStore } from "~~/stores/image.store";
 import { statusStore } from "~~/stores/status.store";
 import { postStore } from "~~/stores/post.store";
+import ImageUploader from "quill-image-uploader";
+import config from "~~/config";
+import axios from "axios";
+const url = config.url.apiimage;
+const modules = {
+  name: "imageUploader",
+  module: ImageUploader,
+  options: {
+    upload: (file) => {
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("image", file);
 
+        axios
+          .post(url, formData)
+          .then((res) => {
+            resolve(url + "/" + res.data.filename);
+          })
+          .catch((err) => {
+            reject("Upload failed");
+            console.error("Error:", err);
+          });
+      });
+    },
+  },
+};
 const props = defineProps({
   loading: Boolean,
 });

@@ -344,7 +344,7 @@ async function rep() {
       data.tag_name.length
     ) {
       await useCmt.create(data);
-      // await useCmt.getBy("post", usePost.post.id);
+      await getBy();
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;
@@ -363,20 +363,7 @@ async function getBy() {
   list_child.value.forEach((e, i) => {
     list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
   });
-  console.log(list_child.value);
 }
-
-async function getBy2(id) {
-  list_child.value = await cmtService.getBy("child", id, useAuth.user.id);
-  list_child.value.forEach((e, i) => {
-    list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
-  });
-  console.log(list_child.value);
-}
-
-onUnmounted(() => {
-  useCmt.list_cmt = [];
-});
 </script>
 
 <style></style>

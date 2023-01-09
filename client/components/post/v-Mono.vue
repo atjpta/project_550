@@ -28,7 +28,7 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
-                <nuxtLink :to="`/post/edit/${data.id}`">
+                <nuxtLink :to="`/post/edit/${data._id}`">
                   <div class="btn btn-outline btn-primary">
                     <OtherVIcon icon="fa-solid fa-pen-to-square" />
                   </div>
