@@ -24,7 +24,12 @@ export default {
         return data.value
     },
     getBy: async (type, id, user) => {
-        const { data: data, error } = await useFetch(url + `/${type}/${id}/${user}`, {
+        let apiurl = url + `/${type}/${id}`
+        
+        if (!!user) {
+            apiurl = url + `/${type}/${id}/${user}`
+        }
+        const { data: data, error } = await useFetch(apiurl, {
             headers: {
                 authorization: authStore().getToken
             },

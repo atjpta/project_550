@@ -109,7 +109,7 @@ const dataMenu = ref([
       },
       {
         name: "câu hỏi",
-        url: "/test2",
+        url: "/question",
         icon: "fa-solid fa-file-circle-question",
       },
       {

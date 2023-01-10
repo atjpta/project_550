@@ -22,6 +22,7 @@ module.exports = (app) => {
         .get(ctl.findOne)
     
     router.route('/:id/')
+        .get(ctl.findOneGuest)
         .put(ctl.update)
         .delete(ctl.delete)
     

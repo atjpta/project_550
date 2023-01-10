@@ -73,7 +73,8 @@ export const postStore = defineStore("postStore", {
             return id;
         },
         async findOne(id) {
-            this.post = await postService.findOne(id, useAuth.user.id);
+            const user = useAuth.user ? useAuth.user.id : '';
+            this.post = await postService.findOne(id, user);
             this.post = this.post[0];
             this.post.createdAt = this.setTime(this.post.createdAt)
             this.check()

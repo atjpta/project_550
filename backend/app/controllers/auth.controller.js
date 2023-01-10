@@ -49,9 +49,10 @@ exports.signin = (req, res) => {
           message: "mật khẩu không đúng!"
         });
       }
-      const token = jwt.sign({ id: user.id }, config.jwt.secret, {
-        expiresIn: config.jwt.tokenLife
-      });
+      // const token = jwt.sign({ id: user.id }, config.jwt.secret, {
+      //   expiresIn: config.jwt.tokenLife
+      // });
+      const token = jwt.sign({ id: user.id }, config.jwt.secret);
       res.status(200).send({
         id: user._id,
         accessToken: token,

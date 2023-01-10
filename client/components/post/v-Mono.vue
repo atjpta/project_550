@@ -40,7 +40,10 @@
             </div>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <div
+              v-if="!isAuthor && useAuth.isUserLoggedIn"
+              class="dropdown dropdown-end z-10"
+            >
               <label tabindex="0" class="btn btn-outline btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>

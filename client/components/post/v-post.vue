@@ -27,7 +27,7 @@
         <div class="flex justify-evenly mr-2">
           <div
             v-if="loading != 'up'"
-            @click="up()"
+            @click="openDialogSignin(up)"
             :class="classUp"
             class="btn-sm lg:btn-md btn btn-circle btn-outline"
           >
@@ -43,7 +43,7 @@
           </div>
           <div
             v-if="loading != 'down'"
-            @click="down()"
+            @click="openDialogSignin(down)"
             :class="classDown"
             class="btn-sm lg:btn-md btn btn-circle btn-outline"
           >
@@ -125,10 +125,14 @@ import { imageStore } from "~~/stores/image.store";
 import { authStore } from "~~/stores/auth.store";
 import { voteStore } from "~~/stores/vote.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
+import { dialogStore } from "../../stores/dialog.store";
 const useImage = imageStore();
 const useAuth = authStore();
 const useVote = voteStore();
 const usePost = postStore();
+const useRoute = routeStore();
+const useDialog = dialogStore();
 const props = defineProps({
   data: Object,
   change: Object,
@@ -151,15 +155,17 @@ const valVote = computed(() => {
 });
 
 const classUp = computed(() => {
-  if (props.data.author) {
-    if (props.data.author[0]?._id == useAuth.user.id) {
-      return "btn-disabled";
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
     }
-  }
-  if (props.data.vote_user) {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == 1) {
-        return "btn-primary";
+    if (props.data.vote_user) {
+      if (props.data.vote_user[0]?.author == useAuth.user.id) {
+        if (props.data.vote_user[0].val == 1) {
+          return "btn-primary";
+        }
       }
     }
   }
@@ -167,15 +173,17 @@ const classUp = computed(() => {
 });
 
 const classDown = computed(() => {
-  if (props.data.author) {
-    if (props.data.author[0]?._id == useAuth.user.id) {
-      return "btn-disabled";
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
     }
-  }
-  if (props.data.vote_user) {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == -1) {
-        return "btn-primary";
+    if (props.data.vote_user) {
+      if (props.data.vote_user[0]?.author == useAuth.user.id) {
+        if (props.data.vote_user[0].val == -1) {
+          return "btn-primary";
+        }
       }
     }
   }
@@ -183,9 +191,11 @@ const classDown = computed(() => {
 });
 
 const classSave = computed(() => {
-  if (props.data.author) {
-    if (props.data.author[0]?._id == useAuth.user.id) {
-      return "btn-disabled";
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
     }
   }
   return "";
@@ -203,7 +213,7 @@ function test() {
   console.log("test");
 }
 
-async function up() {
+const up = async () => {
   loading.value = "up";
   try {
     if (props.data.vote_user[0]?.author == useAuth.user.id) {
@@ -255,9 +265,9 @@ async function up() {
   } finally {
     loading.value = "";
   }
-}
+};
 
-async function down() {
+const down = async () => {
   loading.value = "down";
   try {
     if (props.data.vote_user[0]?.author == useAuth.user.id) {
@@ -308,6 +318,25 @@ async function down() {
     console.log(error);
   } finally {
     loading.value = "";
+  }
+};
+
+function openDialogSignin(cb) {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để dùng chức năng",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+        useRoute.redirectedFrom = `/post/${props.data._id}`;
+      }
+    );
+  } else {
+    cb();
   }
 }
 

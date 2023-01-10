@@ -35,7 +35,8 @@ export const cmtStore = defineStore("cmtStore", {
         },
 
         async getBy(type, id) {
-            this.list_cmt = await cmtService.getBy(type, id, useAuth.user.id)
+            const user = useAuth.user ? useAuth.user.id : '';
+            this.list_cmt = await cmtService.getBy(type, id, user)
             this.list_cmt.forEach((e, i) => {
                 this.list_cmt[i].createdAt = this.setTime(this.list_cmt[i].createdAt);
             });

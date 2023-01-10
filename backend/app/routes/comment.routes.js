@@ -20,6 +20,9 @@ module.exports = (app) => {
         .put(ctl.update)
         .delete(ctl.delete)
     
+    router.route('/:type/:id')
+        .get(ctl.getByGuest)
+    
     router.route('/:type/:id/:user')
         .get(ctl.getBy)
     

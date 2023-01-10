@@ -8,7 +8,7 @@
           <div class="flex flex-col mr-2 space-y-1">
             <div
               v-if="loadingVote != 'up'"
-              @click="up()"
+              @click="openDialogSignin(up)"
               :class="classUp"
               class="btn-sm btn-circle btn btn-outline"
             >
@@ -21,7 +21,7 @@
             <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
             <div
               v-if="loadingVote != 'down'"
-              @click="down()"
+              @click="openDialogSignin(down)"
               :class="classDown"
               class="btn-sm btn-circle btn btn-outline"
             >
@@ -81,14 +81,14 @@
     <div v-if="data.child.length > 0" class="w-4/5 mx-auto">
       <div
         @click="showChildCmt()"
-        v-if="!childCmt"
+        v-show="!childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
         hiện {{ data.child[0].count }} bình luận con
       </div>
       <div
         @click="childCmt = !childCmt"
-        v-else
+        v-show="childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
         ẩn {{ data.child[0].count }} bình luận con
@@ -98,7 +98,7 @@
     <transition name="bounce">
       <div v-if="inputRep">
         <CommentsVInputCmt
-          @send="rep()"
+          @send="openDialogSignin(rep)"
           :loading="loading"
           :data="dataInput"
           :reset="resetInput"
@@ -126,12 +126,15 @@ import { cmtStore } from "~~/stores/cmt.store";
 import cmtService from "~~/services/cmt.service";
 import { authStore } from "~~/stores/auth.store";
 import { voteStore } from "~~/stores/vote.store";
+import { dialogStore } from "../../stores/dialog.store";
+import { routeStore } from "~~/stores/route.store";
 const usePost = postStore();
 const useUser = userStore();
 const useCmt = cmtStore();
 const useAuth = authStore();
 const useVote = voteStore();
-
+const useDialog = dialogStore();
+const useRoute = routeStore();
 const props = defineProps({
   data: Object,
 });
@@ -141,7 +144,7 @@ const dataInput = ref({
   content: {},
   tagname: [],
 });
-const list_child = ref();
+const list_child = ref([]);
 
 const loading = ref(false);
 const inputRep = ref(false);
@@ -164,15 +167,17 @@ const valVote = computed(() => {
 });
 
 const classUp = computed(() => {
-  if (props.data.author) {
-    if (props.data.author[0]?._id == useAuth.user.id) {
-      return "btn-disabled";
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
     }
-  }
-  if (props.data.vote_user) {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == 1) {
-        return "btn-primary";
+    if (props.data.vote_user) {
+      if (props.data.vote_user[0]?.author == useAuth.user.id) {
+        if (props.data.vote_user[0].val == 1) {
+          return "btn-primary";
+        }
       }
     }
   }
@@ -180,22 +185,24 @@ const classUp = computed(() => {
 });
 
 const classDown = computed(() => {
-  if (props.data.author) {
-    if (props.data.author[0]?._id == useAuth.user.id) {
-      return "btn-disabled";
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
     }
-  }
-  if (props.data.vote_user) {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == -1) {
-        return "btn-primary";
+    if (props.data.vote_user) {
+      if (props.data.vote_user[0]?.author == useAuth.user.id) {
+        if (props.data.vote_user[0].val == -1) {
+          return "btn-primary";
+        }
       }
     }
   }
   return "";
 });
 
-async function up() {
+const up = async () => {
   loading.value = "up";
   try {
     if (props.data.vote_user[0]?.author == useAuth.user.id) {
@@ -247,9 +254,9 @@ async function up() {
   } finally {
     loading.value = "";
   }
-}
+};
 
-async function down() {
+const down = async () => {
   loading.value = "down";
   try {
     if (props.data.vote_user[0]?.author == useAuth.user.id) {
@@ -311,7 +318,7 @@ async function down() {
   } finally {
     loading.value = "";
   }
-}
+};
 
 function openInputRep() {
   inputRep.value = !inputRep.value;
@@ -319,10 +326,12 @@ function openInputRep() {
 
 function showChildCmt() {
   childCmt.value = !childCmt.value;
-  getBy();
+  if (list_child.value.length == 0) {
+    getBy();
+  }
 }
 
-async function rep() {
+const rep = async () => {
   loading.value = true;
   let list = [];
   dataInput.value.tagname.forEach((e) => {
@@ -356,13 +365,33 @@ async function rep() {
   } finally {
     loading.value = false;
   }
-}
+};
 
 async function getBy() {
-  list_child.value = await cmtService.getBy("child", props.data._id, useAuth.user.id);
+  const user = useAuth.user ? useAuth.user.id : "";
+  list_child.value = await cmtService.getBy("child", props.data._id, user);
   list_child.value.forEach((e, i) => {
     list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
   });
+}
+
+function openDialogSignin(cb) {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để dùng chức năng",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+        useRoute.redirectedFrom = `/post/${usePost.post._id}`;
+      }
+    );
+  } else {
+    cb();
+  }
 }
 </script>
 

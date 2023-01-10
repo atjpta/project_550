@@ -2,7 +2,7 @@
   <div class="p-5 bg-base-200 rounded-2xl">
     <PostVPost :data="usePost.post" />
     <CommentsVInputCmt
-      @send="send"
+      @send="openDialogSignin(send)"
       :loading="loading"
       :data="dataInput"
       :reset="resetInput"
@@ -19,11 +19,17 @@
 import { postStore } from "~~/stores/post.store";
 import { userStore } from "~~/stores/user.store";
 import { cmtStore } from "~~/stores/cmt.store";
+import { routeStore } from "~~/stores/route.store";
+import { dialogStore } from "../../stores/dialog.store";
+import { authStore } from "~~/stores/auth.store";
 
 const route = useRoute();
 const usePost = postStore();
 const useUser = userStore();
 const useCmt = cmtStore();
+const useRouteS = routeStore();
+const useDialog = dialogStore();
+const useAuth = authStore();
 const resetInput = ref(0);
 const dataInput = ref({
   content: {},
@@ -32,7 +38,7 @@ const dataInput = ref({
 
 const loading = ref(false);
 
-async function send() {
+const send = async () => {
   loading.value = true;
   let list = [];
   dataInput.value.tagname.forEach((e) => {
@@ -63,6 +69,25 @@ async function send() {
     console.log(error);
   } finally {
     loading.value = false;
+  }
+};
+
+function openDialogSignin(cb) {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để dùng chức năng",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+        useRouteS.redirectedFrom = `/post/${route.params.id}`;
+      }
+    );
+  } else {
+    cb();
   }
 }
 

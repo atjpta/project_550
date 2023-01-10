@@ -53,7 +53,11 @@ export default {
     },
 
     findOne: async (id, user) => {
-        const { data: data, error } = await useFetch(url + `/${id}/${user}`, {
+        let apiurl = url + `/${id}`
+        if (!!user) {
+            apiurl = url + `/${id}/${user}`
+        }
+        const { data: data, error } = await useFetch(apiurl, {
             headers: {
                 authorization: authStore().getToken
             },
@@ -67,6 +71,8 @@ export default {
         // useAlert.setSuccess("test thành công");
         return data.value
     },
+
+    
     create: async (dataO) => {
         const { data: data, error } = await useFetch(url + '', {
             headers: {
