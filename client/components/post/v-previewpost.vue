@@ -10,14 +10,12 @@
           <div class="flex">
             <div class="avatar">
               <div class="w-12 h-12 rounded-full">
-                <img :src="data.author[0]?.avatar_url" />
+                <img :src="data.author?.avatar_url" />
               </div>
             </div>
             <div class="text-2xl mx-3">
-              {{ data.author[0]?.name }}
-              <div class="text-sm italic">
-                <i>{{ data.createdAt || "vừa xong" }}</i>
-              </div>
+              {{ data.author?.name }}
+              <div class="text-sm italic">vừa xong</div>
             </div>
           </div>
         </nuxtLink>
@@ -95,12 +93,12 @@
       <!-- phần series -->
       <div v-if="Object.keys(data.series).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">series</div>
-        <div class="btn btn-ghost justify-start">{{ data.series[0]?.name }}</div>
+        <div class="btn btn-ghost justify-start">{{ data.series.name }}</div>
       </div>
       <!-- phần team -->
       <div v-if="Object.keys(data.team).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">nhóm</div>
-        <div class="btn btn-ghost justify-start">{{ data.team[0]?.name }}</div>
+        <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
       </div>
     </div>
 
@@ -141,64 +139,19 @@ const props = defineProps({
 const loading = ref("");
 
 const valVote = computed(() => {
-  if (props.data.vote) {
-    let val = props.data.vote[0]?.val;
-    if (val != undefined) {
-      if (val > 0) {
-        return "+" + val;
-      } else if (val == 0) {
-        return 0;
-      } else return val;
-    }
-  }
   return 0;
 });
 
 const classUp = computed(() => {
-  if (useAuth.user) {
-    if (props.data.author) {
-      if (props.data.author[0]?._id == useAuth.user.id) {
-        return "btn-disabled";
-      }
-    }
-    if (props.data.vote_user) {
-      if (props.data.vote_user[0]?.author == useAuth.user.id) {
-        if (props.data.vote_user[0].val == 1) {
-          return "btn-primary";
-        }
-      }
-    }
-  }
-  return "";
+  return "btn-disabled";
 });
 
 const classDown = computed(() => {
-  if (useAuth.user) {
-    if (props.data.author) {
-      if (props.data.author[0]?._id == useAuth.user.id) {
-        return "btn-disabled";
-      }
-    }
-    if (props.data.vote_user) {
-      if (props.data.vote_user[0]?.author == useAuth.user.id) {
-        if (props.data.vote_user[0].val == -1) {
-          return "btn-primary";
-        }
-      }
-    }
-  }
-  return "";
+  return "btn-disabled";
 });
 
 const classSave = computed(() => {
-  if (useAuth.user) {
-    if (props.data.author) {
-      if (props.data.author[0]?._id == useAuth.user.id) {
-        return "btn-disabled";
-      }
-    }
-  }
-  return "";
+  return "btn-disabled";
 });
 
 let mark = 0;
@@ -211,133 +164,6 @@ const setContent = () => {
 
 function test() {
   console.log("test");
-}
-
-const up = async () => {
-  loading.value = "up";
-  try {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == 1) {
-        await useVote.update(
-          {
-            val: parseInt(0),
-          },
-          props.data.vote_user[0]._id
-        );
-        props.data.vote_user[0].val -= 1;
-        props.data.vote[0].val -= 1;
-      } else {
-        await useVote.update(
-          {
-            val: parseInt(1),
-          },
-          props.data.vote_user[0]._id
-        );
-        if (props.data.vote_user[0].val == 0) {
-          props.data.vote[0].val += 1;
-        } else {
-          props.data.vote[0].val += 2;
-        }
-        props.data.vote_user[0].val = 1;
-      }
-    } else {
-      let id = await useVote.create({
-        author: useAuth.user.id,
-        val: parseInt(1),
-        post: props.data._id,
-      });
-      if (props.data.vote.length > 0) {
-        props.data.vote_user[0].val += 1;
-        props.data.vote[0].val += 1;
-      } else {
-        await useVote.findOne(id);
-        props.data.vote_user = [];
-        props.data.vote_user.push(useVote.vote);
-        props.data.vote = [];
-        props.data.vote.push({
-          val: 1,
-          _id: props.data._id,
-        });
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  } finally {
-    loading.value = "";
-  }
-};
-
-const down = async () => {
-  loading.value = "down";
-  try {
-    if (props.data.vote_user[0]?.author == useAuth.user.id) {
-      if (props.data.vote_user[0].val == -1) {
-        await useVote.update(
-          {
-            val: parseInt(0),
-          },
-          props.data.vote_user[0]._id
-        );
-        props.data.vote_user[0].val += 1;
-        props.data.vote[0].val += 1;
-      } else {
-        await useVote.update(
-          {
-            val: parseInt(-1),
-          },
-          props.data.vote_user[0]._id
-        );
-        if (props.data.vote_user[0].val == 0) {
-          props.data.vote[0].val -= 1;
-        } else {
-          props.data.vote[0].val -= 2;
-        }
-        props.data.vote_user[0].val = -1;
-      }
-    } else {
-      let id = await useVote.create({
-        author: useAuth.user.id,
-        val: parseInt(-1),
-        post: props.data._id,
-      });
-      if (props.data.vote.length > 0) {
-        props.data.vote_user[0].val -= 1;
-        props.data.vote[0].val -= 1;
-      } else {
-        await useVote.findOne(id);
-        props.data.vote_user = [];
-        props.data.vote_user.push(useVote.vote);
-        props.data.vote = [];
-        props.data.vote.push({
-          val: -1,
-          _id: props.data._id,
-        });
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  } finally {
-    loading.value = "";
-  }
-};
-
-function openDialogSignin(cb) {
-  if (!useAuth.isUserLoggedIn) {
-    useDialog.showDialog(
-      {
-        title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
-      },
-      () => {
-        navigateTo("/auth/signin");
-        useRoute.redirectedFrom = `/post/${props.data._id}`;
-      }
-    );
-  } else {
-    cb();
-  }
 }
 
 watch(props, (newContent) => {

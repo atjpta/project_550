@@ -16,17 +16,24 @@ let post = usePost.post_edit;
 const loading = ref(false);
 function formatData(listtag) {
   const data = {
-    id: post._id,
+    id: post.id,
     content: post.content,
     series: post.series.id,
     status: [post.status.id],
     title: post.title,
-    team: post.team._id,
+    team: post.team.id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {
     const array = Array.from(post.tag);
     const tag = listtag;
+    array.forEach((e) => {
+      tag.push(e.id);
+    });
+    data.tag = tag;
+  } else {
+    const array = Array.from(post.tag);
+    const tag = [];
     array.forEach((e) => {
       tag.push(e.id);
     });

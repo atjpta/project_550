@@ -35,20 +35,26 @@
                   <OtherVIcon icon="fa-solid fa-x" />
                 </div>
                 <div v-for="i in dataMenu" :key="i.title">
-                  <div class="text-xl font-medium m-5">
-                    <OtherVIcon :icon="i.icon" />
-                    {{ i.title }}
-                    <ul class="menu">
-                      <div v-for="j in i.data" :key="j.name">
-                        <li class="hover-bordered text-base">
-                          <nuxt-link @click="closeMenu()" :to="j.url" class="rounded-2xl">
-                            <OtherVIcon :icon="j.icon" />
-                            {{ j.name }}
-                          </nuxt-link>
-                        </li>
-                      </div>
-                    </ul>
-                    <div class="divider"></div>
+                  <div class="collapse collapse-plus">
+                    <input type="checkbox" :checked="i == dataMenu[0] ? true : false" />
+                    <div class="collapse-title text-xl font-medium">
+                      <OtherVIcon :icon="i.icon" />
+                      {{ i.title }}
+                    </div>
+                    <div class="collapse-content">
+                      <ul class="menu">
+                        <div v-for="j in i.data" :key="j.name">
+                          <li class="hover-bordered text-base">
+                            <nuxt-link :to="j.url" class="rounded-2xl">
+                              <OtherVIcon :icon="j.icon" />
+                              {{ j.name }}
+                            </nuxt-link>
+                          </li>
+                        </div>
+                      </ul>
+
+                      <div class="divider"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -61,23 +67,29 @@
           <!-- cho máy tính -->
           <div class="lg:flex hidden basis-1/6">
             <!-- Sidebar content here -->
-            <div class="w-60"></div>
-            <div class="rounded-2xl bg-base-300/50 glass h-fit w-60 fixed shadow-md">
+            <!-- <div class="w-60"></div> -->
+            <div class="rounded-2xl bg-base-300/50 glass h-fit w-60 sticky shadow-md">
               <div v-for="i in dataMenu" :key="i.title">
-                <div class="text-xl font-medium m-5">
-                  <OtherVIcon :icon="i.icon" />
-                  {{ i.title }}
-                  <ul class="menu">
-                    <div v-for="j in i.data" :key="j.name">
-                      <li class="hover-bordered text-base">
-                        <nuxt-link :to="j.url" class="rounded-2xl">
-                          <OtherVIcon :icon="j.icon" />
-                          {{ j.name }}
-                        </nuxt-link>
-                      </li>
-                    </div>
-                  </ul>
-                  <div class="divider"></div>
+                <div class="collapse collapse-plus">
+                  <input type="checkbox" :checked="i == dataMenu[0] ? true : false" />
+                  <div class="collapse-title text-xl font-medium">
+                    <OtherVIcon :icon="i.icon" />
+                    {{ i.title }}
+                  </div>
+                  <div class="collapse-content">
+                    <ul class="menu">
+                      <div v-for="j in i.data" :key="j.name">
+                        <li class="hover-bordered text-base">
+                          <nuxt-link :to="j.url" class="rounded-2xl">
+                            <OtherVIcon :icon="j.icon" />
+                            {{ j.name }}
+                          </nuxt-link>
+                        </li>
+                      </div>
+                    </ul>
+
+                    <div class="divider"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,14 +115,34 @@ const dataMenu = ref([
     icon: "fa-solid fa-house",
     data: [
       {
-        name: "bài viết",
+        name: "Bài viết",
         url: "/post",
         icon: "fa-solid fa-file-lines",
       },
       {
-        name: "câu hỏi",
+        name: "Series",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-layer-group",
+      },
+      {
+        name: "Câu hỏi",
         url: "/question",
         icon: "fa-solid fa-file-circle-question",
+      },
+      {
+        name: "Topic",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-layer-group",
+      },
+      {
+        name: "Người dùng",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-user",
+      },
+      {
+        name: "Nhóm",
+        url: "/team",
+        icon: "fa-solid fa-users",
       },
       {
         name: "tag",
@@ -120,7 +152,7 @@ const dataMenu = ref([
     ],
   },
   {
-    title: "Nhóm",
+    title: "Nhóm của bạn",
     icon: "fa-solid fa-users",
 
     data: [
@@ -133,6 +165,11 @@ const dataMenu = ref([
         name: "nhóm 2",
         url: "/test/contentadmin",
         icon: "fa-solid fa-file-circle-question",
+      },
+      {
+        name: "Tạo nhóm mới",
+        url: "/test/contentadmin",
+        icon: "fa-solid fa-circle-plus",
       },
     ],
   },

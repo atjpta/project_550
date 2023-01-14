@@ -79,6 +79,12 @@ export const postStore = defineStore("postStore", {
             this.post.createdAt = this.setTime(this.post.createdAt)
             this.check()
         },
+
+        async findOneEdit(id) {
+            this.post = await postService.findOneEdit(id);
+            this.post.createdAt = this.setTime(this.post.createdAt)
+            this.check()
+        },
         async findAll() {
             this.list = await postService.findAll();
             this.list.forEach((e, i) => {

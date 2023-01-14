@@ -72,6 +72,24 @@ export default {
         return data.value
     },
 
+
+    findOneEdit: async (id) => {
+        let apiurl = url + `/edit/${id}`
+        const { data: data, error } = await useFetch(apiurl, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
+
     
     create: async (dataO) => {
         const { data: data, error } = await useFetch(url + '', {

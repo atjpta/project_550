@@ -340,11 +340,10 @@ const rep = async () => {
   const data = {
     cmt_parent: props.data._id,
     author: useUser.user.id,
-    post: usePost.post.id,
+    post: usePost.post._id,
     content: dataInput.value.content,
     tag_name: list,
   };
-
   try {
     if (
       data.content.ops.length > 1 ||
@@ -369,10 +368,15 @@ const rep = async () => {
 
 async function getBy() {
   const user = useAuth.user ? useAuth.user.id : "";
-  list_child.value = await cmtService.getBy("child", props.data._id, user);
-  list_child.value.forEach((e, i) => {
-    list_child.value[i].createdAt = useCmt.setTime(list_child.value[i].createdAt);
+  const list = await cmtService.getBy("child", props.data._id, user);
+  list.forEach((e, i) => {
+    list[i].createdAt = useCmt.setTime(list[i].createdAt);
   });
+  if (list_child.value.length == 0) {
+    list_child.value = list;
+  } else {
+    list_child.value.unshift(list[0]);
+  }
 }
 
 function openDialogSignin(cb) {

@@ -80,9 +80,8 @@
               </div>
             </div>
           </div>
-
           <select
-            v-model="usePost.post_edit.status"
+            v-model="selectStatus"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="i" v-for="i in list_status" :key="i">
@@ -110,7 +109,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div v-show="preview == true">
-        <PostVPost :data="usePost.post_edit" />
+        <PostVPreviewpost :data="usePost.post_edit" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -192,12 +191,15 @@ const useTeam = teamStore();
 const useSeries = seriesStore();
 const usePost = postStore();
 const route = useRoute();
+const selectStatus = ref();
 const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (e.name == "public") {
-      usePost.post_edit.status = e;
-    }
-  });
+  if (!selectStatus.value) {
+    useStatus.getPost.forEach((e) => {
+      if (e.name == "public") {
+        selectStatus.value = e;
+      }
+    });
+  }
   return useStatus.getPost;
 });
 
@@ -232,6 +234,7 @@ const emit = defineEmits(["save"]);
 
 function getdata() {
   usePost.post_edit.author = useUser.user;
+  usePost.post_edit.status = selectStatus.value;
   usePost.post_edit.content = quill.value.getContents();
 }
 
@@ -242,7 +245,6 @@ function save() {
 
 function showPreview() {
   getdata();
-  console.log(usePost.post_edit);
   preview.value = true;
 }
 
@@ -252,8 +254,15 @@ const setContent = () => {
 
 async function getApi() {
   if (route.params.id) {
-    await usePost.findOne(route.params.id);
+    await usePost.findOneEdit(route.params.id);
     usePost.post_edit = usePost.post;
+    if (usePost.post_edit.status) {
+      selectStatus.value = {
+        id: usePost.post_edit.status[0]._id,
+        name: usePost.post_edit.status[0].name,
+      };
+    }
+
     setContent();
   } else {
     usePost.resetPostEdit();

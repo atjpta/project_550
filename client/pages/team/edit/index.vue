@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PostVEdit @save="save" :loading="loading" />
+    <TeamVEdit @save="save" :loading="loading" />
   </div>
 </template>
 
@@ -22,19 +22,12 @@ function formatData(listtag) {
     series: post.series.id,
     status: [post.status.id],
     title: post.title,
-    team: post.team.id,
+    team: post.team._id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {
     const array = Array.from(post.tag);
     const tag = listtag;
-    array.forEach((e) => {
-      tag.push(e.id);
-    });
-    data.tag = tag;
-  } else {
-    const array = Array.from(post.tag);
-    const tag = [];
     array.forEach((e) => {
       tag.push(e.id);
     });

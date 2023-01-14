@@ -18,6 +18,9 @@ module.exports = (app) => {
     router.route('/maxlength')
         .get(ctl.getLength)
     
+    router.route('/edit/:id/')
+        .get(ctl.findOneEdit)
+    
     router.route('/:id/:user')
         .get(ctl.findOne)
     
@@ -25,6 +28,7 @@ module.exports = (app) => {
         .get(ctl.findOneGuest)
         .put(ctl.update)
         .delete(ctl.delete)
+    
     
     
 
