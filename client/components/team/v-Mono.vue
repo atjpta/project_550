@@ -4,12 +4,8 @@
       <div class="bg-base-200 rounded-2xl my-5 p-5">
         <div class="flex">
           <!-- ảnh team -->
-          <div class="m-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img
-              class="rounded-2xl w-32 h-32"
-              src="@/assets/images/ling-xiang-9.jpg"
-              alt=""
-            />
+          <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
+            <img class="rounded-2xl w-32 h-32" :src="data.image_cover_url" alt="" />
           </div>
           <div class="w-full">
             <div class="flex justify-between">
@@ -19,29 +15,14 @@
                   to="/team/1"
                 >
                   <!-- tên team -->
-                  <div class="text-2xl">
-                    {{ data.author[0].name }}
+                  <div class="text-2xl font-bold uppercase">
+                    {{ data.name }}
                   </div>
                 </nuxtLink>
               </div>
-              <!-- edit cho tác giả -->
-              <div v-if="isAuthor">
-                <div class="flex">
-                  <nuxtLink :to="`/post/edit/${data._id}`">
-                    <div class="btn btn-outline btn-primary">
-                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </nuxtLink>
-                  <div @click="openDialogDelete()" class="btn btn-outline btn-error">
-                    <OtherVIcon icon="fa-solid fa-trash-can" />
-                  </div>
-                </div>
-              </div>
+
               <!-- phần tùy chọn cho người đọc -->
-              <div
-                v-if="!isAuthor && useAuth.isUserLoggedIn"
-                class="dropdown dropdown-end z-10"
-              >
+              <div v-if="useAuth.isUserLoggedIn" class="dropdown dropdown-end z-10">
                 <label tabindex="0" class="btn btn-outline btn-primary">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
@@ -53,7 +34,7 @@
                     <a>
                       <div @click="openDialogReport()">
                         <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo bài viết
+                        báo cáo Nhóm
                       </div>
                     </a>
                   </li>
@@ -69,7 +50,7 @@
               </div>
             </div>
             <!-- ảnh bìa và tiêu đề -->
-            <div class="text-xl">{{ data.title }}</div>
+            <div class="text-xl">{{ data.introduce }}</div>
             <!-- tag -->
             <div class="mt-4">
               <div
@@ -84,13 +65,25 @@
         </div>
 
         <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2 text-2xl">
+        <div class="flex justify-around mt-2">
           <div>
             <OtherVIcon icon="fa-solid fa-star" />
             0
           </div>
           <div>
             <OtherVIcon icon="fa-solid fa-file-lines" />
+            0
+          </div>
+          <div>
+            <OtherVIcon icon="fa-solid fa-layer-group" />
+            0
+          </div>
+          <div>
+            <OtherVIcon icon="fa-solid fa-file-circle-question" />
+            0
+          </div>
+          <div>
+            <OtherVIcon icon="fa-solid fa-layer-group" />
             0
           </div>
           <div>
@@ -116,15 +109,9 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
 
-const isAuthor = computed(() => {
-  if (useAuth.user && props.data.author) {
-    return useAuth.user.id == props.data.author[0]._id;
-  }
-});
-
 const valVote = computed(() => {
   if (props.data.vote) {
-    let val = props.data.vote[0]?.val;
+    let val = props.data.vote?.val;
     if (val != undefined) {
       if (val > 0) {
         return "+" + val;

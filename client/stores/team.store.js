@@ -6,6 +6,9 @@ export const teamStore = defineStore("teamStore", {
         return {
             List_team: [],
             List_team_ByUser: [],
+            team_edit: {
+                tag: new Set(),
+            },
 
         };
     },
@@ -22,6 +25,19 @@ export const teamStore = defineStore("teamStore", {
             list.forEach(e => {
                 this.List_team_ByUser.push(e.team)
             });
-        }
+        },
+
+        async create(data) {
+            console.log(data);
+            const id = await teamService.create(data);
+            return id;
+        },
+
+        resetTeamEdit() {
+            this.post_edit = {
+                
+            }
+            this.post_edit.tag = new Set()
+        },
     }
 });

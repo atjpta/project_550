@@ -88,7 +88,7 @@
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
-          <div class="flex justify-around mt-2 text-2xl">
+          <div class="flex justify-around mt-2">
             <div>
               <OtherVIcon icon="fa-solid fa-caret-down" />
               {{ valVote }}

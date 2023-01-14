@@ -15,7 +15,7 @@
       </button>
     </div>
     <div>
-      <div v-for="i in usePost.list" :key="i.id">
+      <div v-for="i in useTeam.List_team" :key="i.id">
         <TeamVMono :data="i" />
       </div>
     </div>
@@ -24,11 +24,11 @@
 
 <script setup>
 import { authStore } from "~~/stores/auth.store";
-import { postStore } from "~~/stores/post.store";
+import { teamStore } from "~~/stores/team.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 
-const usePost = postStore();
+const useTeam = teamStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRoute = routeStore();
@@ -51,7 +51,7 @@ function openDialogSignin() {
   }
 }
 onMounted(() => {
-  usePost.findAll();
+  useTeam.findAll();
 });
 </script>
 

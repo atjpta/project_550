@@ -7,7 +7,7 @@
         <div>
           <div class="text-xl font-semibold mt-5">Tên nhóm</div>
           <input
-            v-model="usePost.post_edit.title"
+            v-model="useTeam.team_edit.name"
             placeholder="nhập tiêu đề"
             type="text"
             class="p-1 bg-inherit border-0 border-b-2 border-primary w-full"
@@ -18,7 +18,7 @@
         <div class="text-xl font-semibold mt-5">
           Biểu tượng nhóm
           <div>
-            <ImageVUploadsimple :data="usePost.post_edit.image_cover_url" />
+            <ImageVUploadsimple :data="useTeam.team_edit.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
@@ -31,7 +31,7 @@
               </div>
             </div>
           </div>
-          <TagVTag :data="usePost.post_edit.tag" />
+          <TagVTag :data="useTeam.team_edit?.tag" />
         </div>
         <!-- chọn trạng thái -->
         <div>
@@ -45,7 +45,7 @@
           </div>
 
           <select
-            v-model="usePost.post_edit.status"
+            v-model="useTeam.team_edit.status"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="i" v-for="i in list_status" :key="i">
@@ -58,20 +58,10 @@
         <div class="mt-5 mb-2">
           <div class="text-xl font-semibold">Lời giới thiệu</div>
           <textarea
-            v-model="usePost.post_edit.title"
+            v-model="useTeam.team_edit.introduce"
             placeholder="nhập nội dung"
             type="text"
             class="p-1 bg-inherit border-0 border-b-2 border-primary w-full h-20"
-          />
-        </div>
-
-        <div class="-z-10">
-          <QuillEditor
-            :modules="modules"
-            placeholder="nhập nội dung"
-            ref="quill"
-            theme="snow"
-            toolbar="full"
           />
         </div>
       </div>
@@ -79,7 +69,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div v-show="preview == true">
-        <PostVPost :data="usePost.post_edit" />
+        <TeamVPreview :data="useTeam.team_edit" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -117,7 +107,6 @@ import { seriesStore } from "~~/stores/series.store";
 import { authStore } from "~~/stores/auth.store";
 import { imageStore } from "~~/stores/image.store";
 import { statusStore } from "~~/stores/status.store";
-import { postStore } from "~~/stores/post.store";
 
 const props = defineProps({
   loading: Boolean,
@@ -129,13 +118,12 @@ const useAuth = authStore();
 const useStatus = statusStore();
 const useImage = imageStore();
 const useTeam = teamStore();
-const usePost = postStore();
 const route = useRoute();
 
 const list_status = computed(() => {
   useStatus.getPost.forEach((e) => {
     if (e.name == "public") {
-      usePost.post_edit.status = e;
+      useTeam.team_edit.status = e;
     }
   });
   return useStatus.getPost;
@@ -144,8 +132,7 @@ const list_status = computed(() => {
 const emit = defineEmits(["save"]);
 
 function getdata() {
-  usePost.post_edit.author = useUser.user;
-  usePost.post_edit.content = quill.value.getContents();
+  useTeam.team_edit.author = useUser.user;
 }
 
 function save() {
@@ -155,16 +142,15 @@ function save() {
 
 function showPreview() {
   getdata();
-  console.log(usePost.post_edit);
   preview.value = true;
 }
 
 async function getApi() {
   if (route.params.id) {
-    await usePost.findOne(route.params.id);
-    usePost.post_edit = usePost.post;
+    await useTeam.teamOne(route.params.id);
+    useTeam.team_edit = useTeam.team;
   } else {
-    usePost.resetPostEdit();
+    useTeam.resetTeamEdit();
   }
 }
 

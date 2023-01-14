@@ -12,6 +12,10 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "status"
         }],
+        tag: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tag"
+        }],
         
     },
 

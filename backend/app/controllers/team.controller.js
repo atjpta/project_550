@@ -3,6 +3,7 @@ const DB = require("../models");
 const model = DB.team;
 const member = DB.member
 const role = DB.role
+
 exports.create = async (req, res, next) => {
     const modelO = new model({
         image_cover_url: req.body.image_cover_url,
@@ -28,7 +29,7 @@ exports.create = async (req, res, next) => {
                     if (error_member) {
                         return res.status(500).send({ message: error + 'không lưu được' });
                     }
-                    return res.send({ Message: 'tạo thành công' + doc.id });
+                    return res.send(doc.id);
                 });
             })
 
@@ -42,7 +43,7 @@ exports.create = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find({ _id: { $ne: req.params.id } })
+        const document = await model.find({ _id: { $ne: req.params.id } }).sort({'createdAt': -1})
         return res.json(document);
     } catch (error) {
         return next(
