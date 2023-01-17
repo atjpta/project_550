@@ -6,7 +6,7 @@
         placeholder="nhập tag"
         v-model="input_data"
         type="text"
-        class="relative p-1 bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
+        class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
       />
       <div @click="select_data()" class="btn btn-sm mb-1 btn-primary btn-outline">
         {{ btnInput.name }}

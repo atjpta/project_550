@@ -45,7 +45,11 @@
                       <ul class="menu">
                         <div v-for="j in i.data" :key="j.name">
                           <li class="hover-bordered text-base">
-                            <nuxt-link :to="j.url" class="rounded-2xl">
+                            <nuxt-link
+                              @click="closeMenu()"
+                              :to="j.url"
+                              class="rounded-2xl"
+                            >
                               <OtherVIcon :icon="j.icon" />
                               {{ j.name }}
                             </nuxt-link>
@@ -121,7 +125,7 @@ const dataMenu = ref([
       },
       {
         name: "Series",
-        url: "/test/contentadmin",
+        url: "/series",
         icon: "fa-solid fa-layer-group",
       },
       {

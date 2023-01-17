@@ -94,12 +94,12 @@
       </div>
       <!-- phần series -->
       <div v-if="Object.keys(data.series).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">series</div>
+        <div class="text-2xl font-semibold">Series</div>
         <div class="btn btn-ghost justify-start">{{ data.series[0]?.name }}</div>
       </div>
       <!-- phần team -->
       <div v-if="Object.keys(data.team).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">nhóm</div>
+        <div class="text-2xl font-semibold">Nhóm</div>
         <div class="btn btn-ghost justify-start">{{ data.team[0]?.name }}</div>
       </div>
     </div>

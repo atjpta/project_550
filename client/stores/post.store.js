@@ -31,6 +31,7 @@ export const postStore = defineStore("postStore", {
                 content: {},
             },
             list: [],
+            listNoSeries: [],
         };
     },
     getters: {
@@ -91,12 +92,31 @@ export const postStore = defineStore("postStore", {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });
         },
+
+        async findBySeries(id) {
+            this.list = await postService.findBySeries(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByNoSeries(id) {
+            this.listNoSeries = await postService.findByNoSeries(id);
+            this.listNoSeries.forEach((e, i) => {
+                this.listNoSeries[i].createdAt = this.setTime(this.listNoSeries[i].createdAt);
+            });
+        },
+
         async deleteOne(id) {
             await postService.deleteOne(id);
         },
         async update(data) {
             await postService.update(data);
-        }
+        },
+
+        async updateSeries(id, data) {
+            await postService.updateSeries(id, data);
+        },
 
     }
 });

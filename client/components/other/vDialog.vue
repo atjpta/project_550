@@ -71,7 +71,7 @@ async function triggerCb() {
   try {
     await useDialog.cb();
   } catch (error) {
-    console.log(rerror);
+    console.log(error);
     console.log("có lỗi khi triggerCb");
   } finally {
     loading.value = false;

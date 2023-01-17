@@ -2,13 +2,13 @@
   <div class="p-5 bg-base-200 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-semibold">Chỉnh sửa nhóm</div>
+        <div class="text-4xl text-center font-semibold">Chỉnh sửa series</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">Tên nhóm</div>
+          <div class="text-xl font-semibold mt-5">Tên series</div>
           <input
-            v-model="useTeam.team_edit.name"
-            placeholder="nhập tiêu đề"
+            v-model="useSeries.series_edit.name"
+            placeholder="nhập tên series"
             type="text"
             class="input bg-inherit border-0 border-b-2 border-primary w-full"
           />
@@ -16,28 +16,42 @@
 
         <!-- ảnh bìa -->
         <div class="text-xl font-semibold mt-5">
-          Biểu tượng nhóm
+          Biểu tượng series
           <div>
-            <ImageVUploadsimple :data="useTeam.team_edit.image_cover_url" />
+            <ImageVUploadsimple :data="useSeries.series_edit.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
         <div>
           <div class="text-xl font-semibold mt-5">
             Chọn tag
-            <div class="tooltip" data-tip="được chọn tối đa 5 tag">
+            <div class="tooltip" data-tip="tag sẽ được thêm theo tag bài viết">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
             </div>
           </div>
-          <TagVTag :data="useTeam.team_edit?.tag" />
+          <div class="">
+            <input
+              disabled
+              placeholder="nhập tag"
+              type="text"
+              class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
+            />
+            <div
+              disabled="disabled"
+              class="btn btn-sm mb-1 btn-primary btn-outline disabled"
+            >
+              thêm
+            </div>
+          </div>
         </div>
-        <!-- chọn trạng thái -->
+
+        <!-- chọn nhóm cho bài viết -->
         <div>
           <div class="text-xl font-semibold mt-5 mb-2">
-            Trạng thái của nhóm
-            <div class="tooltip" data-tip="riêng tư là các bài viết bị ẩn đi">
+            Chọn nhóm cho bài viết
+            <div class="tooltip" data-tip="bạn phải vào trong nhóm trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
@@ -45,7 +59,29 @@
           </div>
 
           <select
-            v-model="useTeam.team_edit.status"
+            v-model="useSeries.series_edit.team"
+            class="select-sm select select-primary w-full max-w-xs"
+          >
+            <option :value="{}">Chung</option>
+            <option :value="i" v-for="i in list_team" :key="i">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- chọn trạng thái -->
+        <div>
+          <div class="text-xl font-semibold mt-5 mb-2">
+            Trạng thái của series
+            <div class="tooltip" data-tip="riêng tư là chỉ bạn xem được">
+              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+              </div>
+            </div>
+          </div>
+
+          <select
+            v-model="useSeries.series_edit.status"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="i" v-for="i in list_status" :key="i">
@@ -58,7 +94,7 @@
         <div class="mt-5 mb-2">
           <div class="text-xl font-semibold">Lời giới thiệu</div>
           <textarea
-            v-model="useTeam.team_edit.introduce"
+            v-model="useSeries.series_edit.introduce"
             placeholder="nhập nội dung"
             type="text"
             class="p-1 bg-inherit border-0 border-b-2 border-primary w-full h-20"
@@ -69,7 +105,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div v-show="preview == true">
-        <TeamVPreview :data="useTeam.team_edit" />
+        <SeriesVPreview :data="useSeries.series_edit" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -117,22 +153,36 @@ const useUser = userStore();
 const useAuth = authStore();
 const useStatus = statusStore();
 const useImage = imageStore();
-const useTeam = teamStore();
+const useSeries = seriesStore();
 const route = useRoute();
+const useTeam = teamStore();
 
 const list_status = computed(() => {
   useStatus.getPost.forEach((e) => {
     if (e.name == "public") {
-      useTeam.team_edit.status = e;
+      useSeries.series_edit.status = e;
     }
   });
   return useStatus.getPost;
 });
 
+const list_team = computed(() => {
+  let list = [];
+  if (useTeam.List_team_ByUser) {
+    useTeam.List_team_ByUser.forEach((e) => {
+      list.push({
+        _id: e._id,
+        name: e.name,
+      });
+    });
+  }
+  return list;
+});
+
 const emit = defineEmits(["save"]);
 
 function getdata() {
-  useTeam.team_edit.author = useUser.user;
+  useSeries.series_edit.author = useUser.user;
 }
 
 function save() {
@@ -147,14 +197,15 @@ function showPreview() {
 
 async function getApi() {
   if (route.params.id) {
-    await useTeam.teamOne(route.params.id);
-    useTeam.team_edit = useTeam.team;
+    await useSeries.findOneEdit(route.params.id);
+    useSeries.series_edit = useSeries.series;
   } else {
-    useTeam.resetTeamEdit();
+    useSeries.resetSeriesEdit();
   }
 }
 
 onMounted(() => {
+  useTeam.findByUser(useAuth.user.id);
   useStatus.findAll();
   getApi();
 });

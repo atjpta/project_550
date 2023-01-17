@@ -18,10 +18,10 @@ function formatData(listtag) {
   const data = {
     id: post.id,
     content: post.content,
-    series: post.series.id,
+    series: post.series.id ?? " ",
     status: [post.status.id],
     title: post.title,
-    team: post.team.id,
+    team: post.team.id ?? " ",
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {
@@ -39,6 +39,7 @@ function formatData(listtag) {
     });
     data.tag = tag;
   }
+  console.log(data);
   return data;
 }
 

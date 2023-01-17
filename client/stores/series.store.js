@@ -6,6 +6,11 @@ export const seriesStore = defineStore("seriesStore", {
         return {
             List_series: [],
             List_series_ByUser: [],
+            series: {
+            },
+            series_edit: {
+                team: {},
+            }
         };
     },
     getters: {
@@ -18,7 +23,33 @@ export const seriesStore = defineStore("seriesStore", {
 
         async findByUser(id) {
             this.List_series_ByUser = await seriesService.findByUser(id);
-        }
+        },
+        async create(data) {
+            console.log(data);
+            const id = await seriesService.create(data);
+            return id;
+        },
+
+        resetSeriesEdit() {
+            this.series_edit = {}
+            this.series_edit.team = {};
+        },
+
+        async findOne(id) {
+            this.series = await seriesService.findOne(id);
+            this.series = this.series[0];
+        },
+
+        async findOneEdit(id) {
+            this.series = await seriesService.findOneEdit(id);
+        },
+
+        async update(data) {
+            await seriesService.update(data)
+        },
+        async deleteOne(id) {
+            this.series = await seriesService.deleteOne(id);
+        },
         
     }
 });

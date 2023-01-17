@@ -10,7 +10,7 @@
             v-model="usePost.post_edit.title"
             placeholder="nhập tiêu đề"
             type="text"
-            class="p-1 bg-inherit border-0 border-b-2 border-primary w-full"
+            class="input bg-inherit border-0 border-b-2 border-primary w-full"
           />
         </div>
 
@@ -35,7 +35,14 @@
         </div>
         <!-- phần chọn serise -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">Chọn chuỗi bài viết của bạn</div>
+          <div class="text-xl font-semibold mt-5 mb-2">
+            Chọn chuỗi bài viết
+            <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
+              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+              </div>
+            </div>
+          </div>
           <select
             v-model="usePost.post_edit.series"
             class="select-sm select select-primary w-full max-w-xs"
@@ -46,11 +53,22 @@
             </option>
           </select>
         </div>
-        <div class="btn btn-ghost btn-xs italic lowercase">tạo 1 chuỗi bài viết mới?</div>
+        <nuxt-link to="/series/edit">
+          <div class="btn btn-ghost btn-xs italic lowercase">
+            tạo 1 chuỗi bài viết mới?
+          </div>
+        </nuxt-link>
         <!-- phần chọn team -->
 
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">Chọn nhóm muốn đăng</div>
+          <div class="text-xl font-semibold mt-5 mb-2">
+            Chọn nhóm
+            <div class="tooltip" data-tip="Cần tham gia nhóm trước">
+              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+              </div>
+            </div>
+          </div>
           <select
             v-model="usePost.post_edit.team"
             v-if="!usePost.post_edit.series.team && list_team.length != 0"

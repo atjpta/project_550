@@ -28,6 +28,19 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
+                <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
+                  <div
+                    @click="openDialogRemoveSeries()"
+                    class="btn btn-outline btn-warning"
+                  >
+                    <OtherVIcon icon="fa-solid fa-xmark" />
+                  </div>
+                </div>
+                <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
+                  <div @click="openDialogAddSeries()" class="btn btn-outline btn-success">
+                    <OtherVIcon icon="fa-solid fa-plus" />
+                  </div>
+                </div>
                 <nuxtLink
                   :to="`/post/edit/${data._id}`"
                   class="tooltip"
@@ -37,7 +50,6 @@
                     <OtherVIcon icon="fa-solid fa-pen-to-square" />
                   </div>
                 </nuxtLink>
-
                 <div class="tooltip" data-tip="xóa bài viết">
                   <div @click="openDialogDelete()" class="btn btn-outline btn-error">
                     <OtherVIcon icon="fa-solid fa-trash-can" />
@@ -120,6 +132,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
+import { seriesStore } from "~~/stores/series.store";
 
 const props = defineProps({
   data: Object,
@@ -128,7 +141,8 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
-
+const useSeries = seriesStore();
+const route = useRoute();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;
@@ -164,6 +178,51 @@ function openDialogDelete() {
       }
     );
   }
+}
+function openDialogRemoveSeries() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn xóa bài viết khỏi series này?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        await usePost.updateSeries(props.data._id);
+        resetData();
+      }
+    );
+  }
+}
+
+function openDialogAddSeries() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn thêm bài viết vào series này?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        const data = {
+          series: route.params.id,
+        };
+        if (useSeries.series.team) {
+          data.team = useSeries.series.team._id;
+        }
+        await usePost.updateSeries(props.data._id, data);
+        resetData();
+      }
+    );
+  }
+}
+
+async function resetData() {
+  await usePost.findBySeries(route.params.id);
+  await usePost.findByNoSeries(useAuth.user.id);
+  await useSeries.findOne(route.params.id);
 }
 
 async function goReadPost() {
