@@ -22,6 +22,9 @@ module.exports = (app) => {
     
     router.route('/my/:id')
         .get(ctl.findByUser)
+    
+    router.route('/edit/:id')
+        .get(ctl.findOneEdit)
 
     app.use("/api/series", router);
 }

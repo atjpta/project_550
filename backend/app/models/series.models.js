@@ -9,6 +9,7 @@ const schema = mongoose.Schema(
 
         name: String,
         content: String,
+        introduce: String,
         image_cover_url: {
             type: String,
             default: 'https://api-project-550.vercel.app/api/image/meo.jpg'

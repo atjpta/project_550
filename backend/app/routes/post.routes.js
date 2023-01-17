@@ -21,6 +21,13 @@ module.exports = (app) => {
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
     
+    router.route('/series/:id/')
+        .get(ctl.findBySeries)
+        .put(ctl.updateSeries)
+    
+    router.route('/noseries/:id')
+        .get(ctl.findByNoSeries)
+    
     router.route('/:id/:user')
         .get(ctl.findOne)
     
