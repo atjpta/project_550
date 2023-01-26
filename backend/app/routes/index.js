@@ -8,6 +8,8 @@ const team = require('./team.routes')
 const series = require('./series.routes')
 const status = require('./status.routes')
 const vote = require('./vote.routes')
+const question = require('./question.routes')
+const topic = require('./topic.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -19,4 +21,6 @@ exports.Start = (app) => {
     series(app)
     status(app)
     vote(app)
+    topic(app)
+    question(app)
 }

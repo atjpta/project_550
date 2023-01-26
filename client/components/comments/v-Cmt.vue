@@ -7,30 +7,32 @@
           <!-- các btn -->
           <div class="flex flex-col mr-2 space-y-1">
             <div
-              v-if="loadingVote != 'up'"
+              v-if="loading == 'up'"
+              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            ></div>
+            <div
+              v-else-if="loadingVote != 'up'"
               @click="openDialogSignin(up)"
               :class="classUp"
               class="btn-sm btn-circle btn btn-outline"
             >
               <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
             </div>
-            <div
-              v-if="loading == 'up'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-            ></div>
+
             <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
             <div
-              v-if="loadingVote != 'down'"
+              v-if="loading == 'down'"
+              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            ></div>
+            <div
+              v-else-if="loadingVote != 'down'"
               @click="openDialogSignin(down)"
               :class="classDown"
               class="btn-sm btn-circle btn btn-outline"
             >
               <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
             </div>
-            <div
-              v-if="loading == 'down'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-            ></div>
+
             <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
               <OtherVIcon class-icon="" icon="fa-solid fa-share" />
             </div>

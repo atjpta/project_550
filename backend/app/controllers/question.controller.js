@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
-const model = DB.post;
+const model = DB.quenstion;
 const ObjectId = mongoose.Types.ObjectId;
 const status = DB.status
 
@@ -29,7 +29,7 @@ exports.updateSeries = async (req, res, next) => {
             }
             return res.send({ message: "đã theo vào Series  thành công", body: req.body });
         }
-        
+
     }
     catch (error) {
         return next(
@@ -674,7 +674,7 @@ exports.update = async (req, res, next) => {
             res.status(400).json({ Message: "thông tin không thế thay đổi" })
         )
     }
-    
+
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
@@ -690,7 +690,7 @@ exports.update = async (req, res, next) => {
             await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
             delete req.body.team;
         }
-        
+
         const document = await model.findByIdAndUpdate(condition, req.body, {
             new: true,
         });
@@ -701,7 +701,7 @@ exports.update = async (req, res, next) => {
     }
     catch (error) {
         return next(
-            res.status(500).json({ Message: ` không thể update model với id = ${req.params.id} ` + error  })
+            res.status(500).json({ Message: ` không thể update model với id = ${req.params.id} ` + error })
         )
     }
 }
