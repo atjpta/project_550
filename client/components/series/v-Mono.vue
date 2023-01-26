@@ -46,8 +46,10 @@
                 v-if="!isAuthor && useAuth.isUserLoggedIn"
                 class="dropdown dropdown-end z-10"
               >
-                <label tabindex="0" class="btn btn-outline btn-primary">
-                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                <label tabindex="0" class="flex justify-end">
+                  <div class="btn btn-outline btn-primary">
+                    <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                  </div>
                 </label>
                 <ul
                   tabindex="0"

@@ -252,7 +252,6 @@ const up = async () => {
       } else {
         await useVote.findOne(id);
         props.data.vote_user = [];
-        useVote.vote._id = useVote.vote.id;
         props.data.vote_user.push(useVote.vote);
         props.data.vote = [];
         props.data.vote.push({
@@ -307,7 +306,6 @@ const down = async () => {
       } else {
         await useVote.findOne(id);
         props.data.vote_user = [];
-        useVote.vote._id = useVote.vote.id;
         props.data.vote_user.push(useVote.vote);
         props.data.vote = [];
         props.data.vote.push({

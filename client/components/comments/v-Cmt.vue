@@ -66,8 +66,8 @@
             <!-- phần nội dung -->
             <div class="-z-30">
               <QuillEditor
-                ref="quill"
                 :content="data.content"
+                ref="quill"
                 :readOnly="true"
                 theme="bubble"
                 :toolbar="[]"
@@ -128,6 +128,7 @@ import { authStore } from "~~/stores/auth.store";
 import { voteStore } from "~~/stores/vote.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { routeStore } from "~~/stores/route.store";
+
 const usePost = postStore();
 const useUser = userStore();
 const useCmt = cmtStore();
@@ -140,6 +141,7 @@ const props = defineProps({
 });
 
 const resetInput = ref(0);
+const quill = ref();
 const dataInput = ref({
   content: {},
   tagname: [],
@@ -201,7 +203,6 @@ const classDown = computed(() => {
   }
   return "";
 });
-
 const up = async () => {
   loading.value = "up";
   try {
@@ -233,7 +234,7 @@ const up = async () => {
       let id = await useVote.create({
         author: useAuth.user.id,
         val: parseInt(1),
-        post: props.data._id,
+        comment: props.data._id,
       });
       if (props.data.vote.length > 0) {
         props.data.vote_user[0].val += 1;
@@ -241,6 +242,7 @@ const up = async () => {
       } else {
         await useVote.findOne(id);
         props.data.vote_user = [];
+        useVote.vote._id = useVote.vote.id;
         props.data.vote_user.push(useVote.vote);
         props.data.vote = [];
         props.data.vote.push({
@@ -284,33 +286,24 @@ const down = async () => {
         props.data.vote_user[0].val = -1;
       }
     } else {
-      await useVote.create({
+      let id = await useVote.create({
         author: useAuth.user.id,
-        val: parseInt(1),
+        val: parseInt(-1),
         comment: props.data._id,
       });
       if (props.data.vote.length > 0) {
         props.data.vote_user[0].val -= 1;
         props.data.vote[0].val -= 1;
       } else {
-        let id = await useVote.create({
-          author: useAuth.user.id,
-          val: parseInt(-1),
-          post: props.data._id,
+        await useVote.findOne(id);
+        props.data.vote_user = [];
+        useVote.vote._id = useVote.vote.id;
+        props.data.vote_user.push(useVote.vote);
+        props.data.vote = [];
+        props.data.vote.push({
+          val: -1,
+          _id: props.data._id,
         });
-        if (props.data.vote.length > 0) {
-          props.data.vote_user[0].val -= 1;
-          props.data.vote[0].val -= 1;
-        } else {
-          await useVote.findOne(id);
-          props.data.vote_user = [];
-          props.data.vote_user.push(useVote.vote);
-          props.data.vote = [];
-          props.data.vote.push({
-            val: -1,
-            _id: props.data._id,
-          });
-        }
       }
     }
   } catch (error) {

@@ -16,7 +16,7 @@ export const voteStore = defineStore("voteStore", {
             return await voteService.create(data);
         },
         async findOne(id) {
-            this.vote = this.vote = await voteService.findOne(id);
+            this.vote = await voteService.findOne(id);
         },
         async update(data, id) {
             await voteService.update(data, id);

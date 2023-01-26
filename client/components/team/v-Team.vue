@@ -1,0 +1,122 @@
+<template>
+  <div>
+    <transition name="bounce">
+      <div class="bg-base-200 rounded-2xl">
+        <div class="mb-3">
+          <div
+            class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
+          >
+            <div class="w-fit">
+              <nuxtLink
+                class="hover:text-sky-500 hover:scale-110 duration-500"
+                to="/user/1"
+              >
+                <!-- tác giả -->
+                <div class="flex">
+                  <div class="avatar">
+                    <div class="w-12 h-12 rounded-full">
+                      <img :src="author?.avatar_url" />
+                    </div>
+                  </div>
+                  <div class="text-2xl mx-3">
+                    {{ author?.name }}
+                  </div>
+                </div>
+              </nuxtLink>
+            </div>
+            <!-- các btn -->
+            <div class="flex justify-evenly">
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-star" />
+                <div class="text-2xl">{{ data.valScore }}</div>
+              </div>
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-file-lines" />
+                <div class="text-2xl">{{ valPost }}</div>
+              </div>
+              <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <!-- ảnh team -->
+          <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
+            <img
+              class="rounded-2xl w-32 h-32"
+              :src="useImage.previewImage || data.image_cover_url"
+              alt=""
+            />
+          </div>
+          <div class="w-full">
+            <div class="flex justify-between">
+              <div>
+                <!-- tên team -->
+                <div class="text-2xl font-bold uppercase">
+                  {{ data.name }}
+                </div>
+              </div>
+            </div>
+            <!-- giới thiệu -->
+            <div class="text-xl">{{ data.introduce }}</div>
+            <!-- tag -->
+            <div class="mt-4">
+              <div
+                v-for="i in list_tag"
+                :key="i"
+                class="btn btn-outline btn-sm mr-1 mt-1"
+              >
+                {{ "#" + i.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- phần team -->
+        <div v-if="data.team?.name" class="mt-5">
+          <div class="text-2xl font-semibold">Nhóm</div>
+          <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script setup>
+import { authStore } from "~~/stores/auth.store";
+import { dialogStore } from "~~/stores/dialog.store";
+import { imageStore } from "~~/stores/image.store";
+import { postStore } from "~~/stores/post.store";
+const useImage = imageStore();
+const props = defineProps({
+  data: Object,
+});
+
+const list_tag = computed(() => {
+  let list = new Set();
+  if (props.data.listtag) {
+    props.data.listtag.forEach((e) => {
+      if (e.length > 0) {
+        e.forEach((e2) => {
+          list.add(e2);
+        });
+      }
+    });
+  }
+  return list;
+});
+
+const author = computed(() => {
+  if (props.data.author) {
+    return props.data.author;
+  }
+  return null;
+});
+
+const valPost = computed(() => {
+  //   if (props.data.post && props.data.post.length > 0) {
+  //     return props.data.post[0].count;
+  //   }
+  return 0;
+});
+</script>

@@ -8,7 +8,7 @@
       :reset="resetInput"
     />
     <div>
-      <div v-for="i in useCmt.list_cmt" :key="i.id">
+      <div v-for="i in useCmt.list_cmt" :key="i._id">
         <CommentsVCmt :data="i" />
       </div>
     </div>
@@ -59,7 +59,7 @@ const send = async () => {
       data.tag_name.length
     ) {
       await useCmt.create(data);
-      await useCmt.getBy("post", usePost.post._id);
+      await useCmt.getBy("post", route.params.id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;

@@ -8,21 +8,29 @@
             <img class="rounded-2xl w-32 h-32" :src="data.image_cover_url" alt="" />
           </div>
           <div class="w-full">
-            <div class="flex justify-between">
+            <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
-                <nuxtLink
-                  class="hover:text-sky-500 hover:scale-110 duration-500"
-                  to="/team/1"
-                >
+                <nuxtLink class="" :to="`/team/${data.id}`">
                   <!-- tên team -->
-                  <div class="text-2xl font-bold uppercase">
+                  <div
+                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 hover:scale-110 duration-500"
+                  >
                     {{ data.name }}
                   </div>
                 </nuxtLink>
               </div>
 
               <!-- phần tùy chọn cho người đọc -->
-              <div v-if="useAuth.isUserLoggedIn" class="dropdown dropdown-end z-10">
+              <div class="dropdown dropdown-end z-10 flex justify-end">
+                <div class="tooltip" data-tip="xin vào nhóm">
+                  <div
+                    @click="openDialogJoinTeam()"
+                    class="btn btn-outline btn-secondary mr-1"
+                  >
+                    <OtherVIcon icon="fa-solid fa-right-to-bracket" />
+                  </div>
+                </div>
+
                 <label tabindex="0" class="btn btn-outline btn-primary">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
@@ -71,22 +79,6 @@
             0
           </div>
           <div>
-            <OtherVIcon icon="fa-solid fa-file-lines" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-layer-group" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-file-circle-question" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-layer-group" />
-            0
-          </div>
-          <div>
             <OtherVIcon icon="fa-solid fa-users-line" />
             0
           </div>
@@ -100,6 +92,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 
 const props = defineProps({
   data: Object,
@@ -108,7 +101,8 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
-
+const route = useRoute();
+const useRouteT = routeStore();
 const valVote = computed(() => {
   if (props.data.vote) {
     let val = props.data.vote?.val;
@@ -135,6 +129,25 @@ function openDialogDelete() {
       async () => {
         await usePost.deleteOne(props.data._id);
         await usePost.findAll();
+      }
+    );
+  }
+}
+
+function openDialogJoinTeam() {
+  if (useAuth.isUserLoggedIn) {
+    // xử lý hàm xin tham gia
+  } else {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để sử dụng chức năng",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      () => {
+        useRouteT.redirectedFrom = route.fullPath;
+        navigateTo("/auth/signin");
       }
     );
   }

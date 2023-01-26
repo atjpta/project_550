@@ -9,7 +9,7 @@ export const teamStore = defineStore("teamStore", {
             team_edit: {
                 tag: new Set(),
             },
-
+            team: {},
         };
     },
     getters: {
@@ -34,10 +34,12 @@ export const teamStore = defineStore("teamStore", {
         },
 
         resetTeamEdit() {
-            this.post_edit = {
-                
-            }
-            this.post_edit.tag = new Set()
+            this.team_edit = {}
+            this.team_edit.tag = new Set()
         },
+
+        async findOne(id) {
+            this.team = await teamService.findOne(id)
+        }
     }
 });
