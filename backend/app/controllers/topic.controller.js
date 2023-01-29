@@ -7,7 +7,6 @@ exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
         name: req.body.name,
-        content: req.body.content,
         image_cover_url: req.body.image_cover_url,
         team: req.body.team,
         introduce: req.body.introduce,
@@ -55,7 +54,7 @@ exports.findOneEdit = async (req, res, next) => {
 exports.findAll2 = async (req, res, next) => {
     try {
         const document = await model.find({ _id: { $ne: req.params.id } }).populate({
-            path: 'team author status tag',
+            path: 'team status',
             select: 'id name avatar_url'
         }).sort({ 'createdAt': -1 })
         return res.json(document);

@@ -37,7 +37,7 @@
             </div>
           </div>
           <select
-            v-model="useQuestion.question_edit.series"
+            v-model="useQuestion.question_edit.topic"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Không có</option>
@@ -62,7 +62,7 @@
           </div>
           <select
             v-model="useQuestion.question_edit.team"
-            v-if="!useQuestion.question_edit.series?.team && list_team.length != 0"
+            v-if="!useQuestion.question_edit.topic?.team && list_team.length != 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Chung</option>
@@ -70,7 +70,7 @@
           </select>
           <select
             disabled
-            v-if="useQuestion.question_edit.series?.team || list_team.length == 0"
+            v-if="useQuestion.question_edit.topic?.team || list_team.length == 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option v-if="list_team.length == 0">Chung</option>
@@ -161,7 +161,7 @@ import { statusStore } from "~~/stores/status.store";
 import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
-import { questionStore } from "~~/stores/question";
+import { questionStore } from "~~/stores/question.store";
 const url = config.url.apiimage;
 const modules = {
   name: "imageUploader",
@@ -212,28 +212,35 @@ const list_status = computed(() => {
 
 const list_topic = computed(() => {
   let list = [];
-  // useTopic.List_topic_ByUser.forEach((e) => {
-  //   if (e.id == useQuestion.question_edit.series._id) {
-  //     list.push(useQuestion.question_edit.series);
-  //   } else list.push(e);
-  // });
+  useTopic.List_topic.forEach((e) => {
+    if (e.team) {
+      useTeam.List_team_ByUser.forEach((ee) => {
+        if (e.team._id == ee._id) {
+          list.push(e);
+        }
+      });
+    } else list.push(e);
+  });
   return list;
 });
 
 const list_team = computed(() => {
   let list = [];
-  // if (useQuestion.question_edit.series.name) {
-  //   if (useQuestion.question_edit.series.team) {
-  //     list.push(useQuestion.question_edit.series.team);
-  //     useQuestion.question_edit.team = {
-  //       name: useQuestion.question_edit.series.team.name,
-  //       id: useQuestion.question_edit.series.team._id,
-  //     };
-  //   } else {
-  //     list = [];
-  //     useQuestion.question_edit.team = {};
-  //   }
-  // } else list = useTeam.List_team_ByUser;
+  if (useQuestion.question_edit.topic.name) {
+    if (useQuestion.question_edit.topic.team) {
+      list.push(useQuestion.question_edit.topic.team);
+      useQuestion.question_edit.team = {
+        name: useQuestion.question_edit.topic.team.name,
+        id: useQuestion.question_edit.topic.team._id,
+      };
+    } else {
+      list = [];
+      useQuestion.question_edit.team = {};
+    }
+  } else {
+    useQuestion.question_edit.team = {};
+    list = useTeam.List_team_ByUser;
+  }
   return list;
 });
 
@@ -277,7 +284,7 @@ async function getApi() {
 
 onMounted(() => {
   useTeam.findByUser(useAuth.user.id);
-  // useTopic.findByUser(useAuth.user.id);
+  useTopic.getEdit();
   useStatus.findAll();
   getApi();
 });

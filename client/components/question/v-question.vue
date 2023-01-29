@@ -93,9 +93,9 @@
         </div>
       </div>
       <!-- phần series -->
-      <div v-if="Object.keys(data.series).length != 0" class="mt-5">
+      <div v-if="Object.keys(data.topic).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">Series</div>
-        <div class="btn btn-ghost justify-start">{{ data.series[0]?.name }}</div>
+        <div class="btn btn-ghost justify-start">{{ data.topic[0]?.name }}</div>
       </div>
       <!-- phần team -->
       <div v-if="Object.keys(data.team).length != 0" class="mt-5">

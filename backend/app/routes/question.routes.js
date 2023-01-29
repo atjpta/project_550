@@ -22,11 +22,11 @@ module.exports = (app) => {
         .get(ctl.findOneEdit)
 
     router.route('/series/:id/')
-        .get(ctl.findBySeries)
-        .put(ctl.updateSeries)
+        .get(ctl.findByTopic)
+        .put(ctl.updateTopic)
 
     router.route('/noseries/:id')
-        .get(ctl.findByNoSeries)
+        .get(ctl.findByNoTopic)
 
     router.route('/:id/:user')
         .get(ctl.findOne)
@@ -36,11 +36,7 @@ module.exports = (app) => {
         .put(ctl.update)
         .delete(ctl.delete)
 
-
-
-
-
-    app.use("/api/quenstion", router);
+    app.use("/api/question", router);
 
 
 };

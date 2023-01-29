@@ -21,6 +21,10 @@ export const topicStore = defineStore("topicStore", {
             this.List_topic = await topicService.findAll();
         },
 
+        async getEdit() {
+            this.List_topic = await topicService.getEdit();
+        },
+
         async findByUser(id) {
             this.List_topic_ByUser = await topicService.findByUser(id);
         },

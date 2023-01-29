@@ -4,30 +4,30 @@ const model = DB.quenstion;
 const ObjectId = mongoose.Types.ObjectId;
 const status = DB.status
 
-exports.updateSeries = async (req, res, next) => {
+exports.updateTopic = async (req, res, next) => {
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
     };
     try {
         if (Object.keys(req.body).length === 0) {
-            // xóa series
-            const document = await model.findByIdAndUpdate(condition, { $unset: { series: 1, team: 1 } })
+            // xóa topic
+            const document = await model.findByIdAndUpdate(condition, { $unset: { topic: 1, team: 1 } })
 
             if (!document) {
                 return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
             }
-            return res.send({ message: "đã xóa khỏi Series thành công", body: req.body });
+            return res.send({ message: "đã xóa khỏi topic thành công", body: req.body });
         }
         else {
-            // add series
+            // add topic
             const document = await model.findByIdAndUpdate(condition, req.body, {
                 new: true
             });
             if (!document) {
                 return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
             }
-            return res.send({ message: "đã theo vào Series  thành công", body: req.body });
+            return res.send({ message: "đã theo vào topic  thành công", body: req.body });
         }
 
     }
@@ -38,14 +38,14 @@ exports.updateSeries = async (req, res, next) => {
     }
 }
 
-exports.findByNoSeries = async (req, res, next) => {
+exports.findByNoTopic = async (req, res, next) => {
     const { id } = req.params;
     try {
         const document = await model.aggregate([
             // lọc ra các phần muốn lấy
             {
                 $match: {
-                    series: null,
+                    topic: null,
                     author: ObjectId(id),
                 }
             },
@@ -129,19 +129,19 @@ exports.findByNoSeries = async (req, res, next) => {
         return res.send(document)
     } catch (error) {
         return next(
-            res.status(500).json({ Message: 'không  thể  lấy findBySeries ' + error })
+            res.status(500).json({ Message: 'không  thể  lấy findBytopic ' + error })
         )
     }
 };
 
-exports.findBySeries = async (req, res, next) => {
+exports.findByTopic = async (req, res, next) => {
     const { id } = req.params;
     try {
         const document = await model.aggregate([
             // lọc ra các phần muốn lấy
             {
                 $match: {
-                    series: ObjectId(id),
+                    topic: ObjectId(id),
                 }
             },
             {
@@ -214,7 +214,7 @@ exports.findBySeries = async (req, res, next) => {
                     'view': 1,
                     'comment': 1,
                     'vote': 1,
-                    'series': 1,
+                    'topic': 1,
                 }
             },
             {
@@ -224,7 +224,7 @@ exports.findBySeries = async (req, res, next) => {
         return res.send(document)
     } catch (error) {
         return next(
-            res.status(500).json({ Message: 'không  thể  lấy findBySeries ' + error })
+            res.status(500).json({ Message: 'không  thể  lấy findBytopic ' + error })
         )
     }
 };
@@ -236,8 +236,7 @@ exports.create = async (req, res, next) => {
         title: req.body.title,
         content: req.body.content,
         tag: req.body.tag,
-        image_cover_url: req.body.image_cover_url,
-        series: req.body.series,
+        topic: req.body.topic,
         team: req.body.team,
         status: req.body.status,
         view: parseInt(0),
@@ -268,7 +267,7 @@ exports.getLength = async (req, res, next) => {
 exports.findAll2 = async (req, res, next) => {
     try {
         const document = await model.find().populate({
-            path: 'author series team tag status view',
+            path: 'author topic team tag status view',
             select: 'name id avatar_url'
         }).sort({ 'createdAt': -1 })
         return res.json(document);
@@ -466,10 +465,10 @@ exports.findOne = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'series',
-                    localField: 'series',
+                    from: 'topics',
+                    localField: 'topic',
                     foreignField: '_id',
-                    as: 'series',
+                    as: 'topic',
                 },
             },
             {
@@ -490,9 +489,9 @@ exports.findOne = async (req, res, next) => {
                     'vote_user': 1,
                     'status': 1,
                     'team._id': 1,
-                    'series._id': 1,
+                    'topic._id': 1,
                     'team.name': 1,
-                    'series.name': 1,
+                    'topic.name': 1,
                 }
             },
             {
@@ -592,10 +591,10 @@ exports.findOneGuest = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'series',
-                    localField: 'series',
+                    from: 'topics',
+                    localField: 'topic',
                     foreignField: '_id',
-                    as: 'series',
+                    as: 'topic',
                 },
             },
             {
@@ -615,9 +614,9 @@ exports.findOneGuest = async (req, res, next) => {
                     'vote': 1,
                     'status': 1,
                     'team.id': 1,
-                    'series.id': 1,
+                    'topic.id': 1,
                     'team.name': 1,
-                    'series.name': 1,
+                    'topic.name': 1,
                 }
             },
             {
@@ -646,7 +645,7 @@ exports.findOneEdit = async (req, res, next) => {
     try {
         const document = await model.findOne(condition)
             .populate({
-                path: 'series',
+                path: 'topic',
                 select: 'name id team',
                 populate: {
                     path: 'team',
@@ -681,9 +680,9 @@ exports.update = async (req, res, next) => {
     };
 
     try {
-        if (req.body.series == ' ') {
-            await model.findByIdAndUpdate(condition, { $unset: { series: 1 } });
-            delete req.body.series;
+        if (req.body.topic == ' ') {
+            await model.findByIdAndUpdate(condition, { $unset: { topic: 1 } });
+            delete req.body.topic;
         }
 
         if (req.body.team == ' ') {

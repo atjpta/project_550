@@ -16,9 +16,15 @@ export const questionStore = defineStore("questionStore", {
         return {
             question_edit: {
                 tag: new Set(),
+                topic: {},
             },
             question: {
                 tag: new Set(),
+                author: {},
+                topic: {},
+                team: {},
+                status: {},
+                content: {},
             },
             list: [],
             listNoSeries: [],
@@ -34,10 +40,11 @@ export const questionStore = defineStore("questionStore", {
             return dayjs(time).fromNow()
         },
 
-        resetquestionEdit() {
+        resetQuestionEdit() {
             this.question_edit = {
             }
-            this.tag = new Set()
+            this.question_edit.tag = new Set()
+            this.question_edit.topic = {};
         },
 
         check() {

@@ -7,7 +7,6 @@ exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
         name: req.body.name,
-        content: req.body.content,
         image_cover_url: req.body.image_cover_url,
         team: req.body.team,
         introduce: req.body.introduce,

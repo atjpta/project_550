@@ -29,7 +29,7 @@
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
                 <nuxtLink
-                  :to="`/post/edit/${data._id}`"
+                  :to="`/question/edit/${data._id}`"
                   class="tooltip"
                   data-tip="sửa bài viết"
                 >
@@ -116,7 +116,7 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
-import { postStore } from "~~/stores/post.store";
+import { questionStore } from "~~/stores/question.store";
 
 const props = defineProps({
   data: Object,
@@ -124,7 +124,7 @@ const props = defineProps({
 
 const useDialog = dialogStore();
 const useAuth = authStore();
-const usePost = postStore();
+const useQuestion = questionStore();
 
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
@@ -156,18 +156,18 @@ function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        await useQuestion.deleteOne(props.data._id);
+        await useQuestion.findAll();
       }
     );
   }
 }
 
 async function goReadPost() {
-  await usePost.update({
+  await useQuestion.update({
     id: props.data._id,
     view: props.data.view + 1,
   });
-  navigateTo(`/post/${props.data._id}`);
+  navigateTo(`/question/${props.data._id}`);
 }
 </script>

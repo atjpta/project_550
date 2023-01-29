@@ -1,6 +1,6 @@
 <template>
   <div class="p-5 bg-base-200 rounded-2xl">
-    <PostVPost :data="usePost.post" />
+    <QuestionVQuestion :data="useQuestion.question" />
     <CommentsVInputCmt
       @send="openDialogSignin(send)"
       :loading="loading"
@@ -16,15 +16,15 @@
 </template>
 
 <script setup>
-import { postStore } from "~~/stores/post.store";
 import { userStore } from "~~/stores/user.store";
 import { cmtStore } from "~~/stores/cmt.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
+import { questionStore } from "~~/stores/question.store";
 
 const route = useRoute();
-const usePost = postStore();
+const useQuestion = questionStore();
 const useUser = userStore();
 const useCmt = cmtStore();
 const useRouteS = routeStore();
@@ -46,7 +46,7 @@ const send = async () => {
   });
   const data = {
     author: useUser.user.id,
-    post: usePost.post._id,
+    question: useQuestion.question._id,
     content: dataInput.value.content,
     tag_name: list,
   };
@@ -59,7 +59,7 @@ const send = async () => {
       data.tag_name.length
     ) {
       await useCmt.create(data);
-      await useCmt.getBy("post", usePost.post._id);
+      await useCmt.getBy("question", useQuestion.question._id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;
@@ -83,7 +83,7 @@ function openDialogSignin(cb) {
       },
       () => {
         navigateTo("/auth/signin");
-        useRouteS.redirectedFrom = `/post/${route.params.id}`;
+        useRouteS.redirectedFrom = `/question/${route.params.id}`;
       }
     );
   } else {
@@ -93,9 +93,9 @@ function openDialogSignin(cb) {
 
 async function getApi() {
   useCmt.list_cmt = [];
-  await usePost.findOne(route.params.id);
+  await useQuestion.findOne(route.params.id);
   await useUser.findAll();
-  await useCmt.getBy("post", route.params.id);
+  await useCmt.getBy("question", route.params.id);
 }
 
 onMounted(() => {

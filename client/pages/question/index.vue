@@ -24,7 +24,7 @@
 
 <script setup>
 import { authStore } from "~~/stores/auth.store";
-import { questionStore } from "~~/stores/question";
+import { questionStore } from "~~/stores/question.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 

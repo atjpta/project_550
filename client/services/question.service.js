@@ -3,7 +3,7 @@ import config from "~~/config";
 import { authStore } from "~~/stores/auth.store";
 const useAuth = authStore()
 const useAlert = alertStore()
-const url = config.url.api + '/post'
+const url = config.url.api + '/question'
 
 export default {
 

@@ -75,11 +75,6 @@
     </div>
     <!-- bài viết -->
     <div class="">
-      <img
-        class="rounded-2xl"
-        :src="useImage.previewImage || data.image_cover_url"
-        alt=""
-      />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
       <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
@@ -91,14 +86,14 @@
         </div>
       </div>
       <!-- phần topic -->
-      <div class="mt-5">
-        <!-- <div v-if="Object.keys(data?.series).length != 0" class="mt-5"> -->
+      <!-- <div class="mt-5"> -->
+      <div v-if="Object.keys(data?.topic).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">chủ đề</div>
-        <div class="btn btn-ghost justify-start">{{ data.series?.name }}</div>
+        <div class="btn btn-ghost justify-start">{{ data.topic?.name }}</div>
       </div>
       <!-- phần team -->
-      <div class="mt-5">
-        <!-- <div v-if="Object.keys(data.team).length != 0" class="mt-5"> -->
+      <!-- <div class="mt-5"> -->
+      <div v-if="Object.keys(data.team).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
         <div class="btn btn-ghost justify-start">{{ data.team?.name }}</div>
       </div>

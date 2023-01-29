@@ -6,8 +6,8 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },
-        title: String,
-        content: String,
+        name: String,
+        introduce: String,
         image_cover_url: {
             type: String,
         },

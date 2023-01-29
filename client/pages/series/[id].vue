@@ -15,7 +15,9 @@
         </div>
       </div>
       <button
-        v-if="useAuth.isUserLoggedIn && useAuth.use?.id == useSeries.series.author?.id"
+        v-if="
+          useAuth.isUserLoggedIn && useAuth.user?.id == useSeries.series.author[0]?._id
+        "
         @click="isSeries = !isSeries"
         class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
       >
