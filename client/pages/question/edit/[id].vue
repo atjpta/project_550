@@ -1,61 +1,59 @@
 <template>
   <div>
-    <PostVEdit @save="saveEdit" :loading="loading" />
+    <QuestionVEdit @save="saveEdit" :loading="loading" />
   </div>
 </template>
 
 <script setup>
 import { imageStore } from "~~/stores/image.store";
-import { postStore } from "~~/stores/post.store";
+import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
 
 const useImage = imageStore();
 const useTag = tagStore();
-const usePost = postStore();
-let post = usePost.post_edit;
+const useQuestion = questionStore();
+let question = useQuestion.question_edit;
 const loading = ref(false);
 function formatData(listtag) {
   const data = {
-    id: post.id,
-    content: post.content,
-    series: post.series.id ?? " ",
-    status: [post.status.id],
-    title: post.title,
-    team: post.team.id ?? " ",
-    image_cover_url: useImage.url ?? post.image_cover_url,
+    id: question.id,
+    content: question.content,
+    status: [question.status.id],
+    title: question.title,
+    topic: (question.topic.id || question.topic._id) ?? " ",
+    team: question.team.id ?? " ",
   };
   if (listtag) {
-    const array = Array.from(post.tag);
+    const array = Array.from(question.tag);
     const tag = listtag;
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     data.tag = tag;
   } else {
-    const array = Array.from(post.tag);
+    const array = Array.from(question.tag);
     const tag = [];
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     data.tag = tag;
   }
-  console.log(data);
   return data;
 }
 
 async function saveEdit() {
-  post = usePost.post_edit;
+  question = useQuestion.question_edit;
   loading.value = true;
   try {
-    const listtag = await useTag.createAll(post.tag);
+    const listtag = await useTag.createAll(question.tag);
     const data = formatData(listtag);
     if (useImage.url) {
       await useImage.uploadImage();
       data.image_cover_url = useImage.url;
     }
-    await usePost.update(data);
-    usePost.resetPostEdit();
-    navigateTo(`/post/${data.id}`);
+    await useQuestion.update(data);
+    useQuestion.resetQuestionEdit();
+    navigateTo(`/question/${data.id}`);
   } catch (error) {
     console.log(error);
   } finally {

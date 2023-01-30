@@ -18,28 +18,27 @@ function formatData(listtag) {
   const data = {
     id: post.id,
     content: post.content,
-    series: post.series.id ?? " ",
+    series: (post.series.id || post.series._id) ?? " ",
+    team: (post.team.id || post.team._id) ?? " ",
     status: [post.status.id],
     title: post.title,
-    team: post.team.id ?? " ",
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {
     const array = Array.from(post.tag);
     const tag = listtag;
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     data.tag = tag;
   } else {
     const array = Array.from(post.tag);
     const tag = [];
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     data.tag = tag;
   }
-  console.log(data);
   return data;
 }
 

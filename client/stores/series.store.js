@@ -18,6 +18,15 @@ export const seriesStore = defineStore("seriesStore", {
 
     },
     actions: {
+        reset() {
+            this.List_series = []
+            this.List_series_ByUser = []
+            this.series = {
+            }
+            this.series_edit = {
+                team: {},
+            }
+        },
         async findAll() {
             this.List_series = await seriesService.findAll();
         },

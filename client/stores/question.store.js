@@ -48,8 +48,8 @@ export const questionStore = defineStore("questionStore", {
         },
 
         check() {
-            if (!this.question.series) {
-                this.question.series = {}
+            if (!this.question.topic) {
+                this.question.topic = {}
             }
             if (!this.question.team) {
                 this.question.team = {}

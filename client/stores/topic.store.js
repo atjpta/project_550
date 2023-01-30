@@ -17,6 +17,15 @@ export const topicStore = defineStore("topicStore", {
 
     },
     actions: {
+        reset() {
+            this.List_topic = []
+            this.List_topic_ByUser = []
+            this.topic = {
+            }
+            this.topic_edit = {
+                team: {},
+            }
+        },
         async findAll() {
             this.List_topic = await topicService.findAll();
         },

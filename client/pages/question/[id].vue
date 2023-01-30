@@ -8,7 +8,7 @@
       :reset="resetInput"
     />
     <div>
-      <div v-for="i in useCmt.list_cmt" :key="i.id">
+      <div v-for="i in useCmt.list_cmt" :key="i">
         <CommentsVCmt :data="i" />
       </div>
     </div>
@@ -46,7 +46,7 @@ const send = async () => {
   });
   const data = {
     author: useUser.user.id,
-    question: useQuestion.question._id,
+    post: useQuestion.question._id,
     content: dataInput.value.content,
     tag_name: list,
   };
@@ -59,7 +59,7 @@ const send = async () => {
       data.tag_name.length
     ) {
       await useCmt.create(data);
-      await useCmt.getBy("question", useQuestion.question._id);
+      await useCmt.getBy("post", route.params.id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;
@@ -95,7 +95,7 @@ async function getApi() {
   useCmt.list_cmt = [];
   await useQuestion.findOne(route.params.id);
   await useUser.findAll();
-  await useCmt.getBy("question", route.params.id);
+  await useCmt.getBy("post", route.params.id);
 }
 
 onMounted(() => {

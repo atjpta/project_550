@@ -19,7 +19,8 @@ export const tagStore = defineStore("tagStore", {
             const array = Array.from(data);
             const newtag = []
             array.forEach(e => {
-                if (!e.id) {
+                const id = e.id ?? e._id
+                if (!id) {
                     newtag.push({
                         name: e.name,
                         author: authStore().user.id

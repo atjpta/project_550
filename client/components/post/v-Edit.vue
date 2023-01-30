@@ -242,7 +242,10 @@ const list_team = computed(() => {
       list = [];
       usePost.post_edit.team = {};
     }
-  } else list = useTeam.List_team_ByUser;
+  } else {
+    usePost.post_edit.team = {};
+    list = useTeam.List_team_ByUser;
+  }
   return list;
 });
 
@@ -290,6 +293,11 @@ onMounted(() => {
   useSeries.findByUser(useAuth.user.id);
   useStatus.findAll();
   getApi();
+});
+
+onUnmounted(() => {
+  useSeries.reset();
+  useTeam.reset();
 });
 </script>
 

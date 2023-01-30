@@ -158,10 +158,10 @@ import { teamStore } from "~~/stores/team.store";
 import { topicStore } from "~~/stores/topic.store";
 import { authStore } from "~~/stores/auth.store";
 import { statusStore } from "~~/stores/status.store";
+import { questionStore } from "~~/stores/question.store";
 import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
-import { questionStore } from "~~/stores/question.store";
 const url = config.url.apiimage;
 const modules = {
   name: "imageUploader",
@@ -216,11 +216,18 @@ const list_topic = computed(() => {
     if (e.team) {
       useTeam.List_team_ByUser.forEach((ee) => {
         if (e.team._id == ee._id) {
-          list.push(e);
+          if (e.id == useQuestion.question_edit.topic._id) {
+            list.push(useQuestion.question_edit.topic);
+          } else list.push(e);
         }
       });
-    } else list.push(e);
+    } else {
+      if (e.id == useQuestion.question_edit.topic._id) {
+        list.push(useQuestion.question_edit.topic);
+      } else list.push(e);
+    }
   });
+
   return list;
 });
 
@@ -267,19 +274,19 @@ const setContent = () => {
 };
 
 async function getApi() {
-  // if (route.params.id) {
-  //   await useQuestion.findOneEdit(route.params.id);
-  //   useQuestion.question_edit = useQuestion.post;
-  //   if (useQuestion.question_edit.status) {
-  //     selectStatus.value = {
-  //       id: useQuestion.question_edit.status[0]._id,
-  //       name: useQuestion.question_edit.status[0].name,
-  //     };
-  //   }
-  //   setContent();
-  // } else {
-  //   useQuestion.resetPostEdit();
-  // }
+  if (route.params.id) {
+    await useQuestion.findOneEdit(route.params.id);
+    useQuestion.question_edit = useQuestion.question;
+    if (useQuestion.question_edit.status) {
+      selectStatus.value = {
+        id: useQuestion.question_edit.status[0]._id,
+        name: useQuestion.question_edit.status[0].name,
+      };
+    }
+    setContent();
+  } else {
+    useQuestion.resetQuestionEdit();
+  }
 }
 
 onMounted(() => {
@@ -287,6 +294,11 @@ onMounted(() => {
   useTopic.getEdit();
   useStatus.findAll();
   getApi();
+});
+
+onUnmounted(() => {
+  useTopic.reset();
+  useTeam.reset();
 });
 </script>
 

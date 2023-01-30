@@ -13,9 +13,17 @@ export const teamStore = defineStore("teamStore", {
         };
     },
     getters: {
-        
+
     },
     actions: {
+        reset() {
+            this.List_team = []
+            this.List_team_ByUser = []
+            this.team_edit = {
+                tag: new Set(),
+            }
+            this.team = {}
+        },
         async findAll() {
             this.List_team = await teamService.findAll();
         },

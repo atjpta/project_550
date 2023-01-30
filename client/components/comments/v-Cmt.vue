@@ -46,11 +46,11 @@
               <div class="flex">
                 <div class="avatar">
                   <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author[0].avatar_url" />
+                    <img :src="data?.author[0]?.avatar_url" />
                   </div>
                 </div>
                 <div class="mx-3">
-                  {{ data.author[0].name }}
+                  {{ data?.author[0]?.name }}
                   <div class="text-sm italic">
                     <i>{{ data.createdAt || "vừa xong" }}</i>
                   </div>
@@ -80,20 +80,20 @@
       </div>
     </div>
     <!-- phần hiện ẩn cmt con -->
-    <div v-if="data.child.length > 0" class="w-4/5 mx-auto">
+    <div v-if="countCmt > 0" class="w-4/5 mx-auto">
       <div
         @click="showChildCmt()"
         v-show="!childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
-        hiện {{ data.child[0].count }} bình luận con
+        hiện {{ countCmt }} bình luận con
       </div>
       <div
         @click="childCmt = !childCmt"
         v-show="childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
-        ẩn {{ data.child[0].count }} bình luận con
+        ẩn {{ countCmt }} bình luận con
       </div>
     </div>
     <!-- input rep cmt -->
@@ -110,7 +110,7 @@
     <!-- cmt con -->
     <transition name="bounce">
       <div v-if="childCmt" class="ml-5">
-        <div v-for="i in list_child" :key="i._id">
+        <div v-for="i in list_child" :key="i">
           <CommentsVCmt :data="i" />
         </div>
       </div>
@@ -137,7 +137,8 @@ const useCmt = cmtStore();
 const useAuth = authStore();
 const useVote = voteStore();
 const useDialog = dialogStore();
-const useRoute = routeStore();
+const useRouteS = routeStore();
+const route = useRoute();
 const props = defineProps({
   data: Object,
 });
@@ -155,6 +156,13 @@ const inputRep = ref(false);
 const childCmt = ref(false);
 
 const loadingVote = ref("");
+
+const countCmt = computed(() => {
+  if (list_child.value.length) {
+    return list_child.value.length;
+  }
+  return props.data.child[0]?.count;
+});
 
 const valVote = computed(() => {
   if (props.data.vote) {
@@ -319,11 +327,9 @@ function openInputRep() {
   inputRep.value = !inputRep.value;
 }
 
-function showChildCmt() {
+async function showChildCmt() {
   childCmt.value = !childCmt.value;
-  if (list_child.value.length == 0) {
-    getBy();
-  }
+  await getBy();
 }
 
 const rep = async () => {
@@ -335,7 +341,7 @@ const rep = async () => {
   const data = {
     cmt_parent: props.data._id,
     author: useUser.user.id,
-    post: usePost.post._id,
+    post: route.params.id,
     content: dataInput.value.content,
     tag_name: list,
   };
@@ -348,6 +354,7 @@ const rep = async () => {
     ) {
       await useCmt.create(data);
       await getBy();
+      childCmt.value = true;
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
       resetInput.value++;
@@ -367,11 +374,7 @@ async function getBy() {
   list.forEach((e, i) => {
     list[i].createdAt = useCmt.setTime(list[i].createdAt);
   });
-  if (list_child.value.length == 0) {
-    list_child.value = list;
-  } else {
-    list_child.value.unshift(list[0]);
-  }
+  list_child.value = list;
 }
 
 function openDialogSignin(cb) {
@@ -385,7 +388,7 @@ function openDialogSignin(cb) {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = `/post/${usePost.post._id}`;
+        useRouteS.redirectedFrom = route.fullPath;
       }
     );
   } else {

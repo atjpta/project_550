@@ -8,7 +8,7 @@
       :reset="resetInput"
     />
     <div>
-      <div v-for="i in useCmt.list_cmt" :key="i._id">
+      <div v-for="i in useCmt.list_cmt" :key="i">
         <CommentsVCmt :data="i" />
       </div>
     </div>
