@@ -27,7 +27,7 @@ export const questionStore = defineStore("questionStore", {
                 content: {},
             },
             list: [],
-            listNoSeries: [],
+            listNoTopic: [],
         };
     },
     getters: {
@@ -85,17 +85,17 @@ export const questionStore = defineStore("questionStore", {
             });
         },
 
-        async findBySeries(id) {
-            this.list = await questionService.findBySeries(id);
+        async findByTopic(id) {
+            this.list = await questionService.findByTopic(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });
         },
 
-        async findByNoSeries(id) {
-            this.listNoSeries = await questionService.findByNoSeries(id);
-            this.listNoSeries.forEach((e, i) => {
-                this.listNoSeries[i].createdAt = this.setTime(this.listNoSeries[i].createdAt);
+        async findByNoTopic(id) {
+            this.listNoTopic = await questionService.findByNoTopic(id);
+            this.listNoTopic.forEach((e, i) => {
+                this.listNoTopic[i].createdAt = this.setTime(this.listNoTopic[i].createdAt);
             });
         },
 
@@ -106,8 +106,8 @@ export const questionStore = defineStore("questionStore", {
             await questionService.update(data);
         },
 
-        async updateSeries(id, data) {
-            await questionService.updateSeries(id, data);
+        async updateTopic(id, data) {
+            await questionService.updateTopic(id, data);
         },
 
     }

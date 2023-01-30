@@ -71,7 +71,7 @@ exports.findAll = async (req, res, next) => {
             // // lọc ra các phần muốn lấy
             // {
             //     $match: {
-            //         series: ObjectId(id),
+            //         topic: ObjectId(id),
             //     }
             // },
             {
@@ -84,14 +84,14 @@ exports.findAll = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
-                    as: 'post',
+                    foreignField: 'topic',
+                    as: 'question',
                     pipeline: [
                         {
                             $group: {
-                                _id: "$series",
+                                _id: "$topic",
                                 count: { $sum: 1 },
                             }
                         }
@@ -100,9 +100,9 @@ exports.findAll = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
+                    foreignField: 'topic',
                     as: 'score',
                     pipeline: [
                         {
@@ -146,9 +146,9 @@ exports.findAll = async (req, res, next) => {
 
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
+                    foreignField: 'topic',
                     as: 'tag',
                     pipeline: [
                         {
@@ -183,7 +183,7 @@ exports.findAll = async (req, res, next) => {
                     "author._id": 1,
                     "author.name": 1,
                     'author.avatar_url': 1,
-                    'post.count': 1,
+                    'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
                 }
@@ -239,14 +239,14 @@ exports.findOne = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
-                    as: 'post',
+                    foreignField: 'topic',
+                    as: 'question',
                     pipeline: [
                         {
                             $group: {
-                                _id: "$series",
+                                _id: "$topic",
                                 count: { $sum: 1 },
                             }
                         }
@@ -255,9 +255,9 @@ exports.findOne = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
+                    foreignField: 'topic',
                     as: 'score',
                     pipeline: [
                         {
@@ -269,7 +269,7 @@ exports.findOne = async (req, res, next) => {
                                 pipeline: [
                                     {
                                         $group: {
-                                            _id: '$post',
+                                            _id: '$pots',
                                             val: { $sum: '$val' },
                                         },
                                     }
@@ -301,9 +301,9 @@ exports.findOne = async (req, res, next) => {
 
             {
                 $lookup: {
-                    from: 'posts',
+                    from: 'questions',
                     localField: '_id',
-                    foreignField: 'series',
+                    foreignField: 'topic',
                     as: 'tag',
                     pipeline: [
                         {
@@ -339,7 +339,7 @@ exports.findOne = async (req, res, next) => {
                     "author._id": 1,
                     "author.name": 1,
                     'author.avatar_url': 1,
-                    'post.count': 1,
+                    'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
                 }

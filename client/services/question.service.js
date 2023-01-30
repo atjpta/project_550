@@ -7,8 +7,8 @@ const url = config.url.api + '/question'
 
 export default {
 
-    findBySeries: async (id) => {
-        const { data: data, error } = await useFetch(url + `/series/${id}`, {
+    findByTopic: async (id) => {
+        const { data: data, error } = await useFetch(url + `/topic/${id}`, {
             method: "get",
         })
         if (error.value) {
@@ -18,8 +18,8 @@ export default {
         return data.value
     },
 
-    findByNoSeries: async (id) => {
-        const { data: data, error } = await useFetch(url + `/noseries/${id}`, {
+    findByNoTopic: async (id) => {
+        const { data: data, error } = await useFetch(url + `/notopic/${id}`, {
             method: "get",
         })
         if (error.value) {
@@ -29,9 +29,9 @@ export default {
         return data.value
     },
 
-    updateSeries: async (id, dataO) => {
+    updateTopic: async (id, dataO) => {
         if (dataO) {
-            var { data: data, error } = await useFetch(url + `/series/${id}`, {
+            var { data: data, error } = await useFetch(url + `/topic/${id}`, {
                 headers: {
                     authorization: authStore().getToken
                 },
@@ -39,7 +39,7 @@ export default {
                 method: "put",
             })
         } else {
-            var { data: data, error } = await useFetch(url + `/series/${id}`, {
+            var { data: data, error } = await useFetch(url + `/topic/${id}`, {
                 headers: {
                     authorization: authStore().getToken
                 },

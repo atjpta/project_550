@@ -93,18 +93,19 @@
           </div>
           <!-- các trạng thái của bài viết  -->
           <div class="flex justify-around mt-2">
-            <div>
-              <OtherVIcon icon="fa-solid fa-caret-down" />
+            <div class="tooltip" data-tip="điểm câu hỏi">
+              <OtherVIcon icon="fa-solid fa-star" />
               {{ valVote }}
-              <OtherVIcon icon="fa-solid fa-caret-up" />
             </div>
-            <div>
+            <div class="tooltip" data-tip="lượt bình luận">
               <OtherVIcon icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
-            <div>
-              <OtherVIcon icon="fa-solid fa-eye" />
-              {{ data.view }}
+            <div class="tooltip" data-tip="lượt xem">
+              <div>
+                <OtherVIcon icon="fa-solid fa-eye" />
+                {{ data.view }}
+              </div>
             </div>
           </div>
         </div>

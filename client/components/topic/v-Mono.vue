@@ -3,7 +3,7 @@
     <transition name="bounce">
       <div class="bg-base-200 rounded-2xl my-5 p-5">
         <div class="flex">
-          <!-- ảnh series -->
+          <!-- ảnh Topic -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
             <img class="rounded-2xl w-32 h-32" :src="data.image_cover_url" alt="" />
           </div>
@@ -12,7 +12,7 @@
               <div>
                 <nuxtLink
                   class="hover:text-sky-500 hover:scale-110 duration-500"
-                  :to="`/series/${data._id}`"
+                  :to="`/topic/${data._id}`"
                 >
                   <!-- tên team -->
                   <div class="text-2xl font-bold uppercase">
@@ -24,16 +24,16 @@
               <div v-if="isAuthor">
                 <div class="space-x-2 flex justify-end">
                   <nuxtLink
-                    :to="`/series/edit/${data._id}`"
+                    :to="`/topic/edit/${data._id}`"
                     class="tooltip"
-                    data-tip="sửa series"
+                    data-tip="sửa topic"
                   >
                     <div class="btn btn-outline btn-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
 
-                  <div class="tooltip" data-tip="xóa series">
+                  <div class="tooltip" data-tip="xóa topic">
                     <div @click="openDialogDelete()" class="btn btn-outline btn-error">
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
@@ -59,7 +59,7 @@
                     <a>
                       <div @click="openDialogReport()">
                         <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo Nhóm
+                        báo cáo
                       </div>
                     </a>
                   </li>
@@ -67,7 +67,7 @@
                     <a>
                       <div @click="openDialogReport()">
                         <OtherVIcon icon="fa-solid fa-bookmark" />
-                        Lưu bài viết
+                        Lưu topic
                       </div>
                     </a>
                   </li>
@@ -91,13 +91,13 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex justify-around mt-2">
-          <div class="tooltip" data-tip="điểm series">
+          <div class="tooltip" data-tip="điểm Topic">
             <OtherVIcon icon="fa-solid fa-star" />
             {{ data.valScore }}
           </div>
-          <div class="tooltip" data-tip="số bài viết">
-            <OtherVIcon icon="fa-solid fa-file-lines" />
-            {{ data.post[0]?.count || 0 }}
+          <div class="tooltip" data-tip="số câu hỏi">
+            <OtherVIcon icon="fa-solid fa-file-circle-question" />
+            {{ data.question[0]?.count || 0 }}
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
-import { seriesStore } from "~~/stores/series.store";
+import { topicStore } from "~~/stores/topic.store";
 
 const props = defineProps({
   data: Object,
@@ -118,7 +118,7 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
-const useSeries = seriesStore();
+const useTopic = topicStore();
 
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
@@ -145,13 +145,13 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa series này?",
+        content: "bạn chắc chắn muốn xóa Topic này?",
         btn1: "ok",
         btn2: "hủy",
       },
       async () => {
-        await useSeries.deleteOne(props.data._id);
-        await useSeries.findAll();
+        await useTopic.deleteOne(props.data._id);
+        await useTopic.findAll();
       }
     );
   }

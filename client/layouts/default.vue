@@ -135,7 +135,7 @@ const dataMenu = ref([
       },
       {
         name: "Topic",
-        url: "/test/contentadmin",
+        url: "/topic",
         icon: "fa-solid fa-layer-group",
       },
       {

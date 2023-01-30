@@ -10,6 +10,7 @@ const schema = mongoose.Schema(
         introduce: String,
         image_cover_url: {
             type: String,
+            default: 'https://api-project-550.vercel.app/api/image/meo.jpg',
         },
         tag: [{
             type: mongoose.Schema.Types.ObjectId,

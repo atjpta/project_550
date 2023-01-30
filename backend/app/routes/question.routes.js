@@ -21,11 +21,11 @@ module.exports = (app) => {
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
 
-    router.route('/series/:id/')
+    router.route('/topic/:id/')
         .get(ctl.findByTopic)
         .put(ctl.updateTopic)
 
-    router.route('/noseries/:id')
+    router.route('/notopic/:id')
         .get(ctl.findByNoTopic)
 
     router.route('/:id/:user')
