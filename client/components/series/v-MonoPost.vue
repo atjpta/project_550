@@ -208,8 +208,8 @@ function openDialogAddSeries() {
         const data = {
           series: route.params.id,
         };
-        if (useSeries.series.team) {
-          data.team = useSeries.series.team._id;
+        if (useSeries.series.team.length > 0) {
+          data.team = useSeries.series.team[0]._id;
         }
         await usePost.updateSeries(props.data._id, data);
         resetData();

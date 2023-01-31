@@ -14,15 +14,31 @@
           {{ i }} 0000
         </div>
       </div>
-      <button
-        v-if="
-          useAuth.isUserLoggedIn && useAuth.user?.id == useSeries.series.author[0]?._id
-        "
-        @click="isSeries = !isSeries"
-        class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
-      >
-        {{ isSeries ? "ẩn bài viết chưa có series" : "hiện bài viết chưa có series" }}
-      </button>
+      <div>
+        <button
+          v-if="
+            useAuth.isUserLoggedIn &&
+            useSeries.series.author &&
+            useAuth.user?.id == useSeries.series.author[0]?._id
+          "
+          @click="isSeries = !isSeries"
+          class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
+        >
+          {{ isSeries ? "hiện danh sách" : "thêm bài viết vào series" }}
+        </button>
+        <div
+          v-if="
+            !isSeries &&
+            useAuth.isUserLoggedIn &&
+            useSeries.series.author &&
+            useAuth.user?.id == useSeries.series.author[0]?._id
+          "
+        >
+          <nuxt-link to="/post/edit">
+            <div class="btn btn-ghost btn-xs italic lowercase">tạo bài viết mới?</div>
+          </nuxt-link>
+        </div>
+      </div>
     </div>
     <div v-if="listPost.length == 0" class="text-center text-xl">
       chưa có bài viết nào hết !!!

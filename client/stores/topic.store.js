@@ -38,7 +38,6 @@ export const topicStore = defineStore("topicStore", {
             this.List_topic_ByUser = await topicService.findByUser(id);
         },
         async create(data) {
-            console.log(data);
             const id = await topicService.create(data);
             return id;
         },

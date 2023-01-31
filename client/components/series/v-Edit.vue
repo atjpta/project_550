@@ -209,6 +209,11 @@ onMounted(() => {
   useStatus.findAll();
   getApi();
 });
+
+onUnmounted(() => {
+  useSeries.reset();
+  useTeam.reset();
+});
 </script>
 
 <style></style>

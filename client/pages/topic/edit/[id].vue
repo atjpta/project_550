@@ -1,32 +1,32 @@
 <template>
   <div>
-    <SeriesVEdit @save="save" :loading="loading" />
+    <TopicVEdit @save="save" :loading="loading" />
   </div>
 </template>
 
 <script setup>
 import { imageStore } from "~~/stores/image.store";
-import { seriesStore } from "~~/stores/series.store";
+import { topicStore } from "~~/stores/topic.store";
 
 const useImage = imageStore();
-const useSeries = seriesStore();
-let series;
+const useTopic = topicStore();
+let topic;
 const loading = ref(false);
 
 function formatData(listtag) {
   const data = {
-    id: series.id,
-    status: [series.status.id],
-    name: series.name,
-    introduce: series.introduce,
-    team: series.team._id,
-    image_cover_url: useImage.url ?? series.image_cover_url,
+    id: topic.id,
+    status: [topic.status.id],
+    name: topic.name,
+    introduce: topic.introduce,
+    team: topic.team._id ?? " ",
+    image_cover_url: useImage.url ?? topic.image_cover_url,
   };
   return data;
 }
 
 async function save() {
-  series = useSeries.series_edit;
+  topic = useTopic.topic_edit;
   loading.value = true;
   try {
     const data = formatData();
@@ -34,9 +34,9 @@ async function save() {
       await useImage.uploadImage();
       data.image_cover_url = useImage.url;
     }
-    await useSeries.update(data);
-    useSeries.resetSeriesEdit();
-    navigateTo(`/series/${data.id}`);
+    await useTopic.update(data);
+    useTopic.resettopicEdit();
+    navigateTo(`/topic/${data.id}`);
   } catch (error) {
     console.log(error);
   } finally {

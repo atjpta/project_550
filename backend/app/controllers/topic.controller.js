@@ -255,6 +255,14 @@ exports.findOne = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+                },
+            },
+            {
+                $lookup: {
                     from: 'questions',
                     localField: '_id',
                     foreignField: 'topic',
@@ -342,6 +350,9 @@ exports.findOne = async (req, res, next) => {
                     'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
+                    'team.name': 1,
+                    'team._id': 1,
+
                 }
             },
             {
@@ -371,6 +382,11 @@ exports.update = async (req, res, next) => {
     };
 
     try {
+        if (req.body.team == ' ') {
+            await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
+            delete req.body.team;
+        }
+
         const document = await model.findByIdAndUpdate(condition, req.body, {
             new: true
         });

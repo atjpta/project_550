@@ -104,6 +104,7 @@ export default {
     },
 
     update: async (dataO) => {
+
         const { data: data, error } = await useFetch(url + `/${dataO.id}`, {
             headers: {
                 authorization: authStore().getToken
@@ -116,7 +117,7 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        // useAlert.setSuccess("test thành công");
+        useAlert.setSuccess("Sửa thành công");
         return data.value
     },
 
@@ -132,7 +133,7 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        // useAlert.setSuccess("test thành công");
+        useAlert.setSuccess("xóa thành công");
         return data.value
     },
 

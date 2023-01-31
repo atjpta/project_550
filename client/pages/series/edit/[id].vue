@@ -19,7 +19,7 @@ function formatData(listtag) {
     status: [series.status.id],
     name: series.name,
     introduce: series.introduce,
-    team: series.team._id,
+    team: series.team._id ?? " ",
     image_cover_url: useImage.url ?? series.image_cover_url,
   };
   return data;

@@ -43,11 +43,11 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = "/series/edit";
+        useRoute.redirectedFrom = "/topic/edit";
       }
     );
   } else {
-    navigateTo("/series/edit");
+    navigateTo("/topic/edit");
   }
 }
 onMounted(() => {

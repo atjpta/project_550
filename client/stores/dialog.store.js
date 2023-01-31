@@ -6,15 +6,17 @@ export const dialogStore = defineStore("dialogStore", {
             data: {},
             dataInput: {},
             cb: null,
+            cb2: null,
         };
     },
     getters: {
 
     },
     actions: {
-        showDialog(data, cb) {
+        showDialog(data, cb, cb2) {
             this.data = data;
             this.cb = cb;
+            this.cb2 = cb2;
         },
         showDialogInput(data, cb) {
             this.dataInput = data;

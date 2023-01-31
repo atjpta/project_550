@@ -242,6 +242,8 @@ const list_team = computed(() => {
       list = [];
       usePost.post_edit.team = {};
     }
+  } else if (usePost.post_edit.team) {
+    list.push(usePost.post_edit.team);
   } else {
     usePost.post_edit.team = {};
     list = useTeam.List_team_ByUser;

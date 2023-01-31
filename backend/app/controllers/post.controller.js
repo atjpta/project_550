@@ -20,6 +20,10 @@ exports.updateSeries = async (req, res, next) => {
             return res.send({ message: "đã xóa khỏi Series thành công", body: req.body });
         }
         else {
+            if (!req.body.team) {
+                await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
+                delete req.body.team;
+            }
             // add series
             const document = await model.findByIdAndUpdate(condition, req.body, {
                 new: true

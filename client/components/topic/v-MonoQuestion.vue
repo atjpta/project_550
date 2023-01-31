@@ -28,29 +28,29 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
-                <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
+                <div v-if="data.topic" class="tooltip" data-tip="xóa khỏi Topic">
                   <div
-                    @click="openDialogRemoveSeries()"
+                    @click="openDialogRemoveTopic()"
                     class="btn btn-outline btn-warning"
                   >
                     <OtherVIcon icon="fa-solid fa-xmark" />
                   </div>
                 </div>
-                <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
-                  <div @click="openDialogAddSeries()" class="btn btn-outline btn-success">
+                <div v-if="!data.topic" class="tooltip" data-tip="thêm vào topic">
+                  <div @click="openDialogAddTopic()" class="btn btn-outline btn-success">
                     <OtherVIcon icon="fa-solid fa-plus" />
                   </div>
                 </div>
                 <nuxtLink
-                  :to="`/post/edit/${data._id}`"
+                  :to="`/question/edit/${data._id}`"
                   class="tooltip"
-                  data-tip="sửa bài viết"
+                  data-tip="sửa câu hỏi"
                 >
                   <div class="btn btn-outline btn-primary">
                     <OtherVIcon icon="fa-solid fa-pen-to-square" />
                   </div>
                 </nuxtLink>
-                <div class="tooltip" data-tip="xóa bài viết">
+                <div class="tooltip" data-tip="xóa câu hỏi">
                   <div @click="openDialogDelete()" class="btn btn-outline btn-error">
                     <OtherVIcon icon="fa-solid fa-trash-can" />
                   </div>
@@ -74,7 +74,7 @@
                   <a>
                     <div @click="openDialogReport()">
                       <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo bài viết
+                      báo cáo câu hỏi
                     </div>
                   </a>
                 </li>
@@ -82,7 +82,7 @@
                   <a>
                     <div @click="openDialogReport()">
                       <OtherVIcon icon="fa-solid fa-bookmark" />
-                      Lưu bài viết
+                      Lưu câu hỏi
                     </div>
                   </a>
                 </li>
@@ -106,9 +106,9 @@
               {{ "#" + i.name }}
             </div>
           </div>
-          <!-- các trạng thái của bài viết  -->
+          <!-- các trạng thái của câu hỏi  -->
           <div class="flex justify-around mt-2">
-            <div class="tooltip" data-tip="điểm bài viết">
+            <div class="tooltip" data-tip="điểm câu hỏi">
               <OtherVIcon icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
@@ -130,8 +130,8 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
-import { postStore } from "~~/stores/post.store";
-import { seriesStore } from "~~/stores/series.store";
+import { questionStore } from "~~/stores/question.store";
+import { topicStore } from "~~/stores/topic.store";
 
 const props = defineProps({
   data: Object,
@@ -139,8 +139,8 @@ const props = defineProps({
 
 const useDialog = dialogStore();
 const useAuth = authStore();
-const usePost = postStore();
-const useSeries = seriesStore();
+const useQuestion = questionStore();
+const useTopic = topicStore();
 const route = useRoute();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
@@ -167,51 +167,51 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết?",
+        content: "bạn chắc chắn muốn xóa câu hỏi?",
         btn1: "ok",
         btn2: "hủy",
       },
       async () => {
-        await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        await useQuestion.deleteOne(props.data._id);
+        await useQuestion.findAll();
       }
     );
   }
 }
-function openDialogRemoveSeries() {
+function openDialogRemoveTopic() {
   if (useAuth.isUserLoggedIn) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết khỏi series này?",
+        content: "bạn chắc chắn muốn xóa câu hỏi khỏi Topic này?",
         btn1: "ok",
         btn2: "hủy",
       },
       async () => {
-        await usePost.updateSeries(props.data._id);
+        await useQuestion.updateTopic(props.data._id);
         resetData();
       }
     );
   }
 }
 
-function openDialogAddSeries() {
+function openDialogAddTopic() {
   if (useAuth.isUserLoggedIn) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn thêm bài viết vào series này?",
+        content: "bạn chắc chắn muốn thêm câu hỏi vào Topic này?",
         btn1: "ok",
         btn2: "hủy",
       },
       async () => {
         const data = {
-          series: route.params.id,
+          topic: route.params.id,
         };
-        if (useSeries.series.team) {
-          data.team = useSeries.series.team._id;
+        if (useTopic.topic.team.length > 0) {
+          data.team = useTopic.topic.team[0]._id;
         }
-        await usePost.updateSeries(props.data._id, data);
+        await useQuestion.updateTopic(props.data._id, data);
         resetData();
       }
     );
@@ -219,16 +219,16 @@ function openDialogAddSeries() {
 }
 
 async function resetData() {
-  await usePost.findBySeries(route.params.id);
-  await usePost.findByNoSeries(useAuth.user.id);
-  await useSeries.findOne(route.params.id);
+  await useQuestion.findByTopic(route.params.id);
+  await useQuestion.findByNoTopic(useAuth.user.id);
+  await useTopic.findOne(route.params.id);
 }
 
 async function goReadPost() {
-  await usePost.update({
+  await useQuestion.update({
     id: props.data._id,
     view: props.data.view + 1,
   });
-  navigateTo(`/post/${props.data._id}`);
+  navigateTo(`/question/${props.data._id}`);
 }
 </script>

@@ -2,13 +2,13 @@
   <div class="p-5 bg-base-200 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-semibold">Chỉnh sửa series</div>
+        <div class="text-4xl text-center font-semibold">Chỉnh sửa topic</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">Tên series</div>
+          <div class="text-xl font-semibold mt-5">Tên topic</div>
           <input
-            v-model="useSeries.series_edit.name"
-            placeholder="nhập tên series"
+            v-model="useTopic.topic_edit.name"
+            placeholder="nhập tên topic"
             type="text"
             class="input bg-inherit border-0 border-b-2 border-primary w-full"
           />
@@ -16,9 +16,9 @@
 
         <!-- ảnh bìa -->
         <div class="text-xl font-semibold mt-5">
-          Biểu tượng series
+          Biểu tượng topic
           <div>
-            <ImageVUploadsimple :data="useSeries.series_edit.image_cover_url" />
+            <ImageVUploadsimple :data="useTopic.topic_edit.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
@@ -59,7 +59,7 @@
           </div>
 
           <select
-            v-model="useSeries.series_edit.team"
+            v-model="useTopic.topic_edit.team"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Chung</option>
@@ -72,8 +72,8 @@
         <!-- chọn trạng thái -->
         <div>
           <div class="text-xl font-semibold mt-5 mb-2">
-            Trạng thái của series
-            <div class="tooltip" data-tip="riêng tư là chỉ bạn xem được">
+            Trạng thái của topic
+            <div class="tooltip" data-tip="không thể chỉnh">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
@@ -81,12 +81,11 @@
           </div>
 
           <select
-            v-model="useSeries.series_edit.status"
+            disabled
+            v-model="useTopic.topic_edit.status"
             class="select-sm select select-primary w-full max-w-xs"
           >
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
+            <option :value="useTopic.topic_edit.status">Công khai</option>
           </select>
         </div>
 
@@ -94,7 +93,7 @@
         <div class="mt-5 mb-2">
           <div class="text-xl font-semibold">Lời giới thiệu</div>
           <textarea
-            v-model="useSeries.series_edit.introduce"
+            v-model="useTopic.topic_edit.introduce"
             placeholder="nhập nội dung"
             type="text"
             class="p-1 bg-inherit border-0 border-b-2 border-primary w-full h-20"
@@ -105,7 +104,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div v-show="preview == true">
-        <SeriesVPreview :data="useSeries.series_edit" />
+        <TopicVPreview :data="useTopic.topic_edit" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -139,7 +138,7 @@
 <script setup>
 import { userStore } from "~~/stores/user.store";
 import { teamStore } from "~~/stores/team.store";
-import { seriesStore } from "~~/stores/series.store";
+import { topicStore } from "~~/stores/topic.store";
 import { authStore } from "~~/stores/auth.store";
 import { imageStore } from "~~/stores/image.store";
 import { statusStore } from "~~/stores/status.store";
@@ -153,21 +152,15 @@ const useUser = userStore();
 const useAuth = authStore();
 const useStatus = statusStore();
 const useImage = imageStore();
-const useSeries = seriesStore();
+const useTopic = topicStore();
 const route = useRoute();
 const useTeam = teamStore();
 
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (e.name == "public") {
-      useSeries.series_edit.status = e;
-    }
-  });
-  return useStatus.getPost;
-});
-
 const list_team = computed(() => {
   let list = [];
+  if (!useTopic.topic.team) {
+    useTopic.topic.team = {};
+  }
   if (useTeam.List_team_ByUser) {
     useTeam.List_team_ByUser.forEach((e) => {
       list.push({
@@ -182,7 +175,12 @@ const list_team = computed(() => {
 const emit = defineEmits(["save"]);
 
 function getdata() {
-  useSeries.series_edit.author = useUser.user;
+  useTopic.topic_edit.author = useUser.user;
+  useStatus.getPost.forEach((e) => {
+    if (e.name == "public") {
+      useTopic.topic_edit.status = e;
+    }
+  });
 }
 
 function save() {
@@ -197,10 +195,10 @@ function showPreview() {
 
 async function getApi() {
   if (route.params.id) {
-    await useSeries.findOneEdit(route.params.id);
-    useSeries.series_edit = useSeries.series;
+    await useTopic.findOneEdit(route.params.id);
+    useTopic.topic_edit = useTopic.topic;
   } else {
-    useSeries.resetSeriesEdit();
+    useTopic.resettopicEdit();
   }
 }
 
@@ -208,6 +206,11 @@ onMounted(() => {
   useTeam.findByUser(useAuth.user.id);
   useStatus.findAll();
   getApi();
+});
+
+onUnmounted(() => {
+  useTopic.reset();
+  useTeam.reset();
 });
 </script>
 
