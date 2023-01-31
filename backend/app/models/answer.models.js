@@ -10,7 +10,6 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "question"
         },
-        title: String,
         content: Object,
         status: [{
             type: mongoose.Schema.Types.ObjectId,

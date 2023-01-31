@@ -61,18 +61,21 @@
         >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
-        <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-eye" />
-          <div class="text-2xl">
-            {{ data.view }}
-          </div>
-        </div>
         <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-comments" />
+          <OtherVIcon
+            class-icon="text-xl mr-1 text-primary"
+            icon="fa-solid fa-comments"
+          />
           <div class="text-2xl">
             {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
           </div>
         </a>
+        <div class="btn-sm lg:btn-md btn btn-ghost">
+          <OtherVIcon class-icon="text-xl mr-1 text-info" icon="fa-solid fa-eye" />
+          <div class="text-2xl">
+            {{ data.view }}
+          </div>
+        </div>
       </div>
     </div>
     <!-- bài viết -->

@@ -92,11 +92,11 @@
         <!-- các trạng thái của team  -->
         <div class="flex justify-around mt-2">
           <div class="tooltip" data-tip="điểm series">
-            <OtherVIcon icon="fa-solid fa-star" />
+            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ data.valScore }}
           </div>
           <div class="tooltip" data-tip="số bài viết">
-            <OtherVIcon icon="fa-solid fa-file-lines" />
+            <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
             {{ data.post[0]?.count || 0 }}
           </div>
         </div>

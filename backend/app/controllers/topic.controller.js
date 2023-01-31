@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
-        name: req.body.name,
+        name: req.body.name ?? 'tên nè :3',
         image_cover_url: req.body.image_cover_url,
         team: req.body.team,
         introduce: req.body.introduce,

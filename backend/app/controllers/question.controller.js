@@ -237,7 +237,7 @@ exports.findByTopic = async (req, res, next) => {
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
-        title: req.body.title,
+        title: req.body.title ?? 'tiêu đề nè :3',
         content: req.body.content,
         tag: req.body.tag,
         topic: req.body.topic,

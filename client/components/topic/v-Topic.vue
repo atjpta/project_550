@@ -26,16 +26,28 @@
             </div>
             <!-- các btn -->
             <div class="flex justify-evenly">
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-star" />
-                <div class="text-2xl">{{ data.valScore || 0 }}</div>
+              <div class="tooltip" data-tip="lưu series">
+                <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+                  <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+                </div>
               </div>
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-file-lines" />
-                <div class="text-2xl">{{ valQuestion }}</div>
+              <div class="tooltip" data-tip="điểm series">
+                <div class="btn-sm lg:btn-md btn btn-ghost">
+                  <OtherVIcon
+                    class-icon="text-xl mr-1 text-warning"
+                    icon="fa-solid fa-star"
+                  />
+                  <div class="text-2xl">{{ data.valScore }}</div>
+                </div>
               </div>
-              <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
-                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+              <div class="tooltip" data-tip="điểm series">
+                <div class="btn-sm lg:btn-md btn btn-ghost">
+                  <OtherVIcon
+                    class-icon="text-xl mr-1 text-info"
+                    icon="fa-solid fa-file-lines"
+                  />
+                  <div class="text-2xl">{{ valQuestion }}</div>
+                </div>
               </div>
             </div>
           </div>

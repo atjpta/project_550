@@ -26,16 +26,22 @@
             </div>
             <!-- các btn -->
             <div class="flex justify-evenly">
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-star" />
-                <div class="text-2xl">0</div>
-              </div>
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon class-icon="text-xl mr-1" icon="fa-solid fa-file-lines" />
-                <div class="text-2xl">0</div>
-              </div>
               <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
                 <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+              </div>
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-warning"
+                  icon="fa-solid fa-star"
+                />
+                <div class="text-2xl">0</div>
+              </div>
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-info"
+                  icon="fa-solid fa-file-lines"
+                />
+                <div class="text-2xl">0</div>
               </div>
             </div>
           </div>

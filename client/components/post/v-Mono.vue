@@ -94,15 +94,15 @@
           <!-- các trạng thái của bài viết  -->
           <div class="flex justify-around mt-2">
             <div class="tooltip" data-tip="điểm bài viết">
-              <OtherVIcon icon="fa-solid fa-star" />
+              <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
-              <OtherVIcon icon="fa-solid fa-comments" />
+              <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt xem">
-              <OtherVIcon icon="fa-solid fa-eye" />
+              <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
               {{ data.view }}
             </div>
           </div>
