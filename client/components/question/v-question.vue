@@ -38,7 +38,10 @@
             class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
           ></div>
 
-          <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
+          <div
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation tooltip flex"
+            data-tip="điểm"
+          >
             <div class="text-2xl">{{ valVote }}</div>
           </div>
           <div
@@ -61,19 +64,35 @@
         >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
-        <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon
-            class-icon="text-xl mr-1 text-primary"
-            icon="fa-solid fa-comments"
-          />
-          <div class="text-2xl">
-            {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
-          </div>
-        </a>
-        <div class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon class-icon="text-xl mr-1 text-info" icon="fa-solid fa-eye" />
-          <div class="text-2xl">
-            {{ data.view }}
+
+        <div class="tooltip flex" data-tip="lượt trả lời">
+          <a class="btn-sm lg:btn-md btn btn-ghost">
+            <OtherVIcon
+              :class-icon="haveAnswerChoice ? 'text-success text-2xl' : ' text-2xl'"
+              :icon="haveAnswerChoice ? 'fa-solid fa-check' : 'fa-solid fa-question'"
+            />
+            <div class="text-2xl">
+              {{ countAnwser }}
+            </div>
+          </a>
+        </div>
+        <div class="tooltip flex" data-tip="lượt bình luận">
+          <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
+            <OtherVIcon
+              class-icon="text-xl mr-1 text-primary"
+              icon="fa-solid fa-comments"
+            />
+            <div class="text-2xl">
+              {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
+            </div>
+          </a>
+        </div>
+        <div class="tooltip flex" data-tip="lượt xem">
+          <div class="btn-sm lg:btn-md btn btn-ghost">
+            <OtherVIcon class-icon="text-xl mr-1 text-info" icon="fa-solid fa-eye" />
+            <div class="text-2xl">
+              {{ data.view }}
+            </div>
           </div>
         </div>
       </div>
@@ -107,16 +126,7 @@
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <div id="comment" class="text-2xl font-semibold mb-2">
-      Nhập bình luận
-      <div class="tooltip" data-tip="gõ @ để tag tên">
-        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-        </div>
-      </div>
-    </div>
+    <div id="comment" class="divider"></div>
   </div>
 </template>
 
@@ -155,6 +165,20 @@ const valVote = computed(() => {
     }
   }
   return 0;
+});
+
+const haveAnswerChoice = computed(() => {
+  if (props.data.choice && props.data.choice.length > 0) {
+    return true;
+  }
+  return false;
+});
+
+const countAnwser = computed(() => {
+  if (props.data.answer) {
+    return props.data.answer[0]?.count ?? "0";
+  }
+  return "0";
 });
 
 const classUp = computed(() => {

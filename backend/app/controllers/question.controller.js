@@ -111,6 +111,46 @@ exports.findByNoTopic = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+            {
                 $project: {
                     "_id": 1,
                     'title': 1,
@@ -124,6 +164,8 @@ exports.findByNoTopic = async (req, res, next) => {
                     'view': 1,
                     'comment': 1,
                     'vote': 1,
+                    'answer': 1,
+                    'choice': 1,
                 }
             },
             {
@@ -204,6 +246,47 @@ exports.findByTopic = async (req, res, next) => {
                     as: 'status',
                 },
             },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
             {
                 $project: {
                     "_id": 1,
@@ -219,6 +302,8 @@ exports.findByTopic = async (req, res, next) => {
                     'comment': 1,
                     'vote': 1,
                     'topic': 1,
+                    'answer': 1,
+                    'choice': 1,
                 }
             },
             {
@@ -307,6 +392,48 @@ exports.findAll = async (req, res, next) => {
                     ]
                 },
             },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
             {
                 $lookup: {
                     from: 'votes',
@@ -318,7 +445,6 @@ exports.findAll = async (req, res, next) => {
                             $group: {
                                 _id: '$post',
                                 val: { $sum: '$val' },
-
                             },
                         }
                     ]
@@ -362,6 +488,8 @@ exports.findAll = async (req, res, next) => {
                     'view': 1,
                     'comment': 1,
                     'vote': 1,
+                    'answer': 1,
+                    'choice': 1,
                 }
             },
             {
@@ -476,6 +604,46 @@ exports.findOne = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+            {
                 $project: {
                     "_id": 1,
                     'title': 1,
@@ -496,6 +664,8 @@ exports.findOne = async (req, res, next) => {
                     'topic._id': 1,
                     'team.name': 1,
                     'topic.name': 1,
+                    'choice': 1,
+                    'answer': 1,
                 }
             },
             {
@@ -602,6 +772,46 @@ exports.findOneGuest = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+            {
                 $project: {
                     "_id": 1,
                     'title': 1,
@@ -621,6 +831,8 @@ exports.findOneGuest = async (req, res, next) => {
                     'topic.id': 1,
                     'team.name': 1,
                     'topic.name': 1,
+                    'choice': 1,
+                    'answer': 1,
                 }
             },
             {

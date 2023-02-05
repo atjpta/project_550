@@ -1,7 +1,10 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div
+        :class="data.choice.length ? 'border-success' : 'border-info'"
+        class="bg-base-200 rounded-2xl my-5 p-5 border-2"
+      >
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -91,7 +94,7 @@
           </div>
           <!-- ảnh bìa và tiêu đề -->
           <div @click="goReadPost()" class="cursor-pointer">
-            <div class="hover:scale-105 duration-500">
+            <div class="hover:text-info duration-500">
               <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.title }}</div>
             </div>
@@ -113,9 +116,13 @@
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon class-icon="text-success" icon="fa-solid fa-check" />
-              <OtherVIcon icon="fa-solid fa-question" />
-              {{ valVote }}
+              <OtherVIcon
+                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
+                :icon="
+                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+                "
+              />
+              {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />

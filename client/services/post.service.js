@@ -97,6 +97,8 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
+        useAlert.setSuccess("xóa thành công");
+
         return data.value
     },
 

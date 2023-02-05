@@ -10,6 +10,7 @@ const status = require('./status.routes')
 const vote = require('./vote.routes')
 const question = require('./question.routes')
 const topic = require('./topic.routes')
+const answer = require('./answer.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -23,4 +24,5 @@ exports.Start = (app) => {
     vote(app)
     topic(app)
     question(app)
+    answer(app)
 }

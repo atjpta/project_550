@@ -10,6 +10,7 @@ const status = require('./status.controller');
 const vote = require('./vote.controller');
 const question = require('./question.controller');
 const topic = require('./topic.controller');
+const answer = require('./answer.controller')
 module.exports = {
     auth,
     image,
@@ -23,4 +24,5 @@ module.exports = {
     vote,
     question,
     topic,
+    answer,
 }

@@ -108,16 +108,7 @@
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <div id="comment" class="text-2xl font-semibold mb-2">
-      Nhập bình luận
-      <div class="tooltip" data-tip="gõ @ để tag tên">
-        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-        </div>
-      </div>
-    </div>
+    <div id="comment" class="divider"></div>
   </div>
 </template>
 

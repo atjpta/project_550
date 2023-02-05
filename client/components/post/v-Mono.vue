@@ -76,7 +76,7 @@
           </div>
           <!-- ảnh bìa và tiêu đề -->
           <div @click="goReadPost()" class="cursor-pointer">
-            <div class="hover:scale-105 duration-500">
+            <div class="hover:text-info">
               <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.title }}</div>
             </div>

@@ -1,12 +1,23 @@
 <template>
   <div class="p-5 bg-base-200 rounded-2xl">
     <PostVPost :data="usePost.post" />
-    <CommentsVInputCmt
-      @send="openDialogSignin(send)"
-      :loading="loading"
-      :data="dataInput"
-      :reset="resetInput"
-    />
+    <div @click="openInputCmt = !openInputCmt" class="btn btn-primary btn-outline mb-2">
+      Nhập bình luận
+      <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+        </div>
+      </div>
+    </div>
+    <div v-if="openInputCmt">
+      <CommentsVInputCmt
+        @send="openDialogSignin(send)"
+        :loading="loading"
+        :data="dataInput"
+        :reset="resetInput"
+      />
+    </div>
+
     <div>
       <div v-for="i in useCmt.list_cmt" :key="i">
         <CommentsVCmt :data="i" />
@@ -35,6 +46,7 @@ const dataInput = ref({
   content: {},
   tagname: [],
 });
+const openInputCmt = ref(false);
 
 const loading = ref(false);
 

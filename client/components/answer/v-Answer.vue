@@ -1,79 +1,120 @@
 <template>
   <div>
-    <div class="bg-base-100 rounded-2xl px-5 py-3 flex shadow-md glass mb-3">
-      <!-- phần người gửi -->
-      <div>
-        <div class="flex">
-          <!-- các btn -->
-          <div class="flex flex-col mr-2 space-y-1">
-            <div
-              v-if="loading == 'up'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-            ></div>
-            <div
-              v-else-if="loadingVote != 'up'"
-              @click="openDialogSignin(up)"
-              :class="classUp"
-              class="btn-sm btn-circle btn btn-outline"
-            >
-              <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
-            </div>
+    <div
+      :class="[data.choice ? 'border-success' : 'border-info']"
+      class="border-2 rounded-2xl"
+    >
+      <div class="bg-base-100 rounded-2xl px-5 py-3 flex shadow-md glass">
+        <!-- phần người gửi -->
+        <div>
+          <div class="flex">
+            <!-- các btn -->
+            <div class="flex flex-col mr-2 space-y-1">
+              <div
+                v-if="loading == 'up'"
+                class="btn-sm btn btn-circle btn-outline loading"
+              ></div>
+              <div
+                v-else-if="loadingVote != 'up'"
+                @click="openDialogSignin(up)"
+                :class="classUp"
+                class="btn-sm btn-circle btn btn-outline"
+              >
+                <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
+              </div>
 
-            <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
-            <div
-              v-if="loading == 'down'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-            ></div>
-            <div
-              v-else-if="loadingVote != 'down'"
-              @click="openDialogSignin(down)"
-              :class="classDown"
-              class="btn-sm btn-circle btn btn-outline"
-            >
-              <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
-            </div>
+              <div class="btn-sm btn-circle btn btn-ghost no-animation">
+                {{ valVote }}
+              </div>
+              <div
+                v-if="loading == 'down'"
+                class="btn-sm btn btn-circle btn-outline loading"
+              ></div>
+              <div
+                v-else-if="loadingVote != 'down'"
+                @click="openDialogSignin(down)"
+                :class="classDown"
+                class="btn-sm btn-circle btn btn-outline"
+              >
+                <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
+              </div>
 
-            <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
-              <OtherVIcon class-icon="" icon="fa-solid fa-share" />
+              <div
+                v-if="isAuthor && !loading"
+                @click="choice()"
+                :class="[data.choice ? 'btn-success' : '']"
+                class="btn-sm btn-circle btn btn-outline"
+              >
+                <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
+              </div>
+              <div
+                v-else-if="isAuthor && loading"
+                class="btn-sm btn-circle btn btn-outline loading"
+              ></div>
+              <div
+                v-else-if="data.choice"
+                class="btn-sm btn-circle btn btn-ghost no-animation text-success"
+              >
+                <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
+              </div>
             </div>
-          </div>
-          <!-- tác giả -->
-          <div class="w-fit">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              to="/user/1"
-            >
-              <div class="flex">
-                <div class="avatar">
-                  <div class="w-12 h-12 rounded-full">
-                    <img :src="data?.author[0]?.avatar_url" />
+            <!-- tác giả -->
+            <div>
+              <nuxtLink
+                class="hover:text-sky-500 hover:scale-110 duration-500"
+                to="/user/1"
+              >
+                <div class="flex">
+                  <div class="avatar">
+                    <div class="w-12 h-12 rounded-full">
+                      <img :src="data?.author[0]?.avatar_url" />
+                    </div>
+                  </div>
+                  <div class="mx-3">
+                    {{ data?.author[0]?.name }}
+                    <div class="text-sm italic">
+                      <i>{{ data.createdAt || "vừa xong" }}</i>
+                    </div>
                   </div>
                 </div>
-                <div class="mx-3">
-                  {{ data?.author[0]?.name }}
-                  <div class="text-sm italic">
-                    <i>{{ data.createdAt || "vừa xong" }}</i>
+              </nuxtLink>
+
+              <!-- các btn của tác giả -->
+
+              <div v-if="isAuthor" class="toast toast-top toast-end">
+                <div class="flex space-x-1">
+                  <div @click="openEditF()" class="tooltip" data-tip="sửa câu trả lời">
+                    <div class="btn btn-outline btn-primary">
+                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                    </div>
+                  </div>
+
+                  <div class="tooltip" data-tip="xóa câu trả lời">
+                    <div @click="openDialogDelete()" class="btn btn-outline btn-error">
+                      <OtherVIcon icon="fa-solid fa-trash-can" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </nuxtLink>
-            <!-- phần tag name -->
-            <div
-              v-for="i in data.tag_name"
-              :key="i"
-              class="btn btn-info btn-sm btn-outline mt-2"
-            >
-              {{ "@" + i.name }}
-            </div>
-            <!-- phần nội dung -->
-            <div class="-z-30">
-              <QuillEditor
-                :content="data.content"
-                ref="quill"
-                :readOnly="true"
-                theme="bubble"
-                :toolbar="[]"
-              />
+
+              <!-- phần nội dung -->
+              <div v-if="!openEdit" class="-z-30">
+                <QuillEditor
+                  :content="data.content"
+                  ref="quill"
+                  :readOnly="true"
+                  theme="bubble"
+                  :toolbar="[]"
+                />
+              </div>
+              <!-- phần edit nội dung -->
+              <div v-else class="-z-30">
+                <AnswerVInputAnswer
+                  @send="update"
+                  :loading="loading"
+                  :data="dataAnswer"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -86,35 +127,47 @@
         v-show="!childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
-        hiện {{ countCmt }} bình luận con
+        hiện {{ countCmt }} bình luận
       </div>
       <div
         @click="childCmt = !childCmt"
         v-show="childCmt"
         class="btn btn-ghost btn-xs italic lowercase"
       >
-        ẩn {{ countCmt }} bình luận con
+        ẩn {{ countCmt }} bình luận
       </div>
     </div>
-    <!-- input rep cmt -->
-    <transition name="bounce">
-      <div v-if="inputRep">
-        <CommentsVInputCmt
-          @send="openDialogSignin(rep)"
-          :loading="loading"
-          :data="dataInput"
-          :reset="resetInput"
-        />
-      </div>
-    </transition>
-    <!-- cmt con -->
-    <transition name="bounce">
-      <div v-if="childCmt" class="ml-5">
-        <div v-for="i in list_child" :key="i">
-          <CommentsVCmt :data="i" />
+
+    <!-- cmt -->
+    <div class="ml-5">
+      <div @click="openInputRep()" class="btn btn-primary btn-outline mt-2 mb-5">
+        Nhập bình luận
+        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+          <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+          </div>
         </div>
       </div>
-    </transition>
+      <!-- input rep cmt -->
+      <transition name="bounce">
+        <div v-if="inputRep">
+          <CommentsVInputCmt
+            @send="openDialogSignin(rep)"
+            :loading="loading"
+            :data="dataInput"
+            :reset="resetInput"
+          />
+        </div>
+      </transition>
+      <!-- list cmt  -->
+      <transition name="bounce">
+        <div v-if="childCmt">
+          <div v-for="i in list_child" :key="i">
+            <CommentsVCmt :data="i" />
+          </div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -130,8 +183,9 @@ import { authStore } from "~~/stores/auth.store";
 import { voteStore } from "~~/stores/vote.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { routeStore } from "~~/stores/route.store";
+import { answerStore } from "~~/stores/answer.store";
 
-const usePost = postStore();
+const useAnswer = answerStore();
 const useUser = userStore();
 const useCmt = cmtStore();
 const useAuth = authStore();
@@ -149,19 +203,28 @@ const dataInput = ref({
   content: {},
   tagname: [],
 });
+
+const dataAnswer = ref({
+  content: {},
+});
+
 const list_child = ref([]);
 
 const loading = ref(false);
 const inputRep = ref(false);
 const childCmt = ref(false);
-
+const openEdit = ref(false);
 const loadingVote = ref("");
 
 const countCmt = computed(() => {
   if (list_child.value.length) {
     return list_child.value.length;
   }
-  return props.data.child[0]?.count;
+  return props.data?.comment[0]?.count;
+});
+
+const isAuthor = computed(() => {
+  return props.data.author[0]._id == useAuth.user?.id ?? false;
 });
 
 const valVote = computed(() => {
@@ -181,7 +244,7 @@ const valVote = computed(() => {
 const classUp = computed(() => {
   if (useAuth.user) {
     if (props.data.author) {
-      if (props.data.author[0]?._id == useAuth.user.id) {
+      if (isAuthor.value) {
         return "btn-disabled";
       }
     }
@@ -199,7 +262,7 @@ const classUp = computed(() => {
 const classDown = computed(() => {
   if (useAuth.user) {
     if (props.data.author) {
-      if (props.data.author[0]?._id == useAuth.user.id) {
+      if (isAuthor.value) {
         return "btn-disabled";
       }
     }
@@ -213,6 +276,30 @@ const classDown = computed(() => {
   }
   return "";
 });
+
+function openEditF() {
+  openEdit.value = !openEdit.value;
+  dataAnswer.value.content = props.data.content;
+}
+
+const update = async () => {
+  loading.value = true;
+  const data = {
+    id: props.data._id,
+    content: dataAnswer.value.content,
+  };
+  try {
+    await useAnswer.update(data);
+    await useAnswer.getBy(route.params.id);
+    dataAnswer.value.content = { ops: [{ insert: "\n" }] };
+  } catch (error) {
+    console.log("lỗi gửi sendAnswer");
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+};
+
 const up = async () => {
   loading.value = "up";
   try {
@@ -244,7 +331,7 @@ const up = async () => {
       let id = await useVote.create({
         author: useAuth.user.id,
         val: parseInt(1),
-        comment: props.data._id,
+        answer: props.data._id,
       });
       if (props.data.vote.length > 0) {
         props.data.vote_user[0].val += 1;
@@ -299,7 +386,7 @@ const down = async () => {
       let id = await useVote.create({
         author: useAuth.user.id,
         val: parseInt(-1),
-        comment: props.data._id,
+        answer: props.data._id,
       });
       if (props.data.vote.length > 0) {
         props.data.vote_user[0].val -= 1;
@@ -327,6 +414,27 @@ function openInputRep() {
   inputRep.value = !inputRep.value;
 }
 
+async function choice() {
+  const data = {
+    id: props.data._id,
+  };
+  if (!props.data.choice) {
+    data.choice = true;
+  } else {
+    data.choice = false;
+  }
+  try {
+    loading.value = true;
+    await useAnswer.update(data);
+    await useAnswer.getBy(route.params.id);
+  } catch (error) {
+    console.log("lỗi gửi cmt");
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+}
+
 async function showChildCmt() {
   childCmt.value = !childCmt.value;
   await getBy();
@@ -339,9 +447,8 @@ const rep = async () => {
     list.push(e.id);
   });
   const data = {
-    cmt_parent: props.data._id,
     author: useUser.user.id,
-    post: route.params.id,
+    answer: props.data._id,
     content: dataInput.value.content,
     tag_name: list,
   };
@@ -370,7 +477,7 @@ const rep = async () => {
 
 async function getBy() {
   const user = useAuth.user ? useAuth.user.id : "";
-  const list = await cmtService.getBy("child", props.data._id, user);
+  const list = await cmtService.getBy("answer", props.data._id, user);
   list.forEach((e, i) => {
     list[i].createdAt = useCmt.setTime(list[i].createdAt);
   });
@@ -393,6 +500,23 @@ function openDialogSignin(cb) {
     );
   } else {
     cb();
+  }
+}
+
+function openDialogDelete() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn xóa câu trả lời?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        await useAnswer.deleteOne(props.data._id);
+        await useAnswer.getBy(route.params.id);
+      }
+    );
   }
 }
 </script>

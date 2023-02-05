@@ -6,15 +6,12 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },
-        quenstion: {
+        question: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "question"
         },
         content: Object,
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        choice: Boolean,
     },
 
     {

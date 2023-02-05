@@ -1,15 +1,60 @@
 <template>
   <div class="p-5 bg-base-200 rounded-2xl">
     <QuestionVQuestion :data="useQuestion.question" />
-    <CommentsVInputCmt
-      @send="openDialogSignin(send)"
-      :loading="loading"
-      :data="dataInput"
-      :reset="resetInput"
-    />
+    <!-- bình luận của câu hỏi -->
+    <div @click="openInputCmt = !openInputCmt" class="btn btn-primary btn-outline mb-2">
+      Nhập bình luận
+      <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+        </div>
+      </div>
+    </div>
+    <div v-if="openInputCmt">
+      <CommentsVInputCmt
+        @send="openDialogSignin(send)"
+        :loading="loading"
+        :data="dataInput"
+        :reset="resetInput"
+      />
+    </div>
+
     <div>
       <div v-for="i in useCmt.list_cmt" :key="i">
         <CommentsVCmt :data="i" />
+      </div>
+    </div>
+
+    <!-- nhập câu trả lời -->
+    <div>
+      <div
+        @click="openInputAnswer = !openInputAnswer"
+        class="btn btn-success btn-outline mb-2 mt-5"
+      >
+        Nhập câu trả lời
+      </div>
+      <div v-if="openInputAnswer">
+        <AnswerVInputAnswer
+          @send="openDialogSignin(sendAnswer)"
+          :loading="loading"
+          :data="dataInput"
+          :reset="resetInput"
+        />
+      </div>
+      <div class="lg:flex justify-between mb-3 lg:mb-0">
+        <div class="text-2xl font-bold mb-3">
+          {{ useAnswer.list_answer.length }} câu trả lời
+        </div>
+        <div class="flex space-x-1">
+          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
+          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
+          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
+        </div>
+      </div>
+      <div>
+        <div v-for="i in useAnswer.list_answer" :key="i">
+          <AnswerVAnswer :data="i" />
+        </div>
       </div>
     </div>
   </div>
@@ -18,6 +63,7 @@
 <script setup>
 import { userStore } from "~~/stores/user.store";
 import { cmtStore } from "~~/stores/cmt.store";
+import { answerStore } from "~~/stores/answer.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
@@ -27,6 +73,7 @@ const route = useRoute();
 const useQuestion = questionStore();
 const useUser = userStore();
 const useCmt = cmtStore();
+const useAnswer = answerStore();
 const useRouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
@@ -36,7 +83,37 @@ const dataInput = ref({
   tagname: [],
 });
 
+const openInputCmt = ref(false);
+const openInputAnswer = ref(false);
 const loading = ref(false);
+
+const sendAnswer = async () => {
+  loading.value = true;
+  const data = {
+    author: useUser.user.id,
+    question: useQuestion.question._id,
+    content: dataInput.value.content,
+  };
+  try {
+    if (
+      data.content.ops.length > 1 ||
+      typeof data.content.ops[0].insert != "string" ||
+      data.content.ops[0].insert.trim() != ""
+    ) {
+      await useAnswer.create(data);
+      await useAnswer.getBy(route.params.id);
+      dataInput.value.content = { ops: [{ insert: "\n" }] };
+      dataInput.value.tagname = [];
+      resetInput.value++;
+    }
+    openInputAnswer.value = false;
+  } catch (error) {
+    console.log("lỗi gửi sendAnswer");
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+};
 
 const send = async () => {
   loading.value = true;
@@ -96,6 +173,7 @@ async function getApi() {
   await useQuestion.findOne(route.params.id);
   await useUser.findAll();
   await useCmt.getBy("post", route.params.id);
+  await useAnswer.getBy(route.params.id);
 }
 
 onMounted(() => {
