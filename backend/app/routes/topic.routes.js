@@ -17,14 +17,19 @@ module.exports = (app) => {
     
     router.route('/getedit')
         .get(ctl.findAll2)
+    
+    router.route('/edit/:id')
+        .get(ctl.findOneEdit)
+    
+    router.route('/team/:id')
+        .get(ctl.findByTeam)
 
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
 
-    router.route('/edit/:id')
-        .get(ctl.findOneEdit)
+    
 
     app.use("/api/topic", router);
 }

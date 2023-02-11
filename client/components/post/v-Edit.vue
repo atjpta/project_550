@@ -69,7 +69,7 @@
           </div>
           <select
             v-model="usePost.post_edit.team"
-            v-if="!usePost.post_edit.series.team && list_team.length != 0"
+            v-if="!usePost.post_edit.series?.team && list_team.length != 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option :value="{}">Chung</option>
@@ -77,7 +77,7 @@
           </select>
           <select
             disabled
-            v-if="usePost.post_edit.series.team || list_team.length == 0"
+            v-if="usePost.post_edit.series?.team || list_team.length == 0"
             class="select-sm select select-primary w-full max-w-xs"
           >
             <option v-if="list_team.length == 0">Chung</option>
@@ -220,19 +220,23 @@ const list_status = computed(() => {
 });
 
 const list_series = computed(() => {
+  if (!usePost.post_edit.series) {
+    usePost.post_edit.series = {};
+  }
   let list = [];
   useSeries.List_series_ByUser.forEach((e) => {
-    if (e.id == usePost.post_edit.series._id) {
+    if (e.id == usePost.post_edit.series?._id) {
       list.push(usePost.post_edit.series);
     } else list.push(e);
   });
   return list;
 });
 
+let old = {};
 const list_team = computed(() => {
   let list = [];
-  if (usePost.post_edit.series.name) {
-    if (usePost.post_edit.series.team) {
+  if (usePost.post_edit.series?.name) {
+    if (usePost.post_edit.series.team?.name) {
       list.push(usePost.post_edit.series.team);
       usePost.post_edit.team = {
         name: usePost.post_edit.series.team.name,
@@ -242,12 +246,15 @@ const list_team = computed(() => {
       list = [];
       usePost.post_edit.team = {};
     }
-  } else if (usePost.post_edit.team) {
-    list.push(usePost.post_edit.team);
   } else {
-    usePost.post_edit.team = {};
     list = useTeam.List_team_ByUser;
+    if (!usePost.post_edit.team?.name) {
+      usePost.post_edit.team = {};
+    } else if (usePost.post_edit.team == old) {
+      usePost.post_edit.team = {};
+    }
   }
+  old = usePost.post_edit.team;
   return list;
 });
 

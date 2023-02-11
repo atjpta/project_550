@@ -1,7 +1,10 @@
 <template>
   <div class="p-5 bg-base-200 rounded-2xl">
     <PostVPost :data="usePost.post" />
-    <div @click="openInputCmt = !openInputCmt" class="btn btn-primary btn-outline mb-2">
+    <div
+      @click="openInputCmt = !openInputCmt"
+      class="btn btn-sm btn-primary btn-outline mb-2"
+    >
       Nhập bình luận
       <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
         <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">

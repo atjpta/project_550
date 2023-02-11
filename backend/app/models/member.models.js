@@ -14,6 +14,7 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "role"
         },
+        is_member: Boolean,
     },
 
     {

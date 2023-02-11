@@ -90,13 +90,13 @@
       </div>
       <!-- phần topic -->
       <!-- <div class="mt-5"> -->
-      <div v-if="Object.keys(data?.topic).length != 0" class="mt-5">
+      <div v-if="data.topic?.name" class="mt-5">
         <div class="text-2xl font-semibold">chủ đề</div>
         <div class="btn btn-ghost justify-start">{{ data.topic?.name }}</div>
       </div>
       <!-- phần team -->
       <!-- <div class="mt-5"> -->
-      <div v-if="Object.keys(data.team).length != 0" class="mt-5">
+      <div v-if="data.team?.name" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
         <div class="btn btn-ghost justify-start">{{ data.team?.name }}</div>
       </div>

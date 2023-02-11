@@ -6,6 +6,24 @@ const useAlert = alertStore()
 const url = config.url.api + '/team'
 
 export default {
+
+    update: async (dataO) => {
+        const { data: data, error } = await useFetch(url + `/${dataO.id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            body: dataO,
+            method: "put",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        useAlert.setSuccess("sửa thành công");
+        return data.value
+    },
+
     findAll: async () => {
         const { data: data, error } = await useFetch(url + '', {
             headers: {
@@ -53,6 +71,23 @@ export default {
         // useAlert.setSuccess("test thành công");
         return data.value
     },
+
+    findOneEdit: async (id) => {
+        let apiurl = url + `/edit/${id}`
+        const { data: data, error } = await useFetch(apiurl, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
     
     create: async (dataO) => {
         const { data: data, error } = await useFetch(url + '', {
@@ -68,6 +103,23 @@ export default {
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("tạo thành công");
+        return data.value
+    },
+
+    deleteOne: async (id) => {
+        const { data: data, error } = await useFetch(url + `/${id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "delete",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        useAlert.setSuccess("xóa thành công");
+
         return data.value
     },
 } 

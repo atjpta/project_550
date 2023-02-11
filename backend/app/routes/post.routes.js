@@ -21,6 +21,9 @@ module.exports = (app) => {
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
     
+    router.route('/team/:id/')
+        .get(ctl.findByTeam)
+    
     router.route('/series/:id/')
         .get(ctl.findBySeries)
         .put(ctl.updateSeries)

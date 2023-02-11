@@ -200,6 +200,144 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+
+exports.findByTeam = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    team: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'topic',
+                    as: 'question',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: "$topic",
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'topic',
+                    as: 'score',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'votes',
+                                localField: '_id',
+                                foreignField: 'post',
+                                as: 'vote',
+                                pipeline: [
+                                    {
+                                        $group: {
+                                            _id: '$post',
+                                            val: { $sum: '$val' },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            $addFields: {
+                                val: { $sum: "$vote.val" }
+                            }
+                        }
+                    ],
+
+                },
+            },
+            {
+                $addFields: {
+                    valScore: { $sum: "$score.val" },
+                }
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'topic',
+                    as: 'tag',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'tags',
+                                localField: 'tag',
+                                foreignField: '_id',
+                                as: 'list',
+                            },
+                        },
+                        {
+                            $project: {
+                                "list._id": 1,
+                                'list.name': 1,
+                            }
+                        },
+                    ],
+                },
+            },
+            {
+                $addFields: {
+                    listtag: "$tag.list"
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    'question.count': 1,
+                    'valScore': 1,
+                    'listtag': 1,
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
 exports.findByUser = async (req, res, next) => {
     const { id } = req.params;
 

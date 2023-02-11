@@ -12,12 +12,12 @@ schema.method('toJSON', function () {
     return object;
 });
 
-const Role = mongoose.model("Role", schema)
+const role = mongoose.model("role", schema)
 
 function initRole() {
-    Role.estimatedDocumentCount((err, count) => {
+    role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
-            new Role({
+            new role({
                 name: "user"
             }).save(err => {
                 if (err) {
@@ -25,7 +25,7 @@ function initRole() {
                 }
                 console.log("added 'user' to roles collection");
             });
-            new Role({
+            new role({
                 name: "moderator"
             }).save(err => {
                 if (err) {
@@ -33,7 +33,7 @@ function initRole() {
                 }
                 console.log("added 'moderator' to roles collection");
             });
-            new Role({
+            new role({
                 name: "admin"
             }).save(err => {
                 if (err) {
@@ -41,7 +41,7 @@ function initRole() {
                 }
                 console.log("added 'admin' to roles collection");
             });
-            new Role({
+            new role({
                 name: "chief"
             }).save(err => {
                 if (err) {
@@ -49,7 +49,7 @@ function initRole() {
                 }
                 console.log("added 'chief' to roles collection");
             });
-            new Role({
+            new role({
                 name: "handler"
             }).save(err => {
                 if (err) {
@@ -57,7 +57,7 @@ function initRole() {
                 }
                 console.log("added 'handler' to roles collection");
             });
-            new Role({
+            new role({
                 name: "member"
             }).save(err => {
                 if (err) {
@@ -71,6 +71,6 @@ function initRole() {
 
 
 module.exports = {
-    Role,
+    role,
     initRole,
 };

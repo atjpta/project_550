@@ -14,14 +14,20 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
+    
+    router.route('/my/:id')
+        .get(ctl.findByUser)
+    
+    router.route('/edit/:id/')
+        .get(ctl.findOneEdit)
+    
 
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
     
-    router.route('/my/:id')
-        .get(ctl.findByUser)
+    
 
 
     app.use("/api/team", router);

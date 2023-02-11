@@ -2,7 +2,10 @@
   <div class="p-5 bg-base-200 rounded-2xl">
     <QuestionVQuestion :data="useQuestion.question" />
     <!-- bình luận của câu hỏi -->
-    <div @click="openInputCmt = !openInputCmt" class="btn btn-primary btn-outline mb-2">
+    <div
+      @click="openInputCmt = !openInputCmt"
+      class="btn btn-sm btn-primary btn-outline mb-2"
+    >
       Nhập bình luận
       <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
         <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -29,7 +32,7 @@
     <div>
       <div
         @click="openInputAnswer = !openInputAnswer"
-        class="btn btn-success btn-outline mb-2 mt-5"
+        class="btn btn-sm btn-success btn-outline mb-2 mt-5"
       >
         Nhập câu trả lời
       </div>

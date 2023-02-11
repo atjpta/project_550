@@ -6,6 +6,18 @@ const useAlert = alertStore()
 const url = config.url.api + '/topic'
 
 export default {
+
+    findByTeam: async (id) => {
+        const { data: data, error } = await useFetch(url + `/team/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findAll: async () => {
         const { data: data, error } = await useFetch(url + '', {
             headers: {

@@ -56,12 +56,6 @@ export const postStore = defineStore("postStore", {
         },
 
         check() {
-            if (!this.post.series) {
-                this.post.series = {}
-            }
-            if (!this.post.team) {
-                this.post.team = {}
-            }
             if (this.post.tag) {
                 this.post.tag = new Set(this.post.tag)
             } else {
@@ -88,6 +82,13 @@ export const postStore = defineStore("postStore", {
         },
         async findAll() {
             this.list = await postService.findAll();
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByTeam(id) {
+            this.list = await postService.findByTeam(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });

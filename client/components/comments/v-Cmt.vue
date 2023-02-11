@@ -33,8 +33,10 @@
               <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
             </div>
 
-            <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
-              <OtherVIcon class-icon="" icon="fa-solid fa-share" />
+            <div class="tooltip" data-tip="trả lời bình luận">
+              <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
+                <OtherVIcon class-icon="" icon="fa-solid fa-share" />
+              </div>
             </div>
           </div>
           <!-- tác giả -->

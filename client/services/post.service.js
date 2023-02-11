@@ -7,6 +7,17 @@ const url = config.url.api + '/post'
 
 export default {
 
+    findByTeam: async (id) => {
+        const { data: data, error } = await useFetch(url + `/team/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findBySeries: async (id) => {
         const { data: data, error } = await useFetch(url + `/series/${id}`, {
             method: "get",
@@ -68,7 +79,7 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        // useAlert.setSuccess("test thành công");
+        // useAlert.setSuccess("sửa thành công");
         return data.value
     },
 

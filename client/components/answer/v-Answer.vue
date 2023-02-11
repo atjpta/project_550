@@ -140,7 +140,7 @@
 
     <!-- cmt -->
     <div class="ml-5">
-      <div @click="openInputRep()" class="btn btn-primary btn-outline mt-2 mb-5">
+      <div @click="openInputRep()" class="btn btn-sm btn-primary btn-outline mt-2 mb-5">
         Nhập bình luận
         <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
           <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">

@@ -10,7 +10,7 @@
           <div class="w-full">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
-                <nuxtLink class="" :to="`/team/${data.id}`">
+                <nuxtLink class="" :to="`/team/${data._id}/list-post`">
                   <!-- tên team -->
                   <div
                     class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 hover:scale-110 duration-500"
@@ -20,14 +20,60 @@
                 </nuxtLink>
               </div>
 
+              <!-- phần tùy chọn cho chủ nhóm -->
+              <div v-if="data.role == 'chief'" class="z-10 flex justify-end">
+                <div class="space-x-1 flex justify-end">
+                  <nuxtLink
+                    :to="`/team/edit/${data._id ?? data.id}`"
+                    class="tooltip"
+                    data-tip="sửa team"
+                  >
+                    <div class="btn btn-outline btn-primary">
+                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                    </div>
+                  </nuxtLink>
+
+                  <div class="tooltip" data-tip="xóa team">
+                    <div
+                      :class="[loading ? 'loading' : '']"
+                      @click="openDialogDelete()"
+                      class="btn btn-outline btn-error"
+                    >
+                      <OtherVIcon icon="fa-solid fa-trash-can" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- phần tùy chọn cho người đọc -->
-              <div class="dropdown dropdown-end z-10 flex justify-end">
-                <div class="tooltip" data-tip="xin vào nhóm">
+              <div v-else class="dropdown dropdown-end z-10 flex justify-end">
+                <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
                   <div
                     @click="openDialogJoinTeam()"
+                    :class="[loading ? 'loading' : '']"
                     class="btn btn-outline btn-secondary mr-1"
                   >
-                    <OtherVIcon icon="fa-solid fa-right-to-bracket" />
+                    gia nhập
+                  </div>
+                </div>
+
+                <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
+                  <div
+                    @click="openDialogDeleteRequest()"
+                    :class="[loading ? 'loading' : '']"
+                    class="btn btn-outline btn-warning mr-1"
+                  >
+                    hủy gia nhập
+                  </div>
+                </div>
+
+                <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
+                  <div
+                    @click="openDialogOutTeam()"
+                    :class="[loading ? 'loading' : '']"
+                    class="btn btn-outline btn-error mr-1"
+                  >
+                    thoát
                   </div>
                 </div>
 
@@ -74,13 +120,13 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex justify-around mt-2">
-          <div>
-            <OtherVIcon icon="fa-solid fa-star" />
-            0
+          <div class="tooltip" data-tip="điểm nhóm">
+            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
+            {{ valVote }}
           </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-users-line" />
-            0
+          <div class="tooltip" data-tip="số lượng thành viên">
+            <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
+            {{ slmember }}
           </div>
         </div>
       </div>
@@ -91,8 +137,10 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
-import { postStore } from "~~/stores/post.store";
+import { teamStore } from "~~/stores/team.store";
 import { routeStore } from "~~/stores/route.store";
+import { memberStore } from "~~/stores/member.store";
+import { roleStore } from "~~/stores/role.store";
 
 const props = defineProps({
   data: Object,
@@ -100,24 +148,52 @@ const props = defineProps({
 
 const useDialog = dialogStore();
 const useAuth = authStore();
-const usePost = postStore();
+const useTeam = teamStore();
 const route = useRoute();
 const useRouteT = routeStore();
-const valVote = computed(() => {
-  if (props.data.vote) {
-    let val = props.data.vote?.val;
-    if (val != undefined) {
-      if (val > 0) {
-        return "+" + val;
-      } else if (val == 0) {
-        return 0;
-      } else return val;
-    }
+const useMember = memberStore();
+const useRole = roleStore();
+const loading = ref(false);
+let idMember;
+const slmember = computed(() => {
+  let sl = 0;
+  if (props.data.member?.length) {
+    props.data.member.forEach((e) => {
+      if (e.is_member) {
+        sl++;
+      }
+    });
   }
-  return 0;
+  return sl;
 });
 
-function openDialogDelete() {
+const isRequest = computed(() => {
+  let status = "join";
+  if (props.data?.member?.length) {
+    props.data.member.forEach((e) => {
+      if (e.user == useAuth.user.id && !e.is_member) {
+        status = "loading";
+        idMember = e._id;
+      } else if (e.user == useAuth.user.id && e.is_member) {
+        status = "joined";
+        idMember = e._id;
+      }
+    });
+  }
+  return status;
+});
+const valVote = computed(() => {
+  let val = 0;
+  props.data.vote_post?.forEach((e) => {
+    val += e.val;
+  });
+  props.data.vote_question?.forEach((e) => {
+    val += e.val;
+  });
+  return val;
+});
+
+async function openDialogDelete() {
   if (useAuth.isUserLoggedIn) {
     useDialog.showDialog(
       {
@@ -127,16 +203,86 @@ function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        try {
+          loading.value = true;
+          await useTeam.deleteOne(props.data._id || props.data.id);
+          await useTeam.findAll();
+        } catch (error) {
+          console.log(error);
+          console.log("lỗi xóa ");
+        } finally {
+          loading.value = false;
+        }
       }
     );
   }
 }
 
-function openDialogJoinTeam() {
+function openDialogDeleteRequest() {
+  useDialog.showDialog(
+    {
+      title: "Thông báo cực căng!",
+      content: "bạn chắc chắn muốn hủy bỏ yêu cầu?",
+      btn1: "ok",
+      btn2: "hủy",
+    },
+    async () => {
+      try {
+        loading.value = true;
+        await useMember.deleteOne(idMember);
+        await useTeam.findAll();
+      } catch (error) {
+        console.log(error);
+        console.log("lỗi xóa ");
+      } finally {
+        loading.value = false;
+      }
+    }
+  );
+}
+
+function openDialogOutTeam() {
+  useDialog.showDialog(
+    {
+      title: "Thông báo cực căng!",
+      content: "bạn chắc chắn muốn thoát khỏi nhóm?",
+      btn1: "ok",
+      btn2: "hủy",
+    },
+    async () => {
+      try {
+        loading.value = true;
+        await useMember.deleteOne(idMember);
+        await useTeam.findAll();
+      } catch (error) {
+        console.log(error);
+        console.log("lỗi xóa ");
+      } finally {
+        loading.value = false;
+      }
+    }
+  );
+}
+
+async function openDialogJoinTeam() {
   if (useAuth.isUserLoggedIn) {
-    // xử lý hàm xin tham gia
+    try {
+      loading.value = true;
+
+      const data = {
+        team: props.data._id || props.data.id,
+        user: useAuth.user.id,
+        role: useRole.getIdMember,
+        is_member: false,
+      };
+      await useMember.create(data);
+      await useTeam.findAll();
+    } catch (error) {
+      console.log(error);
+      console.log("lỗi tạo request member");
+    } finally {
+      loading.value = false;
+    }
   } else {
     useDialog.showDialog(
       {
@@ -151,13 +297,5 @@ function openDialogJoinTeam() {
       }
     );
   }
-}
-
-async function goReadPost() {
-  await usePost.update({
-    id: props.data._id,
-    view: props.data.view + 1,
-  });
-  navigateTo(`/post/${props.data._id}`);
 }
 </script>

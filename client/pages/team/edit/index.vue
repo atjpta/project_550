@@ -17,7 +17,7 @@ const loading = ref(false);
 
 function formatData(listtag) {
   const data = {
-    author: team.author.id,
+    user: team.author.id,
     status: [team.status.id],
     name: team.name,
     introduce: team.introduce,

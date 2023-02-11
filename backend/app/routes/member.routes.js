@@ -1,10 +1,10 @@
+
 const controller = require("../controllers");
-const ctl = controller.series;
+const ctl = controller.member;
 
 const middlewares = require("../middlewares");
-const verifySignUp = middlewares.verifySignUp;
-const authJwt = middlewares.authJwt;
-const checkDuplicate = middlewares.withoutDuplicates
+const memberMid = middlewares.memberMid;
+
 const express = require("express");
 
 module.exports = (app) => {
@@ -12,24 +12,22 @@ module.exports = (app) => {
     const router = express.Router();
     router.route("/")
         .get(ctl.findAll)
-        .post(ctl.create)
+        .post([memberMid.check_request], ctl.create)
         .delete(ctl.deleteAll)
-
+    
     router.route('/team/:id')
         .get(ctl.findByTeam)
-
-    router.route('/my/:id')
-        .get(ctl.findByUser)
-
-    router.route('/edit/:id')
-        .get(ctl.findOneEdit)
     
+    router.route('/request/:id')
+        .get( ctl.findByRequestTeam)
+
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
-    
-    
 
-    app.use("/api/series", router);
-}
+
+    app.use("/api/member", router);
+
+
+};

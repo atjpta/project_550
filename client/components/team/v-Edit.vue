@@ -18,7 +18,7 @@
         <div class="text-xl font-semibold mt-5">
           Biểu tượng nhóm
           <div>
-            <ImageVUploadsimple :data="useTeam.team_edit.image_cover_url" />
+            <ImageVUploadsimple :data="useTeam.team_edit?.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
@@ -147,7 +147,7 @@ function showPreview() {
 
 async function getApi() {
   if (route.params.id) {
-    await useTeam.teamOne(route.params.id);
+    await useTeam.findOneEdit(route.params.id);
     useTeam.team_edit = useTeam.team;
   } else {
     useTeam.resetTeamEdit();

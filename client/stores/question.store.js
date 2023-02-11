@@ -16,13 +16,10 @@ export const questionStore = defineStore("questionStore", {
         return {
             question_edit: {
                 tag: new Set(),
-                topic: {},
             },
             question: {
                 tag: new Set(),
                 author: {},
-                topic: {},
-                team: {},
                 status: {},
                 content: {},
             },
@@ -48,12 +45,6 @@ export const questionStore = defineStore("questionStore", {
         },
 
         check() {
-            if (!this.question.topic) {
-                this.question.topic = {}
-            }
-            if (!this.question.team) {
-                this.question.team = {}
-            }
             if (this.question.tag) {
                 this.question.tag = new Set(this.question.tag)
             } else {
@@ -75,11 +66,19 @@ export const questionStore = defineStore("questionStore", {
 
         async findOneEdit(id) {
             this.question = await questionService.findOneEdit(id);
+
             this.question.createdAt = this.setTime(this.question.createdAt)
             this.check()
         },
         async findAll() {
             this.list = await questionService.findAll();
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByTeam(id) {
+            this.list = await questionService.findByTeam(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });

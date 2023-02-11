@@ -359,7 +359,7 @@ function openDialogSignin(cb) {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = `/post/${props.data._id}`;
+        useRoute.redirectedFrom = `/question/${props.data._id}`;
       }
     );
   } else {

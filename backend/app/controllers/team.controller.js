@@ -3,16 +3,18 @@ const DB = require("../models");
 const model = DB.team;
 const member = DB.member
 const role = DB.role
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
         image_cover_url: req.body.image_cover_url,
-        name: req.body.name,
+        name: req.body.name ?? 'tên nhóm nè ^^',
         introduce: req.body.introduce,
         status: req.body.status,
+        tag: req.body.tag,
     })
     try {
-        await modelO.save((error, doc) => { 
+        await modelO.save((error, doc) => {
             if (error) {
                 return res.status(500).send({ message: error + 'không lưu được' });
             }
@@ -20,6 +22,7 @@ exports.create = async (req, res, next) => {
                 if (error_role) {
                     return res.status(500).send({ message: error + 'không lưu được' });
                 }
+                console.log(req.body.user);
                 const memberO = new member({
                     user: req.body.user,
                     team: doc.id,
@@ -41,9 +44,133 @@ exports.create = async (req, res, next) => {
     }
 };
 
+exports.findAll2 = async (req, res, next) => {
+    try {
+        const document = await model.find({ _id: { $ne: req.params.id } }).populate({
+            path: 'tag'
+        }).sort({ 'createdAt': -1 })
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find({ _id: { $ne: req.params.id } }).sort({'createdAt': -1})
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'list_post',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_post._id',
+                    foreignField: 'post',
+                    as: 'vote_post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'list_question',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_question._id',
+                    foreignField: 'post',
+                    as: 'vote_question',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'members',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'member',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'roles',
+                                localField: 'role',
+                                foreignField: '_id',
+                                as: 'role',
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'createdAt': 1,
+                    'image_cover_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'vote_post': 1,
+                    'vote_question': 1,
+                    'status': 1,
+                    'member._id': 1,
+                    'member.user': 1,
+                    'member.is_member': 1,
+                    'member.role._id': 1,
+                    'member.role.name': 1,
+
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
         return res.json(document);
     } catch (error) {
         return next(
@@ -57,7 +184,8 @@ exports.findByUser = async (req, res, next) => {
 
     try {
         const document = await member.find({ user: id }).populate({
-            path: 'team'
+            path: 'team',
+            select: 'id name'
         })
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
@@ -72,12 +200,141 @@ exports.findByUser = async (req, res, next) => {
 
 exports.findOne = async (req, res, next) => {
     const { id } = req.params;
+
+
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    _id: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'list_post',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_post._id',
+                    foreignField: 'post',
+                    as: 'vote_post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'list_question',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_question._id',
+                    foreignField: 'post',
+                    as: 'vote_question',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'members',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'member',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'roles',
+                                localField: 'role',
+                                foreignField: '_id',
+                                as: 'role',
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'createdAt': 1,
+                    'image_cover_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'vote_post': 1,
+                    'vote_question': 1,
+                    'status': 1,
+                    'member._id': 1,
+                    'member.user': 1,
+                    'member.is_member': 1,
+                    'member.role._id': 1,
+                    'member.role.name': 1,
+
+                }
+            },
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
+exports.findOneEdit = async (req, res, next) => {
+    const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
     };
 
     try {
-        const document = await model.findOne(condition)
+        const document = await model.findOne(condition).populate({
+            path: 'tag status'
+        })
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }

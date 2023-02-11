@@ -21,7 +21,7 @@ function innitDB (){
     notificationtypeM.initNotificationtype()
 }
 
-const role = roleM.Role
+const role = roleM.role
 const status = statusM.status 
 const notificationtype = notificationtypeM.notificationtype
 

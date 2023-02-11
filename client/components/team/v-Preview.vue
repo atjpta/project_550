@@ -37,28 +37,12 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex justify-around mt-2">
-          <div>
-            <OtherVIcon icon="fa-solid fa-star" />
+          <div class="tooltip" data-tip="điểm nhóm">
+            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             0
           </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-file-lines" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-layer-group" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-file-circle-question" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-layer-group" />
-            0
-          </div>
-          <div>
-            <OtherVIcon icon="fa-solid fa-users-line" />
+          <div class="tooltip" data-tip="số lượng thành viên">
+            <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
             0
           </div>
         </div>

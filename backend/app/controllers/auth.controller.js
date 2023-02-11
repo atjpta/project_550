@@ -31,7 +31,9 @@ exports.signin = (req, res) => {
   User.findOne({
     username: req.body.username
   })
-    .populate("role", "-__v")
+    // .populate({
+    //   path: 'role',
+    // })
     .exec((err, user) => {
       if (err) {
         return res.status(500).send({ message: err + "không thể tìm thấy user" });

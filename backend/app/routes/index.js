@@ -11,6 +11,8 @@ const vote = require('./vote.routes')
 const question = require('./question.routes')
 const topic = require('./topic.routes')
 const answer = require('./answer.routes')
+const member = require('./member.routes')
+const role = require('./role.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -25,4 +27,6 @@ exports.Start = (app) => {
     topic(app)
     question(app)
     answer(app)
+    member(app)
+    role(app)
 }

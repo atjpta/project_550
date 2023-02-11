@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <!-- các nut lọc -->
     <div class="flex justify-between">
       <div class="space-x-1">
@@ -27,11 +27,13 @@ import { authStore } from "~~/stores/auth.store";
 import { teamStore } from "~~/stores/team.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
+import { roleStore } from "~~/stores/role.store";
 
 const useTeam = teamStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRoute = routeStore();
+const useRole = roleStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -50,8 +52,13 @@ function openDialogSignin() {
     navigateTo("/team/edit");
   }
 }
+
+async function getApi() {
+  await useRole.findAll();
+  await useTeam.findAll();
+}
 onMounted(() => {
-  useTeam.findAll();
+  getApi();
 });
 </script>
 
