@@ -34,6 +34,10 @@ export const topicStore = defineStore("topicStore", {
             this.List_topic = await topicService.findByTeam(id);
         },
 
+        async findByUserTeam(id, team) {
+            this.List_topic = await topicService.findByUserTeam(id, team);
+        },
+
         async getEdit() {
             this.List_topic = await topicService.getEdit();
         },

@@ -51,11 +51,11 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRouteS.redirectedFrom = "/post/edit";
+        useRouteS.redirectedFrom = `/topic/team/${useTeam.team[0]._id}`;
       }
     );
   } else {
-    navigateTo("/post/edit");
+    navigateTo(`/topic/team/${useTeam.team[0]._id}`);
   }
 }
 

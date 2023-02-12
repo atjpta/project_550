@@ -200,6 +200,24 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+exports.findByUserTeam = async (req, res, next) => {
+    const { id, team } = req.params;
+
+    try {
+        const document = await model.find({ team: team }).populate({
+            path: 'team'
+        })
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
 
 exports.findByTeam = async (req, res, next) => {
     const { id } = req.params;

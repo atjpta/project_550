@@ -18,6 +18,17 @@ export default {
         return data.value
     },
 
+    findByUserTeam: async (id, team) => {
+        const { data: data, error } = await useFetch(url + `/my/${id}/${team}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     
     findAll: async () => {
         const { data: data, error } = await useFetch(url + '', {

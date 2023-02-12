@@ -33,29 +33,6 @@
           </div>
           <TagVTag :data="usePost.post_edit.tag" />
         </div>
-        <!-- phần chọn serise -->
-        <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
-            Chọn chuỗi bài viết
-            <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
-          <select
-            v-model="usePost.post_edit.series"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
-            <option :value="{}">Không có</option>
-            <option :value="i" v-for="i in list_series" :key="i">
-              {{ i.name }}
-            </option>
-          </select>
-        </div>
-        <nuxt-link to="/series/edit">
-          <div class="btn btn-ghost btn-xs italic lowercase">tạo chuỗi bài viết mới?</div>
-        </nuxt-link>
 
         <!-- chọn trạng thái -->
         <div>
@@ -190,26 +167,17 @@ const list_status = computed(() => {
   return useStatus.getPost;
 });
 
-const list_series = computed(() => {
-  if (!usePost.post_edit.series) {
-    usePost.post_edit.series = {};
-  }
-  let list = [];
-  useSeries.List_series.forEach((e) => {
-    if (e.id == usePost.post_edit.series?._id) {
-      list.push(usePost.post_edit.series);
-    } else list.push(e);
-  });
-  return list;
-});
-
 const emit = defineEmits(["save"]);
 
 function getdata() {
   usePost.post_edit.author = useUser.user;
   usePost.post_edit.status = selectStatus.value;
   usePost.post_edit.content = quill.value.getContents();
-  usePost.post_edit.team = useSeries.List_series[0].team;
+  usePost.post_edit.team = useSeries.series.team[0] ?? {};
+  usePost.post_edit.series = {
+    id: useSeries.series._id,
+    name: useSeries.series.name,
+  };
 }
 
 function save() {
@@ -227,11 +195,11 @@ const setContent = () => {
 };
 
 async function getApi() {
-  await useSeries.findByUserTeam(useAuth.user.id, route.params.id);
-  await useStatus.findAll();
+  await useSeries.findOne(route.params.id);
 }
 
 onMounted(() => {
+  useStatus.findAll();
   getApi();
 });
 

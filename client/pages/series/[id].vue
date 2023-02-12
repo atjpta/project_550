@@ -34,7 +34,7 @@
             useAuth.user?.id == useSeries.series.author[0]?._id
           "
         >
-          <nuxt-link to="/post/edit">
+          <nuxt-link :to="`/post/series/${route.params.id}`">
             <div class="btn btn-ghost btn-xs italic lowercase">tạo bài viết mới?</div>
           </nuxt-link>
         </div>

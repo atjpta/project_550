@@ -34,6 +34,10 @@ export const seriesStore = defineStore("seriesStore", {
         async findByTeam(id) {
             this.List_series = await seriesService.findByTeam(id);
         },
+        async findByUserTeam(id, team) {
+            this.List_series = await seriesService.findByUserTeam(id, team);
+        },
+
 
         async findByUser(id) {
             this.List_series_ByUser = await seriesService.findByUser(id);

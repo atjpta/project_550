@@ -1,39 +1,38 @@
 <template>
   <div>
-    <PostVEditS @save="save" :loading="loading" />
+    <QuestionVEditT @save="save" :loading="loading" />
   </div>
 </template>
 
 <script setup>
 import { imageStore } from "~~/stores/image.store";
-import { postStore } from "~~/stores/post.store";
+import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
 
 const useImage = imageStore();
 const useTag = tagStore();
-const usePost = postStore();
-let post;
+const useQuestion = questionStore();
+let question;
 const loading = ref(false);
 
 function formatData(listtag) {
   const data = {
-    author: post.author.id,
-    content: post.content,
-    series: post.series.id,
-    status: [post.status.id],
-    title: post.title,
-    team: post.team._id,
-    image_cover_url: useImage.url ?? post.image_cover_url,
+    author: question.author.id,
+    content: question.content,
+    topic: question.topic.id,
+    status: [question.status.id],
+    title: question.title,
+    team: question.team._id,
   };
   if (listtag) {
-    const array = Array.from(post.tag);
+    const array = Array.from(question.tag);
     const tag = listtag;
     array.forEach((e) => {
       tag.push(e.id);
     });
     data.tag = tag;
   } else {
-    const array = Array.from(post.tag);
+    const array = Array.from(question.tag);
     const tag = [];
     array.forEach((e) => {
       tag.push(e.id);
@@ -44,18 +43,14 @@ function formatData(listtag) {
 }
 
 async function save() {
-  post = usePost.post_edit;
+  question = useQuestion.question_edit;
   loading.value = true;
   try {
-    const listtag = await useTag.createAll(post.tag);
+    const listtag = await useTag.createAll(question.tag);
     const data = formatData(listtag);
-    if (useImage.url) {
-      await useImage.uploadImage();
-      data.image_cover_url = useImage.url;
-    }
-    const id = await usePost.create(data);
-    usePost.resetPostEdit();
-    navigateTo(`/post/${id}`);
+    const id = await useQuestion.create(data);
+    useQuestion.resetQuestionEdit();
+    navigateTo(`/question/${id}`);
   } catch (error) {
     console.log(error);
   } finally {

@@ -79,7 +79,7 @@
             <!-- tag -->
             <div class="mt-4">
               <div
-                v-for="i in data.tag"
+                v-for="i in list_tag"
                 :key="i._id"
                 class="btn btn-outline btn-sm mr-1 mt-1"
               >
@@ -119,6 +119,31 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
 const useTopic = topicStore();
+
+const list_tag = computed(() => {
+  let list = [];
+  if (props.data.listtag?.length > 0) {
+    props.data.listtag.forEach((e) => {
+      e.forEach((ee) => {
+        check(list, ee);
+      });
+    });
+  }
+  return list;
+});
+
+function check(list, tag) {
+  let mark = 0;
+  list.forEach((e) => {
+    if (e._id == tag._id) {
+      mark = 1;
+      return;
+    }
+  });
+  if (mark == 0) {
+    list.push(tag);
+  }
+}
 
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {

@@ -21,7 +21,9 @@
         </div>
         <div v-if="!isTopic">
           <div
-            @click="openDialogSignin(() => navigateTo(`/question/edit`))"
+            @click="
+              openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
+            "
             class="btn btn-ghost btn-xs italic lowercase"
           >
             tạo câu hỏi mới?

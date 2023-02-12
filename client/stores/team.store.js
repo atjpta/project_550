@@ -20,7 +20,7 @@ export const teamStore = defineStore("teamStore", {
 
         roleTeam(list) {
             let role = ''
-            if (authStore().user.id) {
+            if (authStore().user?.id) {
                 list.forEach((e) => {
                     if (e.user == authStore().user.id) {
                         role = e.role[0].name

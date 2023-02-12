@@ -18,6 +18,9 @@ module.exports = (app) => {
     router.route('/getedit')
         .get(ctl.findAll2)
     
+    router.route('/my/:id/:team')
+        .get(ctl.findByUserTeam)
+    
     router.route('/edit/:id')
         .get(ctl.findOneEdit)
     

@@ -104,19 +104,29 @@ const props = defineProps({
 });
 
 const list_tag = computed(() => {
-  let list = new Set();
-  if (props.data.listtag) {
+  let list = [];
+  if (props.data.listtag?.length > 0) {
     props.data.listtag.forEach((e) => {
-      if (e.length > 0) {
-        e.forEach((e2) => {
-          list.add(e2);
-        });
-      }
+      e.forEach((ee) => {
+        check(list, ee);
+      });
     });
   }
   return list;
 });
 
+function check(list, tag) {
+  let mark = 0;
+  list.forEach((e) => {
+    if (e._id == tag._id) {
+      mark = 1;
+      return;
+    }
+  });
+  if (mark == 0) {
+    list.push(tag);
+  }
+}
 const author = computed(() => {
   if (props.data.author) {
     return props.data.author[0];

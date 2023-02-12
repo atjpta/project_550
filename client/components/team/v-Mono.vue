@@ -171,10 +171,10 @@ const isRequest = computed(() => {
   let status = "join";
   if (props.data?.member?.length) {
     props.data.member.forEach((e) => {
-      if (e.user == useAuth.user.id && !e.is_member) {
+      if (e.user == useAuth.user?.id && !e.is_member) {
         status = "loading";
         idMember = e._id;
-      } else if (e.user == useAuth.user.id && e.is_member) {
+      } else if (e.user == useAuth.user?.id && e.is_member) {
         status = "joined";
         idMember = e._id;
       }
@@ -271,7 +271,7 @@ async function openDialogJoinTeam() {
 
       const data = {
         team: props.data._id || props.data.id,
-        user: useAuth.user.id,
+        user: useAuth.user?.id,
         role: useRole.getIdMember,
         is_member: false,
       };

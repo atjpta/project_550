@@ -23,7 +23,6 @@ function formatData(listtag) {
     topic: (question.topic.id || question.topic._id) ?? " ",
     team: (question.team.id || question.team._id) ?? " ",
   };
-  console.log(data);
   if (listtag) {
     const array = Array.from(question.tag);
     const tag = listtag;

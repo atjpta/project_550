@@ -14,12 +14,20 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
+    
+    router.route('/my/:id/:team')
+        .get(ctl.findByUserTeam)
 
     router.route('/team/:id')
         .get(ctl.findByTeam)
+    
+    
+
 
     router.route('/my/:id')
         .get(ctl.findByUser)
+    
+ 
 
     router.route('/edit/:id')
         .get(ctl.findOneEdit)
