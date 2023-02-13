@@ -21,5 +21,8 @@ export const userStore = defineStore("userStore", {
         async findAll() {
             this.list_user = await userService.findAll();
         },
+        async update(data) {
+            await userService.update(data);
+        },
     }
 });

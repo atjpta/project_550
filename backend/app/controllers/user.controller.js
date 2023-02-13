@@ -25,10 +25,12 @@ exports.findOne = async (req, res, next) => {
     };
 
     try {
-        const document = await model.findOne(condition).select([
+        const document = await model.findOne(condition).populate('role').select([
             "name",
             "id",
             "avatar_url",
+            'role',
+            'introduce'
         ]);
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
