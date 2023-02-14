@@ -202,7 +202,7 @@ function closeMenu() {
 
 <style>
 .router-link-exact-active {
-  color: white;
+  color: rgb(255, 255, 255);
   background: rgba(120, 0, 255);
 }
 .bounce-enter-active {

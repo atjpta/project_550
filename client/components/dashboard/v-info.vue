@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-2xl bg-base-200 py-5">
+  <div class="rounded-2xl bg-base-200 py-5 lg:pl-5">
     <div class="lg:flex justify-evenly">
       <!-- ảnh -->
       <div class="w-64 mx-auto lg:mx-0">

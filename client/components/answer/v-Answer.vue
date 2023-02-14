@@ -184,9 +184,11 @@ import { voteStore } from "~~/stores/vote.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { routeStore } from "~~/stores/route.store";
 import { answerStore } from "~~/stores/answer.store";
+import { questionStore } from "~~/stores/question.store";
 
 const useAnswer = answerStore();
 const useUser = userStore();
+const useQuestion = questionStore();
 const useCmt = cmtStore();
 const useAuth = authStore();
 const useVote = voteStore();
@@ -224,7 +226,7 @@ const countCmt = computed(() => {
 });
 
 const isAuthor = computed(() => {
-  return props.data.author[0]._id == useAuth.user?.id ?? false;
+  return useQuestion.question.author[0]._id == useAuth.user?.id ?? false;
 });
 
 const valVote = computed(() => {

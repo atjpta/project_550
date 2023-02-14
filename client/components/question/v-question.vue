@@ -109,9 +109,11 @@
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
       </div>
       <!-- tag -->
-      <div class="mt-4">
-        <div v-for="i in data.tag" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
-          {{ i.name }}
+      <div class="mt-4 flex">
+        <div v-for="i in data.tag" :key="i._id" class="">
+          <nuxt-link :to="`/tag/${i._id}`" class="btn btn-outline btn-sm mr-1 mt-1">{{
+            "#" + i.name
+          }}</nuxt-link>
         </div>
       </div>
       <!-- phần series -->
