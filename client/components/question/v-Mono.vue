@@ -175,10 +175,13 @@ function openDialogDelete() {
 }
 
 async function goReadPost() {
-  await useQuestion.update({
-    id: props.data._id,
-    view: props.data.view + 1,
-  });
-  navigateTo(`/question/${props.data._id}`);
+  if (useAuth.user && useAuth.user.id == props.data.author[0]._id) {
+  } else {
+    await useQuestion.update({
+      id: props.data._id,
+      view: props.data.view + 1,
+    });
+  }
+  navigateTo(`/post/${props.data._id}`);
 }
 </script>

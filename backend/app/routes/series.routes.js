@@ -20,14 +20,11 @@ module.exports = (app) => {
 
     router.route('/team/:id')
         .get(ctl.findByTeam)
-    
-    
-
+    router.route('/author/:id')
+        .get(ctl.findByAuthor)
 
     router.route('/my/:id')
         .get(ctl.findByUser)
-    
- 
 
     router.route('/edit/:id')
         .get(ctl.findOneEdit)

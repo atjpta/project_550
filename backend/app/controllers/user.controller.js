@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.user;
+const ObjectId = mongoose.Types.ObjectId;
 
 
 exports.findAll = async (req, res, next) => {
@@ -32,6 +33,155 @@ exports.findOne = async (req, res, next) => {
             'role',
             'introduce'
         ]);
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }   
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
+exports.findOverView = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    _id: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'list_post',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_post._id',
+                    foreignField: 'post',
+                    as: 'vote_post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'questions',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'list_question',
+                },
+
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_question._id',
+                    foreignField: 'post',
+                    as: 'vote_question',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'list_answer',
+                    
+                },
+
+            },
+            
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: 'list_answer._id',
+                    foreignField: 'answer',
+                    as: 'vote_answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$answer',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'series',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'series',
+                },
+            },
+            
+            {
+                $lookup: {
+                    from: 'topics',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'topic',
+                },
+            },
+            // cái này phải để dưới thì cái $ kia mới có
+            {
+                $addFields: {
+                    seriesCount: { $size: "$series" },
+                    topicCount: { $size: "$topic" },
+                    postCount: { $size: "$list_post" },
+                    questionCount: { $size: "$list_question" },
+                    answerCount: { $size: "$list_answer" },
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'createdAt': 1,
+                    'vote_post': 1,
+                    'vote_question': 1,
+                    'seriesCount': 1,
+                    'topicCount': 1,
+                    'team': 1,
+                    'follow': 1,
+                    'vote_answer': 1,
+                    'postCount': 1,
+                    'questionCount': 1,
+                    'answerCount': 1,
+
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }

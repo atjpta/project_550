@@ -1,7 +1,7 @@
 const app = require('./app');
 const config = require('./app/config');
 const mongodb = require("mongoose");
-const model = require('./app/models')
+const model = require('./app/models');
 
 const { default: mongoose } = require('mongoose');
 // báo strictQuery qq gì đó

@@ -72,6 +72,22 @@ export default {
         return data.value
     },
 
+    findTeamByUser: async (id) => {
+        const { data: data, error } = await useFetch(url + `/myteam/${id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
+
     findByRequestTeam: async (id) => {
         const { data: data, error } = await useFetch(url + `/request/${id}`, {
             headers: {

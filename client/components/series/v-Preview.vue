@@ -75,7 +75,7 @@
           </div>
         </div>
         <!-- phần team -->
-        <div v-if="data.team.name" class="mt-5">
+        <div v-if="data.team?.name" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
           <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
         </div>

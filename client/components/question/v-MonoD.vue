@@ -1,7 +1,10 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div
+        :class="data.choice.length ? 'border-success' : 'border-info'"
+        class="bg-base-200 rounded-2xl my-5 p-5 border-2"
+      >
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -29,7 +32,7 @@
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
                 <nuxtLink
-                  :to="`/post/edit/${data._id}`"
+                  :to="`/question/edit/${data._id}`"
                   class="tooltip"
                   data-tip="sửa bài viết"
                 >
@@ -91,17 +94,28 @@
           </div>
           <!-- các trạng thái của bài viết  -->
           <div class="flex justify-around mt-2">
-            <div class="tooltip" data-tip="điểm bài viết">
+            <div class="tooltip" data-tip="điểm câu hỏi">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
+            </div>
+            <div class="tooltip" data-tip="lượt trả lời">
+              <OtherVIcon
+                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
+                :icon="
+                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+                "
+              />
+              {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt xem">
-              <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
-              {{ data.view }}
+              <div>
+                <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
+                {{ data.view }}
+              </div>
             </div>
           </div>
         </div>
@@ -113,7 +127,7 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
-import { postStore } from "~~/stores/post.store";
+import { questionStore } from "~~/stores/question.store";
 
 const props = defineProps({
   data: Object,
@@ -121,7 +135,7 @@ const props = defineProps({
 
 const useDialog = dialogStore();
 const useAuth = authStore();
-const usePost = postStore();
+const useQuestion = questionStore();
 
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
@@ -153,8 +167,8 @@ function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        await useQuestion.deleteOne(props.data._id);
+        await useQuestion.findByAuthor(props.data.author[0]._id);
       }
     );
   }
@@ -163,7 +177,7 @@ function openDialogDelete() {
 async function goReadPost() {
   if (useAuth.user && useAuth.user.id == props.data.author[0]._id) {
   } else {
-    await usePost.update({
+    await useQuestion.update({
       id: props.data._id,
       view: props.data.view + 1,
     });

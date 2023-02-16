@@ -28,6 +28,16 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
+                <div v-if="!data.pins" class="tooltip" data-tip="ghim bài viết">
+                  <div @click="openDialogPins()" class="btn btn-outline btn-info">
+                    <OtherVIcon class-icon="rotate-45" icon="fa-solid fa-thumbtack" />
+                  </div>
+                </div>
+                <div v-else class="tooltip indicator" data-tip="hủy ghim bài viết">
+                  <div @click="openDialogDeletePins()" class="btn btn-outline btn-error">
+                    <OtherVIcon class-icon="rotate-45" icon="fa-solid fa-thumbtack" />
+                  </div>
+                </div>
                 <nuxtLink
                   :to="`/post/edit/${data._id}`"
                   class="tooltip"
@@ -156,17 +166,62 @@ function openDialogDelete() {
       },
       async () => {
         await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        await usePost.findByAuthor(props.data.author[0]._id);
+      }
+    );
+  }
+}
+
+function openDialogPins() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn ghim bài viết này bài viết?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        const data = {
+          id: props.data._id,
+          pins: true,
+        };
+        await usePost.update(data);
+        await usePost.findByAuthor(props.data.author[0]._id);
+      }
+    );
+  }
+}
+
+function openDialogDeletePins() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn xóa ghim bài viết này bài viết?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        const data = {
+          id: props.data._id,
+          pins: false,
+        };
+        await usePost.update(data);
+        await usePost.findByAuthor(props.data.author[0]._id);
       }
     );
   }
 }
 
 async function goReadPost() {
-  await usePost.update({
-    id: props.data._id,
-    view: props.data.view + 1,
-  });
+  if (useAuth.user && useAuth.user.id == props.data.author[0]._id) {
+  } else {
+    await usePost.update({
+      id: props.data._id,
+      view: props.data.view + 1,
+    });
+  }
   navigateTo(`/post/${props.data._id}`);
 }
 </script>

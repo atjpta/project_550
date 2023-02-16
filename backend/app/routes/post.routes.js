@@ -24,6 +24,9 @@ module.exports = (app) => {
     router.route('/team/:id/')
         .get(ctl.findByTeam)
     
+    router.route('/author/:id/')
+        .get(ctl.findByAuthor)
+    
     router.route('/series/:id/')
         .get(ctl.findBySeries)
         .put(ctl.updateSeries)

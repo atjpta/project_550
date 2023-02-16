@@ -30,6 +30,32 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+
+
+exports.findTeamByUser = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.find({ user: id, is_member: true })
+            .populate({
+                path: 'team',
+                select: 'name image_cover_url introduce tag',
+                populate: {
+                    path: 'tag',
+                    select: 'id name'
+                }
+            })
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
 exports.findByTeam = async (req, res, next) => {
     const { id } = req.params;
 

@@ -8,6 +8,7 @@ export const memberStore = defineStore("memberStore", {
             List_member: [],
             member_edit: {},
             member: {},
+            List_myteam: [],
         };
     },
     getters: {
@@ -26,6 +27,9 @@ export const memberStore = defineStore("memberStore", {
                     this.List_member[i].role.name = 'thành viên'
                 }
             });
+        },
+        async findTeamByUser(id) {
+            this.List_myteam = await memberService.findTeamByUser(id);
         },
         async findByTeam(id) {
             this.List_member = await memberService.findByTeam(id);

@@ -168,6 +168,9 @@ const list_status = computed(() => {
 
 const list_team = computed(() => {
   let list = [];
+  if (!useSeries.series?.team) {
+    useSeries.series.team = {};
+  }
   if (useTeam.List_team_ByUser) {
     useTeam.List_team_ByUser.forEach((e) => {
       list.push({

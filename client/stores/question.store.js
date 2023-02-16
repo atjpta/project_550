@@ -84,6 +84,13 @@ export const questionStore = defineStore("questionStore", {
             });
         },
 
+        async findByAuthor(id) {
+            this.list = await questionService.findByAuthor(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
         async findByTopic(id) {
             this.list = await questionService.findByTopic(id);
             this.list.forEach((e, i) => {

@@ -47,6 +47,10 @@ const menuDashboard = ref([
     url: "/team",
   },
   {
+    title: "thẻ tag",
+    url: "/tag",
+  },
+  {
     title: "Theo dõi",
     url: "/follow",
   },

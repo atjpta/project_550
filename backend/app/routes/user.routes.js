@@ -13,6 +13,9 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .delete(ctl.deleteAll)
     
+    router.route('/overview/:id')
+        .get(ctl.findOverView)
+    
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)

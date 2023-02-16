@@ -7,6 +7,22 @@ const url = config.url.api + '/user'
 
 export default {
 
+    findOverView: async (id) => {
+        const { data: data, error } = await useFetch(url + `/overview/${id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
+
     update: async (dataO) => {
         const { data: data, error } = await useFetch(url + `/${dataO.id}`, {
             headers: {

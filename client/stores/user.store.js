@@ -6,6 +6,7 @@ export const userStore = defineStore("userStore", {
         return {
             user: {},
             list_user: [],
+            overview: {},
         };
     },
     getters: {
@@ -23,6 +24,10 @@ export const userStore = defineStore("userStore", {
         },
         async update(data) {
             await userService.update(data);
+        },
+        async findOverView(id) {
+            const overview = await userService.findOverView(id);
+            this.overview = overview[0]
         },
     }
 });

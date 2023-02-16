@@ -18,6 +18,7 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "tag"
         }],
+        pins: Boolean,
         title: String,
         content: Object,
         image_cover_url: {

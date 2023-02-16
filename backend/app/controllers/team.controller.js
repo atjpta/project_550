@@ -179,6 +179,7 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+
 exports.findByUser = async (req, res, next) => {
     const { id } = req.params;
 

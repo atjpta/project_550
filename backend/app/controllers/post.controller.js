@@ -245,6 +245,7 @@ exports.create = async (req, res, next) => {
         team: req.body.team,
         status: req.body.status,
         view: parseInt(0),
+        pins: false,
     })
     try {
         const document = modelO.save().then(savedDoc => {
@@ -472,6 +473,104 @@ exports.findByTeam = async (req, res, next) => {
         )
     }
 };
+
+
+exports.findByAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    author: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    'team': 1,
+                    'pins':1,
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
+        return res.send(document)
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findBySeries ' + error })
+        )
+    }
+};
+
 
 
 exports.findOne = async (req, res, next) => {
