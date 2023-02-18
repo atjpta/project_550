@@ -55,7 +55,10 @@
         </div>
       </div>
       <div>
-        <div v-for="i in useAnswer.list_answer" :key="i">
+        <div v-for="i in list_answer.listAnswer" :key="i">
+          <AnswerVAnswer :data="i" />
+        </div>
+        <div v-for="i in list_answer.listNoAnswer" :key="i">
           <AnswerVAnswer :data="i" />
         </div>
       </div>
@@ -80,12 +83,26 @@ const useAnswer = answerStore();
 const useRouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
+
 const resetInput = ref(0);
 const dataInput = ref({
   content: {},
   tagname: [],
 });
 
+const list_answer = computed(() => {
+  let listAnswer = [];
+  let listNoAnswer = [];
+  useAnswer.list_answer.forEach((e) => {
+    if (e.choice) {
+      listAnswer.push(e);
+    } else listNoAnswer.push(e);
+  });
+  return {
+    listAnswer,
+    listNoAnswer,
+  };
+});
 const openInputCmt = ref(false);
 const openInputAnswer = ref(false);
 const loading = ref(false);

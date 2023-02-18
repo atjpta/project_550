@@ -39,7 +39,7 @@
                   </div>
                 </div>
                 <nuxtLink
-                  :to="`/post/edit/${data._id}`"
+                  :to="`/post/edit/${data._id}/post`"
                   class="tooltip"
                   data-tip="sửa bài viết"
                 >

@@ -20,6 +20,9 @@ module.exports = (app) => {
 
     router.route('/team/:id')
         .get(ctl.findByTeam)
+    
+    router.route('/tag/:id')
+        .get(ctl.findByTag)
     router.route('/author/:id')
         .get(ctl.findByAuthor)
 

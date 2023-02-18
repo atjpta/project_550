@@ -150,7 +150,7 @@ const dataMenu = ref([
       },
       {
         name: "tag",
-        url: "/test/contentadmin",
+        url: "/tag",
         icon: "fa-solid fa-tag",
       },
     ],

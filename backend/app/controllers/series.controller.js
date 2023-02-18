@@ -37,7 +37,7 @@ exports.findOneEdit = async (req, res, next) => {
 
     try {
         const document = await model.findOne(condition).populate({
-            path: 'team author status tag',
+            path: 'team author status',
             select: 'id name avatar_url'
         }).sort({ 'createdAt': -1 })
         if (!document) {
@@ -498,6 +498,144 @@ exports.findByAuthor = async (req, res, next) => {
                     'listtag': 1,
                 }
             },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
+
+exports.findByTag = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: "$series",
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'score',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'votes',
+                                localField: '_id',
+                                foreignField: 'post',
+                                as: 'vote',
+                                pipeline: [
+                                    {
+                                        $group: {
+                                            _id: '$post',
+                                            val: { $sum: '$val' },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            $addFields: {
+                                val: { $sum: "$vote.val" }
+                            }
+                        }
+                    ],
+
+                },
+            },
+            {
+                $addFields: {
+                    valScore: { $sum: "$score.val" },
+                }
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'tag',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'tags',
+                                localField: 'tag',
+                                foreignField: '_id',
+                                as: 'list',
+                                
+                            },
+                        },
+                        {
+                            $project: {
+                                "list._id": 1,
+                                'list.name': 1,
+                            }
+                        },
+                    ],
+                },
+            },
+            {
+                $match: {
+                    "tag.list._id": ObjectId(id)
+                }
+            },
+            {
+                $addFields: {
+                    listtag: "$tag.list"
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    'post.count': 1,
+                    'valScore': 1,
+                    'listtag': 1,
+                }
+            },
+            
             {
                 $sort: { 'createdAt': -1 }
             }

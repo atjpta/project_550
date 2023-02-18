@@ -13,10 +13,6 @@ const schema = mongoose.Schema(
             type: String,
             default: 'https://api-project-550.vercel.app/api/image/meo.jpg'
         },
-        tag: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "tag"
-        }],
         team: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "team"

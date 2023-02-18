@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.tag;
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.createAll = async (req, res, next) => {
     console.log(req.body);
@@ -49,6 +50,120 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+
+exports.findAllInfo = async (req, res, next) => {
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "posts"
+                }
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "questions"
+                }
+            },
+            {
+                $lookup: {
+                    from: "teams",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "teams"
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    introduce: 1,
+                    total_count: {
+                        $add: [
+                            { $size: "$posts" },
+                            { $size: "$questions" },
+                            { $size: "$teams" },
+                        ]
+                    }
+                }
+            },
+            {
+                $sort: { 'total_count': -1 }
+            }
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
+
+exports.findByAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    author: ObjectId(id)
+            }
+        },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "posts"
+                }
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "questions"
+                }
+            },
+            {
+                $lookup: {
+                    from: "teams",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "teams"
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    introduce: 1,
+                    total_count: {
+                        $add: [
+                            { $size: "$posts" },
+                            { $size: "$questions" },
+                            { $size: "$teams" },
+                        ]
+                    }
+                }
+            },
+            {
+                $sort: { 'total_count': -1 }
+            }
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
 exports.findOne = async (req, res, next) => {
     const { id } = req.params;
     const condition = {
@@ -59,6 +174,7 @@ exports.findOne = async (req, res, next) => {
         const document = await model.findOne(condition).select([
             "name",
             "id",
+            'introduce'
         ]);
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
@@ -70,6 +186,8 @@ exports.findOne = async (req, res, next) => {
         )
     }
 }
+
+
 
 exports.update = async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {

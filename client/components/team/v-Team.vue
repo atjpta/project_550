@@ -13,7 +13,7 @@
                 <nuxtLink class="" :to="`/team/${data?._id}/list-post`">
                   <!-- tên team -->
                   <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 hover:scale-110 duration-500"
+                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
                   >
                     {{ data?.name }}
                   </div>
@@ -105,7 +105,7 @@
             <div class="mt-4 flex">
               <div v-for="i in data?.tag" :key="i._id" class="">
                 <nuxt-link
-                  :to="`/tag/${i._id}`"
+                  :to="`/tag/${i._id}/post`"
                   class="btn btn-outline btn-sm mr-1 mt-1"
                   >{{ "#" + i.name }}</nuxt-link
                 >

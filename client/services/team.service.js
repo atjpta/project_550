@@ -7,6 +7,17 @@ const url = config.url.api + '/team'
 
 export default {
 
+    findByTag: async (id) => {
+        const { data: data, error } = await useFetch(url + `/tag/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     update: async (dataO) => {
         const { data: data, error } = await useFetch(url + `/${dataO.id}`, {
             headers: {

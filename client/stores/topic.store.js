@@ -37,6 +37,10 @@ export const topicStore = defineStore("topicStore", {
         async findByAuthor(id) {
             this.List_topic = await topicService.findByAuthor(id);
         },
+        async findByTag(id) {
+            this.List_topic = await topicService.findByTag(id);
+        },
+
 
         async findByUserTeam(id, team) {
             this.List_topic = await topicService.findByUserTeam(id, team);

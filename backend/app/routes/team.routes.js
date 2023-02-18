@@ -21,6 +21,9 @@ module.exports = (app) => {
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
     
+    router.route('/tag/:id/')
+        .get(ctl.findByTag)
+    
 
     router.route('/:id')
         .get(ctl.findOne)

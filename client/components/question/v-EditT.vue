@@ -24,7 +24,7 @@
               </div>
             </div>
           </div>
-          <TagVTag :data="useQuestion.question_edit.tag" />
+          <TagVInputTag :data="useQuestion.question_edit.tag" />
         </div>
         <!-- phần chọn serise -->
         <div>

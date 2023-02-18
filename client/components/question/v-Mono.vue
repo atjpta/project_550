@@ -87,9 +87,11 @@
           <!-- tag -->
           <div class="mt-4 flex">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}`" class="btn btn-outline btn-sm mr-1 mt-1">{{
-                "#" + i.name
-              }}</nuxt-link>
+              <nuxt-link
+                :to="`/tag/${i._id}/post`"
+                class="btn btn-outline btn-sm mr-1 mt-1"
+                >{{ "#" + i.name }}</nuxt-link
+              >
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
@@ -182,6 +184,6 @@ async function goReadPost() {
       view: props.data.view + 1,
     });
   }
-  navigateTo(`/post/${props.data._id}`);
+  navigateTo(`/question/${props.data._id}`);
 }
 </script>

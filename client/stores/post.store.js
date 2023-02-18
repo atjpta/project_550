@@ -101,6 +101,13 @@ export const postStore = defineStore("postStore", {
             });
         },
 
+        async findByTag(id) {
+            this.list = await postService.findByTag(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
         async findBySeries(id) {
             this.list = await postService.findBySeries(id);
             this.list.forEach((e, i) => {

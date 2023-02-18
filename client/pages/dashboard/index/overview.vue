@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 bg-base-200 rounded-2xl p-5">
-    <div class="flex flex-wrap justify-center">
-      <div class="stats shadow w-48 mb-2 mr-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon class-icon="text-warning text-2xl" icon="fa-solid fa-star" />
@@ -10,7 +10,7 @@
           <div class="stat-value">{{ score }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon class-icon="text-info text-2xl" icon="fa-solid fa-file-lines" />
@@ -19,7 +19,7 @@
           <div class="stat-value">{{ useUser.overview.postCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon
@@ -31,7 +31,7 @@
           <div class="stat-value">{{ useUser.overview.seriesCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon
@@ -43,7 +43,7 @@
           <div class="stat-value">{{ useUser.overview.questionCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon
@@ -55,7 +55,7 @@
           <div class="stat-value">{{ useUser.overview.topicCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon class-icon=" text-2xl" icon="fa-solid fa-share" />
@@ -64,7 +64,7 @@
           <div class="stat-value">{{ useUser.overview.answerCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow w-48 mb-2 mr-2">
+      <div class="stats shadow mb-2 mr-2">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon class-icon="text-error text-2xl" icon="fa-solid fa-heart" />

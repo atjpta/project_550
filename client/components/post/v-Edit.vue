@@ -31,7 +31,7 @@
               </div>
             </div>
           </div>
-          <TagVTag :data="usePost.post_edit.tag" />
+          <TagVInputTag :data="usePost.post_edit.tag" />
         </div>
         <!-- phần chọn serise -->
         <div>

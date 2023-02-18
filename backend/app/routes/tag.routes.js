@@ -10,11 +10,17 @@ const express = require("express");
 module.exports = (app) => {
 
     const router = express.Router();
+    router.route("/info")
+        .get(ctl.findAllInfo)
+    
     router.route("/")
         .get(ctl.findAll)
         .post([checkDuplicate.check_tag], ctl.create)
         .delete(ctl.deleteAll)
 
+    router.route('/author/:id')
+        .get(ctl.findByAuthor)
+    
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)

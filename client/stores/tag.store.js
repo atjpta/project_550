@@ -6,6 +6,7 @@ export const tagStore = defineStore("tagStore", {
     state() {
         return {
             List_tag: [],
+            tag: {},
         };
     },
     getters: {
@@ -14,6 +15,24 @@ export const tagStore = defineStore("tagStore", {
     actions: {
         async findAll() {
             this.List_tag = await tagService.findAll();
+        },
+
+        async findAllInfo() {
+            this.List_tag = await tagService.findAllInfo();
+        },
+
+        async findByAuthor(id) {
+            this.List_tag = await tagService.findByAuthor(id);
+        },
+
+        async findOne(id) {
+            this.tag = await tagService.findOne(id);
+        },
+        async update(data) {
+            await tagService.update(data);
+        },
+        async deleteOne(id) {
+            await tagService.deleteOne(id);
         },
         async createAll(data) {
             const array = Array.from(data);

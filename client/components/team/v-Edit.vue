@@ -31,7 +31,7 @@
               </div>
             </div>
           </div>
-          <TagVTag :data="useTeam.team_edit?.tag" />
+          <TagVInputTag :data="useTeam.team_edit?.tag" />
         </div>
         <!-- chọn trạng thái -->
         <div>

@@ -1,136 +1,45 @@
 <template>
   <div>
-    <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
-        <div class="flex">
-          <!-- ảnh team -->
-          <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img class="rounded-2xl w-32 h-32" :src="data.image_cover_url" alt="" />
-          </div>
-          <div class="w-full">
-            <div class="flex justify-between flex-col-reverse lg:flex-row">
-              <div>
-                <nuxtLink class="" :to="`/team/${data._id}/list-post`">
+    <nuxtLink class="" :to="`/team/${data.team._id}/list-post`">
+      <transition name="bounce">
+        <div class="bg-base-200 rounded-2xl my-5 p-5 glass">
+          <div class="flex">
+            <!-- ảnh team -->
+            <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
+              <img
+                class="rounded-2xl w-32 h-32"
+                :src="data.team.image_cover_url"
+                alt=""
+              />
+            </div>
+            <div class="w-full">
+              <div class="flex justify-between flex-col-reverse lg:flex-row">
+                <div>
                   <!-- tên team -->
                   <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 hover:scale-110 duration-500"
+                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
                   >
-                    {{ data.name }}
-                  </div>
-                </nuxtLink>
-              </div>
-
-              <!-- phần tùy chọn cho chủ nhóm -->
-              <div v-if="data.role == 'chief'" class="z-10 flex justify-end">
-                <div class="space-x-1 flex justify-end">
-                  <nuxtLink
-                    :to="`/team/edit/${data._id ?? data.id}`"
-                    class="tooltip"
-                    data-tip="sửa team"
-                  >
-                    <div class="btn btn-outline btn-primary">
-                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </nuxtLink>
-
-                  <div class="tooltip" data-tip="xóa team">
-                    <div
-                      :class="[loading ? 'loading' : '']"
-                      @click="openDialogDelete()"
-                      class="btn btn-outline btn-error"
-                    >
-                      <OtherVIcon icon="fa-solid fa-trash-can" />
-                    </div>
+                    {{ data.team.name }}
                   </div>
                 </div>
               </div>
-
-              <!-- phần tùy chọn cho người đọc -->
-              <div v-else class="dropdown dropdown-end z-10 flex justify-end">
-                <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
-                  <div
-                    @click="openDialogJoinTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-secondary mr-1"
+              <!-- ảnh bìa và tiêu đề -->
+              <div class="text-xl">{{ data.team.introduce }}</div>
+              <!-- tag -->
+              <div class="mt-4 flex">
+                <div v-for="i in data.tag" :key="i._id" class="">
+                  <nuxt-link
+                    :to="`/tag/${i._id}/post`"
+                    class="btn btn-outline btn-sm mr-1 mt-1"
+                    >{{ "#" + i.name }}</nuxt-link
                   >
-                    gia nhập
-                  </div>
                 </div>
-
-                <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
-                  <div
-                    @click="openDialogDeleteRequest()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-warning mr-1"
-                  >
-                    hủy gia nhập
-                  </div>
-                </div>
-
-                <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
-                  <div
-                    @click="openDialogOutTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-error mr-1"
-                  >
-                    thoát
-                  </div>
-                </div>
-
-                <label tabindex="0" class="btn btn-outline btn-primary">
-                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-                </label>
-                <ul
-                  tabindex="0"
-                  class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo Nhóm
-                      </div>
-                    </a>
-                  </li>
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-bookmark" />
-                        Lưu bài viết
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- ảnh bìa và tiêu đề -->
-            <div class="text-xl">{{ data.introduce }}</div>
-            <!-- tag -->
-            <div class="mt-4 flex">
-              <div v-for="i in data.tag" :key="i._id" class="">
-                <nuxt-link
-                  :to="`/tag/${i._id}`"
-                  class="btn btn-outline btn-sm mr-1 mt-1"
-                  >{{ "#" + i.name }}</nuxt-link
-                >
               </div>
             </div>
           </div>
         </div>
-
-        <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2">
-          <div class="tooltip" data-tip="điểm nhóm">
-            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
-            {{ valVote }}
-          </div>
-          <div class="tooltip" data-tip="số lượng thành viên">
-            <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
-            {{ slmember }}
-          </div>
-        </div>
-      </div>
-    </transition>
+      </transition>
+    </nuxtLink>
   </div>
 </template>
 
