@@ -61,6 +61,7 @@ async function getApi() {
   await useTeam.findByTag(route.params.id);
 }
 onMounted(() => {
+  useRouteS.cb = getApi;
   getApi();
 });
 </script>

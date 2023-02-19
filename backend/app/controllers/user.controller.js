@@ -164,6 +164,9 @@ exports.findOverView = async (req, res, next) => {
             {
                 $project: {
                     "_id": 1,
+                    "name": 1,
+                    "introduce": 1,
+                    "avatar_url": 1,
                     'createdAt': 1,
                     'vote_post': 1,
                     'vote_question': 1,
@@ -192,6 +195,118 @@ exports.findOverView = async (req, res, next) => {
         )
     }
 }
+
+exports.findAllOverView = async (req, res, next) => {
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { postIds: "$list_post._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$postIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { questionIds: "$list_question._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$questionIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_answer",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { answerIds: "$list_answer._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$answer", "$$answerIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$answer",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_answer",
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    avatar_url: 1,
+                    name: 1,
+                    total_count: {
+                        $add: [
+                            { $sum: "$vote_post.val" },
+                            { $sum: "$vote_question.val" },
+                            { $sum: "$vote_answer.val" },
+                        ]
+                    }
+                },
+            },
+           
+        ]);
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không thể lấy findAll" + error })
+        );
+    }
+};
+
 
 exports.update = async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {

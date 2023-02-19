@@ -3,13 +3,16 @@ export const routeStore = defineStore("routeStore", {
     id: 'route',
     state() {
         return {
-            redirectedFrom: null
+            redirectedFrom: null,
+            cb: null,
         };
     },
     getters: {
 
     },
     actions: {
-
+        async refreshData() {
+           await this.cb();
+        }
     },
 });

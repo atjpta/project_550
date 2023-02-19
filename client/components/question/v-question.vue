@@ -5,7 +5,10 @@
       class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
     >
       <div class="w-fit">
-        <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
+        <nuxtLink
+          class="hover:text-sky-500 hover:scale-110 duration-500"
+          :to="`/user/${data?.author[0]?._id}/overview`"
+        >
           <!-- tác giả -->
           <div class="flex">
             <div class="avatar">

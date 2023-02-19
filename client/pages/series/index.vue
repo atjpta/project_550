@@ -31,7 +31,7 @@ import { dialogStore } from "../../stores/dialog.store";
 const useSeries = seriesStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
-const useRoute = routeStore();
+const useRouteS = routeStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -43,15 +43,20 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = "/series/edit";
+        useRouteS.redirectedFrom = "/series/edit";
       }
     );
   } else {
     navigateTo("/series/edit");
   }
 }
+
+async function getApi() {
+  await useSeries.findAll();
+}
 onMounted(() => {
-  useSeries.findAll();
+  useRouteS.cb = getApi;
+  getApi();
 });
 </script>
 

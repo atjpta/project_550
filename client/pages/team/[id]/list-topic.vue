@@ -22,7 +22,7 @@
     </div>
 
     <div v-else>
-      <div class="text-4xl text-center m-5">chưa có bài viết nào cả!!!</div>
+      <div class="text-4xl text-center m-5">chưa có chủ đề nào cả!!!</div>
     </div>
   </div>
 </template>

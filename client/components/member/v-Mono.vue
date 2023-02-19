@@ -3,7 +3,10 @@
     <div class="flex items-center text-left">
       <!-- tên -->
       <div class="basis-1/2">
-        <nuxt-link to="/" class="flex items-center space-x-3 hover:text-info">
+        <nuxt-link
+          :to="`/user/${data.user.id}/overview`"
+          class="flex items-center space-x-3 hover:text-info"
+        >
           <div class="avatar">
             <div class="mask mask-squircle w-12 h-12">
               <img :src="data.user.avatar_url" />

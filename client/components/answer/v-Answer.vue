@@ -62,7 +62,7 @@
             <div>
               <nuxtLink
                 class="hover:text-sky-500 hover:scale-110 duration-500"
-                to="/user/1"
+                :to="`/user/${data?.author[0]?._id}/overview`"
               >
                 <div class="flex">
                   <div class="avatar">

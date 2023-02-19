@@ -7,7 +7,7 @@
           <div class="flex justify-between">
             <nuxtLink
               class="hover:text-sky-500 hover:scale-110 duration-500"
-              to="/user/1"
+              :to="`/user/${data?.author[0]?._id}/overview`"
             >
               <!-- tác giả -->
               <div class="flex">
@@ -116,6 +116,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 
 const props = defineProps({
   data: Object,
@@ -124,7 +125,7 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
-
+const useRouteS = routeStore();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;
@@ -156,7 +157,7 @@ function openDialogDelete() {
       },
       async () => {
         await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        useRouteS.refreshData();
       }
     );
   }

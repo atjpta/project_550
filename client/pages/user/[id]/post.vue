@@ -7,14 +7,7 @@
           {{ i }} 0000
         </div>
       </div>
-      <button
-        @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
-      >
-        tạo bài viết
-      </button>
     </div>
-
     <div v-if="listPost.listPins.length + listPost.listNoPins.length > 0">
       <div
         v-if="listPost.listPins.length > 0"
@@ -54,8 +47,8 @@ import { dialogStore } from "~~/stores/dialog.store";
 const usePost = postStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
-const useRoute = routeStore();
-
+const useRouteS = routeStore();
+const route = useRoute();
 const listPost = computed(() => {
   let listPins = [];
   let listNoPins = [];
@@ -80,7 +73,7 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = "/post/edit";
+        useRouteS.redirectedFrom = "/post/edit";
       }
     );
   } else {
@@ -88,7 +81,7 @@ function openDialogSignin() {
   }
 }
 onMounted(() => {
-  usePost.findByAuthor(useAuth.user.id);
+  usePost.findByAuthor(route.params.id);
 });
 </script>
 

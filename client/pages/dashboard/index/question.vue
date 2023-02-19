@@ -14,10 +14,15 @@
         tạo câu hỏi
       </button>
     </div>
-    <div>
+
+    <div v-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
       </div>
+    </div>
+
+    <div v-else>
+      <div class="text-4xl text-center m-5">chưa có câu hỏi nào cả!!!</div>
     </div>
   </div>
 </template>

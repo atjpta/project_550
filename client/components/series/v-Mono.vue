@@ -109,6 +109,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
 
 const props = defineProps({
@@ -119,7 +120,7 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
 const useSeries = seriesStore();
-
+const useRouteS = routeStore();
 const list_tag = computed(() => {
   let list = [];
   if (props.data.listtag?.length > 0) {
@@ -176,7 +177,7 @@ function openDialogDelete() {
       },
       async () => {
         await useSeries.deleteOne(props.data._id);
-        await useSeries.findAll();
+        useRouteS.refreshData();
       }
     );
   }

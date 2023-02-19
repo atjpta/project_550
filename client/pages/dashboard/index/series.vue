@@ -14,10 +14,14 @@
         tạo series mới
       </button>
     </div>
-    <div>
+    <div v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMonoD :data="i" />
       </div>
+    </div>
+
+    <div v-else>
+      <div class="text-4xl text-center m-5">chưa có chuỗi bài viết nào cả!!!</div>
     </div>
   </div>
 </template>

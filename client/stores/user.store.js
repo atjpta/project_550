@@ -16,11 +16,15 @@ export const userStore = defineStore("userStore", {
         async findOne(id) {
             this.user = await userService.findOne(id);
         },
+       
         clear() {
             this.user = {};
         },
         async findAll() {
             this.list_user = await userService.findAll();
+        },
+        async findAllOverView() {
+            this.list_user = await userService.findAllOverView();
         },
         async update(data) {
             await userService.update(data);

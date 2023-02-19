@@ -14,10 +14,14 @@
         tạo topic mới
       </button>
     </div>
-    <div>
+    <div v-if="useTopic.List_topic.length > 0">
       <div v-for="i in useTopic.List_topic" :key="i.id">
         <TopicVMonoD :data="i" />
       </div>
+    </div>
+
+    <div v-else>
+      <div class="text-4xl text-center m-5">chưa có chủ đề nào cả!!!</div>
     </div>
   </div>
 </template>

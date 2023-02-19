@@ -140,7 +140,7 @@ const dataMenu = ref([
       },
       {
         name: "Người dùng",
-        url: "/test/contentadmin",
+        url: "/user",
         icon: "fa-solid fa-user",
       },
       {

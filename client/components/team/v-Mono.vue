@@ -150,7 +150,7 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const useTeam = teamStore();
 const route = useRoute();
-const useRouteT = routeStore();
+const useRouteS = routeStore();
 const useMember = memberStore();
 const useRole = roleStore();
 const loading = ref(false);
@@ -206,7 +206,7 @@ async function openDialogDelete() {
         try {
           loading.value = true;
           await useTeam.deleteOne(props.data._id || props.data.id);
-          await useTeam.findAll();
+          useRouteS.refreshData();
         } catch (error) {
           console.log(error);
           console.log("lỗi xóa ");
@@ -230,7 +230,7 @@ function openDialogDeleteRequest() {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
-        await useTeam.findAll();
+        useRouteS.refreshData();
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -253,7 +253,7 @@ function openDialogOutTeam() {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
-        await useTeam.findAll();
+        useRouteS.refreshData();
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -276,7 +276,7 @@ async function openDialogJoinTeam() {
         is_member: false,
       };
       await useMember.create(data);
-      await useTeam.findAll();
+      useRouteS.refreshData();
     } catch (error) {
       console.log(error);
       console.log("lỗi tạo request member");
@@ -292,7 +292,7 @@ async function openDialogJoinTeam() {
         btn2: "hủy",
       },
       () => {
-        useRouteT.redirectedFrom = route.fullPath;
+        useRouteS.redirectedFrom = route.fullPath;
         navigateTo("/auth/signin");
       }
     );

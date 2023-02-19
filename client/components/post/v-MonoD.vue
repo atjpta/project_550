@@ -7,7 +7,7 @@
           <div class="flex justify-between">
             <nuxtLink
               class="hover:text-sky-500 hover:scale-110 duration-500"
-              to="/user/1"
+              :to="`/user/${data?.author[0]?._id}/overview`"
             >
               <!-- tác giả -->
               <div class="flex">
@@ -39,7 +39,7 @@
                   </div>
                 </div>
                 <nuxtLink
-                  :to="`/post/edit/${data._id}/post`"
+                  :to="`/post/edit/${data._id}`"
                   class="tooltip"
                   data-tip="sửa bài viết"
                 >

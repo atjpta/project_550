@@ -31,7 +31,7 @@ import { dialogStore } from "../../stores/dialog.store";
 const useTopic = topicStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
-const useRoute = routeStore();
+const useRouteS = routeStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -43,15 +43,20 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = "/topic/edit";
+        useRouteS.redirectedFrom = "/topic/edit";
       }
     );
   } else {
     navigateTo("/topic/edit");
   }
 }
+
+async function getApi() {
+  await useTopic.findAll();
+}
 onMounted(() => {
-  useTopic.findAll();
+  useRouteS.cb = getApi;
+  getApi();
 });
 </script>
 
