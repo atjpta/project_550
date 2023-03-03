@@ -47,7 +47,7 @@
 
 <script setup>
 import { userStore } from "~~/stores/user.store";
-import { authStore } from "~~/stores/Auth.store";
+import { authStore } from "~~/stores/auth.store";
 import { followStore } from "~~/stores/follow.store";
 const useUser = userStore();
 const useAuth = authStore();
