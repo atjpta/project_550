@@ -13,7 +13,7 @@
                 <nuxtLink class="" :to="`/team/${data._id}/list-post`">
                   <!-- tên team -->
                   <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 hover:scale-110 duration-500"
+                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
                   >
                     {{ data.name }}
                   </div>

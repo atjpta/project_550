@@ -32,8 +32,8 @@ import { roleStore } from "~~/stores/role.store";
 const useTeam = teamStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
-const useRoute = routeStore();
-const useRoleS = roleStore();
+const useRouteS = routeStore();
+const useRole = roleStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -45,7 +45,7 @@ function openDialogSignin() {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoleS.redirectedFrom = "/team/edit";
+        useRouteS.redirectedFrom = "/team/edit";
       }
     );
   } else {
@@ -53,12 +53,12 @@ function openDialogSignin() {
   }
 }
 
-async function getApi() {
-  await useRoleS.findAll();
+const getApi = async () => {
+  await useRole.findAll();
   await useTeam.findAll();
-}
+};
 onMounted(() => {
-  useRoleS.cb = getApi;
+  useRouteS.cb = getApi;
   getApi();
 });
 </script>

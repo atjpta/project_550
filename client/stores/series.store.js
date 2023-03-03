@@ -22,6 +22,7 @@ export const seriesStore = defineStore("seriesStore", {
             this.List_series = []
             this.List_series_ByUser = []
             this.series = {
+                author: [],
             }
             this.series_edit = {
                 team: {},
@@ -62,6 +63,7 @@ export const seriesStore = defineStore("seriesStore", {
         async findOne(id) {
             this.series = await seriesService.findOne(id);
             this.series = this.series[0];
+
         },
 
         async findOneEdit(id) {

@@ -58,6 +58,11 @@ const dataAvatar = ref([
     icon: "fa-solid fa-file-circle-question",
   },
   {
+    name: "theo dõi",
+    url: "/follow",
+    icon: "fa-solid fa-heart",
+  },
+  {
     name: "Trang dashboard",
     url: "/dashboard/overview",
     icon: "fa-solid fa-address-card",

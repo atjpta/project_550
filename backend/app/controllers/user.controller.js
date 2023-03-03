@@ -284,10 +284,19 @@ exports.findAllOverView = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "user",
+                    as: "follows",
+                },
+            },
+            {
                 $project: {
                     _id: 1,
                     avatar_url: 1,
                     name: 1,
+                    followsCount: { $size: "$follows" },
                     total_count: {
                         $add: [
                             { $sum: "$vote_post.val" },

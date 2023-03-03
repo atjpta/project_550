@@ -1,9 +1,9 @@
 <template>
   <div>
-    <DashboardVInfo />
+    <div class="text-3xl font-bold uppercase mb-5">đã lưu</div>
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuDashboard" :key="i">
-        <nuxtLink :to="'/dashboard' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
+        <nuxtLink :to="'/follow' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
           <div>
             {{ i.title }}
           </div>
@@ -20,12 +20,8 @@ import { userStore } from "~~/stores/user.store";
 
 const useUser = userStore();
 const useAuth = authStore();
-
+const route = useRoute();
 const menuDashboard = ref([
-  {
-    title: "tổng quan",
-    url: "/overview",
-  },
   {
     title: "bài viết",
     url: "/post",
@@ -43,6 +39,10 @@ const menuDashboard = ref([
     url: "/topic",
   },
   {
+    title: "người dùng",
+    url: "/user",
+  },
+  {
     title: "nhóm",
     url: "/team",
   },
@@ -57,6 +57,9 @@ async function getApi() {
 }
 
 onMounted(() => {
+  if (route.path == "/follow") {
+    navigateTo("/follow/post");
+  }
   getApi();
 });
 </script>

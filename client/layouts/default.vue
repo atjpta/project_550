@@ -201,10 +201,12 @@ function closeMenu() {
 </script>
 
 <style>
+.router-link-active,
 .router-link-exact-active {
   color: rgb(255, 255, 255);
   background: rgba(120, 0, 255);
 }
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }

@@ -60,14 +60,20 @@
             class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
           ></div>
         </div>
-        <div
-          @click="save()"
-          :class="classSave"
-          class="btn-sm lg:btn-md btn btn-outline btn-square"
-        >
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+        <div class="tooltip" data-tip="lưu câu hỏi">
+          <div
+            v-if="loading != 'save'"
+            @click="openDialogSignin(save)"
+            :class="classSave"
+            class="btn-sm lg:btn-md btn btn-outline btn-square"
+          >
+            <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+          </div>
+          <div
+            v-if="loading == 'save'"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+          ></div>
         </div>
-
         <div class="tooltip flex" data-tip="lượt trả lời">
           <a class="btn-sm lg:btn-md btn btn-ghost">
             <OtherVIcon
@@ -147,11 +153,14 @@ import { voteStore } from "~~/stores/vote.store";
 import { postStore } from "~~/stores/post.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
+import { followStore } from "~~/stores/follow.store";
 const useImage = imageStore();
 const useAuth = authStore();
 const useVote = voteStore();
 const usePost = postStore();
-const useRoute = routeStore();
+const useRouteS = routeStore();
+const route = useRoute();
+const useFollow = followStore();
 const useDialog = dialogStore();
 const props = defineProps({
   data: Object,
@@ -230,6 +239,9 @@ const classSave = computed(() => {
       if (props.data.author[0]?._id == useAuth.user.id) {
         return "btn-disabled";
       }
+    }
+    if (useFollow.follow) {
+      return "btn-primary";
     }
   }
   return "";
@@ -366,13 +378,44 @@ function openDialogSignin(cb) {
       },
       () => {
         navigateTo("/auth/signin");
-        useRoute.redirectedFrom = `/question/${props.data._id}`;
+        useRouteS.redirectedFrom = `/question/${props.data._id}`;
       }
     );
   } else {
     cb();
   }
 }
+
+async function getFollow() {
+  if (useAuth.user?.id) {
+    await useFollow.findByFollow(route.params.id, useAuth.user.id);
+  }
+}
+
+const save = async () => {
+  try {
+    loading.value = "save";
+    if (!useFollow.follow) {
+      const data = {
+        user: props.data._id,
+        follow: useAuth.user.id,
+      };
+      await useFollow.create(data);
+    } else {
+      await useFollow.deleteOne(useFollow.follow.id);
+    }
+    await getFollow();
+  } catch (error) {
+    console.log(erorr);
+    console.log("lỗi save");
+  } finally {
+    loading.value = "";
+  }
+};
+
+onMounted(() => {
+  getFollow();
+});
 
 watch(props, (newContent) => {
   setContent();

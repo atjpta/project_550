@@ -15,6 +15,7 @@ const notificationtypeM = require('./notificationtype.models')
 const report = require('./report.models')
 const vote = require('./vote.model')
 const tag = require('./tag.models')
+const follow = require('./follow.model')
 function innitDB (){
     roleM.initRole()
     statusM.initStatus()
@@ -44,5 +45,6 @@ module.exports = {
     report,
     vote,
     tag,
+    follow,
     innitDB,
 }

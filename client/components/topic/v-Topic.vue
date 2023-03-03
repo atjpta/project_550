@@ -9,7 +9,7 @@
             <div class="w-fit">
               <nuxtLink
                 class="hover:text-sky-500 hover:scale-110 duration-500"
-                :to="`/user/${data?.author[0]?._id}/overview`"
+                :to="`/user/${author?._id}/overview`"
               >
                 <!-- tác giả -->
                 <div class="flex">
@@ -26,10 +26,19 @@
             </div>
             <!-- các btn -->
             <div class="flex justify-evenly">
-              <div class="tooltip" data-tip="lưu series">
-                <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+              <div class="tooltip" data-tip="lưu topic">
+                <div
+                  v-if="loading != 'save'"
+                  @click="openDialogSignin(save)"
+                  :class="classSave"
+                  class="btn-sm lg:btn-md btn btn-outline btn-square"
+                >
                   <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
                 </div>
+                <div
+                  v-if="loading == 'save'"
+                  class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+                ></div>
               </div>
               <div class="tooltip" data-tip="điểm series">
                 <div class="btn-sm lg:btn-md btn btn-ghost">
@@ -97,10 +106,32 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { followStore } from "~~/stores/follow.store";
 import { imageStore } from "~~/stores/image.store";
+import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 const useImage = imageStore();
+const loading = ref("");
+const useFollow = followStore();
+const route = useRoute();
+const useAuth = authStore();
+const useRouteS = routeStore();
 const props = defineProps({
   data: Object,
+});
+
+const classSave = computed(() => {
+  if (useAuth.user) {
+    if (props.data.author) {
+      if (props.data.author[0]?._id == useAuth.user.id) {
+        return "btn-disabled";
+      }
+    }
+    if (useFollow.follow) {
+      return "btn-primary";
+    }
+  }
+  return "";
 });
 
 const list_tag = computed(() => {
@@ -139,5 +170,55 @@ const valQuestion = computed(() => {
     return props.data.question[0].count;
   }
   return 0;
+});
+
+function openDialogSignin(cb) {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để dùng chức năng",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+        useRouteS.redirectedFrom = `/series/${props.data._id}`;
+      }
+    );
+  } else {
+    cb();
+  }
+}
+
+async function getFollow() {
+  if (useAuth.user?.id) {
+    await useFollow.findByFollow(route.params.id, useAuth.user.id);
+  }
+}
+
+const save = async () => {
+  try {
+    loading.value = "save";
+    if (!useFollow.follow) {
+      const data = {
+        user: props.data._id,
+        follow: useAuth.user.id,
+      };
+      await useFollow.create(data);
+    } else {
+      await useFollow.deleteOne(useFollow.follow.id);
+    }
+    await useFollow.findByFollow(route.params.id, useAuth.user.id);
+  } catch (error) {
+    console.log(erorr);
+    console.log("lỗi save");
+  } finally {
+    loading.value = "";
+  }
+};
+
+onMounted(() => {
+  getFollow();
 });
 </script>

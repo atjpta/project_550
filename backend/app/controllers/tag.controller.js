@@ -7,7 +7,7 @@ exports.createAll = async (req, res, next) => {
     console.log(req.body);
     try {
         const document = model.insertMany(req.body, (error, docs) => {
-            let list=[];
+            let list = [];
             docs.forEach((e) => {
                 list.push(e.id);
             })
@@ -28,7 +28,7 @@ exports.create = async (req, res, next) => {
     })
     try {
         const document = modelO.save();
-        return res.send({ Message: 'tạo thành công'});
+        return res.send({ Message: 'tạo thành công' });
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể create model' + error })
@@ -83,6 +83,7 @@ exports.findAllInfo = async (req, res, next) => {
                     _id: 1,
                     name: 1,
                     introduce: 1,
+                    author: 1,
                     total_count: {
                         $add: [
                             { $size: "$posts" },
@@ -112,8 +113,8 @@ exports.findByAuthor = async (req, res, next) => {
             {
                 $match: {
                     author: ObjectId(id)
-            }
-        },
+                }
+            },
             {
                 $lookup: {
                     from: "posts",
@@ -174,7 +175,8 @@ exports.findOne = async (req, res, next) => {
         const document = await model.findOne(condition).select([
             "name",
             "id",
-            'introduce'
+            'introduce',
+            'author',
         ]);
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));

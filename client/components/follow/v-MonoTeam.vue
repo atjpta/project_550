@@ -5,26 +5,30 @@
         <div class="flex">
           <!-- ảnh team -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img class="rounded-2xl w-32 h-32" :src="data?.image_cover_url" alt="" />
+            <img
+              class="rounded-2xl w-32 h-32"
+              :src="data.teams[0].image_cover_url"
+              alt=""
+            />
           </div>
           <div class="w-full">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
-                <nuxtLink class="" :to="`/team/${data?._id}/list-post`">
+                <nuxtLink class="" :to="`/team/${data.teams[0]._id}/list-post`">
                   <!-- tên team -->
                   <div
                     class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
                   >
-                    {{ data?.name }}
+                    {{ data.teams[0].name }}
                   </div>
                 </nuxtLink>
               </div>
 
               <!-- phần tùy chọn cho chủ nhóm -->
-              <div v-if="data?.role == 'chief'" class="z-10 flex justify-end">
+              <div v-if="data.role == 'chief'" class="z-10 flex justify-end">
                 <div class="space-x-1 flex justify-end">
                   <nuxtLink
-                    :to="`/team/edit/${data?._id ?? data?.id}`"
+                    :to="`/team/edit/${data._id ?? data.id}`"
                     class="tooltip"
                     data-tip="sửa team"
                   >
@@ -34,7 +38,11 @@
                   </nuxtLink>
 
                   <div class="tooltip" data-tip="xóa team">
-                    <div @click="openDialogDelete()" class="btn btn-outline btn-error">
+                    <div
+                      :class="[loading ? 'loading' : '']"
+                      @click="openDialogDelete()"
+                      class="btn btn-outline btn-error"
+                    >
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
                   </div>
@@ -43,20 +51,6 @@
 
               <!-- phần tùy chọn cho người đọc -->
               <div v-else class="dropdown dropdown-end z-10 flex justify-end">
-                <div class="tooltip" data-tip="lưu nhóm">
-                  <div
-                    v-if="loading2 != 'save'"
-                    @click="openDialogSignin(save)"
-                    :class="classSave"
-                    class="btn btn-outline btn-square mr-1"
-                  >
-                    <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
-                  </div>
-                  <div
-                    v-if="loading2 == 'save'"
-                    class="btn btn-circle btn-outline loading mr-1"
-                  ></div>
-                </div>
                 <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
                   <div
                     @click="openDialogJoinTeam()"
@@ -104,9 +98,9 @@
                   </li>
                   <li class="hover-bordered">
                     <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-bookmark" />
-                        Lưu bài viết
+                      <div @click="openDialogRemoveSave(removeSave)">
+                        <OtherVIcon icon="fa-solid fa-x" />
+                        bỏ theo dõi nhóm
                       </div>
                     </a>
                   </li>
@@ -114,10 +108,10 @@
               </div>
             </div>
             <!-- ảnh bìa và tiêu đề -->
-            <div class="text-xl">{{ data?.introduce }}</div>
+            <div class="text-xl">{{ data.teams[0].introduce }}</div>
             <!-- tag -->
             <div class="mt-4 flex">
-              <div v-for="i in data?.tag" :key="i._id" class="">
+              <div v-for="i in data.tag" :key="i._id" class="">
                 <nuxt-link
                   :to="`/tag/${i._id}/post`"
                   class="btn btn-outline btn-sm mr-1 mt-1"
@@ -156,22 +150,19 @@ import { followStore } from "~~/stores/follow.store";
 const props = defineProps({
   data: Object,
 });
-
+const useFollow = followStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const useTeam = teamStore();
 const route = useRoute();
 const useRouteS = routeStore();
-const loading = ref(false);
-const loading2 = ref("");
-const useFollow = followStore();
 const useMember = memberStore();
 const useRole = roleStore();
+const loading = ref(false);
 let idMember;
-
 const slmember = computed(() => {
   let sl = 0;
-  if (props.data?.member?.length) {
+  if (props.data.member?.length) {
     props.data.member.forEach((e) => {
       if (e.is_member) {
         sl++;
@@ -179,15 +170,6 @@ const slmember = computed(() => {
     });
   }
   return sl;
-});
-
-const classSave = computed(() => {
-  if (useAuth.user) {
-    if (useFollow.follow) {
-      return "btn-primary";
-    }
-  }
-  return "";
 });
 
 const isRequest = computed(() => {
@@ -205,13 +187,12 @@ const isRequest = computed(() => {
   }
   return status;
 });
-
 const valVote = computed(() => {
   let val = 0;
-  props.data?.vote_post?.forEach((e) => {
+  props.data.vote_post?.forEach((e) => {
     val += e.val;
   });
-  props.data?.vote_question?.forEach((e) => {
+  props.data.vote_question?.forEach((e) => {
     val += e.val;
   });
   return val;
@@ -227,8 +208,16 @@ async function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await useTeam.deleteOne(props.data?._id || props.data?.id);
-        await useTeam.findAll();
+        try {
+          loading.value = true;
+          await useTeam.deleteOne(props.data._id || props.data.id);
+          useRouteS.refreshData();
+        } catch (error) {
+          console.log(error);
+          console.log("lỗi xóa ");
+        } finally {
+          loading.value = false;
+        }
       }
     );
   }
@@ -246,7 +235,7 @@ function openDialogDeleteRequest() {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
-        await useTeam.findOne(route.params.id);
+        useRouteS.refreshData();
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -269,7 +258,7 @@ function openDialogOutTeam() {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
-        await useTeam.findOne(route.params.id);
+        useRouteS.refreshData();
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -287,12 +276,12 @@ async function openDialogJoinTeam() {
 
       const data = {
         team: props.data._id || props.data.id,
-        user: useAuth.user.id,
+        user: useAuth.user?.id,
         role: useRole.getIdMember,
         is_member: false,
       };
       await useMember.create(data);
-      await useTeam.findOne(route.params.id);
+      useRouteS.refreshData();
     } catch (error) {
       console.log(error);
       console.log("lỗi tạo request member");
@@ -315,53 +304,27 @@ async function openDialogJoinTeam() {
   }
 }
 
-function openDialogSignin(cb) {
-  if (!useAuth.isUserLoggedIn) {
-    useDialog.showDialog(
-      {
-        title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
-      },
-      () => {
-        navigateTo("/auth/signin");
-        useRouteS.redirectedFrom = `/series/${props.data._id}`;
-      }
-    );
-  } else {
-    cb();
-  }
-}
-
-async function getFollow() {
-  if (useAuth.user?.id) {
-    await useFollow.findByFollow(route.params.id, useAuth.user.id);
-  }
-}
-
-const save = async () => {
+const removeSave = async () => {
   try {
-    loading2.value = "save";
-    if (!useFollow.follow) {
-      const data = {
-        user: props.data._id,
-        follow: useAuth.user.id,
-      };
-      await useFollow.create(data);
-    } else {
-      await useFollow.deleteOne(useFollow.follow.id);
-    }
-    await getFollow();
+    await useFollow.deleteOne(props.data._id);
+    await useRouteS.refreshData();
   } catch (error) {
     console.log(erorr);
     console.log("lỗi save");
-  } finally {
-    loading2.value = "";
   }
 };
 
-onMounted(() => {
-  getFollow();
-});
+function openDialogRemoveSave(cb) {
+  useDialog.showDialog(
+    {
+      title: "Thông báo cực căng!",
+      content: "bạn chắc chắn muốn xóa bài viết khỏi danh sách lưu trữ",
+      btn1: "ok",
+      btn2: "hủy",
+    },
+    () => {
+      cb();
+    }
+  );
+}
 </script>
