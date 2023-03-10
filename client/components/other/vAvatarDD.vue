@@ -79,13 +79,6 @@ function logout() {
   useAuth.logout();
   useUser.clear();
 }
-
-onMounted(() => {
-  useAuth.loadAuthState();
-  if (useAuth.user) {
-    useUser.findOne(useAuth.user.id);
-  }
-});
 </script>
 
 <style>

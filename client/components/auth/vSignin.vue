@@ -74,7 +74,9 @@ import { authStore } from "@/stores/auth.store";
 import { alertStore } from "@/stores/alert.store";
 import { routeStore } from "~~/stores/route.store";
 import { userStore } from "~~/stores/user.store";
+import { notificationStore } from "~~/stores/notification.store";
 
+const useNotification = notificationStore();
 const useRoute = routeStore();
 const useAuth = authStore();
 const useUser = userStore();
@@ -96,6 +98,7 @@ async function handleLogin(user) {
   try {
     await useAuth.signin(user);
     useUser.findOne(useAuth.user.id);
+    await useNotification.findByMy(useAuth.user.id);
     const redirectPath = useRoute.redirectedFrom || {
       path: "/",
     };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="border-l-4 border-primary glass rounded-2xl bg-base-200 h-20 p-2">
+    <div class="border-l-4 border-primary glass rounded-2xl bg-base-200 p-2 h-28">
       <nuxtLink
         class="hover:text-sky-500 hover:scale-110 duration-500"
         :to="`/user/${data._id}/overview`"
@@ -12,8 +12,8 @@
               <img :src="data.avatar_url" />
             </div>
           </div>
-          <div class="text-2xl mx-3 font-bold">
-            <div class="overflow-hidden text-clip h-8">
+          <div class="text-2xl mx-3 font-bold h-20">
+            <div class="overflow-hidden text-clip">
               {{ data.name }}
             </div>
             <div class="text-sm space-x-3">

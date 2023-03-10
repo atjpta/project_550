@@ -34,8 +34,9 @@ import { postStore } from "~~/stores/post.store";
 import { userStore } from "~~/stores/user.store";
 import { cmtStore } from "~~/stores/cmt.store";
 import { routeStore } from "~~/stores/route.store";
-import { dialogStore } from "../../stores/dialog.store";
+import { dialogStore } from "~~/stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
+import { notificationStore } from "~~/stores/notification.store";
 
 const route = useRoute();
 const usePost = postStore();
@@ -45,6 +46,7 @@ const useRouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const resetInput = ref(0);
+const useNotification = notificationStore();
 const dataInput = ref({
   content: {},
   tagname: [],
@@ -66,6 +68,15 @@ const send = async () => {
     tag_name: list,
   };
 
+  const dataNotification = {
+    author: useAuth.user.id,
+    authorModel: usePost.post.author[0]._id,
+    model: usePost.post._id,
+    content: `bạn có bình luận mới về bài viết "${usePost.post.title}"`,
+    url: route.fullPath + "#comment",
+    type: "info",
+  };
+
   try {
     if (
       data.content.ops.length > 1 ||
@@ -74,6 +85,7 @@ const send = async () => {
       data.tag_name.length
     ) {
       await useCmt.create(data);
+      await useNotification.create(dataNotification);
       await useCmt.getBy("post", route.params.id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];

@@ -26,25 +26,6 @@
             </div>
             <!-- các btn -->
             <div class="flex justify-evenly">
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-warning"
-                    icon="fa-solid fa-star"
-                  />
-                  <div class="text-2xl">{{ data.valScore }}</div>
-                </div>
-              </div>
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-info"
-                    icon="fa-solid fa-file-lines"
-                  />
-                  <div class="text-2xl">{{ valPost }}</div>
-                </div>
-              </div>
-
               <div class="tooltip" data-tip="lưu series">
                 <div
                   v-if="loading != 'save'"
@@ -58,6 +39,50 @@
                   v-if="loading == 'save'"
                   class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
                 ></div>
+              </div>
+
+              <!-- thông báo  -->
+              <div
+                v-if="useFollow.follow"
+                class="ml-1 tooltip"
+                :data-tip="
+                  useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
+                "
+              >
+                <div
+                  @click="setOnAndoff()"
+                  :class="loading == 'notification' ? 'loading' : ''"
+                  class="btn-sm lg:btn-md btn btn-outline btn-square"
+                >
+                  <OtherVIcon
+                    class-icon="text-xl text-warning"
+                    :icon="
+                      useFollow.follow.notification
+                        ? 'fa-solid fa-bell-slash'
+                        : 'fa-solid fa-bell'
+                    "
+                  />
+                </div>
+              </div>
+
+              <div class="tooltip" data-tip="điểm series">
+                <div class="btn-sm lg:btn-md btn btn-ghost">
+                  <OtherVIcon
+                    class-icon="text-xl mr-1 text-warning"
+                    icon="fa-solid fa-star"
+                  />
+                  <div class="text-2xl">{{ data.valScore }}</div>
+                </div>
+              </div>
+
+              <div class="tooltip" data-tip="điểm series">
+                <div class="btn-sm lg:btn-md btn btn-ghost">
+                  <OtherVIcon
+                    class-icon="text-xl mr-1 text-info"
+                    icon="fa-solid fa-file-lines"
+                  />
+                  <div class="text-2xl">{{ valPost }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -224,6 +249,26 @@ const save = async () => {
     loading.value = "";
   }
 };
+
+async function setOnAndoff() {
+  try {
+    const data = {
+      id: useFollow.follow.id,
+      notification: true,
+    };
+    loading.value = "notification";
+    if (useFollow.follow.notification) {
+      data.notification = false;
+    }
+    await useFollow.update(data);
+    await getFollow();
+  } catch (error) {
+    console.log(erorr);
+    console.log("lỗi save");
+  } finally {
+    loading.value = "";
+  }
+}
 
 onMounted(() => {
   getFollow();

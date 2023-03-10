@@ -128,6 +128,7 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { notificationStore } from "~~/stores/notification.store";
 import { postStore } from "~~/stores/post.store";
 import { seriesStore } from "~~/stores/series.store";
 
@@ -140,6 +141,7 @@ const useAuth = authStore();
 const usePost = postStore();
 const useSeries = seriesStore();
 const route = useRoute();
+const useNotification = notificationStore();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;
@@ -206,10 +208,21 @@ function openDialogAddSeries() {
         const data = {
           series: route.params.id,
         };
+
+        const dataNotification = {
+          author: useAuth.user.id,
+          model: route.params.id,
+          content: `bạn có bài viết mới trong series "${useSeries.series.name}"`,
+          url: route.fullPath,
+          type: "info",
+        };
+
         if (useSeries.series.team.length > 0) {
           data.team = useSeries.series.team[0]._id;
         }
         await usePost.updateSeries(props.data._id, data);
+        await useNotification.create(dataNotification);
+
         resetData();
       }
     );

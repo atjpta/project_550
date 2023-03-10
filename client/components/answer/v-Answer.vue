@@ -40,7 +40,7 @@
               </div>
 
               <div
-                v-if="isAuthor && !loading"
+                v-if="isAuthorQuestion && !loading"
                 @click="choice()"
                 :class="[data.choice ? 'btn-success' : '']"
                 class="btn-sm btn-circle btn btn-outline"
@@ -48,7 +48,7 @@
                 <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
               </div>
               <div
-                v-else-if="isAuthor && loading"
+                v-else-if="isAuthorQuestion && loading"
                 class="btn-sm btn-circle btn btn-outline loading"
               ></div>
               <div
@@ -81,7 +81,7 @@
 
               <!-- các btn của tác giả -->
 
-              <div v-if="isAuthor" class="toast toast-top toast-end">
+              <div v-if="isAuthorAnswer" class="toast toast-top toast-end">
                 <div class="flex space-x-1">
                   <div @click="openEditF()" class="tooltip" data-tip="sửa câu trả lời">
                     <div class="btn btn-outline btn-primary">
@@ -225,8 +225,12 @@ const countCmt = computed(() => {
   return props.data?.comment[0]?.count;
 });
 
-const isAuthor = computed(() => {
+const isAuthorQuestion = computed(() => {
   return useQuestion.question.author[0]._id == useAuth.user?.id ?? false;
+});
+
+const isAuthorAnswer = computed(() => {
+  return props.data.author[0]._id == useAuth.user?.id ?? false;
 });
 
 const valVote = computed(() => {
@@ -246,7 +250,7 @@ const valVote = computed(() => {
 const classUp = computed(() => {
   if (useAuth.user) {
     if (props.data.author) {
-      if (isAuthor.value) {
+      if (isAuthorAnswer.value) {
         return "btn-disabled";
       }
     }
@@ -264,7 +268,7 @@ const classUp = computed(() => {
 const classDown = computed(() => {
   if (useAuth.user) {
     if (props.data.author) {
-      if (isAuthor.value) {
+      if (isAuthorAnswer.value) {
         return "btn-disabled";
       }
     }

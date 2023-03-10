@@ -6,19 +6,10 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
         },
-        from: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        },
         content: String,
-        type: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "notificationtype"
-        },
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        type: String,
+        view: Boolean,
+        url: String,
     },
 
     {

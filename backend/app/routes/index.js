@@ -14,6 +14,7 @@ const answer = require('./answer.routes')
 const member = require('./member.routes')
 const role = require('./role.routes')
 const follow = require('./follow.routes')
+const notification = require('./notification.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -31,4 +32,5 @@ exports.Start = (app) => {
     member(app)
     role(app)
     follow(app)
+    notification(app)
 }

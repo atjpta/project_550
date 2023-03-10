@@ -11,6 +11,7 @@ exports.create = async (req, res, next) => {
     const modelO = new model({
         user: req.body.user,
         follow: req.body.follow,
+        notification: true,
     })
     try {
         const document = modelO.save();

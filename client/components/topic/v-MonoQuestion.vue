@@ -142,13 +142,14 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { notificationStore } from "~~/stores/notification.store";
 import { questionStore } from "~~/stores/question.store";
 import { topicStore } from "~~/stores/topic.store";
 
 const props = defineProps({
   data: Object,
 });
-
+const useNotification = notificationStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const useQuestion = questionStore();
@@ -220,10 +221,18 @@ function openDialogAddTopic() {
         const data = {
           topic: route.params.id,
         };
+        const dataNotification = {
+          author: useAuth.user.id,
+          model: route.params.id,
+          content: `bạn có câu hỏi mới trong chủ đề "${useTopic.topic.name}"`,
+          url: route.fullPath,
+          type: "info",
+        };
         if (useTopic.topic.team.length > 0) {
           data.team = useTopic.topic.team[0]._id;
         }
         await useQuestion.updateTopic(props.data._id, data);
+        await useNotification.create(dataNotification);
         resetData();
       }
     );

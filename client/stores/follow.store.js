@@ -68,6 +68,10 @@ export const followStore = defineStore("followStore", {
         },
         async deleteOne(id) {
             await followService.deleteOne(id)
+        },
+
+        async update(id) {
+            await followService.update(id)
         }
 
     }

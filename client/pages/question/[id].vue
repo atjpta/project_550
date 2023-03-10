@@ -74,6 +74,7 @@ import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "../../stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
 import { questionStore } from "~~/stores/question.store";
+import { notificationStore } from "~~/stores/notification.store";
 
 const route = useRoute();
 const useQuestion = questionStore();
@@ -83,7 +84,7 @@ const useAnswer = answerStore();
 const useRouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
-
+const useNotification = notificationStore();
 const resetInput = ref(0);
 const dataInput = ref({
   content: {},
@@ -114,6 +115,16 @@ const sendAnswer = async () => {
     question: useQuestion.question._id,
     content: dataInput.value.content,
   };
+
+  const dataNotification = {
+    author: useAuth.user.id,
+    authorModel: useQuestion.question.author[0]._id,
+    model: useQuestion.question._id,
+    content: `bạn có câu trả lời mới về câu hỏi "${useQuestion.question.title}"`,
+    url: route.fullPath,
+    type: "info",
+  };
+
   try {
     if (
       data.content.ops.length > 1 ||
@@ -121,6 +132,7 @@ const sendAnswer = async () => {
       data.content.ops[0].insert.trim() != ""
     ) {
       await useAnswer.create(data);
+      await useNotification.create(dataNotification);
       await useAnswer.getBy(route.params.id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];
@@ -148,6 +160,15 @@ const send = async () => {
     tag_name: list,
   };
 
+  const dataNotification = {
+    author: useAuth.user.id,
+    authorModel: useQuestion.question.author[0]._id,
+    model: useQuestion.question._id,
+    content: `bạn có bình luận mới về câu hỏi "${useQuestion.question.title}"`,
+    url: route.fullPath,
+    type: "info",
+  };
+
   try {
     if (
       data.content.ops.length > 1 ||
@@ -156,6 +177,7 @@ const send = async () => {
       data.tag_name.length
     ) {
       await useCmt.create(data);
+      await useNotification.create(dataNotification);
       await useCmt.getBy("post", route.params.id);
       dataInput.value.content = { ops: [{ insert: "\n" }] };
       dataInput.value.tagname = [];

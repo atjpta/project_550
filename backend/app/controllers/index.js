@@ -12,8 +12,9 @@ const question = require('./question.controller');
 const topic = require('./topic.controller');
 const answer = require('./answer.controller');
 const member = require('./member.controller');
-const role = require('./role.controller')
-const follow = require('./follow.controller')
+const role = require('./role.controller');
+const follow = require('./follow.controller');
+const notification = require('./notification.controller');
 module.exports = {
     auth,
     image,
@@ -31,4 +32,5 @@ module.exports = {
     member,
     role,
     follow,
+    notification,
 }

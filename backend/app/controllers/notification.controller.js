@@ -1,0 +1,234 @@
+// có 6 chức năng chung là thêm(create), sửa (update), lấy tất cả (findAll), lấy theo id (findOne), xóa theo id (deleteOne), xóa tất cả(deleteAll)
+// sẽ có các chức năng khác đi kèm theo nữa tùy nào thực tế
+// chú ý chỉnh model, hàm create, select lại
+
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
+const DB = require("../models");
+const model = DB.notification;
+const Follow = DB.follow;
+
+exports.create = async (req, res, next) => {
+    try {
+        const userIds = await Follow.find({
+            user: req.body.model,
+            notification: true,
+        });
+        
+        if (req.body.authorModel) {
+            userIds.push({
+                follow: req.body.authorModel,
+            })
+        }
+
+        userIds.forEach(async (e) => {
+            if (e.follow != req.body.author) {
+                const modelO = new model({
+                    to: e.follow,
+                    content: req.body.content,
+                    url: req.body.url,
+                    type: req.body.type,
+                    view: false,
+                });
+                await modelO.save();
+            }
+        });
+        return res.send({ Message: "tạo thành công notification" });
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không  thể create model" + error })
+        );
+    }
+};
+
+
+exports.createOne = async (req, res, next) => {
+    try {
+            const modelO = new model({
+                to: req.body.to,
+                content: req.body.content,
+                url: req.body.url,
+                type: req.body.type,
+                view: false,
+            });
+            await modelO.save();
+        return res.send({ Message: "tạo thành công notification" });
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không  thể create model" + error })
+        );
+    }
+};
+
+
+exports.findAll = async (req, res, next) => {
+    try {
+        const document = await model.find();
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không  thể  lấy findAll" + error })
+        );
+    }
+};
+
+exports.findOne = async (req, res, next) => {
+    const { id } = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null,
+    };
+
+    try {
+        const document = await model.findOne(condition);
+        if (!document) {
+            return next(
+                res.status(404).json({ Message: "không thể tìm thấy model" })
+            );
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không  thể  lấy findAll" + error })
+        );
+    }
+};
+
+exports.findByMy = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.find({
+            to: ObjectId(id),
+        }).sort({
+            createdAt: -1,
+        });
+        if (!document) {
+            return next(
+                res.status(404).json({ Message: "không thể tìm thấy model findByMy" })
+            );
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không  thể  lấy findAll" + error })
+        );
+    }
+};
+
+exports.update = async (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+        return next(
+            res.status(400).json({ Message: "thông tin không thế thay đổi" })
+        );
+    }
+    const { id } = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null,
+    };
+
+    try {
+        const document = await model.findByIdAndUpdate(condition, req.body, {
+            new: true,
+        });
+        if (!document) {
+            return next(
+                res.status(404).json({ Message: "không thể tìm thấy model" })
+            );
+        }
+        return res.send({ message: "đã update thành công", body: req.body });
+    } catch (error) {
+        console.log(error);
+        return next(
+            res
+                .status(500)
+                .json({ Message: ` không thể update model với id = ${req.params.id} ` })
+        );
+    }
+};
+
+exports.updateMarkAllByUser = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const document = await model.updateMany(
+            {
+                to: ObjectId(id),
+            },
+            { $set: { "view": true } },
+            {
+                new: true,
+            }
+        );
+        if (document.nModified === 0) {
+            return res.status(404).json({ Message: "Không tìm thấy model cần cập nhật" });
+        }
+        return res.send({ message: "Cập nhật thành công" });
+    } catch (error) {
+        console.log(error);
+        return next(
+            res
+                .status(500)
+                .json({ Message: ` không thể update model với id = ${req.params.id} ` })
+        );
+    }
+
+};
+
+exports.delete = async (req, res, next) => {
+    const { id } = req.params;
+    const condition = {
+        _id: id && mongoose.isValidObjectId(id) ? id : null,
+    };
+
+    try {
+        const document = await model.findOneAndDelete(condition);
+        if (!document) {
+            return next(
+                res.status(404).json({ Message: "không thể tìm thấy model" })
+            );
+        }
+        return res.send({ message: "đã xóa model thành công" });
+    } catch (error) {
+        return next(
+            res
+                .status(500)
+                .json({
+                    Message: ` không thể xóa model với id = ${req.params.id} ` + error,
+                })
+        );
+    }
+};
+exports.deleteAll = async (req, res, next) => {
+    try {
+        const data = await model.deleteMany({});
+        return res.send({
+            message: `${data.deletedCount}  model đã xóa thành công`,
+        });
+    } catch (error) {
+        return next(
+            res
+                .status(500)
+                .json({ Message: ` có lỗi khi đang xóa tất cả model` + error })
+        );
+    }
+};
+
+exports.deleteByMy = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const data = await model.deleteMany({
+            to: ObjectId(id),
+        });
+        return res.send({
+            message: `${data.deletedCount}  model đã xóa thành công`,
+        });
+    } catch (error) {
+        return next(
+            res
+                .status(500)
+                .json({ Message: ` có lỗi khi đang xóa tất cả model` + error })
+        );
+    }
+};

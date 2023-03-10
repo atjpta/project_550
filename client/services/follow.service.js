@@ -14,7 +14,7 @@ export default {
             },
             method: "get",
         })
-     
+
         return data.value
     },
 
@@ -51,6 +51,23 @@ export default {
 
         useAlert.setSuccess("hủy theo dõi thành công");
 
+        return data.value
+    },
+
+    update: async (data0) => {
+        const { data: data, error } = await useFetch(url + `/${data0.id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            body: data0,
+            method: "put",
+        })
+        if (data0.notification) {
+            useAlert.setSuccess("bật thông báo thành công");
+        }
+        else {
+            useAlert.setSuccess("tắt thông báo thành công");
+        }
         return data.value
     },
 } 
