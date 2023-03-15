@@ -4,7 +4,7 @@
     <div class="flex justify-between">
       <div class="space-x-1">
         <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
+          lọc
         </div>
       </div>
       <button
@@ -15,8 +15,10 @@
       </button>
     </div>
     <div>
-      <div v-for="i in usePost.list" :key="i.id">
-        <PostVMono :data="i" />
+      <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
+        <div v-for="i in usePost.list" :key="i.id">
+          <PostVMono :data="i" />
+        </div>
       </div>
     </div>
   </div>

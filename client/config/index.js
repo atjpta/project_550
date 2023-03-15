@@ -1,9 +1,8 @@
 export default {
     url: {
-        apiimage: 'https://api-project-550.vercel.app/api/image',
-        // apiimage: 'http://localhost:8088/api/image',
+        apiimage: 'https://khydqeqdyigehckvjaci.supabase.co/storage/v1/object/public/hmusic-files/image/',
 
-        // api: 'http://localhost:8088/api',
-        api: 'https://api-project-550.vercel.app/api',
+        api: 'http://localhost:8088/api',
+        // api: 'https://api-project-550.vercel.app/api',
     },
 }

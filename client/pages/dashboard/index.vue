@@ -56,8 +56,13 @@ async function getApi() {
   // await useUser.findOne(useAuth.user.id);
 }
 
+const router = useRoute();
+
 onMounted(() => {
   getApi();
+  if (router.fullPath == "/dashboard") {
+    navigateTo("/dashboard/overview");
+  }
 });
 </script>
 

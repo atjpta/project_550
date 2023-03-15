@@ -3,7 +3,7 @@
     <transition name="bounce">
       <div
         :class="data.choice.length ? 'border-success' : 'border-info'"
-        class="bg-base-200 rounded-2xl my-5 p-5 border-2"
+        class="bg-base-200 rounded-2xl p-5 border-2"
       >
         <div>
           <!-- phần đầu -->

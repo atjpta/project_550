@@ -14,7 +14,7 @@
         tạo series mới
       </button>
     </div>
-    <div>
+    <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMono :data="i" />
       </div>

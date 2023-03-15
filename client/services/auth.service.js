@@ -11,7 +11,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            useAlert.setError(error.value.data.message)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("Đăng nhập thành công ");

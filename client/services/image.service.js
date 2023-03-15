@@ -1,38 +1,19 @@
 import { alertStore } from "~~/stores/alert.store";
-import config from "~~/config";
-import { authStore } from "~~/stores/auth.store";
-const useAuth = authStore()
 const useAlert = alertStore()
-const url = config.url.api + '/image'
-
+const supabase = useSupabaseClient()
 export default {
-    uploadImage: async (image, name) => {
-        const { data: data, error } = await useFetch(url+`/${name}` , {
-            method: "POST",
-            body: image
-        })
+    upload: async (filePath, file) => {
+        let { error: uploadError } = await supabase.storage
+            .from("blog-files/image")
+            .upload(filePath, file);
+        if (uploadError.statusCode != 409) {
+         useAlert.setError(" lỗi upload ảnh ");
 
-        if (error.value) {
-            if (error.value.status == 400) {
-                return;
-            }
-            useAlert.setError(error.value.data)
-            throw new Error(error.value.data);
+            throw uploadError;
         }
-        useAlert.setSuccess("tải ảnh lên thành công");
-        return data.value
-    },
-    uploadImageMulti: async (list) => {
-        const { data: data, error } = await useFetch(url + '/upload/multi', {
-            method: "POST",
-            body: list
-        })
 
-        if (error.value) {
-            useAlert.setError(error.value.data)
-            throw new Error(error.value.data);
-        }
-        useAlert.setSuccess("tải ảnh lên thành công");
-        return data.value
+        // useAlert.setSuccess("tải ảnh lên thành công");
+        return;
     },
+
 } 

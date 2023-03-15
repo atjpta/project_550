@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="bg-base-200 pt-1 text-xl">
-      <div class="md:w-4/5 mx-auto flex justify-between">
-        <nuxt-link to="/" class="btn btn-ghost"> wblogit </nuxt-link>
-        <div class="">
+    <div class="bg-base-200 pt-1 text-xl px-5">
+      <div class="flex justify-between">
+        <!-- <nuxt-link to="/" class="btn btn-ghost"> wblogit </nuxt-link> -->
+        <div class="flex">
+          <button class="btn btn-ghost text-xl">
+            <OtherVIcon icon="fa-solid fa-magnifying-glass" />
+          </button>
           <div class="sm:flex hidden">
             <input
               type="text"
@@ -13,9 +16,6 @@
           </div>
         </div>
         <div class="flex">
-          <button class="btn btn-ghost text-xl">
-            <OtherVIcon icon="fa-solid fa-magnifying-glass" />
-          </button>
           <NotificationVList />
           <OtherVTheme2 />
           <OtherVAvatarDD />

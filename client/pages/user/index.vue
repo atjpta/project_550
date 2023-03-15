@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
       <div v-for="i in useUser.list_user" :key="i">
         <UserVMono :data="i" />
       </div>
