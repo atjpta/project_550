@@ -34,7 +34,7 @@ const props = defineProps({
 const usetag = tagStore();
 
 function addtag(data) {
-  if (props.data.size > 0 && props.data.size < 5) {
+  if (props.data.size >= 0 && props.data.size < 5) {
     let double = 0;
     props.data.forEach((value) => {
       if (value.name == data.name) {
@@ -45,7 +45,11 @@ function addtag(data) {
     if (double == 0) {
       props.data.add(data);
     }
-  } else props.data.add(data);
+  }
+  // else {
+  //   console.log(props.data.size);
+  //   props.data.add(data);
+  // }
 }
 function removetag(data) {
   props.data.delete(data);

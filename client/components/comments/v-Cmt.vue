@@ -8,34 +8,34 @@
           <div class="flex flex-col mr-2 space-y-1">
             <div
               v-if="loading == 'up'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
             ></div>
             <div
               v-else-if="loadingVote != 'up'"
               @click="openDialogSignin(up)"
               :class="classUp"
-              class="btn-sm btn-circle btn btn-outline"
+              class="btn-sm btn-circle btn btn-ghost"
             >
-              <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
+              <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-caret-up" />
             </div>
 
             <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
             <div
               v-if="loading == 'down'"
-              class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
             ></div>
             <div
               v-else-if="loadingVote != 'down'"
               @click="openDialogSignin(down)"
               :class="classDown"
-              class="btn-sm btn-circle btn btn-outline"
+              class="btn-sm btn-circle btn btn-ghost"
             >
-              <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
+              <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-caret-down" />
             </div>
 
             <div class="tooltip" data-tip="trả lời bình luận">
-              <div @click="openInputRep()" class="btn-sm btn-circle btn btn-outline">
-                <OtherVIcon class-icon="" icon="fa-solid fa-share" />
+              <div @click="openInputRep()" class="btn-sm btn-circle btn btn-ghost">
+                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-share" />
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <div
               v-for="i in data.tag_name"
               :key="i"
-              class="btn btn-info btn-sm btn-outline mt-2"
+              class="btn btn-info btn-sm btn-ghost mt-2"
             >
               {{ "@" + i.name }}
             </div>
@@ -190,7 +190,7 @@ const classUp = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == 1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -208,7 +208,7 @@ const classDown = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == -1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }

@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-base-200 rounded-2xl">
+  <div class="">
     <!-- các tùy chọn -->
-    <div
-      class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
-    >
+    <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-16">
       <div class="w-fit">
         <nuxtLink
           class="hover:text-sky-500 hover:scale-110 duration-500"
@@ -26,50 +24,54 @@
         </nuxtLink>
       </div>
       <!-- các btn -->
-      <div class="flex justify-evenly">
+      <div class="flex">
         <div class="flex justify-evenly mr-2">
-          <div
-            v-if="loading != 'up'"
-            @click="openDialogSignin(up)"
-            :class="classUp"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
-            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+          <div data-tip="tăng điểm" class="tooltip">
+            <div
+              v-if="loading != 'up'"
+              @click="openDialogSignin(up)"
+              :class="classUp"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
+              <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+            </div>
           </div>
           <div
             v-if="loading == 'up'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
 
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div
-            v-if="loading != 'down'"
-            @click="openDialogSignin(down)"
-            :class="classDown"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
-            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+          <div data-tip="giảm điểm" class="tooltip">
+            <div
+              v-if="loading != 'down'"
+              @click="openDialogSignin(down)"
+              :class="classDown"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
+              <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+            </div>
           </div>
           <div
             v-if="loading == 'down'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
         </div>
         <!-- lưu -->
-        <div>
+        <div data-tip="lưu" class="tooltip">
           <div
             v-if="loading != 'save'"
             @click="openDialogSignin(save)"
             :class="classSave"
-            class="btn-sm lg:btn-md btn btn-outline btn-square"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
           >
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
           </div>
           <div
             v-if="loading == 'save'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
         </div>
         <!-- thông báo  -->
@@ -81,7 +83,7 @@
           <div
             @click="setOnAndoff()"
             :class="loading == 'notification' ? 'loading' : ''"
-            class="btn-sm lg:btn-md btn btn-outline btn-square"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
           >
             <OtherVIcon
               class-icon="text-xl text-warning"
@@ -123,7 +125,7 @@
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
       </div>
       <!-- tag -->
-      <div class="mt-4 flex">
+      <div class="mt-4 flex flex-wrap">
         <div v-for="i in data.tag" :key="i._id" class="">
           <nuxt-link
             :to="`/tag/${i._id}/post`"
@@ -198,7 +200,7 @@ const classUp = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == 1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -216,7 +218,7 @@ const classDown = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == -1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -232,7 +234,7 @@ const classSave = computed(() => {
       }
     }
     if (useFollow.follow) {
-      return "btn-primary";
+      return "text-primary";
     }
   }
   return "";

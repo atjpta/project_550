@@ -14,11 +14,49 @@
         tạo bài viết
       </button>
     </div>
-    <div>
-      <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
-        <div v-for="i in usePost.list" :key="i.id">
+
+    <div v-if="loading">
+      <div class="my-5 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+        <div v-for="item in 9" :key="item.id">
+          <PostVSkeleton />
+        </div>
+      </div>
+    </div>
+
+    <div class="my-5 lg:grid hidden grid-cols-3 space-x-5">
+      <div class="space-y-5">
+        <div v-for="i in posts.list31" :key="i.id">
           <PostVMono :data="i" />
         </div>
+      </div>
+      <div class="space-y-5">
+        <div v-for="i in posts.list32" :key="i.id">
+          <PostVMono :data="i" />
+        </div>
+      </div>
+      <div class="space-y-5">
+        <div v-for="i in posts.list33" :key="i.id">
+          <PostVMono :data="i" />
+        </div>
+      </div>
+    </div>
+
+    <div class="my-5 md:grid lg:hidden hidden grid-cols-2 space-x-5">
+      <div class="space-y-5">
+        <div v-for="i in posts.list21" :key="i.id">
+          <PostVMono :data="i" />
+        </div>
+      </div>
+      <div class="space-y-5">
+        <div v-for="i in posts.list22" :key="i.id">
+          <PostVMono :data="i" />
+        </div>
+      </div>
+    </div>
+
+    <div class="my-5 space-y-5 md:hidden">
+      <div v-for="i in usePost.list" :key="i.id">
+        <PostVMono :data="i" />
       </div>
     </div>
   </div>
@@ -34,6 +72,36 @@ const usePost = postStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
+const loading = ref(false);
+const posts = ref({});
+function formatList(list) {
+  const listdata = {
+    list31: [],
+    list32: [],
+    list33: [],
+    list21: [],
+    list22: [],
+  };
+  list.forEach((e, i) => {
+    if (i % 3 == 0) {
+      listdata.list31.push(e);
+    }
+    if (i % 3 == 1) {
+      listdata.list32.push(e);
+    }
+    if (i % 3 == 2) {
+      listdata.list33.push(e);
+    }
+    if (i % 2 == 0) {
+      listdata.list21.push(e);
+    }
+    if (i % 2 == 1) {
+      listdata.list22.push(e);
+    }
+  });
+  return listdata;
+}
+
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -52,8 +120,17 @@ function openDialogSignin() {
     navigateTo("/post/edit");
   }
 }
+
 async function getApi() {
-  usePost.findAll();
+  loading.value = true;
+
+  try {
+    await usePost.findAll();
+    posts.value = formatList(usePost.list);
+    loading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 onMounted(() => {
   useRouteS.cb = getApi;

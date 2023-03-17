@@ -1,89 +1,39 @@
 <template>
-  <div class="">
-    <!-- cho máy tính -->
-    <div
-      class="lg:flex overflow-y-auto scroll-smooth hidden h-screen w-60 bg-base-300/50 glass"
-    >
-      <div class="w-full">
-        <!-- logo -->
-        <div class="pt-1 text-center sticky top-0 z-30 bg-base-200">
-          <div to="/" class="btn btn-ghost text-2xl font-bold">abctu</div>
-          <div class="mx-auto animate-ping border-b-2 border-blue-500 h-3 w-20"></div>
-        </div>
-
-        <div class="h-fit z-20">
-          <ul class="menu">
-            <div v-for="i in dataNav" :key="i">
-              <div v-for="j in i" :key="j.name">
-                <li class="hover-bordered">
-                  <nuxt-link :to="j.url">
-                    <OtherVIcon class-icon="text-2xl" :icon="j.icon" />
-                    <div :class="[showtext ? 'w-60' : '']">
-                      {{ j.name }}
-                    </div>
-                  </nuxt-link>
-                </li>
-              </div>
-              <div class="divider px-5"></div>
-            </div>
-          </ul>
-        </div>
-      </div>
-    </div>
-
+  <div class="bg-base-100">
     <!-- cho mobie -->
 
-    <div
-      @mouseleave="showtext = false"
-      :class="[showtext ? 'overflow-y-auto h-screen glass' : '']"
-      class="duration-500 lg:hidden"
-    >
-      <div
-        :class="[showtext ? 'rotate-180 ' : '']"
-        class="sticky top-1 my-1 duration-500 z-40"
-      >
-        <div @click="openNav()" class="btn btn-primary rounded-none">
-          <OtherVIcon
-            class-icon="text-2xl"
-            :icon="showtext ? 'fa-solid fa-x' : 'fa-solid fa-bars'"
-          />
+    <div class="dropdown">
+      <label tabindex="0" class="">
+        <div class="btn btn-ghost rounded-none">
+          <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
         </div>
-      </div>
-
-      <div v-if="showtext" class="bg-base-300/50">
-        <div>
-          <!-- logo -->
-          <div class="pt-1 text-center sticky top-0 bg-base-100 z-30">
-            <div class="btn btn-ghost text-2xl font-bold">
-              {{ showtext ? "abctu" : "a" }}
+      </label>
+      <div tabindex="0" class="dropdown-content mt-1 bg-base-100 w-60 h-screen">
+        <ul class="menu">
+          <div v-for="i in dataNav" :key="i">
+            <div v-for="j in i" :key="j.name">
+              <li class="hover-bordered">
+                <nuxt-link :to="j.url">
+                  <OtherVIcon class-icon="text-2xl" :icon="j.icon" />
+                  <div class="text-base">
+                    {{ j.name }}
+                  </div>
+                </nuxt-link>
+              </li>
             </div>
-            <div class="mx-auto animate-ping border-b-2 border-blue-500 h-3 w-20"></div>
+            <div v-if="i != dataNav[dataNav.length - 1]" class="divider px-5"></div>
           </div>
-
-          <div class="h-fit z-20">
-            <ul class="menu">
-              <div v-for="i in dataNav" :key="i">
-                <div v-for="j in i" :key="j.name">
-                  <li class="hover-bordered">
-                    <nuxt-link @click="showtext = false" :to="j.url">
-                      <OtherVIcon class-icon="text-2xl" :icon="j.icon" />
-                      <div :class="[showtext ? 'w-60' : '']">
-                        {{ showtext ? j.name : "" }}
-                      </div>
-                    </nuxt-link>
-                  </li>
-                </div>
-                <div class="divider px-5"></div>
-              </div>
-            </ul>
-          </div>
-        </div>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+function test() {
+  open.value = !open.value;
+  console.log(open.value);
+}
 const showtext = ref(false);
 const open = ref(false);
 const dataNav = ref([

@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl p-5">
+      <div
+        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+      >
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -33,14 +35,17 @@
                   class="tooltip"
                   data-tip="sửa bài viết"
                 >
-                  <div class="btn btn-outline btn-primary">
-                    <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                  <div class="btn btn-ghost">
+                    <OtherVIcon
+                      class-icon="text-primary"
+                      icon="fa-solid fa-pen-to-square"
+                    />
                   </div>
                 </nuxtLink>
 
                 <div class="tooltip" data-tip="xóa bài viết">
-                  <div @click="openDialogDelete()" class="btn btn-outline btn-error">
-                    <OtherVIcon icon="fa-solid fa-trash-can" />
+                  <div @click="openDialogDelete()" class="btn btn-ghost">
+                    <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
                   </div>
                 </div>
               </div>
@@ -48,7 +53,7 @@
 
             <!-- phần tùy chọn cho người đọc -->
             <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
-              <label tabindex="0" class="btn btn-outline btn-primary">
+              <label tabindex="0" class="btn btn-ghost">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul
@@ -82,7 +87,7 @@
             </div>
           </div>
           <!-- tag -->
-          <div class="mt-4 flex">
+          <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
               <nuxt-link
                 :to="`/tag/${i._id}/post`"
@@ -92,7 +97,7 @@
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
-          <div class="flex justify-around mt-2">
+          <div class="flex space-x-5 mt-2">
             <div class="tooltip" data-tip="điểm bài viết">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}

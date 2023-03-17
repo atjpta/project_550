@@ -1,29 +1,32 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
-    <PostVPost :data="usePost.post" />
-    <div
-      @click="openInputCmt = !openInputCmt"
-      class="btn btn-sm btn-primary btn-outline mb-2"
-    >
-      Nhập bình luận
-      <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
-        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+  <div class="">
+    <PostVSkeleton v-if="loadingSkeleton" />
+    <div v-else>
+      <PostVPost :data="usePost.post" />
+      <div
+        @click="openInputCmt = !openInputCmt"
+        class="btn btn-sm btn-ghost text-primary mb-2"
+      >
+        Nhập bình luận
+        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+          <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
+            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+          </div>
         </div>
       </div>
-    </div>
-    <div v-if="openInputCmt">
-      <CommentsVInputCmt
-        @send="openDialogSignin(send)"
-        :loading="loading"
-        :data="dataInput"
-        :reset="resetInput"
-      />
-    </div>
+      <div v-if="openInputCmt">
+        <CommentsVInputCmt
+          @send="openDialogSignin(send)"
+          :loading="loading"
+          :data="dataInput"
+          :reset="resetInput"
+        />
+      </div>
 
-    <div>
-      <div v-for="i in useCmt.list_cmt" :key="i">
-        <CommentsVCmt :data="i" />
+      <div>
+        <div v-for="i in useCmt.list_cmt" :key="i">
+          <CommentsVCmt :data="i" />
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +50,7 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const resetInput = ref(0);
 const useNotification = notificationStore();
+const loadingSkeleton = ref(false);
 const dataInput = ref({
   content: {},
   tagname: [],
@@ -119,10 +123,16 @@ function openDialogSignin(cb) {
 }
 
 async function getApi() {
-  useCmt.list_cmt = [];
-  await usePost.findOne(route.params.id);
-  await useUser.findAll();
-  await useCmt.getBy("post", route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    useCmt.list_cmt = [];
+    await usePost.findOne(route.params.id);
+    await useUser.findAll();
+    await useCmt.getBy("post", route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {

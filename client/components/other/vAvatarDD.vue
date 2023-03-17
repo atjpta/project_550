@@ -70,7 +70,7 @@ const dataAvatar = ref([
 
   {
     name: "Đăng xuất",
-    url: "/",
+    url: "/auth/signin",
     icon: "fa-solid fa-right-from-bracket",
   },
 ]);

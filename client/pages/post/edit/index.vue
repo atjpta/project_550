@@ -5,10 +5,11 @@
 </template>
 
 <script setup>
+import { alertStore } from "~~/stores/alert.store";
 import { imageStore } from "~~/stores/image.store";
 import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
-
+const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
@@ -45,6 +46,10 @@ function formatData(listtag) {
 
 async function save() {
   post = usePost.post_edit;
+  if (!(post.content.ops[0].insert != "\n" && post.title)) {
+    useAlert.setError("phải phẩm đủ tiêu đề và nội dung");
+    return;
+  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(post.tag);

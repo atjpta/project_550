@@ -1,16 +1,14 @@
 <template>
-  <div>
+  <div class="">
     <OtherVAlert />
     <OtherVDialog />
 
-    <OtherVNav class="fixed z-40" />
-    <div class="lg:ml-60">
-      <OtherVHeader class="z-10" />
-      <div class="m-5">
+    <div class="">
+      <OtherVHeader class="sticky top-0 z-10" />
+      <div class="pt-10 mx-5 md:mx-auto lg:w-4/6 md:w-5/6">
         <slot />
       </div>
     </div>
-    <OtherVFooterMusic class="fixed bottom-0 z-30" />
   </div>
 </template>
 

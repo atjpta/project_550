@@ -15,7 +15,7 @@
       </button>
     </div>
     <div>
-      <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
+      <div class="mt-5">
         <div v-for="i in useQuestion.list" :key="i.id">
           <QuestionVMono :data="i" />
         </div>
