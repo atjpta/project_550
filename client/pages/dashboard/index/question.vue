@@ -1,12 +1,7 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"
@@ -15,7 +10,7 @@
       </button>
     </div>
 
-    <div v-if="useQuestion.list.length > 0">
+    <div class="space-y-5 mt-5" v-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
       </div>

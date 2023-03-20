@@ -1,16 +1,30 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
+  <div
+    :class="
+      preview
+        ? 'bg-base-100'
+        : 'bg-gradient-to-r from-warning/5 via-warning/5 to-pink-500/0'
+    "
+    class="p-5 rounded-2xl"
+  >
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa câu hỏi</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">Tiêu đề</div>
+          <div class="text-xl font-semibold mt-5">
+            Tiêu đề
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
           <input
             v-model="useQuestion.question_edit.title"
             placeholder="nhập tiêu đề"
             type="text"
-            class="input bg-inherit border-0 border-b-2 border-primary w-full"
+            class="input input-primary w-full"
           />
         </div>
 
@@ -72,7 +86,14 @@
 
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
-          <div class="text-xl font-semibold">Nội dung</div>
+          <div class="text-xl font-semibold mt-5">
+            Nội dung
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="-z-10">
@@ -115,7 +136,7 @@
       >
         lưu
       </div>
-      <div @click="this.$router.back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
     </div>
   </div>
 </template>
@@ -133,25 +154,27 @@ import { questionStore } from "~~/stores/question.store";
 import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
+const supabase = useSupabaseClient();
 const url = config.url.apiimage;
 const modules = {
   name: "imageUploader",
   module: ImageUploader,
   options: {
     upload: (file) => {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         const formData = new FormData();
         formData.append("image", file);
 
-        axios
-          .post(url, formData)
-          .then((res) => {
-            resolve(url + "/" + res.data.filename);
-          })
-          .catch((err) => {
-            reject("Upload failed");
-            console.error("Error:", err);
-          });
+        let { error: uploadError } = await supabase.storage
+          .from("blog-files/image")
+          .upload(file.name, file);
+        if (uploadError.statusCode != 409) {
+          useAlert.setError(" lỗi upload ảnh ");
+          reject("Upload failed");
+          console.error("Error:", err);
+          throw uploadError;
+        }
+        resolve(url + file.name);
       });
     },
   },

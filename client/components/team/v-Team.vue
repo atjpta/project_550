@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div class="rounded-2xl my-5 p-5">
         <div class="flex">
           <!-- ảnh team -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
@@ -28,13 +28,13 @@
                     class="tooltip"
                     data-tip="sửa team"
                   >
-                    <div class="btn btn-outline btn-primary">
+                    <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
 
                   <div class="tooltip" data-tip="xóa team">
-                    <div @click="openDialogDelete()" class="btn btn-outline btn-error">
+                    <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
                   </div>
@@ -54,14 +54,14 @@
                   </div>
                   <div
                     v-if="loading2 == 'save'"
-                    class="btn btn-circle btn-outline loading mr-1"
+                    class="btn btn-circle btn-ghots loading mr-1"
                   ></div>
                 </div>
                 <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
                   <div
                     @click="openDialogJoinTeam()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-secondary mr-1"
+                    class="btn btn-ghost text-secondary mr-1"
                   >
                     gia nhập
                   </div>
@@ -116,7 +116,7 @@
             <!-- ảnh bìa và tiêu đề -->
             <div class="text-xl">{{ data?.introduce }}</div>
             <!-- tag -->
-            <div class="mt-4 flex">
+            <div class="mt-4 flex flex-wrap">
               <div v-for="i in data?.tag" :key="i._id" class="">
                 <nuxt-link
                   :to="`/tag/${i._id}/post`"
@@ -129,7 +129,7 @@
         </div>
 
         <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2">
+        <div class="flex space-x-5 mt-2">
           <div class="tooltip" data-tip="điểm nhóm">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ valVote }}
@@ -184,7 +184,7 @@ const slmember = computed(() => {
 const classSave = computed(() => {
   if (useAuth.user) {
     if (useFollow.follow) {
-      return "btn-primary";
+      return "tet-primary";
     }
   }
   return "";
@@ -209,10 +209,14 @@ const isRequest = computed(() => {
 const valVote = computed(() => {
   let val = 0;
   props.data?.vote_post?.forEach((e) => {
-    val += e.val;
+    if (e._id) {
+      val += e.val;
+    }
   });
   props.data?.vote_question?.forEach((e) => {
-    val += e.val;
+    if (e._id) {
+      val += e.val;
+    }
   });
   return val;
 });

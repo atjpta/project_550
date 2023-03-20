@@ -1,14 +1,8 @@
 <template>
-  <div class="">
+  <div class="my-5">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
-    </div>
-    <div v-if="useSeries.List_series.length > 0">
+
+    <div class="space-y-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMonoD :data="i" />
       </div>

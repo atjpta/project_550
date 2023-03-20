@@ -1,16 +1,28 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
+  <div
+    :class="
+      !preview ? 'bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0' : ''
+    "
+    class="p-5 rounded-2xl"
+  >
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa topic</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">Tên topic</div>
+          <div class="text-xl font-semibold mt-5">
+            Tên topic
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
           <input
             v-model="useTopic.topic_edit.name"
             placeholder="nhập tên topic"
             type="text"
-            class="input bg-inherit border-0 border-b-2 border-primary w-full"
+            class="input input-primary w-full"
           />
         </div>
 
@@ -91,12 +103,19 @@
 
         <!-- phần nội dung bài viết -->
         <div class="mt-5 mb-2">
-          <div class="text-xl font-semibold">Lời giới thiệu</div>
+          <div class="text-xl font-semibold mt-5">
+            Tóm tắt
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
           <textarea
             v-model="useTopic.topic_edit.introduce"
             placeholder="nhập nội dung"
             type="text"
-            class="p-1 bg-inherit border-0 border-b-2 border-primary w-full h-20"
+            class="textarea textarea-primary w-full h-20"
           />
         </div>
       </div>
@@ -130,7 +149,7 @@
       >
         lưu
       </div>
-      <div @click="this.$router.back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
     </div>
   </div>
 </template>

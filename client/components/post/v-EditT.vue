@@ -122,7 +122,7 @@
       >
         lưu
       </div>
-      <div @click="this.$router.back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
     </div>
   </div>
 </template>
@@ -142,24 +142,25 @@ import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
 const url = config.url.apiimage;
+const supabase = useSupabaseClient();
 const modules = {
   name: "imageUploader",
   module: ImageUploader,
   options: {
     upload: (file) => {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         const formData = new FormData();
         formData.append("image", file);
-
-        axios
-          .post(url, formData)
-          .then((res) => {
-            resolve(url + "/" + res.data.filename);
-          })
-          .catch((err) => {
-            reject("Upload failed");
-            console.error("Error:", err);
-          });
+        let { error: uploadError } = await supabase.storage
+          .from("blog-files/image")
+          .upload(file.name, file);
+        if (uploadError.statusCode != 409) {
+          useAlert.setError(" lỗi upload ảnh ");
+          reject("Upload failed");
+          console.error("Error:", err);
+          throw uploadError;
+        }
+        resolve(url + file.name);
       });
     },
   },

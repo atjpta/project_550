@@ -7,7 +7,9 @@
 <script setup>
 import { imageStore } from "~~/stores/image.store";
 import { topicStore } from "~~/stores/topic.store";
+import { alertStore } from "~~/stores/alert.store";
 
+const useAlert = alertStore();
 const useImage = imageStore();
 const useTopic = topicStore();
 let topic;
@@ -27,6 +29,10 @@ function formatData(listtag) {
 
 async function save() {
   topic = useTopic.topic_edit;
+  if (!(topic.introduce && topic.name)) {
+    useAlert.setError("phải nhập đủ tên và tóm tắt ");
+    return;
+  }
   loading.value = true;
   try {
     const data = formatData();

@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import { alertStore } from "~~/stores/alert.store";
 import { imageStore } from "~~/stores/image.store";
 import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
@@ -12,6 +13,7 @@ import { tagStore } from "~~/stores/tag.store";
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
+const useAlert = alertStore();
 let post = usePost.post_edit;
 const loading = ref(false);
 function formatData(listtag) {
@@ -44,6 +46,10 @@ function formatData(listtag) {
 
 async function saveEdit() {
   post = usePost.post_edit;
+  if (!(post.content.ops[0].insert != "\n" && post.title)) {
+    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    return;
+  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(post.tag);

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <UserVInfo />
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuDashboard" :key="i">

@@ -21,7 +21,7 @@
         </nuxtLink>
       </div>
       <!-- các btn -->
-      <div class="flex justify-evenly">
+      <div class="flex">
         <div class="flex justify-evenly mr-2">
           <div
             v-if="loading != 'up'"
@@ -88,9 +88,9 @@
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
       </div>
       <!-- tag -->
-      <div class="mt-4">
+      <div class="mt-4 flex flex-wrap">
         <div v-for="i in data.tag" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
-          {{ i.name }}
+          {{ "#" + i.name }}
         </div>
       </div>
       <!-- phần series -->

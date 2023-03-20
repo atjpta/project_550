@@ -1,16 +1,13 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl">
+      <div class="">
         <div class="mb-3">
           <div
-            class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
+            class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
           >
             <div class="w-fit">
-              <nuxtLink
-                class="hover:text-sky-500 hover:scale-110 duration-500"
-                to="/user/1"
-              >
+              <div class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
                 <!-- tác giả -->
                 <div class="flex">
                   <div class="avatar">
@@ -22,10 +19,10 @@
                     {{ data.author?.name }}
                   </div>
                 </div>
-              </nuxtLink>
+              </div>
             </div>
             <!-- các btn -->
-            <div class="flex justify-evenly">
+            <div class="flex mt-1 space-x-3">
               <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
                 <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
               </div>

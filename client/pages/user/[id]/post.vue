@@ -1,13 +1,5 @@
 <template>
   <div class="">
-    <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
-    </div>
     <div v-if="listPost.listPins.length + listPost.listNoPins.length > 0">
       <div
         v-if="listPost.listPins.length > 0"
@@ -19,13 +11,13 @@
             icon="fa-solid fa-thumbtack"
           />
         </div>
-        <div class="w-full mx-5">
+        <div class="w-full m-5 space-y-5">
           <div v-for="i in listPost.listPins" :key="i.id">
             <PostVMonoD :data="i" />
           </div>
         </div>
       </div>
-      <div>
+      <div class="my-5 space-y-5">
         <div v-for="i in listPost.listNoPins" :key="i.id">
           <PostVMonoD :data="i" />
         </div>

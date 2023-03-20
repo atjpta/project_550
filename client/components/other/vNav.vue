@@ -1,7 +1,6 @@
 <template>
   <div class="bg-base-100">
     <!-- cho mobie -->
-
     <div class="dropdown">
       <label tabindex="0" class="">
         <div class="btn btn-ghost rounded-none">
@@ -30,12 +29,9 @@
 </template>
 
 <script setup>
-function test() {
-  open.value = !open.value;
-  console.log(open.value);
-}
 const showtext = ref(false);
 const open = ref(false);
+
 const dataNav = ref([
   [
     {
@@ -62,24 +58,24 @@ const dataNav = ref([
   [
     {
       name: "Bài viết",
-      url: "/post",
+      url: "/post/new/0",
       icon: "fa-solid fa-file-lines",
     },
     {
       name: "Chuỗi bài viết",
-      url: "/series",
+      url: "/series/new/0",
       icon: "fa-solid fa-layer-group",
     },
   ],
   [
     {
       name: "Câu hỏi",
-      url: "/question",
-      icon: "fa-solid fa-house",
+      url: "/question/new/0",
+      icon: "fa-solid fa-file-circle-question",
     },
     {
-      name: "chủ để",
-      url: "/topic",
+      name: "chủ đề",
+      url: "/topic/new/0",
       icon: "fa-solid fa-layer-group",
     },
   ],

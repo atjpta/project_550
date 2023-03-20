@@ -1,12 +1,7 @@
 <template>
-  <div class="">
+  <div class="mb-5">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"
@@ -26,13 +21,13 @@
             icon="fa-solid fa-thumbtack"
           />
         </div>
-        <div class="w-full mx-5">
+        <div class="w-full m-5 space-y-5">
           <div v-for="i in listPost.listPins" :key="i.id">
             <PostVMonoD :data="i" />
           </div>
         </div>
       </div>
-      <div>
+      <div class="space-y-5 mt-5">
         <div v-for="i in listPost.listNoPins" :key="i.id">
           <PostVMonoD :data="i" />
         </div>

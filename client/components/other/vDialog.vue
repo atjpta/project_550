@@ -13,11 +13,11 @@
             <div
               @click="triggerCb()"
               :class="[loading ? 'loading' : '']"
-              class="btn btn-primary btn-outline"
+              class="btn btn-primary"
             >
               {{ useDialog.data.btn1 }}
             </div>
-            <div @click="useDialog.hiddenDialog()" class="btn btn-error btn-outline">
+            <div @click="useDialog.hiddenDialog()" class="btn text-error btn-ghost">
               {{ useDialog.data.btn2 }}
             </div>
           </div>

@@ -2,8 +2,12 @@
   <div>
     <transition name="bounce">
       <div
-        :class="data.choice.length ? 'border-success' : 'border-info'"
-        class="bg-base-200 rounded-2xl p-5 border-2"
+        :class="
+          data.choice.length
+            ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
+            : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
+        "
+        class="rounded-2xl p-5"
       >
         <div>
           <!-- phần đầu -->
@@ -34,13 +38,16 @@
                 <div v-if="data.topic" class="tooltip" data-tip="xóa khỏi Topic">
                   <div
                     @click="openDialogRemoveTopic()"
-                    class="btn btn-outline btn-warning"
+                    class="btn btn-ghost text-warning text-2xl"
                   >
                     <OtherVIcon icon="fa-solid fa-xmark" />
                   </div>
                 </div>
                 <div v-if="!data.topic" class="tooltip" data-tip="thêm vào topic">
-                  <div @click="openDialogAddTopic()" class="btn btn-outline btn-success">
+                  <div
+                    @click="openDialogAddTopic()"
+                    class="btn btn-ghost text-success text-2xl"
+                  >
                     <OtherVIcon icon="fa-solid fa-plus" />
                   </div>
                 </div>
@@ -49,12 +56,12 @@
                   class="tooltip"
                   data-tip="sửa câu hỏi"
                 >
-                  <div class="btn btn-outline btn-primary">
+                  <div class="btn btn-ghost text-primary">
                     <OtherVIcon icon="fa-solid fa-pen-to-square" />
                   </div>
                 </nuxtLink>
                 <div class="tooltip" data-tip="xóa câu hỏi">
-                  <div @click="openDialogDelete()" class="btn btn-outline btn-error">
+                  <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                     <OtherVIcon icon="fa-solid fa-trash-can" />
                   </div>
                 </div>
@@ -66,7 +73,7 @@
               v-if="!isAuthor && useAuth.isUserLoggedIn"
               class="dropdown dropdown-end z-10"
             >
-              <label tabindex="0" class="btn btn-outline btn-primary">
+              <label tabindex="0" class="btn btn-ghost btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul
@@ -104,13 +111,13 @@
             <div v-for="i in data.tag" :key="i._id" class="">
               <nuxt-link
                 :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
+                class="btn btn-ghost btn-sm mr-1 mt-1"
                 >{{ "#" + i.name }}</nuxt-link
               >
             </div>
           </div>
           <!-- các trạng thái của câu hỏi  -->
-          <div class="flex justify-around mt-2">
+          <div class="flex space-x-5 mt-2">
             <div class="tooltip" data-tip="điểm câu hỏi">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}

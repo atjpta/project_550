@@ -1,87 +1,85 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl">
-        <div class="mb-3">
-          <div
-            class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
-          >
-            <div class="w-fit">
-              <nuxtLink
-                class="hover:text-sky-500 hover:scale-110 duration-500"
-                :to="`/user/${author?._id}/overview`"
-              >
-                <!-- tác giả -->
-                <div class="flex">
-                  <div class="avatar">
-                    <div class="w-12 h-12 rounded-full">
-                      <img :src="author?.avatar_url" />
-                    </div>
-                  </div>
-                  <div class="text-2xl mx-3">
-                    {{ author?.name }}
+      <div class="rounded-2xl">
+        <div
+          class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
+        >
+          <div class="w-fit">
+            <nuxtLink
+              class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${author?._id}/overview`"
+            >
+              <!-- tác giả -->
+              <div class="flex">
+                <div class="avatar">
+                  <div class="w-12 h-12 rounded-full">
+                    <img :src="author?.avatar_url" />
                   </div>
                 </div>
-              </nuxtLink>
-            </div>
-            <!-- các btn -->
-            <div class="flex justify-evenly">
-              <div class="tooltip" data-tip="lưu topic">
-                <div
-                  v-if="loading != 'save'"
-                  @click="openDialogSignin(save)"
-                  :class="classSave"
-                  class="btn-sm lg:btn-md btn btn-outline btn-square"
-                >
-                  <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+                <div class="text-2xl mx-3">
+                  {{ author?.name }}
                 </div>
-                <div
-                  v-if="loading == 'save'"
-                  class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-                ></div>
               </div>
-
-              <!-- thông báo  -->
+            </nuxtLink>
+          </div>
+          <!-- các btn -->
+          <div class="flex mt-1">
+            <div class="tooltip" data-tip="lưu topic">
               <div
-                v-if="useFollow.follow"
-                class="ml-1 tooltip"
-                :data-tip="
-                  useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
-                "
+                v-if="loading != 'save'"
+                @click="openDialogSignin(save)"
+                :class="classSave"
+                class="btn-sm lg:btn-md btn btn-ghost btn-square"
               >
-                <div
-                  @click="setOnAndoff()"
-                  :class="loading == 'notification' ? 'loading' : ''"
-                  class="btn-sm lg:btn-md btn btn-outline btn-square"
-                >
-                  <OtherVIcon
-                    class-icon="text-xl text-warning"
-                    :icon="
-                      useFollow.follow.notification
-                        ? 'fa-solid fa-bell-slash'
-                        : 'fa-solid fa-bell'
-                    "
-                  />
-                </div>
+                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
               </div>
+              <div
+                v-if="loading == 'save'"
+                class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
+              ></div>
+            </div>
 
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-warning"
-                    icon="fa-solid fa-star"
-                  />
-                  <div class="text-2xl">{{ data.valScore }}</div>
-                </div>
+            <!-- thông báo  -->
+            <div
+              v-if="useFollow.follow"
+              class="ml-1 tooltip"
+              :data-tip="
+                useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
+              "
+            >
+              <div
+                @click="setOnAndoff()"
+                :class="loading == 'notification' ? 'loading' : ''"
+                class="btn-sm lg:btn-md btn btn-ghost btn-square"
+              >
+                <OtherVIcon
+                  class-icon="text-xl text-warning"
+                  :icon="
+                    useFollow.follow.notification
+                      ? 'fa-solid fa-bell-slash'
+                      : 'fa-solid fa-bell'
+                  "
+                />
               </div>
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-info"
-                    icon="fa-solid fa-file-lines"
-                  />
-                  <div class="text-2xl">{{ valQuestion }}</div>
-                </div>
+            </div>
+
+            <div class="tooltip" data-tip="điểm series">
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-warning"
+                  icon="fa-solid fa-star"
+                />
+                <div class="text-2xl">{{ data.valScore }}</div>
+              </div>
+            </div>
+            <div class="tooltip" data-tip="điểm series">
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-info"
+                  icon="fa-solid fa-file-lines"
+                />
+                <div class="text-2xl">{{ valQuestion }}</div>
               </div>
             </div>
           </div>
@@ -153,7 +151,7 @@ const classSave = computed(() => {
       }
     }
     if (useFollow.follow) {
-      return "btn-primary";
+      return "text-primary";
     }
   }
   return "";

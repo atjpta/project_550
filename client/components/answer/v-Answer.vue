@@ -1,10 +1,14 @@
 <template>
-  <div>
+  <div class="mb-5">
     <div
-      :class="[data.choice ? 'border-success' : 'border-info']"
-      class="border-2 rounded-2xl"
+      :class="[
+        data.choice
+          ? 'bg-gradient-to-r from-success/10 via-success/5 to-pink-500/0'
+          : 'bg-gradient-to-r from-info/10 via-info/5 to-pink-500/0',
+      ]"
+      class="rounded-2xl"
     >
-      <div class="bg-base-100 rounded-2xl px-5 py-3 flex shadow-md glass">
+      <div class="rounded-2xl px-5 py-3 flex">
         <!-- phần người gửi -->
         <div>
           <div class="flex">
@@ -12,13 +16,13 @@
             <div class="flex flex-col mr-2 space-y-1">
               <div
                 v-if="loading == 'up'"
-                class="btn-sm btn btn-circle btn-outline loading"
+                class="btn-sm btn btn-circle btn-ghost loading"
               ></div>
               <div
                 v-else-if="loadingVote != 'up'"
                 @click="openDialogSignin(up)"
                 :class="classUp"
-                class="btn-sm btn-circle btn btn-outline"
+                class="btn-sm btn-circle btn btn-ghost"
               >
                 <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
               </div>
@@ -28,13 +32,13 @@
               </div>
               <div
                 v-if="loading == 'down'"
-                class="btn-sm btn btn-circle btn-outline loading"
+                class="btn-sm btn btn-circle btn-ghost loading"
               ></div>
               <div
                 v-else-if="loadingVote != 'down'"
                 @click="openDialogSignin(down)"
                 :class="classDown"
-                class="btn-sm btn-circle btn btn-outline"
+                class="btn-sm btn-circle btn btn-ghost"
               >
                 <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
               </div>
@@ -42,14 +46,14 @@
               <div
                 v-if="isAuthorQuestion && !loading"
                 @click="choice()"
-                :class="[data.choice ? 'btn-success' : '']"
-                class="btn-sm btn-circle btn btn-outline"
+                :class="[data.choice ? 'text-success' : '']"
+                class="btn-sm btn-circle btn btn-ghost"
               >
                 <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
               </div>
               <div
                 v-else-if="isAuthorQuestion && loading"
-                class="btn-sm btn-circle btn btn-outline loading"
+                class="btn-sm btn-circle btn btn-ghost loading"
               ></div>
               <div
                 v-else-if="data.choice"
@@ -84,13 +88,13 @@
               <div v-if="isAuthorAnswer" class="toast toast-top toast-end">
                 <div class="flex space-x-1">
                   <div @click="openEditF()" class="tooltip" data-tip="sửa câu trả lời">
-                    <div class="btn btn-outline btn-primary">
+                    <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </div>
 
                   <div class="tooltip" data-tip="xóa câu trả lời">
-                    <div @click="openDialogDelete()" class="btn btn-outline btn-error">
+                    <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
                   </div>
@@ -121,26 +125,8 @@
       </div>
     </div>
     <!-- phần hiện ẩn cmt con -->
-    <div v-if="countCmt > 0" class="ml-5">
-      <div
-        @click="showChildCmt()"
-        v-show="!childCmt"
-        class="btn btn-ghost btn-xs italic lowercase"
-      >
-        hiện {{ countCmt }} bình luận
-      </div>
-      <div
-        @click="childCmt = !childCmt"
-        v-show="childCmt"
-        class="btn btn-ghost btn-xs italic lowercase"
-      >
-        ẩn {{ countCmt }} bình luận
-      </div>
-    </div>
-
-    <!-- cmt -->
-    <div class="ml-5">
-      <div @click="openInputRep()" class="btn btn-sm btn-primary btn-outline mt-2 mb-5">
+    <div class="ml-5 mt-1 flex items-center">
+      <div @click="openInputRep()" class="btn btn-sm btn-ghost text-primary">
         Nhập bình luận
         <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
           <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -148,6 +134,26 @@
           </div>
         </div>
       </div>
+      <div v-if="countCmt > 0">
+        <div
+          @click="showChildCmt()"
+          v-show="!childCmt"
+          class="btn btn-ghost btn-xs italic lowercase"
+        >
+          hiện {{ countCmt }} bình luận
+        </div>
+        <div
+          @click="childCmt = !childCmt"
+          v-show="childCmt"
+          class="btn btn-ghost btn-xs italic lowercase"
+        >
+          ẩn {{ countCmt }} bình luận
+        </div>
+      </div>
+    </div>
+
+    <!-- cmt -->
+    <div class="ml-5">
       <!-- input rep cmt -->
       <transition name="bounce">
         <div v-if="inputRep">

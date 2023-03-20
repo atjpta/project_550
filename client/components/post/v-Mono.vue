@@ -52,7 +52,7 @@
             </div>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <div v-if="!isAuthor" class="dropdown dropdown-end">
               <label tabindex="0" class="btn btn-ghost">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
@@ -82,7 +82,13 @@
           <!-- ảnh bìa và tiêu đề -->
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
-              <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
+              <div class="overflow-hidden rounded-2xl my-2 mx-auto">
+                <img
+                  class="rounded-2xl hover:scale-110 duration-500"
+                  :src="data.image_cover_url"
+                  alt=""
+                />
+              </div>
               <div class="font-bold text-4xl">{{ data.title }}</div>
             </div>
           </div>

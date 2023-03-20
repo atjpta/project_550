@@ -1,48 +1,46 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl">
-        <div class="mb-3">
-          <div
-            class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
-          >
-            <div class="w-fit">
-              <nuxtLink
-                class="hover:text-sky-500 hover:scale-110 duration-500"
-                to="/user/1"
-              >
-                <!-- tác giả -->
-                <div class="flex">
-                  <div class="avatar">
-                    <div class="w-12 h-12 rounded-full">
-                      <img :src="data.author?.avatar_url" />
-                    </div>
-                  </div>
-                  <div class="text-2xl mx-3">
-                    {{ data.author?.name }}
+      <div class="rounded-2xl">
+        <div
+          class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-16"
+        >
+          <div class="w-fit">
+            <nuxtLink
+              class="hover:text-sky-500 hover:scale-110 duration-500"
+              to="/user/1"
+            >
+              <!-- tác giả -->
+              <div class="flex">
+                <div class="avatar">
+                  <div class="w-12 h-12 rounded-full">
+                    <img :src="data.author?.avatar_url" />
                   </div>
                 </div>
-              </nuxtLink>
+                <div class="text-2xl mx-3">
+                  {{ data.author?.name }}
+                </div>
+              </div>
+            </nuxtLink>
+          </div>
+          <!-- các btn -->
+          <div class="flex space-x-3 mt-1">
+            <div class="btn-sm lg:btn-md btn btn-ghost">
+              <OtherVIcon
+                class-icon="text-xl mr-1 text-warning"
+                icon="fa-solid fa-star"
+              />
+              <div class="text-2xl">0</div>
             </div>
-            <!-- các btn -->
-            <div class="flex justify-evenly">
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon
-                  class-icon="text-xl mr-1 text-warning"
-                  icon="fa-solid fa-star"
-                />
-                <div class="text-2xl">0</div>
-              </div>
-              <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon
-                  class-icon="text-xl mr-1 text-info"
-                  icon="fa-solid fa-file-lines"
-                />
-                <div class="text-2xl">0</div>
-              </div>
-              <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
-                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
-              </div>
+            <div class="btn-sm lg:btn-md btn btn-ghost">
+              <OtherVIcon
+                class-icon="text-xl mr-1 text-info"
+                icon="fa-solid fa-file-lines"
+              />
+              <div class="text-2xl">0</div>
+            </div>
+            <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+              <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
             </div>
           </div>
         </div>
@@ -67,7 +65,7 @@
             <!-- giới thiệu -->
             <div class="text-xl">{{ data.introduce }}</div>
             <!-- tag -->
-            <div class="mt-4">
+            <div class="mt-4 flex flex-wrap">
               <div v-for="i in 3" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
                 {{ "#test" }}
               </div>

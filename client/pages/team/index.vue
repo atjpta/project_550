@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"
@@ -14,7 +9,7 @@
         tạo Nhóm mới
       </button>
     </div>
-    <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mt-5">
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-5">
       <div v-for="i in useTeam.List_team" :key="i.id">
         <TeamVMono :data="i" />
       </div>

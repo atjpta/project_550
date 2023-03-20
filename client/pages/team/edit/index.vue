@@ -8,10 +8,12 @@
 import { imageStore } from "~~/stores/image.store";
 import { teamStore } from "~~/stores/team.store";
 import { tagStore } from "~~/stores/tag.store";
+import { alertStore } from "~~/stores/alert.store";
 
+const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
-const useteam = teamStore();
+const useTeam = teamStore();
 let team;
 const loading = ref(false);
 
@@ -42,7 +44,11 @@ function formatData(listtag) {
 }
 
 async function save() {
-  team = useteam.team_edit;
+  team = useTeam.team_edit;
+  if (!(team.introduce && team.name)) {
+    useAlert.setError("phải nhập đủ tên và lời giới thiệu");
+    return;
+  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(team.tag);
@@ -51,8 +57,8 @@ async function save() {
       await useImage.uploadImage();
       data.image_cover_url = useImage.url;
     }
-    const id = await useteam.create(data);
-    useteam.resetTeamEdit();
+    const id = await useTeam.create(data);
+    useTeam.resetTeamEdit();
     navigateTo(`/team/${id}`);
   } catch (error) {
     console.log(error);

@@ -1,12 +1,7 @@
 <template>
-  <div class="">
+  <div class="mb-5">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"
@@ -14,7 +9,7 @@
         tạo series mới
       </button>
     </div>
-    <div v-if="useSeries.List_series.length > 0">
+    <div class="space-y-5 mt-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMonoD :data="i" />
       </div>

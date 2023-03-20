@@ -1,12 +1,23 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl p-5">
+      <div
+        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+      >
         <div class="flex">
           <!-- ảnh team -->
-          <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img class="rounded-2xl w-32 h-32" :src="data.image_cover_url" alt="" />
-          </div>
+          <nuxtLink class="" :to="`/team/${data._id}/list-post`">
+            <div
+              class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden"
+            >
+              <img
+                class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110"
+                :src="data.image_cover_url"
+                alt=""
+              />
+            </div>
+          </nuxtLink>
+
           <div class="w-full">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
@@ -28,7 +39,7 @@
                     class="tooltip"
                     data-tip="sửa team"
                   >
-                    <div class="btn btn-outline btn-primary">
+                    <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
@@ -37,7 +48,7 @@
                     <div
                       :class="[loading ? 'loading' : '']"
                       @click="openDialogDelete()"
-                      class="btn btn-outline btn-error"
+                      class="btn btn-ghost text-error"
                     >
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
@@ -51,7 +62,7 @@
                   <div
                     @click="openDialogJoinTeam()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-secondary mr-1"
+                    class="btn btn-ghost text-secondary mr-1"
                   >
                     gia nhập
                   </div>
@@ -61,7 +72,7 @@
                   <div
                     @click="openDialogDeleteRequest()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-warning mr-1"
+                    class="btn btn-ghost text-warning mr-1"
                   >
                     hủy gia nhập
                   </div>
@@ -71,13 +82,13 @@
                   <div
                     @click="openDialogOutTeam()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-error mr-1"
+                    class="btn btn-ghost text-error mr-1"
                   >
                     thoát
                   </div>
                 </div>
 
-                <label tabindex="0" class="btn btn-outline btn-primary">
+                <label tabindex="0" class="btn btn-ghost btn-primary">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
                 <ul
@@ -106,7 +117,7 @@
             <!-- ảnh bìa và tiêu đề -->
             <div class="text-xl">{{ data.introduce }}</div>
             <!-- tag -->
-            <div class="mt-4 flex">
+            <div class="mt-4 flex flex-wrap">
               <div v-for="i in data.tag" :key="i._id" class="">
                 <nuxt-link
                   :to="`/tag/${i._id}/post`"
@@ -119,7 +130,7 @@
         </div>
 
         <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2">
+        <div class="flex space-x-5 mt-2">
           <div class="tooltip" data-tip="điểm nhóm">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ valVote }}
@@ -184,15 +195,18 @@ const isRequest = computed(() => {
 });
 const valVote = computed(() => {
   let val = 0;
-  props.data.vote_post?.forEach((e) => {
-    val += e.val;
+  props.data?.vote_post?.forEach((e) => {
+    if (e._id) {
+      val += e.val;
+    }
   });
-  props.data.vote_question?.forEach((e) => {
-    val += e.val;
+  props.data?.vote_question?.forEach((e) => {
+    if (e._id) {
+      val += e.val;
+    }
   });
   return val;
 });
-
 async function openDialogDelete() {
   if (useAuth.isUserLoggedIn) {
     useDialog.showDialog(

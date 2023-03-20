@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div class="bg-base-100 rounded-2xl px-5 py-3 flex shadow-md glass mb-3">
+  <div class="mb-5">
+    <div
+      class="bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex"
+    >
       <!-- phần người gửi -->
       <div>
         <div class="flex">

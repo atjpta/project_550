@@ -1,131 +1,133 @@
 <template>
   <div>
-    <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl">
-        <div class="mb-3">
-          <div
-            class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
+    <div class="rounded-2xl">
+      <div
+        class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
+      >
+        <div class="w-fit">
+          <nuxtLink
+            class="hover:text-sky-500 hover:scale-110 duration-500"
+            :to="`/user/${data?.author[0]?._id}/overview`"
           >
-            <div class="w-fit">
-              <nuxtLink
-                class="hover:text-sky-500 hover:scale-110 duration-500"
-                :to="`/user/${data?.author[0]?._id}/overview`"
-              >
-                <!-- tác giả -->
-                <div class="flex">
-                  <div class="avatar">
-                    <div class="w-12 h-12 rounded-full">
-                      <img :src="author?.avatar_url" />
-                    </div>
-                  </div>
-                  <div class="text-2xl mx-3">
-                    {{ author?.name }}
-                  </div>
+            <!-- tác giả -->
+            <div class="flex">
+              <div class="avatar">
+                <div class="w-12 h-12 rounded-full">
+                  <img :src="author?.avatar_url" />
                 </div>
-              </nuxtLink>
-            </div>
-            <!-- các btn -->
-            <div class="flex justify-evenly">
-              <div class="tooltip" data-tip="lưu series">
-                <div
-                  v-if="loading != 'save'"
-                  @click="openDialogSignin(save)"
-                  :class="classSave"
-                  class="btn-sm lg:btn-md btn btn-outline btn-square"
-                >
-                  <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
-                </div>
-                <div
-                  v-if="loading == 'save'"
-                  class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-                ></div>
               </div>
-
-              <!-- thông báo  -->
+              <div class="text-2xl mx-3">
+                {{ author?.name }}
+              </div>
+            </div>
+          </nuxtLink>
+        </div>
+        <!-- các btn -->
+        <div class="flex mt-1">
+          <div class="flex justify-evenly mr-2">
+            <div class="tooltip" data-tip="lưu series">
               <div
-                v-if="useFollow.follow"
-                class="ml-1 tooltip"
-                :data-tip="
-                  useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
-                "
+                v-if="loading != 'save'"
+                @click="openDialogSignin(save)"
+                :class="classSave"
+                class="btn-sm lg:btn-md btn btn-ghost btn-square"
               >
-                <div
-                  @click="setOnAndoff()"
-                  :class="loading == 'notification' ? 'loading' : ''"
-                  class="btn-sm lg:btn-md btn btn-outline btn-square"
-                >
-                  <OtherVIcon
-                    class-icon="text-xl text-warning"
-                    :icon="
-                      useFollow.follow.notification
-                        ? 'fa-solid fa-bell-slash'
-                        : 'fa-solid fa-bell'
-                    "
-                  />
-                </div>
+                <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
               </div>
+              <div
+                v-if="loading == 'save'"
+                class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
+              ></div>
+            </div>
 
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-warning"
-                    icon="fa-solid fa-star"
-                  />
-                  <div class="text-2xl">{{ data.valScore }}</div>
-                </div>
+            <!-- thông báo  -->
+            <div
+              v-if="useFollow.follow"
+              class="ml-1 tooltip"
+              :data-tip="
+                useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
+              "
+            >
+              <div
+                @click="setOnAndoff()"
+                :class="loading == 'notification' ? 'loading' : ''"
+                class="btn-sm lg:btn-md btn btn-ghost btn-square"
+              >
+                <OtherVIcon
+                  class-icon="text-xl text-warning"
+                  :icon="
+                    useFollow.follow.notification
+                      ? 'fa-solid fa-bell-slash'
+                      : 'fa-solid fa-bell'
+                  "
+                />
               </div>
+            </div>
 
-              <div class="tooltip" data-tip="điểm series">
-                <div class="btn-sm lg:btn-md btn btn-ghost">
-                  <OtherVIcon
-                    class-icon="text-xl mr-1 text-info"
-                    icon="fa-solid fa-file-lines"
-                  />
-                  <div class="text-2xl">{{ valPost }}</div>
-                </div>
+            <div class="tooltip" data-tip="điểm series">
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-warning"
+                  icon="fa-solid fa-star"
+                />
+                <div class="text-2xl">{{ data.valScore }}</div>
+              </div>
+            </div>
+
+            <div class="tooltip" data-tip="điểm series">
+              <div class="btn-sm lg:btn-md btn btn-ghost">
+                <OtherVIcon
+                  class-icon="text-xl mr-1 text-info"
+                  icon="fa-solid fa-file-lines"
+                />
+                <div class="text-2xl">{{ valPost }}</div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="flex">
-          <!-- ảnh team -->
-          <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img
-              class="rounded-2xl w-32 h-32"
-              :src="useImage.previewImage || data.image_cover_url"
-              alt=""
-            />
-          </div>
-          <div class="w-full">
-            <div class="flex justify-between">
-              <div>
-                <!-- tên team -->
-                <div class="text-2xl font-bold uppercase">
-                  {{ data.name }}
-                </div>
-              </div>
-            </div>
-            <!-- giới thiệu -->
-            <div class="text-xl">{{ data.introduce }}</div>
-            <!-- tag -->
-            <div class="mt-4 flex">
-              <div v-for="i in list_tag" :key="i._id" class="">
-                <nuxt-link
-                  :to="`/tag/${i._id}/post`"
-                  class="btn btn-outline btn-sm mr-1 mt-1"
-                  >{{ "#" + i.name }}</nuxt-link
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- phần team -->
-        <div v-if="data.team && data.team[0]?.name" class="mt-5">
-          <div class="text-2xl font-semibold">Nhóm</div>
-          <div class="btn btn-ghost justify-start">{{ data.team[0].name }}</div>
         </div>
       </div>
-    </transition>
+      <div class="flex">
+        <!-- ảnh team -->
+        <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
+          <img
+            class="rounded-2xl w-32 h-32"
+            :src="useImage.previewImage || data.image_cover_url"
+            alt=""
+          />
+        </div>
+        <div class="w-full">
+          <div class="flex justify-between">
+            <div>
+              <!-- tên team -->
+              <div class="text-2xl font-bold uppercase">
+                {{ data.name }}
+              </div>
+            </div>
+          </div>
+          <!-- giới thiệu -->
+          <div class="text-xl">{{ data.introduce }}</div>
+          <!-- tag -->
+          <div class="mt-4 flex flex-wrap">
+            <div v-for="i in list_tag" :key="i._id" class="">
+              <nuxt-link
+                :to="`/tag/${i._id}/post`"
+                class="btn btn-outline btn-sm mr-1 mt-1"
+                >{{ "#" + i.name }}</nuxt-link
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- phần team -->
+      <div v-if="data.team && data.team[0]?.name" class="mt-5">
+        <div class="text-2xl font-semibold">Nhóm</div>
+        <NuxtLink
+          :to="`/team/${data.team[0]?._id}`"
+          class="btn btn-ghost justify-start"
+          >{{ data.team[0].name }}</NuxtLink
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -154,7 +156,7 @@ const classSave = computed(() => {
       }
     }
     if (useFollow.follow) {
-      return "btn-primary";
+      return "text-primary";
     }
   }
   return "";

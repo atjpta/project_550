@@ -7,7 +7,9 @@
 <script setup>
 import { imageStore } from "~~/stores/image.store";
 import { seriesStore } from "~~/stores/series.store";
+import { alertStore } from "~~/stores/alert.store";
 
+const useAlert = alertStore();
 const useImage = imageStore();
 const useSeries = seriesStore();
 let series;
@@ -27,6 +29,10 @@ function formatData(listtag) {
 
 async function save() {
   series = useSeries.series_edit;
+  if (!(series.introduce && series.name)) {
+    useAlert.setError("phải nhập đủ tên và tóm tắt");
+    return;
+  }
   loading.value = true;
   try {
     const data = formatData();

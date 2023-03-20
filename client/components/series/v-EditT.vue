@@ -1,5 +1,12 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
+  <div
+    :class="
+      !preview
+        ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0'
+        : ''
+    "
+    class="p-5 rounded-2xl"
+  >
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa series</div>
@@ -10,7 +17,7 @@
             v-model="useSeries.series_edit.name"
             placeholder="nhập tên series"
             type="text"
-            class="input bg-inherit border-0 border-b-2 border-primary w-full"
+            class="input input-primary w-full"
           />
         </div>
 
@@ -75,7 +82,7 @@
             v-model="useSeries.series_edit.introduce"
             placeholder="nhập nội dung"
             type="text"
-            class="p-1 bg-inherit border-0 border-b-2 border-primary w-full h-20"
+            class="textarea textarea-primary h-20"
           />
         </div>
       </div>
@@ -109,7 +116,7 @@
       >
         lưu
       </div>
-      <div @click="this.$router.back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
     </div>
   </div>
 </template>

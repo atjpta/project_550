@@ -1,22 +1,24 @@
 <template>
-  <div class="h-52 bg-base-200 rounded-2xl border-l-4 border-primary p-5">
+  <div
+    class="bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5"
+  >
     <!-- hiển thị -->
     <div v-if="!openEdit">
       <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
-      <div class="indent-8 h-24 overflow-auto">
+      <div class="indent-8 overflow-auto">
         {{ data.introduce }}
       </div>
       <div class="flex justify-around">
         <nuxtLink :to="`/tag/${data._id}/post`">
           <div class="text-center">
-            <div class="btn btn-info btn-outline btn-sm">xem thêm</div>
+            <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
           </div>
         </nuxtLink>
         <div class="space-x-1">
-          <div @click="openEdit = true" class="btn btn-sm btn-primary btn-outline">
+          <div @click="openEdit = true" class="btn btn-sm text-primary btn-ghost">
             <OtherVIcon icon="fa-solid fa-pen-to-square" />
           </div>
-          <div @click="openDialogDelete()" class="btn btn-sm btn-error btn-outline">
+          <div @click="openDialogDelete()" class="btn btn-sm text-error btn-ghost">
             <OtherVIcon icon="fa-solid fa-trash-can" />
           </div>
         </div>
@@ -46,11 +48,11 @@
         <div
           @click="update()"
           :class="[loading ? 'loading' : '']"
-          class="btn btn-sm btn-primary btn-outline"
+          class="btn btn-sm text-primary btn-ghost"
         >
           <OtherVIcon icon="fa-solid fa-floppy-disk" />
         </div>
-        <div @click="cancelEdit()" class="btn btn-sm btn-error btn-outline">
+        <div @click="cancelEdit()" class="btn btn-sm text-error btn-ghost">
           <OtherVIcon icon="fa-solid fa-x" />
         </div>
       </div>

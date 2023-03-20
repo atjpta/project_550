@@ -8,11 +8,13 @@
 import { imageStore } from "~~/stores/image.store";
 import { teamStore } from "~~/stores/team.store";
 import { tagStore } from "~~/stores/tag.store";
+import { alertStore } from "~~/stores/alert.store";
 
+const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const useTeam = teamStore();
-let team = useTeam.team_edit;
+let team;
 const loading = ref(false);
 
 function formatData(listtag) {
@@ -43,6 +45,10 @@ function formatData(listtag) {
 
 async function saveEdit() {
   team = useTeam.team_edit;
+  if (!(team.introduce && team.name)) {
+    useAlert.setError("phải nhập đủ tên và lời giới thiệu");
+    return;
+  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(team.tag);

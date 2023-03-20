@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="border-l-4 border-primary glass rounded-2xl bg-base-200 p-2">
+    <div class="hover:bg-base-200 rounded-2xl p-2">
       <div class="text-center">
         <nuxtLink
           class="hover:text-sky-500 hover:scale-110 duration-500"

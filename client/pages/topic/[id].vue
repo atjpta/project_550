@@ -1,42 +1,47 @@
 <template>
   <div>
-    <div class="p-5 bg-base-200 rounded-2xl">
-      <TopicVTopic :data="useTopic.topic" />
-    </div>
-    <div class="text-center uppercase text-3xl font-bold mt-5">danh sách các câu hỏi</div>
+    <PostVSkeleton v-if="loadingSkeleton" />
 
-    <!-- các btn -->
-    <div class="justify-between my-3 lg:flex">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
+    <div v-else>
+      <div class="rounded-2xl">
+        <TopicVTopic :data="useTopic.topic" />
       </div>
-      <div>
-        <div
-          @click="openDialogSignin(addTopic)"
-          class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
-        >
-          {{ isTopic ? "hiện danh sách" : "thêm câu hỏi vào Topic" }}
-        </div>
-        <div v-if="!isTopic">
+      <div class="divider"></div>
+
+      <div class="text-center uppercase text-3xl font-bold mt-5">
+        danh sách các câu hỏi
+      </div>
+
+      <!-- các btn -->
+      <div class="justify-between my-3 lg:flex">
+        <div>
           <div
-            @click="
-              openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
-            "
-            class="btn btn-ghost btn-xs italic lowercase"
+            @click="openDialogSignin(addTopic)"
+            class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
           >
-            tạo câu hỏi mới?
+            {{ isTopic ? "hiện danh sách" : "thêm câu hỏi vào Topic" }}
+          </div>
+          <div v-if="!isTopic">
+            <div
+              @click="
+                openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
+              "
+              class="btn btn-ghost btn-xs italic lowercase"
+            >
+              tạo câu hỏi mới?
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-if="listPost.length == 0" class="text-center text-xl">
-      chưa có câu hỏi nào hết !!!
-    </div>
+      <div v-if="listPost.length == 0" class="text-center text-xl">
+        chưa có câu hỏi nào hết !!!
+      </div>
 
-    <div v-for="i in listPost" :key="i.id">
-      <TopicVMonoQuestion :data="i" />
+      <div class="space-y-5">
+        <div v-for="i in listPost" :key="i.id">
+          <TopicVMonoQuestion :data="i" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,6 +55,7 @@ import { questionStore } from "~~/stores/question.store";
 import { teamStore } from "~~/stores/team.store";
 import { alertStore } from "~~/stores/alert.store";
 
+const loadingSkeleton = ref(false);
 const useAlert = alertStore();
 const route = useRoute();
 const useTopic = topicStore();
@@ -106,11 +112,17 @@ const addTopic = () => {
 };
 
 async function getApi() {
-  await useTopic.findOne(route.params.id);
-  await useQuestion.findByTopic(route.params.id);
-  if (useAuth.user) {
-    await useQuestion.findByNoTopic(useAuth.user.id);
-    await useTeam.findByUser(useAuth.user.id);
+  loadingSkeleton.value = true;
+  try {
+    await useTopic.findOne(route.params.id);
+    await useQuestion.findByTopic(route.params.id);
+    if (useAuth.user) {
+      await useQuestion.findByNoTopic(useAuth.user.id);
+      await useTeam.findByUser(useAuth.user.id);
+    }
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
   }
 }
 

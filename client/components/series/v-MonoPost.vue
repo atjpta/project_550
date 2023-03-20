@@ -1,127 +1,116 @@
 <template>
   <div>
-    <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl p-5">
-        <div>
-          <!-- phần đầu -->
-          <div class="flex justify-between">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
-              <!-- tác giả -->
-              <div class="flex">
-                <div class="avatar">
-                  <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author[0].avatar_url" />
-                  </div>
-                </div>
-                <div class="text-2xl mx-3">
-                  {{ data.author[0].name }}
-                  <div class="text-sm italic">
-                    <i>{{ data.createdAt }}</i>
-                  </div>
-                </div>
-              </div>
-            </nuxtLink>
-
-            <!-- edit cho tác giả -->
-            <div v-if="isAuthor">
-              <div class="space-x-2 static flex">
-                <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
-                  <div
-                    @click="openDialogRemoveSeries()"
-                    class="btn btn-outline btn-warning"
-                  >
-                    <OtherVIcon icon="fa-solid fa-xmark" />
-                  </div>
-                </div>
-                <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
-                  <div @click="openDialogAddSeries()" class="btn btn-outline btn-success">
-                    <OtherVIcon icon="fa-solid fa-plus" />
-                  </div>
-                </div>
-                <nuxtLink
-                  :to="`/post/edit/${data._id}`"
-                  class="tooltip"
-                  data-tip="sửa bài viết"
+    <div
+      class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+    >
+      <div>
+        <!-- phần đầu -->
+        <div class="flex justify-end">
+          <!-- edit cho tác giả -->
+          <div v-if="isAuthor">
+            <div class="space-x-2 static flex">
+              <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
+                <div
+                  @click="openDialogRemoveSeries()"
+                  class="btn btn-sm btn-ghost text-xl text-warning"
                 >
-                  <div class="btn btn-outline btn-primary">
-                    <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                  </div>
-                </nuxtLink>
-                <div class="tooltip" data-tip="xóa bài viết">
-                  <div @click="openDialogDelete()" class="btn btn-outline btn-error">
-                    <OtherVIcon icon="fa-solid fa-trash-can" />
-                  </div>
+                  <OtherVIcon icon="fa-solid fa-xmark" />
+                </div>
+              </div>
+              <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
+                <div
+                  @click="openDialogAddSeries()"
+                  class="btn btn-sm btn-ghost text-xl text-success"
+                >
+                  <OtherVIcon icon="fa-solid fa-plus" />
+                </div>
+              </div>
+              <nuxtLink
+                :to="`/post/edit/${data._id}`"
+                class="tooltip"
+                data-tip="sửa bài viết"
+              >
+                <div class="btn btn-sm btn-ghost text-primary">
+                  <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                </div>
+              </nuxtLink>
+              <div class="tooltip" data-tip="xóa bài viết">
+                <div @click="openDialogDelete()" class="btn btn-sm btn-ghost text-error">
+                  <OtherVIcon icon="fa-solid fa-trash-can" />
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- phần tùy chọn cho người đọc -->
-            <div
-              v-if="!isAuthor && useAuth.isUserLoggedIn"
-              class="dropdown dropdown-end z-10"
+          <!-- phần tùy chọn cho người đọc -->
+          <div
+            v-if="!isAuthor && useAuth.isUserLoggedIn"
+            class="dropdown dropdown-end z-10"
+          >
+            <label tabindex="0" class="btn btn-ghost btn-primary">
+              <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+            </label>
+            <ul
+              tabindex="0"
+              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <label tabindex="0" class="btn btn-outline btn-primary">
-                <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-              </label>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo bài viết
-                    </div>
-                  </a>
-                </li>
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-bookmark" />
-                      Lưu bài viết
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
+              <li class="hover-bordered">
+                <a>
+                  <div @click="openDialogReport()">
+                    <OtherVIcon icon="fa-solid fa-flag" />
+                    báo cáo bài viết
+                  </div>
+                </a>
+              </li>
+              <li class="hover-bordered">
+                <a>
+                  <div @click="openDialogReport()">
+                    <OtherVIcon icon="fa-solid fa-bookmark" />
+                    Lưu bài viết
+                  </div>
+                </a>
+              </li>
+            </ul>
           </div>
-          <!-- ảnh bìa và tiêu đề -->
-          <div @click="goReadPost()" class="cursor-pointer">
-            <div class="hover:scale-105 duration-500">
-              <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
-              <div class="font-bold text-4xl">{{ data.title }}</div>
-            </div>
+        </div>
+        <!-- ảnh bìa và tiêu đề -->
+        <div @click="goReadPost()" class="cursor-pointer">
+          <!-- <div class="overflow-hidden rounded-2xl my-2 mx-auto">
+            <img
+              class="rounded-2xl hover:scale-105 duration-500"
+              :src="data.image_cover_url"
+              alt=""
+            />
+          </div> -->
+          <div class="font-bold text-4xl hover:text-info duration-500">
+            {{ data.title }}
           </div>
-          <!-- tag -->
-          <div class="mt-4 flex">
-            <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}`" class="btn btn-outline btn-sm mr-1 mt-1">{{
-                "#" + i.name
-              }}</nuxt-link>
-            </div>
+        </div>
+        <!-- tag -->
+        <div class="mt-4 flex flex-wrap">
+          <div v-for="i in data.tag" :key="i._id" class="">
+            <nuxt-link :to="`/tag/${i._id}`" class="btn btn-outline btn-sm mr-1 mt-1">{{
+              "#" + i.name
+            }}</nuxt-link>
           </div>
-          <!-- các trạng thái của bài viết  -->
-          <div class="flex justify-around mt-2">
-            <div class="tooltip" data-tip="điểm bài viết">
-              <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
-              {{ valVote }}
-            </div>
-            <div class="tooltip" data-tip="lượt bình luận">
-              <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
-              {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
-            </div>
-            <div class="tooltip" data-tip="lượt xem">
-              <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
-              {{ data.view }}
-            </div>
+        </div>
+        <!-- các trạng thái của bài viết  -->
+        <div class="flex space-x-5 mt-2">
+          <div class="tooltip" data-tip="điểm bài viết">
+            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
+            {{ valVote }}
+          </div>
+          <div class="tooltip" data-tip="lượt bình luận">
+            <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
+            {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
+          </div>
+          <div class="tooltip" data-tip="lượt xem">
+            <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
+            {{ data.view }}
           </div>
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
@@ -130,12 +119,13 @@ import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { notificationStore } from "~~/stores/notification.store";
 import { postStore } from "~~/stores/post.store";
+import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
 
 const props = defineProps({
   data: Object,
 });
-
+const userouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
@@ -173,7 +163,7 @@ function openDialogDelete() {
       },
       async () => {
         await usePost.deleteOne(props.data._id);
-        await usePost.findAll();
+        resetData();
       }
     );
   }

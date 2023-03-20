@@ -1,65 +1,70 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
-    <QuestionVQuestion :data="useQuestion.question" />
-    <!-- bình luận của câu hỏi -->
-    <div
-      @click="openInputCmt = !openInputCmt"
-      class="btn btn-sm btn-primary btn-outline mb-2"
-    >
-      Nhập bình luận
-      <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
-        <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+  <div class="">
+    <div v-if="loadingSkeleton">
+      <QuestionVSkeleton />
+    </div>
+    <div v-else>
+      <QuestionVQuestion :data="useQuestion.question" />
+      <!-- bình luận của câu hỏi -->
+      <div
+        @click="openInputCmt = !openInputCmt"
+        class="btn btn-sm text-primary btn-ghost mb-2"
+      >
+        Nhập bình luận
+        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+          <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+          </div>
         </div>
       </div>
-    </div>
-    <div v-if="openInputCmt">
-      <CommentsVInputCmt
-        @send="openDialogSignin(send)"
-        :loading="loading"
-        :data="dataInput"
-        :reset="resetInput"
-      />
-    </div>
-
-    <div>
-      <div v-for="i in useCmt.list_cmt" :key="i">
-        <CommentsVCmt :data="i" />
-      </div>
-    </div>
-
-    <!-- nhập câu trả lời -->
-    <div>
-      <div
-        @click="openInputAnswer = !openInputAnswer"
-        class="btn btn-sm btn-success btn-outline mb-2 mt-5"
-      >
-        Nhập câu trả lời
-      </div>
-      <div v-if="openInputAnswer">
-        <AnswerVInputAnswer
-          @send="openDialogSignin(sendAnswer)"
+      <div v-if="openInputCmt">
+        <CommentsVInputCmt
+          @send="openDialogSignin(send)"
           :loading="loading"
           :data="dataInput"
           :reset="resetInput"
         />
       </div>
-      <div class="lg:flex justify-between mb-3 lg:mb-0">
-        <div class="text-2xl font-bold mb-3">
-          {{ useAnswer.list_answer.length }} câu trả lời
-        </div>
-        <div class="flex space-x-1">
-          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
-          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
-          <div class="btn btn-sm btn-outline btn-primary">lọc</div>
+
+      <div>
+        <div v-for="i in useCmt.list_cmt" :key="i">
+          <CommentsVCmt :data="i" />
         </div>
       </div>
+
+      <!-- nhập câu trả lời -->
       <div>
-        <div v-for="i in list_answer.listAnswer" :key="i">
-          <AnswerVAnswer :data="i" />
+        <div
+          @click="openInputAnswer = !openInputAnswer"
+          class="btn btn-sm btn-success mb-2 mt-5"
+        >
+          Nhập câu trả lời
         </div>
-        <div v-for="i in list_answer.listNoAnswer" :key="i">
-          <AnswerVAnswer :data="i" />
+        <div v-if="openInputAnswer">
+          <AnswerVInputAnswer
+            @send="openDialogSignin(sendAnswer)"
+            :loading="loading"
+            :data="dataInput"
+            :reset="resetInput"
+          />
+        </div>
+        <div class="lg:flex justify-between mb-3 lg:mb-0">
+          <div class="text-2xl font-bold mb-3">
+            {{ useAnswer.list_answer.length }} câu trả lời
+          </div>
+          <!-- <div class="flex space-x-1">
+          <div class="btn btn-sm btn-outline">lọc</div>
+          <div class="btn btn-sm btn-outline">lọc</div>
+          <div class="btn btn-sm btn-outline">lọc</div>
+        </div> -->
+        </div>
+        <div>
+          <div v-for="i in list_answer.listAnswer" :key="i">
+            <AnswerVAnswer :data="i" />
+          </div>
+          <div v-for="i in list_answer.listNoAnswer" :key="i">
+            <AnswerVAnswer :data="i" />
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +91,7 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const useNotification = notificationStore();
 const resetInput = ref(0);
+const loadingSkeleton = ref(false);
 const dataInput = ref({
   content: {},
   tagname: [],
@@ -211,11 +217,17 @@ function openDialogSignin(cb) {
 }
 
 async function getApi() {
-  useCmt.list_cmt = [];
-  await useQuestion.findOne(route.params.id);
-  await useUser.findAll();
-  await useCmt.getBy("post", route.params.id);
-  await useAnswer.getBy(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    useCmt.list_cmt = [];
+    await useQuestion.findOne(route.params.id);
+    await useUser.findAll();
+    await useCmt.getBy("post", route.params.id);
+    await useAnswer.getBy(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {

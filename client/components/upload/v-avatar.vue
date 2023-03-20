@@ -47,7 +47,7 @@ const openIcon = ref(false);
 const useUser = userStore();
 
 async function updata() {
-  loading.value = false;
+  loading.value = true;
   try {
     const url = await useImage.uploadImage();
     const data = {

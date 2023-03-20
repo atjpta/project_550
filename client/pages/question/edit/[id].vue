@@ -8,7 +8,9 @@
 import { imageStore } from "~~/stores/image.store";
 import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
+import { alertStore } from "~~/stores/alert.store";
 
+const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const useQuestion = questionStore();
@@ -43,6 +45,10 @@ function formatData(listtag) {
 
 async function saveEdit() {
   question = useQuestion.question_edit;
+  if (!(question.content.ops[0].insert != "\n" && question.title)) {
+    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    return;
+  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(question.tag);

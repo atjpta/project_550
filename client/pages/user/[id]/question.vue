@@ -1,14 +1,6 @@
 <template>
-  <div class="">
-    <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
-    </div>
-    <div v-if="useQuestion.list.length > 0">
+  <div class="my-5">
+    <div class="space-y-5" v-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
       </div>

@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-base-200 rounded-2xl">
+  <div class="rounded-2xl">
     <!-- các tùy chọn -->
-    <div
-      class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between shadow-md sticky top-3"
-    >
+    <div class="glass rounded-2xl ring-0 p-2 lg:flex justify-between sticky top-14">
       <div class="w-fit">
         <nuxtLink
           class="hover:text-sky-500 hover:scale-110 duration-500"
@@ -26,38 +24,39 @@
         </nuxtLink>
       </div>
       <!-- các btn -->
-      <div class="flex justify-evenly">
+      <div class="flex">
         <div class="flex justify-evenly mr-2">
-          <div
-            v-if="loading != 'up'"
-            @click="openDialogSignin(up)"
-            :class="classUp"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
-            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+          <div data-tip="tăng điểm" class="tooltip">
+            <div
+              v-if="loading != 'up'"
+              @click="openDialogSignin(up)"
+              :class="classUp"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
+              <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
+            </div>
           </div>
           <div
             v-if="loading == 'up'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
 
-          <div
-            class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation tooltip flex"
-            data-tip="điểm"
-          >
+          <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div
-            v-if="loading != 'down'"
-            @click="openDialogSignin(down)"
-            :class="classDown"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
-            <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+          <div data-tip="giảm điểm" class="tooltip">
+            <div
+              v-if="loading != 'down'"
+              @click="openDialogSignin(down)"
+              :class="classDown"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
+              <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
+            </div>
           </div>
           <div
             v-if="loading == 'down'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
         </div>
         <div class="tooltip" data-tip="lưu câu hỏi">

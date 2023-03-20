@@ -29,6 +29,7 @@ export const postStore = defineStore("postStore", {
                 team: {},
                 status: {},
                 content: {},
+                series_team: [],
             },
             list: [],
             listNoSeries: [],

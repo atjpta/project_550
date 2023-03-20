@@ -3,17 +3,37 @@
     <PostVSkeleton v-if="loadingSkeleton" />
     <div v-else>
       <PostVPost :data="usePost.post" />
-      <div
-        @click="openInputCmt = !openInputCmt"
-        class="btn btn-sm btn-ghost text-primary mb-2"
-      >
-        Nhập bình luận
-        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
-          <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
-            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+      <div class="flex">
+        <div
+          @click="openInputCmt = !openInputCmt"
+          class="btn btn-sm btn-ghost text-primary mb-2"
+        >
+          Nhập bình luận
+          <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+            <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
+              <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+            </div>
           </div>
         </div>
+
+        <!-- lọc -->
+        <!-- <div class="static" @mouseleave="openFilter = false">
+          <div @click="openFilter = !openFilter" class="btn btn-ghost btn-sm">
+            <OtherVIcon class-icon="" icon="fa-solid fa-filter" />
+          </div>
+
+          <div class="bg-base-200 menu fixed top-0" v-if="openFilter">
+            <div @click="openFilter = false" class="btn btn-sm btn-ghost text-left">
+              mới nhất
+            </div>
+            <div @click="openFilter = false" class="btn btn-sm btn-ghost text-left">
+              điểm cao nhất
+            </div>
+          </div>
+        </div> -->
       </div>
+      <!-- list cmt -->
+
       <div v-if="openInputCmt">
         <CommentsVInputCmt
           @send="openDialogSignin(send)"
@@ -41,6 +61,7 @@ import { dialogStore } from "~~/stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
 import { notificationStore } from "~~/stores/notification.store";
 
+const openFilter = ref(false);
 const route = useRoute();
 const usePost = postStore();
 const useUser = userStore();

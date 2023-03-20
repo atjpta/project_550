@@ -151,7 +151,7 @@
       </div>
     </transition>
     <!-- các nút btn -->
-    <div class="flex justify-end space-x-5 my-5">
+    <div class="flex justify-end space-x-3 my-5">
       <div
         v-if="preview == false"
         @click="showPreview()"
@@ -171,7 +171,7 @@
         :class="[loading ? 'loading' : '']"
         class="btn btn-outline btn-sm btn-primary"
       >
-        tạo
+        lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
     </div>

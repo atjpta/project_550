@@ -7,7 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
-        image_cover_url: req.body.image_cover_url,
+        image_cover_url: req.body.image_cover_url ?? 'https://khydqeqdyigehckvjaci.supabase.co/storage/v1/object/public/hmusic-files/image/meo.jpg',
         name: req.body.name ?? 'tên nhóm nè ^^',
         introduce: req.body.introduce,
         status: req.body.status,
@@ -26,7 +26,8 @@ exports.create = async (req, res, next) => {
                 const memberO = new member({
                     user: req.body.user,
                     team: doc.id,
-                    role: doc_role.id
+                    role: doc_role.id,
+                    is_member: true,
                 })
                 memberO.save((error_member, doc_member) => {
                     if (error_member) {

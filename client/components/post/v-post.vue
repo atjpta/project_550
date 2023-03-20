@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!-- các tùy chọn -->
-    <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-16">
+    <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14">
       <div class="w-fit">
         <nuxtLink
           class="hover:text-sky-500 hover:scale-110 duration-500"
@@ -137,12 +137,29 @@
       <!-- phần series -->
       <div v-if="Object.keys(data.series).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">Series</div>
-        <div class="btn btn-ghost justify-start">{{ data.series[0]?.name }}</div>
+        <nuxtLink
+          :to="`/series/${data.series[0]?._id}`"
+          class="btn btn-ghost justify-start"
+          >{{ data.series[0]?.name }}</nuxtLink
+        >
       </div>
       <!-- phần team -->
       <div v-if="Object.keys(data.team).length != 0" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
-        <div class="btn btn-ghost justify-start">{{ data.team[0]?.name }}</div>
+        <NuxtLink
+          :to="`/team/${data.team[0]?._id}`"
+          class="btn btn-ghost justify-start"
+          >{{ data.team[0]?.name }}</NuxtLink
+        >
+      </div>
+      <!-- phần team -->
+      <div v-else-if="data?.series_team?.length != 0" class="mt-5">
+        <div class="text-2xl font-semibold">Nhóm</div>
+        <NuxtLink
+          :to="`/team/${data.series_team[0]?._id}`"
+          class="btn btn-ghost justify-start"
+          >{{ data.series_team[0]?.name }}</NuxtLink
+        >
       </div>
     </div>
 

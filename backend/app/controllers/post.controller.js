@@ -765,8 +765,19 @@ exports.findOne = async (req, res, next) => {
                     localField: 'series',
                     foreignField: '_id',
                     as: 'series',
+                    
                 },
             },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'series.team',
+                    foreignField: '_id',
+                    as: 'series_team',
+                },
+            },
+
+            
             {
                 $project: {
                     "_id": 1,
@@ -788,6 +799,9 @@ exports.findOne = async (req, res, next) => {
                     'series._id': 1,
                     'team.name': 1,
                     'series.name': 1,
+                    'series_team._id': 1,
+                    'series_team.name': 1,
+
                 }
             },
             {
