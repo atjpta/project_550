@@ -11,6 +11,7 @@ exports.signup = (req, res, next) => {
     email: req.body.email,
     name: req.body.name,
     password: bcrypt.hashSync(req.body.password, 8),
+    avatar_url: 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/meo.jpg'
   });
 
   Role.findOne({ name: req.body.role || 'user' }, (err, doc_role) => {

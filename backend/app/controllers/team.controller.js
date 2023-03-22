@@ -7,7 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
-        image_cover_url: req.body.image_cover_url ?? 'https://khydqeqdyigehckvjaci.supabase.co/storage/v1/object/public/hmusic-files/image/meo.jpg',
+        image_cover_url: req.body.image_cover_url ?? 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/meo.jpg',
         name: req.body.name ?? 'tên nhóm nè ^^',
         introduce: req.body.introduce,
         status: req.body.status,
@@ -317,7 +317,7 @@ exports.findByUser = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        const document = await member.find({ user: id }).populate({
+        const document = await member.find({ user: id, team: { $ne: null } }).populate({
             path: 'team',
             select: 'id name'
         })

@@ -64,7 +64,9 @@ export const teamStore = defineStore("teamStore", {
         async findByUser(id) {
             const list = await teamService.findByUser(id);
             list.forEach(e => {
-                this.List_team_ByUser.push(e.team)
+                if (e.team?._id) {
+                    this.List_team_ByUser.push(e.team)
+                }
             });
         },
 

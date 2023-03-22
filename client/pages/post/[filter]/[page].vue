@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="loading">
-      <div class="my-5 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+      <div class="my-5 grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
         <div v-for="item in 8" :key="item.id">
           <PostVSkeleton />
         </div>

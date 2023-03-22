@@ -232,7 +232,7 @@ const countCmt = computed(() => {
 });
 
 const isAuthorQuestion = computed(() => {
-  return useQuestion.question.author[0]._id == useAuth.user?.id ?? false;
+  return useQuestion.question?.author[0]?._id == useAuth.user?.id ?? false;
 });
 
 const isAuthorAnswer = computed(() => {

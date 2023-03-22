@@ -456,18 +456,8 @@ async function setOnAndoff() {
 }
 
 onMounted(() => {
-  getFollow();
-});
-
-watch(props, (newContent) => {
   setContent();
-});
-
-onUpdated(() => {
-  if (mark == 0 && props.data.content) {
-    setContent();
-    mark = 1;
-  }
+  getFollow();
 });
 </script>
 

@@ -6,9 +6,11 @@ export default {
         let { error: uploadError } = await supabase.storage
             .from("blog-files/image")
             .upload(filePath, file);
-        if (uploadError.statusCode != 409) {
-         useAlert.setError(" lỗi upload ảnh ");
-
+        if (uploadError?.statusCode == 409) {
+            return
+        }
+        else if (uploadError) {
+            useAlert.setError(" lỗi upload ảnh: " + uploadError?.message);
             throw uploadError;
         }
 

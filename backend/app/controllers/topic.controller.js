@@ -7,7 +7,7 @@ exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
         name: req.body.name ?? 'tên nè :3',
-        image_cover_url: req.body.image_cover_url ?? 'https://khydqeqdyigehckvjaci.supabase.co/storage/v1/object/public/hmusic-files/image/meo.jpg',
+        image_cover_url: req.body.image_cover_url ?? 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/meo.jpg',
         team: req.body.team,
         introduce: req.body.introduce,
         status: req.body.status,

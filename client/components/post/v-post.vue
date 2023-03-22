@@ -153,10 +153,10 @@
         >
       </div>
       <!-- phần team -->
-      <div v-else-if="data?.series_team?.length != 0" class="mt-5">
+      <div v-else-if="data.series_team" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
         <NuxtLink
-          :to="`/team/${data.series_team[0]?._id}`"
+          :to="`/team/${data?.series_team[0]?._id}`"
           class="btn btn-ghost justify-start"
           >{{ data.series_team[0]?.name }}</NuxtLink
         >
@@ -256,8 +256,6 @@ const classSave = computed(() => {
   }
   return "";
 });
-
-let mark = 0;
 
 const quill = ref();
 
@@ -446,18 +444,8 @@ async function setOnAndoff() {
 }
 
 onMounted(() => {
-  getFollow();
-});
-
-watch(props, (newContent) => {
   setContent();
-});
-
-onUpdated(() => {
-  if (mark == 0 && props.data.content) {
-    setContent();
-    mark = 1;
-  }
+  getFollow();
 });
 </script>
 
