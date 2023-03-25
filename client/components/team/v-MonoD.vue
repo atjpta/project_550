@@ -2,7 +2,9 @@
   <div>
     <nuxtLink class="" :to="`/team/${data.team._id}/list-post`">
       <transition name="bounce">
-        <div class="bg-base-200 rounded-2xl p-5 glass">
+        <div
+          class="rounded-2xl p-5 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10"
+        >
           <div class="flex">
             <!-- ảnh team -->
             <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">

@@ -111,7 +111,7 @@
             <div v-for="i in data.tag" :key="i._id" class="">
               <nuxt-link
                 :to="`/tag/${i._id}/post`"
-                class="btn btn-ghost btn-sm mr-1 mt-1"
+                class="btn btn-outline btn-sm mr-1 mt-1"
                 >{{ "#" + i.name }}</nuxt-link
               >
             </div>
@@ -193,7 +193,7 @@ function openDialogDelete() {
       },
       async () => {
         await useQuestion.deleteOne(props.data._id);
-        await useQuestion.findAll();
+        resetData();
       }
     );
   }

@@ -1,21 +1,16 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
-        v-if="useTeam.team[0]?.role != ''"
+        v-if="useMember.isMember"
         @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
+        class="btn btn-outline btn-success btn-sm lg:btn-md mb-5"
       >
         tạo bài viết
       </button>
     </div>
-    <div v-if="usePost.list.length > 0">
+    <div class="space-y-5" v-if="usePost.list.length > 0">
       <div v-for="i in usePost.list" :key="i.id">
         <PostVMono :data="i" />
       </div>
@@ -32,8 +27,10 @@ import { authStore } from "~~/stores/auth.store";
 import { postStore } from "~~/stores/post.store";
 import { routeStore } from "~~/stores/route.store";
 import { teamStore } from "~~/stores/team.store";
-import { dialogStore } from "../../../stores/dialog.store";
+import { dialogStore } from "~~/stores/dialog.store";
+import { memberStore } from "~~/stores/member.store";
 
+const useMember = memberStore();
 const route = useRoute();
 const usePost = postStore();
 const useAuth = authStore();

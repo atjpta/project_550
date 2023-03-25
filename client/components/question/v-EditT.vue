@@ -214,7 +214,7 @@ function getdata() {
   useQuestion.question_edit.author = useUser.user;
   useQuestion.question_edit.status = selectStatus.value;
   useQuestion.question_edit.content = quill.value.getContents();
-  useQuestion.question_edit.team = useTopic.List_topic[0].team;
+  useQuestion.question_edit.team = useTeam.team;
 }
 
 function save() {
@@ -234,9 +234,12 @@ const setContent = () => {
 async function getApi() {
   await useTopic.findByUserTeam(useAuth.user.id, route.params.id);
   await useStatus.findAll();
+  await useTeam.findOneEdit(route.params.id);
 }
 
 onMounted(() => {
+  useTopic.reset();
+  useTeam.reset();
   getApi();
 });
 

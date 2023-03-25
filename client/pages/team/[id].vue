@@ -3,6 +3,7 @@
     <div>
       <TeamVTeam :data="useTeam.team[0]" />
     </div>
+
     <div class="mb-4 flex flex-wrap">
       <div v-for="i in menuTab" :key="i.title">
         <nuxt-link :to="i.url" class="btn btn-outline btn-sm mr-1 mb-1">{{
@@ -10,6 +11,7 @@
         }}</nuxt-link>
       </div>
     </div>
+    <div class="animate-ping border-b-2 border-blue-500 h-1 w-2/5 mx-auto mb-5"></div>
     <NuxtPage />
   </div>
 </template>

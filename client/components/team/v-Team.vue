@@ -21,7 +21,7 @@
               </div>
 
               <!-- phần tùy chọn cho chủ nhóm -->
-              <div v-if="data?.role == 'chief'" class="z-10 flex justify-end">
+              <div v-if="data?.role == 'chief'" class="flex justify-end">
                 <div class="space-x-1 flex justify-end">
                   <nuxtLink
                     :to="`/team/edit/${data?._id ?? data?.id}`"
@@ -42,13 +42,13 @@
               </div>
 
               <!-- phần tùy chọn cho người đọc -->
-              <div v-else class="dropdown dropdown-end z-10 flex justify-end">
+              <div v-else class="dropdown dropdown-end flex justify-end">
                 <div class="tooltip" data-tip="lưu nhóm">
                   <div
                     v-if="loading2 != 'save'"
                     @click="openDialogSignin(save)"
                     :class="classSave"
-                    class="btn btn-outline btn-square mr-1"
+                    class="btn btn-ghost btn-square mr-1"
                   >
                     <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
                   </div>
@@ -71,7 +71,7 @@
                   <div
                     @click="openDialogDeleteRequest()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-warning mr-1"
+                    class="btn btn-ghost text-warning mr-1"
                   >
                     hủy gia nhập
                   </div>
@@ -81,13 +81,13 @@
                   <div
                     @click="openDialogOutTeam()"
                     :class="[loading ? 'loading' : '']"
-                    class="btn btn-outline btn-error mr-1"
+                    class="btn btn-ghost text-error mr-1"
                   >
                     thoát
                   </div>
                 </div>
 
-                <label tabindex="0" class="btn btn-outline btn-primary">
+                <label tabindex="0" class="btn btn-ghost btn-primary">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
                 <ul
@@ -184,7 +184,7 @@ const slmember = computed(() => {
 const classSave = computed(() => {
   if (useAuth.user) {
     if (useFollow.follow) {
-      return "tet-primary";
+      return "text-primary";
     }
   }
   return "";
@@ -192,6 +192,7 @@ const classSave = computed(() => {
 
 const isRequest = computed(() => {
   let status = "join";
+  useMember.isMember = false;
   if (props.data?.member?.length) {
     props.data.member.forEach((e) => {
       if (e.user == useAuth.user?.id && !e.is_member) {
@@ -200,9 +201,11 @@ const isRequest = computed(() => {
       } else if (e.user == useAuth.user?.id && e.is_member) {
         status = "joined";
         idMember = e._id;
+        useMember.isMember = true;
       }
     });
   }
+
   return status;
 });
 

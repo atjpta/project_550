@@ -1,15 +1,6 @@
 <template>
-  <div class="">
-    <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
-    </div>
-
-    <div v-if="usefollow.follow_topic[0]">
+  <div class="mt-5">
+    <div class="space-y-5" v-if="usefollow.follow_topic[0]">
       <div v-for="i in usefollow.follow_topic" :key="i.id">
         <FollowVMonoTopic :data="i" />
       </div>

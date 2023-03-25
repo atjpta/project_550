@@ -115,6 +115,21 @@ exports.findOne = async (req, res, next) => {
     }
 }
 
+exports.findIsMember = async (req, res, next) => {
+    const { team, user } = req.params;
+    try {
+        const document = await model.findOne({ is_member : true, team: team, user: user })
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+}
+
 exports.update = async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {
         return next(

@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import postService from "~~/services/post.service";
 import { userStore } from "./user.store";
+import { authStore } from "./auth.store";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import vi from 'dayjs/locale/vi'
-import { authStore } from "./auth.store";
 dayjs.extend(localizedFormat);
 dayjs.locale(vi);
 const useUser = userStore()

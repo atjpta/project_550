@@ -24,7 +24,7 @@ function formatData(listtag) {
     topic: question.topic.id,
     status: [question.status.id],
     title: question.title,
-    team: question.team._id,
+    team: question.team._id || question.team.id,
   };
   if (listtag) {
     const array = Array.from(question.tag);

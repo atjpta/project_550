@@ -22,7 +22,10 @@ module.exports = (app) => {
         .get(ctl.findByTeam)
     
     router.route('/request/:id')
-        .get( ctl.findByRequestTeam)
+        .get(ctl.findByRequestTeam)
+    
+    router.route('/:team/:user')
+        .get(ctl.findIsMember)
 
     router.route('/:id')
         .get(ctl.findOne)

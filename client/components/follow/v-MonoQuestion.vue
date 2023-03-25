@@ -2,8 +2,12 @@
   <div>
     <transition name="bounce">
       <div
-        :class="data.choice.length ? 'border-success' : 'border-info'"
-        class="bg-base-200 rounded-2xl my-5 p-5 border-2"
+        :class="
+          data.choice.length
+            ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
+            : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
+        "
+        class="rounded-2xl p-5"
       >
         <div>
           <!-- phần đầu -->
@@ -29,8 +33,8 @@
             </nuxtLink>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
-              <label tabindex="0" class="btn btn-outline btn-primary">
+            <div v-if="!isAuthor" class="dropdown dropdown-end">
+              <label tabindex="0" class="btn btn-ghost btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul
@@ -78,7 +82,7 @@
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
-          <div class="flex justify-around mt-2">
+          <div class="flex space-x-5 mt-2">
             <div class="tooltip" data-tip="điểm câu hỏi">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}

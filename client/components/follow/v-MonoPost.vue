@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div
+        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+      >
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -26,8 +28,8 @@
             </nuxtLink>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
-              <label tabindex="0" class="btn btn-outline btn-primary">
+            <div v-if="!isAuthor" class="dropdown dropdown-end">
+              <label tabindex="0" class="btn btn-ghost btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul
@@ -75,7 +77,7 @@
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
-          <div class="flex justify-around mt-2">
+          <div class="flex space-x-5 mt-2">
             <div class="tooltip" data-tip="điểm bài viết">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}

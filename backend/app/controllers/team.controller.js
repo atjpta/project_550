@@ -317,7 +317,7 @@ exports.findByUser = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        const document = await member.find({ user: id, team: { $ne: null } }).populate({
+        const document = await member.find({ user: id, team: { $ne: null }, is_member: true }).populate({
             path: 'team',
             select: 'id name'
         })

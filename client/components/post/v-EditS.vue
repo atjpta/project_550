@@ -222,6 +222,8 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useSeries.reset();
+  useTeam.reset();
   useStatus.findAll();
   getApi();
 });

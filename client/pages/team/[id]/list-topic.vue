@@ -1,21 +1,16 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
-        v-if="useTeam.team[0]?.role != ''"
+        v-if="useMember.isMember"
         @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
+        class="btn btn-outline btn-success btn-sm lg:btn-md mb-5"
       >
         tạo topic
       </button>
     </div>
-    <div v-if="useTopic.List_topic.length > 0">
+    <div class="space-y-5" v-if="useTopic.List_topic.length > 0">
       <div v-for="i in useTopic.List_topic" :key="i.id">
         <TopicVMono :data="i" />
       </div>
@@ -33,7 +28,9 @@ import { topicStore } from "~~/stores/topic.store";
 import { routeStore } from "~~/stores/route.store";
 import { teamStore } from "~~/stores/team.store";
 import { dialogStore } from "../../../stores/dialog.store";
+import { memberStore } from "~~/stores/member.store";
 
+const useMember = memberStore();
 const route = useRoute();
 const useTopic = topicStore();
 const useAuth = authStore();

@@ -322,6 +322,8 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useTopic.reset();
+  useTeam.reset();
   useTeam.findByUser(useAuth.user.id);
   useTopic.getEdit();
   useStatus.findAll();

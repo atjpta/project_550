@@ -1,16 +1,30 @@
 <template>
-  <div class="p-5 bg-base-200 rounded-2xl">
+  <div
+    :class="
+      preview
+        ? 'bg-base-100'
+        : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
+    "
+    class="p-5 rounded-2xl"
+  >
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa bài viết</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">Tiêu đề</div>
+          <div class="text-xl font-semibold mt-5">
+            Tiêu đề
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
           <input
             v-model="usePost.post_edit.title"
             placeholder="nhập tiêu đề"
             type="text"
-            class="input bg-inherit border-0 border-b-2 border-primary w-full"
+            class="input input-primary w-full"
           />
         </div>
 
@@ -79,7 +93,14 @@
 
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
-          <div class="text-xl font-semibold">Nội dung</div>
+          <div class="text-xl font-semibold">
+            Nội dung
+            <div class="tooltip" data-tip="không được để trống">
+              <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
+                <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="-z-10">
@@ -210,7 +231,7 @@ function getdata() {
   usePost.post_edit.author = useUser.user;
   usePost.post_edit.status = selectStatus.value;
   usePost.post_edit.content = quill.value.getContents();
-  usePost.post_edit.team = useSeries.List_series[0].team;
+  usePost.post_edit.team = useTeam.team;
 }
 
 function save() {
@@ -230,9 +251,12 @@ const setContent = () => {
 async function getApi() {
   await useSeries.findByUserTeam(useAuth.user.id, route.params.id);
   await useStatus.findAll();
+  await useTeam.findOneEdit(route.params.id);
 }
 
 onMounted(() => {
+  useSeries.reset();
+  useTeam.reset();
   getApi();
 });
 

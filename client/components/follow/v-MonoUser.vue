@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="border-l-4 border-primary glass rounded-2xl bg-base-200 h-20 p-2">
+    <div class="border-l-4 border-primary glass rounded-2xl h-20 p-2">
       <nuxtLink
         class="hover:text-sky-500 hover:scale-110 duration-500"
         :to="`/user/${data.user[0]._id}/overview`"

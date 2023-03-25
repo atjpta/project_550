@@ -26,11 +26,11 @@
         <div
           @click="updata()"
           :class="[loading ? 'loading' : '']"
-          class="btn btn-primary btn-outline"
+          class="btn text-primary btn-ghost"
         >
           <OtherVIcon icon="fa-solid fa-floppy-disk" />
         </div>
-        <div @click="cancel()" class="btn btn-error btn-outline">
+        <div @click="cancel()" class="btn text-error btn-ghost">
           <OtherVIcon icon="fa-solid fa-trash-can" />
         </div>
       </div>

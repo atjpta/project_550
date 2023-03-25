@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div
+        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0 rounded-2xl p-5"
+      >
         <div class="flex">
           <!-- ảnh series -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
@@ -28,10 +30,10 @@
               <!-- phần tùy chọn cho người đọc -->
               <div
                 v-if="!isAuthor && useAuth.isUserLoggedIn"
-                class="dropdown dropdown-end z-10"
+                class="dropdown dropdown-end"
               >
                 <label tabindex="0" class="flex justify-end">
-                  <div class="btn btn-outline btn-primary">
+                  <div class="btn btn-ghost btn-primary">
                     <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                   </div>
                 </label>
@@ -74,7 +76,7 @@
         </div>
 
         <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2">
+        <div class="flex space-x-5 mt-2">
           <div class="tooltip" data-tip="điểm series">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ data.valScore }}
@@ -92,6 +94,7 @@
 <script setup>
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { followStore } from "~~/stores/follow.store";
 import { postStore } from "~~/stores/post.store";
 import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
@@ -99,7 +102,7 @@ import { seriesStore } from "~~/stores/series.store";
 const props = defineProps({
   data: Object,
 });
-
+const useFollow = followStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();

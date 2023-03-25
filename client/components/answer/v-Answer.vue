@@ -16,13 +16,13 @@
             <div class="flex flex-col mr-2 space-y-1">
               <div
                 v-if="loading == 'up'"
-                class="btn-sm btn btn-circle btn-ghost loading"
+                class="btn-sm btn btn-circle btn-ghost loading text-2xl"
               ></div>
               <div
                 v-else-if="loadingVote != 'up'"
                 @click="openDialogSignin(up)"
                 :class="classUp"
-                class="btn-sm btn-circle btn btn-ghost"
+                class="btn-sm btn-circle btn btn-ghost text-2xl"
               >
                 <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
               </div>
@@ -32,13 +32,13 @@
               </div>
               <div
                 v-if="loading == 'down'"
-                class="btn-sm btn btn-circle btn-ghost loading"
+                class="btn-sm btn btn-circle btn-ghost loading text-2xl"
               ></div>
               <div
                 v-else-if="loadingVote != 'down'"
                 @click="openDialogSignin(down)"
                 :class="classDown"
-                class="btn-sm btn-circle btn btn-ghost"
+                class="btn-sm btn-circle btn btn-ghost text-2xl"
               >
                 <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
               </div>
@@ -263,7 +263,7 @@ const classUp = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == 1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -281,7 +281,7 @@ const classDown = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == -1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }

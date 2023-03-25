@@ -56,6 +56,16 @@ export default {
         return data.value
     },
 
+    findIsMember: async (team, user) => {
+        const { data: data, error } = await useFetch(url + `/${team}/${user}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+        return data.value
+    },
+
     findByTeam: async (id) => {
         const { data: data, error } = await useFetch(url + `/team/${id}`, {
             headers: {

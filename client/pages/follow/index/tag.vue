@@ -1,14 +1,5 @@
 <template>
-  <div class="">
-    <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
-    </div>
-
+  <div class="mt-5">
     <div v-if="usefollow.follow_tag[0]">
       <div class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <div v-for="i in usefollow.follow_tag" :key="i">

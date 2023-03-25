@@ -45,11 +45,6 @@ const dataNav = ref([
       icon: "fa-solid fa-magnifying-glass",
     },
     {
-      name: "Cá nhân",
-      url: "/dashboard",
-      icon: "fa-solid fa-address-card",
-    },
-    {
       name: "test",
       url: "/test",
       icon: "fa-solid fa-vial-circle-check",

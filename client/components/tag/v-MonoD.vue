@@ -5,8 +5,8 @@
     <!-- hiển thị -->
     <div v-if="!openEdit">
       <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
-      <div class="indent-8 overflow-auto">
-        {{ data.introduce }}
+      <div class="indent-8 h-12 overflow-hidden">
+        {{ data.introduce || "chưa có mô tả về tag này" }}
       </div>
       <div class="flex justify-around">
         <nuxtLink :to="`/tag/${data._id}/post`">

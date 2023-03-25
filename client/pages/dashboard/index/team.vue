@@ -1,15 +1,10 @@
 <template>
   <div>
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
+        class="btn btn-outline btn-success btn-sm lg:btn-md mb-5"
       >
         tạo Nhóm mới
       </button>

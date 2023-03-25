@@ -15,7 +15,7 @@
     <transition name="bounce">
       <div
         v-if="input_data"
-        class="z-50 absolute bg-base-300 h-60 w-80 p-5 rounded-2xl overflow-y-auto"
+        class="z-40 absolute bg-base-300 h-60 w-80 p-5 rounded-2xl overflow-y-auto"
       >
         <div v-if="dataResult.length == 0" class="text-center">không có dữ liệu</div>
         <div v-for="i in dataResult" :key="i" class="">

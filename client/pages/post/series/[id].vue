@@ -24,7 +24,7 @@ function formatData(listtag) {
     series: post.series.id,
     status: [post.status.id],
     title: post.title,
-    team: post.team._id,
+    team: post.team._id || post.team.id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {
@@ -51,6 +51,7 @@ async function save() {
     useAlert.setError("phải nhập đủ tiêu đề và nội dung");
     return;
   }
+
   loading.value = true;
   try {
     const listtag = await useTag.createAll(post.tag);

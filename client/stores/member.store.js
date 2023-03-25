@@ -9,6 +9,7 @@ export const memberStore = defineStore("memberStore", {
             member_edit: {},
             member: {},
             List_myteam: [],
+            isMember: false,
         };
     },
     getters: {
@@ -52,5 +53,12 @@ export const memberStore = defineStore("memberStore", {
         async deleteOne(id) {
             this.member = await memberService.deleteOne(id)
         },
+
+        async checkIsMember(team, user) {
+            const member = await memberService.findIsMember(team, user)
+            if (member) {
+                this.isMember = true
+            }
+        }
     }
 });

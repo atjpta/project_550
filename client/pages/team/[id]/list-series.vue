@@ -1,21 +1,16 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="space-x-1">
-        <div v-for="i in 3" :key="i" class="btn btn-primary btn-outline btn-sm lg:btn-md">
-          {{ i }} 0000
-        </div>
-      </div>
+    <div class="flex justify-end">
       <button
-        v-if="useTeam.team[0]?.role != ''"
+        v-if="useMember.isMember"
         @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
+        class="btn btn-outline btn-success btn-sm lg:btn-md mb-5"
       >
         tạo series
       </button>
     </div>
-    <div v-if="useSeries.List_series.length > 0">
+    <div class="space-y-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMono :data="i" />
       </div>
@@ -33,7 +28,9 @@ import { seriesStore } from "~~/stores/series.store";
 import { routeStore } from "~~/stores/route.store";
 import { teamStore } from "~~/stores/team.store";
 import { dialogStore } from "../../../stores/dialog.store";
+import { memberStore } from "~~/stores/member.store";
 
+const useMember = memberStore();
 const route = useRoute();
 const useSeries = seriesStore();
 const useAuth = authStore();

@@ -34,7 +34,16 @@
         </div>
       </div>
       <div v-if="listPost.length == 0" class="text-center text-xl">
-        chưa có câu hỏi nào hết !!!
+        <div>chưa có câu hỏi nào hết !!!</div>
+        <div
+          v-if="isTopic"
+          @click="
+            openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
+          "
+          class="btn btn-ghost italic lowercase"
+        >
+          tạo câu hỏi mới?
+        </div>
       </div>
 
       <div class="space-y-5">

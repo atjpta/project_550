@@ -64,13 +64,13 @@
             v-if="loading != 'save'"
             @click="openDialogSignin(save)"
             :class="classSave"
-            class="btn-sm lg:btn-md btn btn-outline btn-square"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
           >
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
           </div>
           <div
             v-if="loading == 'save'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
           ></div>
         </div>
 
@@ -83,7 +83,7 @@
           <div
             @click="setOnAndoff()"
             :class="loading == 'notification' ? 'loading' : ''"
-            class="btn-sm lg:btn-md btn btn-outline btn-square"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
           >
             <OtherVIcon
               class-icon="text-xl text-warning"
@@ -229,7 +229,7 @@ const classUp = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == 1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -247,7 +247,7 @@ const classDown = computed(() => {
     if (props.data.vote_user) {
       if (props.data.vote_user[0]?.author == useAuth.user.id) {
         if (props.data.vote_user[0].val == -1) {
-          return "btn-primary";
+          return "text-primary";
         }
       }
     }
@@ -263,7 +263,7 @@ const classSave = computed(() => {
       }
     }
     if (useFollow.follow) {
-      return "btn-primary";
+      return "text-primary";
     }
   }
   return "";

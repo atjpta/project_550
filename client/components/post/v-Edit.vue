@@ -324,15 +324,12 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useSeries.reset();
+  useTeam.reset();
   useTeam.findByUser(useAuth.user.id);
   useSeries.findByUser(useAuth.user.id);
   useStatus.findAll();
   getApi();
-});
-
-onUnmounted(() => {
-  useSeries.reset();
-  useTeam.reset();
 });
 </script>
 

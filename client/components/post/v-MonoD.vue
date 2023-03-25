@@ -39,7 +39,7 @@
             </div>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <div v-if="!isAuthor" class="dropdown dropdown-end">
               <label tabindex="0" class="btn btn-ghost btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>

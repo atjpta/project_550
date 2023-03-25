@@ -20,7 +20,7 @@
               useSeries.series.author &&
               useAuth.user?.id == useSeries.series.author[0]?._id
             "
-            @click="isSeries = !isSeries"
+            @click="openAddSeries()"
             class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
           >
             {{ isSeries ? "hiện danh sách" : "thêm bài viết vào series" }}
@@ -33,14 +33,17 @@
               useAuth.user?.id == useSeries.series.author[0]?._id
             "
           >
-            <nuxt-link :to="`/post/series/${route.params.id}`">
+            <div @click="gotoCreate()">
               <div class="btn btn-ghost btn-xs italic lowercase">tạo bài viết mới?</div>
-            </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
       <div v-if="listPost.length == 0" class="text-center text-xl">
-        chưa có bài viết nào hết !!!
+        <div>chưa có bài viết nào hết !!!</div>
+        <nuxt-link v-if="isSeries" :to="`/post/series/${route.params.id}`">
+          <div class="btn btn-ghost italic lowercase">tạo bài viết mới?</div>
+        </nuxt-link>
       </div>
       <div class="space-y-5 mb-5">
         <div v-for="i in listPost" :key="i.id">
@@ -57,7 +60,9 @@ import { dialogStore } from "../../stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
 import { seriesStore } from "~~/stores/series.store";
 import { postStore } from "~~/stores/post.store";
-
+import { memberStore } from "~~/stores/member.store";
+import { alertStore } from "~~/stores/alert.store";
+const useAlert = alertStore();
 const route = useRoute();
 const useSeries = seriesStore();
 const usePost = postStore();
@@ -67,7 +72,7 @@ const useAuth = authStore();
 const loadingSkeleton = ref(false);
 const loading = ref(false);
 const isSeries = ref(false);
-
+const useMember = memberStore();
 const listPost = computed(() => {
   if (isSeries.value) {
     return usePost.listNoSeries;
@@ -91,6 +96,27 @@ function openDialogSignin(cb) {
     cb();
   }
 }
+function openAddSeries() {
+  if (useMember.isMember) {
+    isSeries.value = !isSeries.value;
+  } else {
+    if (useSeries.series.team)
+      useAlert.setError(
+        `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
+      );
+  }
+}
+
+function gotoCreate() {
+  if (useMember.isMember) {
+    navigateTo(`/post/series/${route.params.id}`);
+  } else {
+    if (useSeries.series.team)
+      useAlert.setError(
+        `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
+      );
+  }
+}
 
 async function getApi() {
   loadingSkeleton.value = true;
@@ -98,6 +124,9 @@ async function getApi() {
     await useSeries.findOne(route.params.id);
     await usePost.findBySeries(route.params.id);
     await usePost.findByNoSeries(useAuth.user.id);
+    if (useSeries.series.team[0]) {
+      await useMember.checkIsMember(useSeries.series.team[0]._id, useAuth.user.id);
+    }
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);

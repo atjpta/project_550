@@ -15,17 +15,32 @@
             </span>
           </div>
         </div>
-        <div class="sm:flex hidden">
-          <button class="btn btn-ghost text-xl">
-            <OtherVIcon icon="fa-solid fa-magnifying-glass" />
-          </button>
-          <div class="">
+        <div class="sm:flex hidden form-control w-1/2 relative">
+          <div class="input-group">
             <input
+              v-if="route.path.slice(0, 7) != '/search'"
+              v-model="useSearch.key"
               type="text"
-              placeholder="Tìm kiếm...."
-              class="input md:w-96 input-bordered mx-1"
+              placeholder="Tìm kiếm…"
+              class="input input-bordered w-full"
             />
+
+            <input
+              v-else
+              disabled
+              type="text"
+              placeholder="Tìm kiếm…"
+              class="input input-bordered w-full"
+            />
+
+            <button class="btn btn-square">
+              <OtherVIcon icon="fa-solid fa-magnifying-glass" />
+            </button>
           </div>
+          <SearchVDataSearch
+            v-if="useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'"
+            class="absolute top-14"
+          />
         </div>
         <div class="flex">
           <NotificationVList v-if="useAuth.user" />
@@ -40,12 +55,15 @@
 
 <script setup>
 import { authStore } from "~~/stores/auth.store";
+import { searchStore } from "~~/stores/search.store";
 import { userStore } from "~~/stores/user.store";
 const useUser = userStore();
 const useAuth = authStore();
 const open = ref(false);
-
+const useSearch = searchStore();
+const route = useRoute();
 onMounted(() => {
+  useSearch.getApi();
   useAuth.loadAuthState();
   if (useAuth.user) {
     useUser.findOne(useAuth.user.id);

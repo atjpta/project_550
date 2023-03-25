@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-base-200 rounded-2xl my-5 p-5">
+      <div
+        class="bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0 rounded-2xl p-5"
+      >
         <div class="flex">
           <!-- ảnh Topic -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
@@ -28,10 +30,10 @@
               <!-- phần tùy chọn cho người đọc -->
               <div
                 v-if="!isAuthor && useAuth.isUserLoggedIn"
-                class="dropdown dropdown-end z-10"
+                class="dropdown dropdown-end"
               >
                 <label tabindex="0" class="flex justify-end">
-                  <div class="btn btn-outline btn-primary">
+                  <div class="btn btn-ghost btn-primary">
                     <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                   </div>
                 </label>
@@ -74,7 +76,7 @@
         </div>
 
         <!-- các trạng thái của team  -->
-        <div class="flex justify-around mt-2">
+        <div class="flex space-x-5 mt-2">
           <div class="tooltip" data-tip="điểm Topic">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ data.valScore }}

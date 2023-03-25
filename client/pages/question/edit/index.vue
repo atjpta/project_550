@@ -9,7 +9,8 @@ import { imageStore } from "~~/stores/image.store";
 import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
 import { alertStore } from "~~/stores/alert.store";
-
+import { teamStore } from "~~/stores/team.store";
+const useTeam = teamStore();
 const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
@@ -24,7 +25,7 @@ function formatData(listtag) {
     topic: question.topic.id,
     status: [question.status.id],
     title: question.title,
-    team: question.team.id,
+    team: question.team.id || question.team._id,
   };
   if (listtag) {
     const array = Array.from(question.tag);
@@ -44,10 +45,36 @@ function formatData(listtag) {
   return data;
 }
 
+function checkTeam() {
+  let check = false;
+  const id = question.team.id || question.team._id;
+  if (id) {
+    if (useTeam.List_team_ByUser[0]) {
+      useTeam.List_team_ByUser.forEach((e) => {
+        if (e._id == id) {
+          check = true;
+          return;
+        }
+      });
+    } else {
+      return false;
+    }
+  } else {
+    return true;
+  }
+  return check;
+}
+
 async function save() {
   question = useQuestion.question_edit;
   if (!(question.content.ops[0].insert != "\n" && question.title)) {
     useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    return;
+  }
+  const check = checkTeam();
+  console.log(check);
+  if (!check) {
+    useAlert.setError("bạn không còn trong nhóm " + useQuestion.question_edit.team.name);
     return;
   }
   loading.value = true;

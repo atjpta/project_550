@@ -4,7 +4,6 @@ const model = DB.tag;
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.createAll = async (req, res, next) => {
-    console.log(req.body);
     try {
         const document = model.insertMany(req.body, (error, docs) => {
             let list = [];
