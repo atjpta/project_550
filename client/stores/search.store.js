@@ -24,7 +24,7 @@ export const searchStore = defineStore("searchStore", {
             list_user: [],
             list_tag: [],
             key: '',
-            keyHeader: '',
+            keySave: '',
         };
     },
     getters: {

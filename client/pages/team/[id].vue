@@ -11,29 +11,21 @@
         }}</nuxt-link>
       </div>
     </div>
-    <div class="animate-ping border-b-2 border-blue-500 h-1 w-2/5 mx-auto mb-5"></div>
     <NuxtPage />
   </div>
 </template>
 
 <script setup>
+import { authStore } from "~~/stores/auth.store";
+import { memberStore } from "~~/stores/member.store";
 import { roleStore } from "~~/stores/role.store";
 import { teamStore } from "~~/stores/team.store";
 
 const route = useRoute();
 const useTeam = teamStore();
 const useRole = roleStore();
-async function getApi() {
-  await useRole.findAll();
-  await useTeam.findOne(route.params.id);
-  if (useTeam.team[0].role == "chief" || useTeam.team[0].role == "handler") {
-    menuTab.value.push({
-      title: "yêu cầu",
-      url: `/team/${route.params.id}/list-request`,
-    });
-  }
-}
-
+const useMember = memberStore();
+const useAuth = authStore();
 const menuTab = ref([
   {
     title: "bài viết",
@@ -56,6 +48,19 @@ const menuTab = ref([
     url: `/team/${route.params.id}/list-member`,
   },
 ]);
+
+async function getApi() {
+  await useRole.findAll();
+  await useTeam.findOne(route.params.id);
+  await useMember.checkIsMember(route.params.id, useAuth.user.id);
+  if (useTeam?.team[0].role == "chief" || useTeam?.team[0].role == "handler") {
+    useMember.isEditT = true;
+    menuTab.value.push({
+      title: "yêu cầu",
+      url: `/team/${route.params.id}/list-request`,
+    });
+  }
+}
 
 onMounted(() => {
   getApi();

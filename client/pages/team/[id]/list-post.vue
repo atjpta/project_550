@@ -12,7 +12,7 @@
     </div>
     <div class="space-y-5" v-if="usePost.list.length > 0">
       <div v-for="i in usePost.list" :key="i.id">
-        <PostVMono :data="i" />
+        <PostVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
     </div>
 
@@ -61,6 +61,7 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useRouteS.cb = getApi;
   getApi();
 });
 </script>

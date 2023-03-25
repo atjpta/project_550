@@ -403,6 +403,15 @@ exports.findByTeam = async (req, res, next) => {
                     ]
                 },
             },
+            {
+                $lookup: {
+                    from: 'topics',
+                    localField: 'topic',
+                    foreignField: '_id',
+                    as: 'topics',
+
+                },
+            },
 
             {
                 $lookup: {
@@ -443,6 +452,21 @@ exports.findByTeam = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
+                    isTopic: {
+                        $cond: {
+                            if: {
+                                $eq: ['$topics', []]
+                            },
+                            then: true,
+                            else: { $eq: ['$topics.team', [ObjectId(id)]] }
+                        }
+                    }
+                    
+                }
+            },
+            {
+                $match: {
+                    isTopic: true,
                 }
             },
             {

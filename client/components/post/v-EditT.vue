@@ -67,7 +67,7 @@
             </option>
           </select>
         </div>
-        <nuxt-link to="/series/edit">
+        <nuxt-link :to="`/series/team/${route.params.id}`">
           <div class="btn btn-ghost btn-xs italic lowercase">tạo chuỗi bài viết mới?</div>
         </nuxt-link>
 

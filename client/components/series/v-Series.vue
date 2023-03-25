@@ -119,7 +119,7 @@
         </div>
       </div>
       <!-- phần team -->
-      <div v-if="data.team && data.team[0]?.name" class="mt-5">
+      <div v-if="data.team?.length > 0" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
         <NuxtLink
           :to="`/team/${data.team[0]?._id}`"

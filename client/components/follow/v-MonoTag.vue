@@ -34,10 +34,10 @@
         </ul>
       </div>
     </div>
-    <div class="indent-8 h-12 overflow-hidden">
+    <!-- <div class="indent-8 h-12 overflow-hidden">
       {{ data.tags[0].introduce || "chưa có mô tả về tag này" }}
-    </div>
-    <nuxtLink :to="`/tag/${data._id}/post`">
+    </div> -->
+    <nuxtLink :to="`/tag/${data.tags[0]._id}/post`">
       <div class="text-center">
         <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
       </div>

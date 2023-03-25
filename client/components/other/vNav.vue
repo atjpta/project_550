@@ -7,7 +7,10 @@
           <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
         </div>
       </label>
-      <div tabindex="0" class="dropdown-content mt-1 bg-base-100 w-60 h-screen">
+      <div
+        tabindex="0"
+        class="dropdown-content mt-1 bg-base-100 w-60 h-screen transition ease-in-out"
+      >
         <ul class="menu">
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">

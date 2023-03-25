@@ -190,7 +190,7 @@ function openDialogAddSeries() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn thêm bài viết vào series này?",
+        content: "nhóm và series của bài viết sẽ bị thay đổi",
         btn1: "ok",
         btn2: "hủy",
       },

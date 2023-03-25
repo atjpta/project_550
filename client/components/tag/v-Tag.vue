@@ -4,7 +4,9 @@
       class="bg-gradient-to-r from-info/10 via-info/5 to-pink-500/5 rounded-2xl border-b-4 border-info p-5 w-full"
     >
       <div class="text-4xl font-bold uppercase mb-3">#{{ useTag.tag.name }}</div>
-      <div class="text-xl indent-8">{{ useTag.tag.introduce }}</div>
+      <div class="text-xl indent-8">
+        {{ useTag.tag.introduce || "chưa có mô tả về tag này" }}
+      </div>
     </div>
     <div class="indicator-item mr-10 mt-10">
       <div

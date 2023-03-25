@@ -33,7 +33,7 @@ exports.updateSeries = async (req, res, next) => {
             }
             return res.send({ message: "đã theo vào Series  thành công", body: req.body });
         }
-        
+
     }
     catch (error) {
         return next(
@@ -407,6 +407,17 @@ exports.findByTeam = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'series',
+                    localField: 'series',
+                    foreignField: '_id',
+                    as: 'series',
+
+                },
+            },
+
+
+            {
+                $lookup: {
                     from: 'votes',
                     localField: '_id',
                     foreignField: 'post',
@@ -460,6 +471,21 @@ exports.findByTeam = async (req, res, next) => {
                     'comment': 1,
                     'vote': 1,
                     'team': 1,
+                    'series.team': 1,
+                    isSeries: {
+                        $cond: {
+                            if: {
+                                $eq: ['$series', []]
+                            },
+                            then: true,
+                            else: { $eq: ['$series.team', [ObjectId(id)]] }
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    isSeries: true,
                 }
             },
             {
@@ -556,7 +582,7 @@ exports.findByAuthor = async (req, res, next) => {
                     'comment': 1,
                     'vote': 1,
                     'team': 1,
-                    'pins':1,
+                    'pins': 1,
                 }
             },
             {
@@ -765,7 +791,7 @@ exports.findOne = async (req, res, next) => {
                     localField: 'series',
                     foreignField: '_id',
                     as: 'series',
-                    
+
                 },
             },
             {
@@ -777,7 +803,7 @@ exports.findOne = async (req, res, next) => {
                 },
             },
 
-            
+
             {
                 $project: {
                     "_id": 1,
@@ -983,7 +1009,7 @@ exports.update = async (req, res, next) => {
             res.status(400).json({ Message: "thông tin không thế thay đổi" })
         )
     }
-    
+
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id : null,
@@ -999,7 +1025,7 @@ exports.update = async (req, res, next) => {
             await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
             delete req.body.team;
         }
-        
+
         const document = await model.findByIdAndUpdate(condition, req.body, {
             new: true,
         });
@@ -1010,7 +1036,7 @@ exports.update = async (req, res, next) => {
     }
     catch (error) {
         return next(
-            res.status(500).json({ Message: ` không thể update model với id = ${req.params.id} ` + error  })
+            res.status(500).json({ Message: ` không thể update model với id = ${req.params.id} ` + error })
         )
     }
 }

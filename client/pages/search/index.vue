@@ -109,10 +109,16 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useSearch.key = useSearch.keySave;
   if (route.path == "/search") {
     navigateTo("/search/post");
   }
   // getApi();
+});
+
+onUnmounted(() => {
+  useSearch.keySave = useSearch.key;
+  useSearch.key = "";
 });
 </script>
 

@@ -12,7 +12,7 @@
     </div>
     <div class="space-y-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
-        <SeriesVMono :data="i" />
+        <SeriesVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
     </div>
 
@@ -61,6 +61,7 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useRouteS.cb = getApi;
   getApi();
 });
 </script>

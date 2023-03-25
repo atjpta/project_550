@@ -19,54 +19,64 @@
           <div class="w-full">
             <div class="">
               <div>
-                <!-- phần tùy chọn cho người đọc -->
-                <div
-                  v-if="!isAuthor && useAuth.isUserLoggedIn"
-                  class="dropdown dropdown-end flex justify-end"
-                >
-                  <label tabindex="0" class="flex justify-end">
-                    <div class="btn btn-ghost">
-                      <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                <div class="flex justify-end space-x-2">
+                  <div v-if="isEditT" class="tooltip" data-tip="xóa topic ra khỏi nhóm">
+                    <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
+                      <OtherVIcon
+                        class-icon="text-warning text-xl"
+                        icon="fa-solid fa-x"
+                      />
                     </div>
-                  </label>
-                  <ul
-                    tabindex="0"
-                    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                  </div>
+                  <!-- phần tùy chọn cho người đọc -->
+                  <div
+                    v-if="!isAuthor && useAuth.isUserLoggedIn"
+                    class="dropdown dropdown-end flex justify-end"
                   >
-                    <li class="hover-bordered">
-                      <a>
-                        <div @click="openDialogReport()">
-                          <OtherVIcon icon="fa-solid fa-flag" />
-                          báo cáo Nhóm
-                        </div>
-                      </a>
-                    </li>
-                    <li class="hover-bordered">
-                      <a>
-                        <div @click="openDialogReport()">
-                          <OtherVIcon icon="fa-solid fa-bookmark" />
-                          Lưu bài viết
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- edit cho tác giả -->
-                <div v-if="isAuthor">
-                  <div class="space-x-2 flex justify-end">
-                    <nuxtLink
-                      :to="`/topic/edit/${data._id}`"
-                      class="tooltip"
-                      data-tip="sửa topic"
-                    >
-                      <div class="btn btn-ghost text-primary">
-                        <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                    <label tabindex="0" class="flex justify-end">
+                      <div class="btn btn-ghost">
+                        <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                       </div>
-                    </nuxtLink>
+                    </label>
+                    <ul
+                      tabindex="0"
+                      class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                    >
+                      <li class="hover-bordered">
+                        <a>
+                          <div @click="openDialogReport()">
+                            <OtherVIcon icon="fa-solid fa-flag" />
+                            báo cáo Nhóm
+                          </div>
+                        </a>
+                      </li>
+                      <li class="hover-bordered">
+                        <a>
+                          <div @click="openDialogReport()">
+                            <OtherVIcon icon="fa-solid fa-bookmark" />
+                            Lưu bài viết
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- edit cho tác giả -->
+                  <div v-if="isAuthor">
+                    <div class="space-x-2 flex justify-end">
+                      <nuxtLink
+                        :to="`/topic/edit/${data._id}`"
+                        class="tooltip"
+                        data-tip="sửa topic"
+                      >
+                        <div class="btn btn-ghost text-primary">
+                          <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                        </div>
+                      </nuxtLink>
 
-                    <div class="tooltip" data-tip="xóa topic">
-                      <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                        <OtherVIcon icon="fa-solid fa-trash-can" />
+                      <div class="tooltip" data-tip="xóa topic">
+                        <div @click="openDialogDelete()" class="btn btn-ghost text-error">
+                          <OtherVIcon icon="fa-solid fa-trash-can" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -121,6 +131,7 @@ import { topicStore } from "~~/stores/topic.store";
 
 const props = defineProps({
   data: Object,
+  isEditT: Boolean,
 });
 
 const useDialog = dialogStore();
@@ -185,6 +196,27 @@ function openDialogDelete() {
       async () => {
         await useTopic.deleteOne(props.data._id);
         useRouteS.refreshData();
+      }
+    );
+  }
+}
+
+function openDialogRemoveTeam() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content:
+          "bạn chắc chắn muốn xóa topic ra khỏi nhóm? Tất cả câu hỏi trong series này sẽ không còn trong nhóm này nữa",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        await useTopic.update({
+          id: props.data._id,
+          team: " ",
+        });
+        await useRouteS.refreshData();
       }
     );
   }

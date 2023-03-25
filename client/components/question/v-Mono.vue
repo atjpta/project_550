@@ -32,53 +32,60 @@
               </div>
             </nuxtLink>
 
-            <!-- edit cho tác giả -->
-            <div v-if="isAuthor">
-              <div class="space-x-2 static flex">
-                <nuxtLink
-                  :to="`/question/edit/${data._id}`"
-                  class="tooltip"
-                  data-tip="sửa bài viết"
-                >
-                  <div class="btn btn-ghost text-primary">
-                    <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                  </div>
-                </nuxtLink>
+            <div class="flex space-x-2">
+              <div v-if="isEditT" class="tooltip" data-tip="xóa câu hỏi ra khỏi nhóm">
+                <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
+                  <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
+                </div>
+              </div>
+              <!-- edit cho tác giả -->
+              <div v-if="isAuthor">
+                <div class="space-x-2 static flex">
+                  <nuxtLink
+                    :to="`/question/edit/${data._id}`"
+                    class="tooltip"
+                    data-tip="sửa bài viết"
+                  >
+                    <div class="btn btn-ghost text-primary">
+                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
+                    </div>
+                  </nuxtLink>
 
-                <div class="tooltip" data-tip="xóa bài viết">
-                  <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                    <OtherVIcon icon="fa-solid fa-trash-can" />
+                  <div class="tooltip" data-tip="xóa bài viết">
+                    <div @click="openDialogDelete()" class="btn btn-ghost text-error">
+                      <OtherVIcon icon="fa-solid fa-trash-can" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end">
-              <label tabindex="0" class="btn btn-ghost btn-primary">
-                <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-              </label>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo bài viết
-                    </div>
-                  </a>
-                </li>
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-bookmark" />
-                      Lưu bài viết
-                    </div>
-                  </a>
-                </li>
-              </ul>
+              <!-- phần tùy chọn cho người đọc -->
+              <div v-if="!isAuthor" class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-primary">
+                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                </label>
+                <ul
+                  tabindex="0"
+                  class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li class="hover-bordered">
+                    <a>
+                      <div @click="openDialogReport()">
+                        <OtherVIcon icon="fa-solid fa-flag" />
+                        báo cáo bài viết
+                      </div>
+                    </a>
+                  </li>
+                  <li class="hover-bordered">
+                    <a>
+                      <div @click="openDialogReport()">
+                        <OtherVIcon icon="fa-solid fa-bookmark" />
+                        Lưu bài viết
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <!-- ảnh bìa và tiêu đề -->
@@ -138,6 +145,7 @@ import { routeStore } from "~~/stores/route.store";
 
 const props = defineProps({
   data: Object,
+  isEditT: Boolean,
 });
 
 const useDialog = dialogStore();
@@ -176,6 +184,26 @@ function openDialogDelete() {
       async () => {
         await useQuestion.deleteOne(props.data._id);
         useRouteS.refreshData();
+      }
+    );
+  }
+}
+
+function openDialogRemoveTeam() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn chắc chắn muốn xóa câu hỏi ra khỏi nhóm?",
+        btn1: "ok",
+        btn2: "hủy",
+      },
+      async () => {
+        await useQuestion.update({
+          id: props.data._id,
+          team: " ",
+        });
+        await useRouteS.refreshData();
       }
     );
   }

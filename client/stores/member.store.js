@@ -10,6 +10,7 @@ export const memberStore = defineStore("memberStore", {
             member: {},
             List_myteam: [],
             isMember: false,
+            isEditT: false
         };
     },
     getters: {

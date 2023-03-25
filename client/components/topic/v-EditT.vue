@@ -180,6 +180,8 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useTopic.reset();
+  useTeam.reset();
   useStatus.findAll();
   getApi();
 });

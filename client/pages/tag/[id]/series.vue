@@ -56,7 +56,6 @@ async function getApi() {
 
 onMounted(() => {
   useRouteS.cb = getApi;
-  getApi();
 });
 </script>
 

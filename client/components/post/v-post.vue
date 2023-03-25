@@ -134,32 +134,39 @@
           >
         </div>
       </div>
-      <!-- phần series -->
-      <div v-if="Object.keys(data.series).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">Series</div>
-        <nuxtLink
-          :to="`/series/${data.series[0]?._id}`"
-          class="btn btn-ghost justify-start"
-          >{{ data.series[0]?.name }}</nuxtLink
-        >
+      <!-- nếu có series -->
+      <div v-if="data.series[0]">
+        <!-- phần series -->
+        <div v-if="data.series[0]" class="mt-5">
+          <div class="text-2xl font-semibold">Series</div>
+          <nuxtLink
+            :to="`/series/${data.series[0]?._id}`"
+            class="btn btn-ghost justify-start"
+            >{{ data.series[0]?.name }}</nuxtLink
+          >
+        </div>
+
+        <!-- phần team -->
+        <div v-if="data.series_team[0]" class="mt-5">
+          <div class="text-2xl font-semibold">Nhóm</div>
+          <NuxtLink
+            :to="`/team/${data?.series_team[0]?._id}`"
+            class="btn btn-ghost justify-start"
+            >{{ data.series_team[0]?.name }}</NuxtLink
+          >
+        </div>
       </div>
-      <!-- phần team -->
-      <div v-if="Object.keys(data.team).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">Nhóm</div>
-        <NuxtLink
-          :to="`/team/${data.team[0]?._id}`"
-          class="btn btn-ghost justify-start"
-          >{{ data.team[0]?.name }}</NuxtLink
-        >
-      </div>
-      <!-- phần team -->
-      <div v-else-if="data.series_team" class="mt-5">
-        <div class="text-2xl font-semibold">Nhóm</div>
-        <NuxtLink
-          :to="`/team/${data?.series_team[0]?._id}`"
-          class="btn btn-ghost justify-start"
-          >{{ data.series_team[0]?.name }}</NuxtLink
-        >
+      <!-- nếu không có series -->
+      <div v-else>
+        <!-- phần team -->
+        <div v-if="data.team[0]" class="mt-5">
+          <div class="text-2xl font-semibold">Nhóm</div>
+          <NuxtLink
+            :to="`/team/${data.team[0]?._id}`"
+            class="btn btn-ghost justify-start"
+            >{{ data.team[0]?.name }}</NuxtLink
+          >
+        </div>
       </div>
     </div>
 
