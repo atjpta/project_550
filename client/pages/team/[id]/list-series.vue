@@ -10,14 +10,21 @@
         tạo series
       </button>
     </div>
-    <div class="space-y-5" v-if="useSeries.List_series.length > 0">
+
+    <div v-if="loadingSkeleton" class="space-y-5">
+      <div v-for="i in 7" :key="i.id">
+        <SeriesVSkeleton />
+      </div>
+    </div>
+
+    <div class="space-y-5" v-else-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
     </div>
 
     <div v-else>
-      <div class="text-4xl text-center m-5">chưa có chuổi bài viết nào cả!!!</div>
+      <div class="text-4xl text-center m-5">chưa có chuỗi bài viết nào cả!!!</div>
     </div>
   </div>
 </template>
@@ -37,6 +44,7 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
 const useTeam = teamStore();
+const loadingSkeleton = ref(false);
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -57,7 +65,13 @@ function openDialogSignin() {
 }
 
 async function getApi() {
-  await useSeries.findByTeam(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    await useSeries.findByTeam(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {

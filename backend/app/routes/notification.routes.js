@@ -18,10 +18,14 @@ module.exports = (app) => {
     // router.route("/admin")
     //     .post(ctl.createOne)
 
+    router.route("/one")
+        .post(ctl.createOne)
+    
     router.route("/")
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
+    
     
     router.route('/my/:id')
         .get(ctl.findByMy)

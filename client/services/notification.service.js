@@ -82,6 +82,18 @@ export default {
         return data.value
     },
 
+    createOne: async (dataO) => {
+        const { data: data, error } = await useFetch(url + '/one', {
+            headers: {
+                authorization: authStore().getToken
+            },
+            body: dataO,
+            method: "post",
+        })
+
+        return data.value
+    },
+
     deleteOne: async (id) => {
         const { data: data, error } = await useFetch(url + `/${id}`, {
             headers: {

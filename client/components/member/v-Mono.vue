@@ -4,7 +4,7 @@
       <!-- tên -->
       <div class="basis-1/2">
         <nuxt-link
-          :to="`/user/${data.user.id}/overview`"
+          :to="`/user/${data.user._id}/overview`"
           class="flex items-center space-x-3 hover:text-info"
         >
           <div class="avatar">

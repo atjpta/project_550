@@ -22,6 +22,7 @@
 <script setup>
 import { postStore } from "~~/stores/post.store";
 import { questionStore } from "~~/stores/question.store";
+import { roleStore } from "~~/stores/role.store";
 import { seriesStore } from "~~/stores/series.store";
 import { tagStore } from "~~/stores/tag.store";
 import { teamStore } from "~~/stores/team.store";
@@ -34,7 +35,7 @@ const useTopic = topicStore();
 const useTeam = teamStore();
 const useTag = tagStore();
 const usePost = postStore();
-
+const useRole = roleStore();
 const menuDashboard = ref([
   {
     title: "bài viết",
@@ -84,6 +85,8 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useTopic.reset();
+  useTeam.reset();
   getApi();
 });
 </script>

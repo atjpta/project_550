@@ -70,7 +70,7 @@
             <OtherVIcon class-icon="text-error text-2xl" icon="fa-solid fa-heart" />
           </div>
           <div class="stat-title">theo dõi</div>
-          <div class="stat-value">0</div>
+          <div class="stat-value">{{ useUser.overview.followsCount }}</div>
         </div>
       </div>
     </div>

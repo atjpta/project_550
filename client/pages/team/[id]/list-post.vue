@@ -10,7 +10,14 @@
         tạo bài viết
       </button>
     </div>
-    <div class="space-y-5" v-if="usePost.list.length > 0">
+
+    <div v-if="loadingSkeleton" class="space-y-5">
+      <div v-for="i in 7" :key="i.id">
+        <PostVSkeleton />
+      </div>
+    </div>
+
+    <div class="space-y-5" v-else-if="usePost.list.length > 0">
       <div v-for="i in usePost.list" :key="i.id">
         <PostVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
@@ -37,6 +44,7 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
 const useTeam = teamStore();
+const loadingSkeleton = ref(false);
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -57,7 +65,13 @@ function openDialogSignin() {
 }
 
 async function getApi() {
-  await usePost.findByTeam(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    await usePost.findByTeam(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {

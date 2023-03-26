@@ -1,12 +1,19 @@
 <template>
   <div class="mt-5">
-    <div class="space-y-5" v-if="usefollow.follow_question[0]">
-      <div v-for="i in usefollow.follow_question" :key="i.id">
-        <FollowVMonoQuestion :data="i" />
+    <div v-if="loadingSkeleton" class="space-y-5">
+      <div v-for="i in 7" :key="i">
+        <QuestionVSkeleton />
       </div>
     </div>
     <div v-else>
-      <div class="text-center text-2xl my-10">Bạn chưa lưu bài viết nào cả !?</div>
+      <div class="space-y-5" v-if="usefollow.follow_question[0]">
+        <div v-for="i in usefollow.follow_question" :key="i.id">
+          <FollowVMonoQuestion :data="i" />
+        </div>
+      </div>
+      <div v-else>
+        <div class="text-center text-2xl my-10">Bạn chưa lưu câu hỏi nào cả !?</div>
+      </div>
     </div>
   </div>
 </template>
@@ -16,11 +23,18 @@ import { authStore } from "~~/stores/auth.store";
 import { routeStore } from "~~/stores/route.store";
 import { followStore } from "~~/stores/follow.store";
 
+const loadingSkeleton = ref(false);
 const useAuth = authStore();
 const useRouteS = routeStore();
 const usefollow = followStore();
 async function getApi() {
-  usefollow.findByMyQuestion(useAuth.user.id);
+  loadingSkeleton.value = true;
+  try {
+    usefollow.findByMyQuestion(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 onMounted(() => {
   useRouteS.cb = getApi;

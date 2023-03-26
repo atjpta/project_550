@@ -24,6 +24,10 @@ export const notificationStore = defineStore("notificationStore", {
         async create(data) {
              await notificationService.create(data)
         },
+
+        async createOne(data) {
+            await notificationService.createOne(data)
+        },
         async findByMy(id) {
             this.list_notification = await notificationService.findByMy(id)
             this.list_notification.forEach((e, i) => {

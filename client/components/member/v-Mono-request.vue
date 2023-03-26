@@ -4,7 +4,7 @@
       <!-- tên -->
       <div class="basis-1/2">
         <nuxt-link
-          :to="`/user/${data.user.id}/overview`"
+          :to="`/user/${data.user._id}/overview`"
           class="flex items-center space-x-3 hover:text-info"
         >
           <div class="avatar">
@@ -41,6 +41,7 @@
 
 <script setup>
 import { memberStore } from "~~/stores/member.store";
+import { notificationStore } from "~~/stores/notification.store";
 import { roleStore } from "~~/stores/role.store";
 import { teamStore } from "~~/stores/team.store";
 import { dialogStore } from "../../stores/dialog.store";
@@ -49,6 +50,8 @@ const useTeam = teamStore();
 const useMember = memberStore();
 const useDialog = dialogStore();
 const loading = ref(false);
+const route = useRoute();
+const useNotification = notificationStore();
 const props = defineProps({
   data: Object,
 });
@@ -58,10 +61,18 @@ async function update() {
     id: props.data.id,
     is_member: true,
   };
+
+  const dataNotifi = {
+    to: props.data.user._id,
+    content: `bạn đã tham gia vào nhóm "${useTeam.team[0].name}"`,
+    url: route.fullPath,
+    type: "info",
+  };
   try {
     loading.value = true;
     await useMember.update(data);
     await useMember.findByRequestTeam(useTeam.team[0]._id);
+    await useNotification.createOne(dataNotifi);
   } catch (error) {
     console.log(error);
     console.log("lỗi update ");

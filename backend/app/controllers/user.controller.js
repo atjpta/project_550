@@ -151,6 +151,14 @@ exports.findOverView = async (req, res, next) => {
                     as: 'topic',
                 },
             },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "user",
+                    as: "follows",
+                },
+            },
             // cái này phải để dưới thì cái $ kia mới có
             {
                 $addFields: {
@@ -178,6 +186,7 @@ exports.findOverView = async (req, res, next) => {
                     'postCount': 1,
                     'questionCount': 1,
                     'answerCount': 1,
+                    followsCount: { $size: "$follows" },
 
                 }
             },

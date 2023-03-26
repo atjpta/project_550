@@ -10,7 +10,14 @@
         tạo câu hỏi
       </button>
     </div>
-    <div class="space-y-5" v-if="useQuestion.list.length > 0">
+
+    <div v-if="loadingSkeleton" class="space-y-5">
+      <div v-for="i in 7" :key="i.id">
+        <QuestionVSkeleton />
+      </div>
+    </div>
+
+    <div class="space-y-5" v-else-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
@@ -37,6 +44,7 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
 const useTeam = teamStore();
+const loadingSkeleton = ref(false);
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -57,7 +65,13 @@ function openDialogSignin() {
 }
 
 async function getApi() {
-  await useQuestion.findByTeam(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    await useQuestion.findByTeam(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {

@@ -10,7 +10,14 @@
         tạo topic
       </button>
     </div>
-    <div class="space-y-5" v-if="useTopic.List_topic.length > 0">
+
+    <div v-if="loadingSkeleton" class="space-y-5">
+      <div v-for="i in 7" :key="i.id">
+        <TopicVSkeleton />
+      </div>
+    </div>
+
+    <div class="space-y-5" v-else-if="useTopic.List_topic.length > 0">
       <div v-for="i in useTopic.List_topic" :key="i.id">
         <TopicVMono :is-edit-t="useMember.isEditT" :data="i" />
       </div>
@@ -37,6 +44,7 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
 const useTeam = teamStore();
+const loadingSkeleton = ref(false);
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -57,7 +65,13 @@ function openDialogSignin() {
 }
 
 async function getApi() {
-  await useTopic.findByTeam(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    await useTopic.findByTeam(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {
