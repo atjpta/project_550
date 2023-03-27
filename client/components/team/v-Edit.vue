@@ -141,9 +141,23 @@ const useImage = imageStore();
 const useTeam = teamStore();
 const route = useRoute();
 
+// const list_status = computed(() => {
+//   useStatus.getPost.forEach((e) => {
+//     if (e.name == "public") {
+//       useTeam.team_edit.status = e;
+//     }
+//   });
+//   return useStatus.getPost;
+// });
+
 const list_status = computed(() => {
   useStatus.getPost.forEach((e) => {
-    if (e.name == "public") {
+    if (useTeam.team_edit.status) {
+      if (useTeam.team_edit.status[0]?.name == e.name) {
+        useTeam.team_edit.status = e;
+        return;
+      }
+    } else if (e.name == "public") {
       useTeam.team_edit.status = e;
     }
   });

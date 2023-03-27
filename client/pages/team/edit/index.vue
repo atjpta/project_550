@@ -59,7 +59,7 @@ async function save() {
     }
     const id = await useTeam.create(data);
     useTeam.resetTeamEdit();
-    navigateTo(`/team/${id}`);
+    navigateTo(`/team/${id}/list-post`);
   } catch (error) {
     console.log(error);
   } finally {

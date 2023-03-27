@@ -1,6 +1,12 @@
 // có 6 chức năng chung là thêm(create), sửa (update), lấy tất cả (findAll), lấy theo id (findOne), xóa theo id (deleteOne), xóa tất cả(deleteAll)
 // sẽ có các chức năng khác đi kèm theo nữa tùy nào thực tế
 // chú ý chỉnh model, hàm create, select lại
+
+
+// fitter theo mới nhất, điểm cao và lượt xem
+// lần lượt là createdAt, vote, view
+// chú ý là skip để trước limit
+
 const ObjectId = mongoose.Types.ObjectId;
 
 const mongoose = require("mongoose");

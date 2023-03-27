@@ -44,7 +44,7 @@ function openDialogSignin() {
   }
 }
 onMounted(() => {
-  useSeries.findByAuthor(route.params.id);
+  useSeries.findByOther(route.params.id);
 });
 </script>
 

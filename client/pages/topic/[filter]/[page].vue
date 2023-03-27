@@ -1,17 +1,7 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="flex flex-wrap">
-        <nuxtLink
-          :to="i.url"
-          v-for="i in datafilter"
-          :key="i"
-          class="mr-1 mb-1 btn btn-outline btn-sm lg:btn-md"
-        >
-          {{ i.name }}
-        </nuxtLink>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"

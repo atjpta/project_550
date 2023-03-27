@@ -7,6 +7,7 @@
           :to="i.url"
           v-for="i in datafilter"
           :key="i"
+          :class="i.filter == route.params.filter ? 'bg-primary text-white' : ''"
           class="mr-1 mb-1 btn btn-outline btn-sm lg:btn-md"
         >
           {{ i.name }}
@@ -20,6 +21,36 @@
       </button>
     </div>
 
+    <!-- btn chuyển trang -->
+
+    <div class="form-control mx-auto w-fit mt-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
+      </div>
+    </div>
+    <!-- PostVSkeleton -->
     <div v-if="loading">
       <div class="my-5 grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
         <div v-for="item in 8" :key="item.id">
@@ -66,6 +97,34 @@
         </div>
       </div>
     </div>
+
+    <div class="form-control mx-auto w-fit mt-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,26 +133,49 @@ import { authStore } from "~~/stores/auth.store";
 import { postStore } from "~~/stores/post.store";
 import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { searchStore } from "~~/stores/search.store";
 
 const usePost = postStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
+const route = useRoute();
 const loading = ref(false);
 const posts = ref({});
-// <i class="fa-solid fa-filter-list"></i>
+const useSearch = searchStore();
+const selectPage = ref(route.params.page);
+const size = 3;
+const maxPage = computed(() => {
+  return Math.round(useSearch.list_post.length / size);
+});
+
+function goToPage() {
+  navigateTo(`/post/${route.params.filter}/${selectPage.value}`);
+}
+
+function goToPre() {
+  navigateTo(`/post/${route.params.filter}/${parseInt(selectPage.value) - 1}`);
+}
+
+function goToNext() {
+  navigateTo(`/post/${route.params.filter}/${parseInt(selectPage.value) + 1}`);
+}
+
 const datafilter = ref([
   {
     name: "mới nhất",
-    url: "/post/new/0",
+    url: "/post/new/1",
+    filter: "new",
   },
   {
     name: "điểm cao nhất",
-    url: "/post/score/0",
+    url: "/post/vote/1",
+    filter: "vote",
   },
   {
     name: "xem nhiều nhất",
-    url: "/post/view/0",
+    url: "/post/view/1",
+    filter: "view",
   },
 ]);
 
@@ -148,18 +230,30 @@ function openDialogSignin() {
 
 async function getApi() {
   loading.value = true;
-
   try {
-    await usePost.findAll();
+    usePost.list = await usePost.findPerFilter(
+      route.params.filter,
+      route.params.page,
+      size
+    );
     posts.value = formatList(usePost.list);
     loading.value = false;
   } catch (error) {
     console.log(error);
+    navigateTo(`/post/${route.params.filter}/1`);
   }
 }
+
 onMounted(() => {
+  if (maxPage.value - route.params.page < 0) {
+    navigateTo("/post/new/1");
+  }
   useRouteS.cb = getApi;
   getApi();
+});
+
+onUnmounted(() => {
+  usePost.list = [];
 });
 </script>
 

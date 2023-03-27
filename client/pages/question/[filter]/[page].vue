@@ -94,6 +94,10 @@ onMounted(() => {
   useRouteS.cb = getApi;
   getApi();
 });
+
+onUnmounted(() => {
+  useQuestion.list = [];
+});
 </script>
 
 <style></style>

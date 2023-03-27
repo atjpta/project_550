@@ -180,7 +180,12 @@ const useTeam = teamStore();
 
 const list_status = computed(() => {
   useStatus.getPost.forEach((e) => {
-    if (e.name == "public") {
+    if (useSeries.series_edit.status) {
+      if (useSeries.series_edit.status[0]?.name == e.name) {
+        useSeries.series_edit.status = e;
+        return;
+      }
+    } else if (e.name == "public") {
       useSeries.series_edit.status = e;
     }
   });

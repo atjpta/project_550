@@ -7,8 +7,29 @@ const url = config.url.api + '/series'
 
 export default {
 
+    findPerFilter: async (filter, page, size) => {
+        const { data: data, error } = await useFetch(url + `/${filter}/${page}/${size}`, {
+            method: "get",
+        })
+        if (error.value) {
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findByAuthor: async (id) => {
         const { data: data, error } = await useFetch(url + `/author/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
+    findByOther: async (id) => {
+        const { data: data, error } = await useFetch(url + `/other/${id}`, {
             method: "get",
         })
         if (error.value) {

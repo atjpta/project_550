@@ -17,14 +17,21 @@ module.exports = (app) => {
     
     router.route('/my/:id/:team')
         .get(ctl.findByUserTeam)
+    
+    router.route('/:filter/:page/:size')
+        .get(ctl.findPerFilter)
 
     router.route('/team/:id')
         .get(ctl.findByTeam)
     
     router.route('/tag/:id')
         .get(ctl.findByTag)
+    
     router.route('/author/:id')
         .get(ctl.findByAuthor)
+    
+    router.route('/other/:id')
+        .get(ctl.findByOther)
 
     router.route('/my/:id')
         .get(ctl.findByUser)

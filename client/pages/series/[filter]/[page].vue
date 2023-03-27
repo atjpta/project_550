@@ -1,23 +1,43 @@
 <template>
   <div class="">
     <!-- các nut lọc -->
-    <div class="flex justify-between">
-      <div class="flex flex-wrap">
-        <nuxtLink
-          :to="i.url"
-          v-for="i in datafilter"
-          :key="i"
-          class="mr-1 mb-1 btn btn-outline btn-sm lg:btn-md"
-        >
-          {{ i.name }}
-        </nuxtLink>
-      </div>
+    <div class="flex justify-end">
       <button
         @click="openDialogSignin()"
         class="btn btn-outline btn-success btn-sm lg:btn-md"
       >
         tạo series mới
       </button>
+    </div>
+
+    <!-- btn chuyển trang -->
+
+    <div class="form-control mx-auto w-fit mt-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
+      </div>
     </div>
 
     <div v-if="loadingSkeleton" class="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-5">
@@ -30,6 +50,36 @@
         <SeriesVMono :data="i" />
       </div>
     </div>
+
+    <!-- btn chuyển trang -->
+
+    <div class="form-control mx-auto w-fit mt-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,12 +88,34 @@ import { authStore } from "~~/stores/auth.store";
 import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
 import { dialogStore } from "~~/stores/dialog.store";
+import { searchStore } from "~~/stores/search.store";
 
 const useSeries = seriesStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
 const loadingSkeleton = ref(false);
+
+const route = useRoute();
+const useSearch = searchStore();
+const selectPage = ref(route.params.page);
+const size = 3;
+const maxPage = computed(() => {
+  return Math.round(useSearch.list_series.length / size);
+});
+
+function goToPage() {
+  navigateTo(`/series/${route.params.filter}/${selectPage.value}`);
+}
+
+function goToPre() {
+  navigateTo(`/series/${route.params.filter}/${parseInt(selectPage.value) - 1}`);
+}
+
+function goToNext() {
+  navigateTo(`/series/${route.params.filter}/${parseInt(selectPage.value) + 1}`);
+}
+
 const datafilter = ref([
   {
     name: "mới nhất",
@@ -78,13 +150,20 @@ async function getApi() {
   loadingSkeleton.value = true;
 
   try {
-    await await useSeries.findAll();
+    useSeries.List_series = await useSeries.findPerFilter(
+      "vote",
+      route.params.page,
+      size
+    );
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);
   }
 }
 onMounted(() => {
+  if (maxPage.value - route.params.page < 0) {
+    navigateTo("/series/new/1");
+  }
   useRouteS.cb = getApi;
   getApi();
 });

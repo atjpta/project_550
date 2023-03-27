@@ -3,6 +3,361 @@ const DB = require("../models");
 const model = DB.series;
 const ObjectId = mongoose.Types.ObjectId;
 
+exports.findPerFilter = async (req, res, next) => {
+
+    let { filter } = req.params
+    if (filter == 'vote') {
+        filter = 'valScore'
+    }
+    const size = parseInt(req.params.size)
+    let skip = size * parseInt(req.params.page - 1)
+
+    if (skip < 0) {
+        skip = 0
+    }
+
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: "$series",
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'score',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'votes',
+                                localField: '_id',
+                                foreignField: 'post',
+                                as: 'vote',
+                                pipeline: [
+                                    {
+                                        $group: {
+                                            _id: '$post',
+                                            val: { $sum: '$val' },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            $addFields: {
+                                val: { $sum: "$vote.val" }
+                            }
+                        }
+                    ],
+
+                },
+            },
+            {
+                $addFields: {
+                    valScore: { $sum: "$score.val" },
+                }
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusSeries',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'tag',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'tags',
+                                localField: 'tag',
+                                foreignField: '_id',
+                                as: 'list',
+                            },
+                        },
+                        {
+                            $project: {
+                                "list._id": 1,
+                                'list.name': 1,
+                            }
+                        },
+                    ],
+                },
+            },
+            {
+                $addFields: {
+                    listtag: "$tag.list"
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    'post.count': 1,
+                    'valScore': 1,
+                    'listtag': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: { valScore: -1, createdAt: -1 }
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: size
+            },
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
+
+exports.findByOther = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    author: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'post',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: "$series",
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'score',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'votes',
+                                localField: '_id',
+                                foreignField: 'post',
+                                as: 'vote',
+                                pipeline: [
+                                    {
+                                        $group: {
+                                            _id: '$post',
+                                            val: { $sum: '$val' },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            $addFields: {
+                                val: { $sum: "$vote.val" }
+                            }
+                        }
+                    ],
+
+                },
+            },
+            {
+                $addFields: {
+                    valScore: { $sum: "$score.val" },
+                }
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusSeries',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: '_id',
+                    foreignField: 'series',
+                    as: 'tag',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'tags',
+                                localField: 'tag',
+                                foreignField: '_id',
+                                as: 'list',
+                            },
+                        },
+                        {
+                            $project: {
+                                "list._id": 1,
+                                'list.name': 1,
+                            }
+                        },
+                    ],
+                },
+            },
+            {
+                $addFields: {
+                    listtag: "$tag.list"
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'introduce': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    'post.count': 1,
+                    'valScore': 1,
+                    'listtag': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: { valScore: -1, createdAt: -1 }
+            },
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
+
 exports.create = async (req, res, next) => {
     const modelO = new model({
         author: req.body.author,
@@ -68,12 +423,6 @@ exports.findAll2 = async (req, res, next) => {
 exports.findAll = async (req, res, next) => {
     try {
         const document = await model.aggregate([
-            // // lọc ra các phần muốn lấy
-            // {
-            //     $match: {
-            //         series: ObjectId(id),
-            //     }
-            // },
             {
                 $lookup: {
                     from: 'users',
@@ -123,11 +472,11 @@ exports.findAll = async (req, res, next) => {
                         },
                         {
                             $addFields: {
-                                val: { $sum: "$vote.val" } 
+                                val: { $sum: "$vote.val" }
                             }
                         }
                     ],
-                    
+
                 },
             },
             {
@@ -137,10 +486,28 @@ exports.findAll = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+            {
+                $lookup: {
                     from: 'status',
                     localField: 'status',
                     foreignField: '_id',
-                    as: 'status',
+                    as: 'statusSeries',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
                 },
             },
 
@@ -186,11 +553,28 @@ exports.findAll = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
                 }
             },
             {
-                $sort: { 'createdAt': -1 }
-            }
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: { valScore: -1, createdAt: -1 }
+            },
         ])
         return res.json(document);
     } catch (error) {
@@ -310,10 +694,28 @@ exports.findByTeam = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+            {
+                $lookup: {
                     from: 'status',
                     localField: 'status',
                     foreignField: '_id',
-                    as: 'status',
+                    as: 'statusSeries',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
                 },
             },
 
@@ -359,11 +761,29 @@ exports.findByTeam = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
                 }
             },
             {
-                $sort: { 'createdAt': -1 }
-            }
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: {'valScore': -1 , 'createdAt': -1 }
+            },
+            
         ])
         return res.json(document);
     } catch (error) {
@@ -578,10 +998,28 @@ exports.findByTag = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+            {
+                $lookup: {
                     from: 'status',
                     localField: 'status',
                     foreignField: '_id',
-                    as: 'status',
+                    as: 'statusSeries',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
                 },
             },
 
@@ -633,12 +1071,29 @@ exports.findByTag = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
                 }
             },
             
             {
-                $sort: { 'createdAt': -1 }
-            }
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: { valScore: -1, createdAt: -1 }
+            },
         ])
         return res.json(document);
     } catch (error) {

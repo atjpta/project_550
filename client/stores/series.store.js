@@ -32,6 +32,12 @@ export const seriesStore = defineStore("seriesStore", {
             this.List_series = await seriesService.findAll();
         },
 
+        async findPerFilter(fitter, page, size) {
+            const list = await seriesService.findPerFilter(fitter, page, size);
+            return list;
+
+        },
+
         async findByTeam(id) {
             this.List_series = await seriesService.findByTeam(id);
         },
@@ -39,6 +45,11 @@ export const seriesStore = defineStore("seriesStore", {
         async findByAuthor(id) {
             this.List_series = await seriesService.findByAuthor(id);
         },
+
+        async findByOther(id) {
+            this.List_series = await seriesService.findByOther(id);
+        },
+
         async findByTag(id) {
             this.List_series = await seriesService.findByTag(id);
         },

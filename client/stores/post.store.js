@@ -88,6 +88,22 @@ export const postStore = defineStore("postStore", {
             });
         },
 
+        async findPerFilter(fitter, page, size) {
+            const list = await postService.findPerFilter(fitter, page, size);
+            list.forEach((e, i) => {
+                list[i].createdAt = this.setTime(list[i].createdAt);
+            });
+            return list;
+
+        },
+
+        async findAll2() {
+            this.list = await postService.findAll2();
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
         async findByTeam(id) {
             this.list = await postService.findByTeam(id);
             this.list.forEach((e, i) => {
@@ -97,6 +113,13 @@ export const postStore = defineStore("postStore", {
 
         async findByAuthor(id) {
             this.list = await postService.findByAuthor(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByOther(id) {
+            this.list = await postService.findByOther(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });

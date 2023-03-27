@@ -94,6 +94,17 @@
             }}</nuxt-link>
           </div>
         </div>
+        <!-- status
+        <div v-if="data?.status[0].name == 'private'">
+          <div class="italic font-semibold">
+            nhóm riêng tư
+            <div class="tooltip" data-tip="chuyển sang công khai để người khác thấy">
+              <div class="btn-xs btn btn-outline btn-info rounded-full text-xs scale-75">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+              </div>
+            </div>
+          </div>
+        </div> -->
         <!-- các trạng thái của bài viết  -->
         <div class="flex space-x-5 mt-2">
           <div class="tooltip" data-tip="điểm bài viết">
@@ -132,6 +143,7 @@ const usePost = postStore();
 const useSeries = seriesStore();
 const route = useRoute();
 const useNotification = notificationStore();
+
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;

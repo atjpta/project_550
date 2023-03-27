@@ -97,13 +97,14 @@ function openDialogSignin(cb) {
   }
 }
 function openAddSeries() {
-  if (useMember.isMember) {
+  if (useMember.isMember && useSeries.series?.team) {
     isSeries.value = !isSeries.value;
-  } else {
-    if (useSeries.series.team)
-      useAlert.setError(
-        `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
-      );
+  } else if (useSeries.series?.team[0])
+    useAlert.setError(
+      `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
+    );
+  else {
+    isSeries.value = !isSeries.value;
   }
 }
 
@@ -111,7 +112,7 @@ function gotoCreate() {
   if (useMember.isMember) {
     navigateTo(`/post/series/${route.params.id}`);
   } else {
-    if (useSeries.series.team)
+    if (useSeries.series?.team[0])
       useAlert.setError(
         `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
       );

@@ -150,7 +150,7 @@
         <div v-if="data.series_team[0]" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
           <NuxtLink
-            :to="`/team/${data?.series_team[0]?._id}`"
+            :to="`/team/${data?.series_team[0]?._id}/list-post`"
             class="btn btn-ghost justify-start"
             >{{ data.series_team[0]?.name }}</NuxtLink
           >

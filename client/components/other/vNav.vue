@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-base-100">
+  <div class="">
     <!-- cho mobie -->
-    <div class="dropdown">
+    <div :class="route.path != '/' ? '2xl:dropdown-open' : ''" class="dropdown">
       <label tabindex="0" class="">
         <div class="btn btn-ghost rounded-none">
           <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
@@ -9,12 +9,19 @@
       </label>
       <div
         tabindex="0"
-        class="dropdown-content mt-1 bg-base-100 w-60 h-screen transition ease-in-out"
+        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 mt-1.5 w-60 h-screen"
       >
         <ul class="menu">
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">
-              <li class="hover-bordered">
+              <li
+                :class="
+                  tagUrl.slice(0, j.tag.length) == j.tag && j.tag != '/'
+                    ? 'router-link-active'
+                    : ''
+                "
+                class="hover-bordered"
+              >
                 <nuxt-link :to="j.url">
                   <OtherVIcon class-icon="text-2xl" :icon="j.icon" />
                   <div class="text-base">
@@ -34,6 +41,11 @@
 <script setup>
 const showtext = ref(false);
 const open = ref(false);
+const route = useRoute();
+
+const tagUrl = computed(() => {
+  return route.path;
+});
 
 const dataNav = ref([
   [
@@ -41,40 +53,47 @@ const dataNav = ref([
       name: "Trang chủ",
       url: "/",
       icon: "fa-solid fa-house",
+      tag: "/",
     },
     {
       name: "Tìm kiếm",
       url: "/search",
       icon: "fa-solid fa-magnifying-glass",
+      tag: "/search",
     },
     {
       name: "test",
       url: "/test",
       icon: "fa-solid fa-vial-circle-check",
+      tag: "/test",
     },
   ],
   [
     {
       name: "Bài viết",
-      url: "/post/new/0",
+      url: "/post/new/1",
       icon: "fa-solid fa-file-lines",
+      tag: "/post",
     },
     {
       name: "Chuỗi bài viết",
-      url: "/series/new/0",
+      url: "/series/new/1",
       icon: "fa-solid fa-layer-group",
+      tag: "/series",
     },
   ],
   [
     {
       name: "Câu hỏi",
-      url: "/question/new/0",
+      url: "/question/new/1",
       icon: "fa-solid fa-file-circle-question",
+      tag: "/question",
     },
     {
       name: "chủ đề",
-      url: "/topic/new/0",
+      url: "/topic/new/1",
       icon: "fa-solid fa-layer-group",
+      tag: "/topic",
     },
   ],
   [
@@ -82,16 +101,19 @@ const dataNav = ref([
       name: "Nhóm",
       url: "/team",
       icon: "fa-solid fa-building-user",
+      tag: "/team",
     },
     {
       name: "Người dùng",
       url: "/user",
       icon: "fa-solid fa-users",
+      tag: "/user",
     },
     {
       name: "thẻ tag",
       url: "/tag",
       icon: "fa-solid fa-tag",
+      tag: "/tag",
     },
   ],
 ]);

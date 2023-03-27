@@ -73,7 +73,7 @@ function openDialogSignin() {
   }
 }
 onMounted(() => {
-  usePost.findByAuthor(route.params.id);
+  usePost.findByOther(route.params.id);
 });
 </script>
 

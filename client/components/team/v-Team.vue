@@ -139,6 +139,19 @@
             {{ slmember }}
           </div>
         </div>
+        <div v-if="data?.status[0].name == 'private'">
+          <div class="italic font-semibold mt-5">
+            nhóm riêng tư
+            <div
+              class="tooltip"
+              data-tip="cần tham gia nhóm mới có thể thấy được thêm thông tin"
+            >
+              <div class="btn-xs btn btn-outline btn-info rounded-full text-xs scale-75">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </transition>
   </div>

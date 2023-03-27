@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="text-xl shadow-sm pt-1 bg-base-100">
+  <div class="glass">
+    <div class="text-xl shadow-sm pt-1">
       <div class="flex justify-between">
         <div class="flex">
           <OtherVNav @click="open = true" />

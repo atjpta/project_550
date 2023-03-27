@@ -15,8 +15,8 @@ export default defineNuxtConfig({
     plugins: [
         "~/plugins/fontawesome.js",
     ],
-    app: {
-        pageTransition: { name: 'bounce'}
-    },
+    // app: {
+    //     pageTransition: { name: 'bounce'}
+    // },
     ssr: false,
 })

@@ -59,7 +59,7 @@ async function saveEdit() {
     }
     await useTeam.update(data);
     useTeam.resetTeamEdit();
-    navigateTo(`/team/${data.id}`);
+    navigateTo(`/team/${data.id}/list-post`);
   } catch (error) {
     console.log(error);
   } finally {

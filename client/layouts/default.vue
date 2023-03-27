@@ -1,5 +1,7 @@
 <template>
-  <div class="">
+  <div
+    class="bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 min-h-screen min-w-full"
+  >
     <OtherVAlert />
     <OtherVDialog />
 

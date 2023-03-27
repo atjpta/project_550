@@ -234,14 +234,28 @@ const useSeries = seriesStore();
 const usePost = postStore();
 const route = useRoute();
 const selectStatus = ref();
+// const list_status = computed(() => {
+//   if (!selectStatus.value) {
+//     useStatus.getPost.forEach((e) => {
+//       if (e.name == "public") {
+//         selectStatus.value = e;
+//       }
+//     });
+//   }
+//   return useStatus.getPost;
+// });
+
 const list_status = computed(() => {
-  if (!selectStatus.value) {
-    useStatus.getPost.forEach((e) => {
-      if (e.name == "public") {
+  useStatus.getPost.forEach((e) => {
+    if (selectStatus.value) {
+      if (selectStatus.value[0]?.name == e.name) {
         selectStatus.value = e;
+        return;
       }
-    });
-  }
+    } else if (e.name == "public") {
+      selectStatus.value = e;
+    }
+  });
   return useStatus.getPost;
 });
 
