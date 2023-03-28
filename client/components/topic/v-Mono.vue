@@ -189,7 +189,7 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa Topic này?",
+        content: "bạn chắc chắn muốn xóa chủ đề này?",
         btn1: "ok",
         btn2: "hủy",
       },
@@ -207,7 +207,7 @@ function openDialogRemoveTeam() {
       {
         title: "Thông báo cực căng!",
         content:
-          "bạn chắc chắn muốn xóa topic ra khỏi nhóm? Tất cả câu hỏi trong series này sẽ không còn trong nhóm này nữa",
+          "bạn chắc chắn muốn xóa chủ đề này ra khỏi nhóm? Tất cả câu hỏi trong chủ đề này sẽ không còn trong nhóm này nữa",
         btn1: "ok",
         btn2: "hủy",
       },

@@ -51,6 +51,22 @@ export default {
         return data.value
     },
 
+    findAllPage: async (page, size) => {
+        const { data: data, error } = await useFetch(url + `/${page}/${size}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
+
     findByUser: async (id) => {
         const { data: data, error } = await useFetch(url + `/my/${id}`, {
             headers: {

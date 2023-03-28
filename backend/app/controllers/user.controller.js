@@ -205,6 +205,139 @@ exports.findOverView = async (req, res, next) => {
     }
 }
 
+
+exports.findAllOverViewPage = async (req, res, next) => {
+    const size = parseInt(req.params.size)
+    let skip = size * parseInt(req.params.page - 1)
+
+    if (skip < 0) {
+        skip = 0
+    }
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { postIds: "$list_post._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$postIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { questionIds: "$list_question._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$questionIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_answer",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { answerIds: "$list_answer._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$answer", "$$answerIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$answer",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_answer",
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "user",
+                    as: "follows",
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    avatar_url: 1,
+                    name: 1,
+                    followsCount: { $size: "$follows" },
+                    total_count: {
+                        $add: [
+                            { $sum: "$vote_post.val" },
+                            { $sum: "$vote_question.val" },
+                            { $sum: "$vote_answer.val" },
+                        ]
+                    }
+                },
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: size
+            },
+
+        ]);
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không thể lấy findAll" + error })
+        );
+    }
+};
+
 exports.findAllOverView = async (req, res, next) => {
     try {
         const document = await model.aggregate([
@@ -316,6 +449,127 @@ exports.findAllOverView = async (req, res, next) => {
                 },
             },
            
+        ]);
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: "không thể lấy findAll" + error })
+        );
+    }
+};
+
+
+exports.findAllOverView = async (req, res, next) => {
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { postIds: "$list_post._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$postIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_post",
+                },
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { questionIds: "$list_question._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$post", "$$questionIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$post",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_question",
+                },
+            },
+            {
+                $lookup: {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "author",
+                    as: "list_answer",
+                },
+            },
+            {
+                $lookup: {
+                    from: "votes",
+                    let: { answerIds: "$list_answer._id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$answer", "$$answerIds"] },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: "$answer",
+                                val: { $sum: "$val" },
+                            },
+                        },
+                    ],
+                    as: "vote_answer",
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "user",
+                    as: "follows",
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    avatar_url: 1,
+                    name: 1,
+                    followsCount: { $size: "$follows" },
+                    total_count: {
+                        $add: [
+                            { $sum: "$vote_post.val" },
+                            { $sum: "$vote_question.val" },
+                            { $sum: "$vote_answer.val" },
+                        ]
+                    }
+                },
+            },
+
         ]);
         return res.json(document);
     } catch (error) {

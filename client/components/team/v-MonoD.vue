@@ -109,7 +109,7 @@ async function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết?",
+        content: "bạn chắc chắn muốn xóa Nhóm?",
         btn1: "ok",
         btn2: "hủy",
       },

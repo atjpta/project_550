@@ -14,9 +14,10 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
+    
+    router.route('/:filter/:page/:size')
+        .get(ctl.findPerFilter)
 
-    router.route('/maxlength')
-        .get(ctl.getLength)
 
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
@@ -29,6 +30,9 @@ module.exports = (app) => {
     
     router.route('/author/:id/')
         .get(ctl.findByAuthor)
+    
+    router.route('/other/:id/')
+        .get(ctl.findByOther)
 
     router.route('/topic/:id/')
         .get(ctl.findByTopic)

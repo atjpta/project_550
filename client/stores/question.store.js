@@ -77,6 +77,15 @@ export const questionStore = defineStore("questionStore", {
             });
         },
 
+        async findPerFilter(fitter, page, size) {
+            const list = await questionService.findPerFilter(fitter, page, size);
+            list.forEach((e, i) => {
+                list[i].createdAt = this.setTime(list[i].createdAt);
+            });
+            return list;
+
+        },
+
         async findByTeam(id) {
             this.list = await questionService.findByTeam(id);
             this.list.forEach((e, i) => {
@@ -93,6 +102,13 @@ export const questionStore = defineStore("questionStore", {
 
         async findByAuthor(id) {
             this.list = await questionService.findByAuthor(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByOther(id) {
+            this.list = await questionService.findByOther(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });

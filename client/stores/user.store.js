@@ -26,6 +26,10 @@ export const userStore = defineStore("userStore", {
         async findAllOverView() {
             this.list_user = await userService.findAllOverView();
         },
+
+        async findAllOverViewPage(page, size) {
+            this.list_user = await userService.findAllOverViewPage(page, size);
+        },
         async update(data) {
             await userService.update(data);
         },

@@ -3,7 +3,7 @@
     <button
       @click="theme = !theme"
       class="btn btn-ghost"
-      data-toggle-theme="dark,light"
+      data-toggle-theme="dark,cupcake"
       data-act-class="ACTIVECLASS"
     >
       <OtherVIcon

@@ -30,8 +30,18 @@ export const topicStore = defineStore("topicStore", {
             this.List_topic = await topicService.findAll();
         },
 
+        async findPerFilter(fitter, page, size) {
+            const list = await topicService.findPerFilter(fitter, page, size);
+            return list;
+
+        },
+
         async findByTeam(id) {
             this.List_topic = await topicService.findByTeam(id);
+        },
+
+        async findByOther(id) {
+            this.List_topic = await topicService.findByOther(id);
         },
 
         async findByAuthor(id) {

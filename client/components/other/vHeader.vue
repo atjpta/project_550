@@ -3,7 +3,7 @@
     <div class="text-xl shadow-sm pt-1">
       <div class="flex justify-between">
         <div class="flex">
-          <OtherVNav @click="open = true" />
+          <OtherVNav class="" @click="open = true" />
           <div
             @click="navigateTo('/')"
             class="btn btn-ghost bg-transparent hover:bg-transparent text-2xl font-bold"

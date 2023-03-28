@@ -18,8 +18,13 @@ module.exports = (app) => {
     router.route('/getedit')
         .get(ctl.findAll2)
     
+    
+    
     router.route('/my/:id/:team')
         .get(ctl.findByUserTeam)
+    
+    router.route('/:filter/:page/:size')
+        .get(ctl.findPerFilter)
     
     router.route('/edit/:id')
         .get(ctl.findOneEdit)
@@ -32,6 +37,9 @@ module.exports = (app) => {
     
     router.route('/author/:id')
         .get(ctl.findByAuthor)
+    
+    router.route('/other/:id/')
+        .get(ctl.findByOther)
 
     router.route('/:id')
         .get(ctl.findOne)

@@ -18,6 +18,27 @@ export default {
         return data.value
     },
 
+    findPerFilter: async (filter, page, size) => {
+        const { data: data, error } = await useFetch(url + `/${filter}/${page}/${size}`, {
+            method: "get",
+        })
+        if (error.value) {
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
+    findByOther: async (id) => {
+        const { data: data, error } = await useFetch(url + `/other/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findByTag: async (id) => {
         const { data: data, error } = await useFetch(url + `/tag/${id}`, {
             method: "get",

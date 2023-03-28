@@ -5,7 +5,6 @@
 <script setup>
 definePageMeta({
   middleware: "guest",
-  layout: "dashboard",
 });
 </script>
 

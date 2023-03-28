@@ -22,6 +22,7 @@ exports.create = async (req, res, next) => {
             })
         }
 
+
         userIds.forEach(async (e) => {
             if (e.follow != req.body.author) {
                 const modelO = new model({

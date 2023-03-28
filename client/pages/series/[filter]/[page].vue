@@ -101,7 +101,7 @@ const useSearch = searchStore();
 const selectPage = ref(route.params.page);
 const size = 3;
 const maxPage = computed(() => {
-  return Math.round(useSearch.list_series.length / size);
+  return Math.ceil(useSearch.list_series.length / size);
 });
 
 function goToPage() {
@@ -120,10 +120,12 @@ const datafilter = ref([
   {
     name: "mới nhất",
     url: "/series/new/0",
+    filter: "new",
   },
   {
     name: "điểm cao nhất",
     url: "/series/score/0",
+    filter: "vote",
   },
 ]);
 
@@ -155,15 +157,15 @@ async function getApi() {
       route.params.page,
       size
     );
+    if (useSeries.List_series.length == 0) {
+      navigateTo(`/series/${route.params.filter}/1`);
+    }
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);
   }
 }
 onMounted(() => {
-  if (maxPage.value - route.params.page < 0) {
-    navigateTo("/series/new/1");
-  }
   useRouteS.cb = getApi;
   getApi();
 });

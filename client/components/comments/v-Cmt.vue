@@ -62,13 +62,14 @@
               </div>
             </nuxtLink>
             <!-- phần tag name -->
-            <div
+            <nuxtLink
+              :to="`/user/${i._id}`"
               v-for="i in data.tag_name"
               :key="i"
               class="btn btn-info btn-sm btn-ghost mt-2"
             >
               {{ "@" + i.name }}
-            </div>
+            </nuxtLink>
             <!-- phần nội dung -->
             <div class="-z-30">
               <QuillEditor

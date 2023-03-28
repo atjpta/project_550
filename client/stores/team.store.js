@@ -53,7 +53,13 @@ export const teamStore = defineStore("teamStore", {
                 this.List_team[i].role = this.roleTeam(this.List_team[i].member)
             })
         },
-
+        
+        async findAllPage(page, size) {
+            this.List_team = await teamService.findAllPage(page, size);
+            this.List_team.forEach((e, i) => {
+                this.List_team[i].role = this.roleTeam(this.List_team[i].member)
+            })
+        },
         async findByTag(id) {
             this.List_team = await teamService.findByTag(id);
             this.List_team.forEach((e, i) => {

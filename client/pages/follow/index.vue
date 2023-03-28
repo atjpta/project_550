@@ -27,7 +27,7 @@ const menuDashboard = ref([
     url: "/post",
   },
   {
-    title: "series",
+    title: "chuỗi bài viết",
     url: "/series",
   },
   {
@@ -35,7 +35,7 @@ const menuDashboard = ref([
     url: "/question",
   },
   {
-    title: "Topic",
+    title: "chủ đề",
     url: "/topic",
   },
   {

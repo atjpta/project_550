@@ -2,7 +2,7 @@
   <div>
     <div class="rounded-2xl">
       <div
-        class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
+        class="glass z-10 rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
       >
         <div class="w-fit">
           <nuxtLink

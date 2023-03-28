@@ -100,6 +100,7 @@ const send = async () => {
     content: `bạn có bình luận mới về bài viết "${usePost.post.title}"`,
     url: route.fullPath + "#comment",
     type: "info",
+    // listTagName: list,
   };
 
   try {

@@ -98,6 +98,11 @@
       </div>
     </div>
 
+    <!-- <div v-if="selectPage > maxPage" class="mx-auto w-fit">
+      <nutxLink to="/" class="btn btn-outline btn-primary mx-auto"> trở lại </nutxLink>
+    </div> -->
+    <!-- btn chuyển trang -->
+
     <div class="form-control mx-auto w-fit mt-3">
       <div class="input-group lg:input-group-md input-group-sm">
         <button
@@ -146,7 +151,7 @@ const useSearch = searchStore();
 const selectPage = ref(route.params.page);
 const size = 3;
 const maxPage = computed(() => {
-  return Math.round(useSearch.list_post.length / size);
+  return Math.ceil(useSearch.list_post.length / size);
 });
 
 function goToPage() {
@@ -236,18 +241,17 @@ async function getApi() {
       route.params.page,
       size
     );
+    if (usePost.list.length == 0) {
+      navigateTo(`/post/${route.params.filter}/1`);
+    }
     posts.value = formatList(usePost.list);
     loading.value = false;
   } catch (error) {
     console.log(error);
-    navigateTo(`/post/${route.params.filter}/1`);
   }
 }
 
 onMounted(() => {
-  if (maxPage.value - route.params.page < 0) {
-    navigateTo("/post/new/1");
-  }
   useRouteS.cb = getApi;
   getApi();
 });

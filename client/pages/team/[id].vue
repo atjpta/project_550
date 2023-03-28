@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="pb-5">
     <div>
       <TeamVTeam :data="useTeam.team[0]" />
     </div>
@@ -11,7 +11,7 @@
         }}</nuxt-link>
       </div>
     </div>
-    <NuxtPage />
+    <NuxtPage v-if="useTeam.team[0]?.status[0] == 'public' || useMember.isMember" />
   </div>
 </template>
 
@@ -32,7 +32,7 @@ const menuTab = ref([
     url: `/team/${route.params.id}/list-post`,
   },
   {
-    title: "series",
+    title: "chuỗi bài viết",
     url: `/team/${route.params.id}/list-series`,
   },
   {
@@ -40,7 +40,7 @@ const menuTab = ref([
     url: `/team/${route.params.id}/list-question`,
   },
   {
-    title: "Topic",
+    title: "chủ đề",
     url: `/team/${route.params.id}/list-topic`,
   },
   {

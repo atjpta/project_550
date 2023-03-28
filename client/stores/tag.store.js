@@ -21,6 +21,11 @@ export const tagStore = defineStore("tagStore", {
             this.List_tag = await tagService.findAllInfo();
         },
 
+        async findAllInfoPage(page, size) {
+            this.List_tag = await tagService.findAllInfoPage(page, size);
+        },
+
+
         async findByAuthor(id) {
             this.List_tag = await tagService.findByAuthor(id);
         },

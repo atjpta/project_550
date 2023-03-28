@@ -173,6 +173,7 @@ const send = async () => {
     content: `bạn có bình luận mới về câu hỏi "${useQuestion.question.title}"`,
     url: route.fullPath,
     type: "info",
+    // listTagName: list,
   };
 
   try {

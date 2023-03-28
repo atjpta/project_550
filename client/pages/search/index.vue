@@ -10,7 +10,7 @@
           placeholder="Tìm kiếm…"
           class="input input-bordered w-1/2"
         />
-        <button class="btn btn-square">
+        <button @click="getApi()" class="btn btn-square">
           <OtherVIcon icon="fa-solid fa-magnifying-glass" />
         </button>
       </div>

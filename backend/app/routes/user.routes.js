@@ -16,6 +16,9 @@ module.exports = (app) => {
     router.route("/alloverview")
         .get(ctl.findAllOverView)
     
+    router.route("/alloverview/:page/:size")
+        .get(ctl.findAllOverViewPage)
+    
     router.route('/overview/:id')
         .get(ctl.findOverView)
     

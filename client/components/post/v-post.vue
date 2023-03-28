@@ -1,7 +1,9 @@
 <template>
   <div class="">
     <!-- các tùy chọn -->
-    <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14">
+    <div
+      class="glass z-10 rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
+    >
       <div class="w-fit">
         <nuxtLink
           class="hover:text-sky-500 hover:scale-110 duration-500"
@@ -116,7 +118,7 @@
     <!-- bài viết -->
     <div class="">
       <img
-        class="rounded-2xl"
+        class="rounded-2xl mx-auto"
         :src="useImage.previewImage || data.image_cover_url"
         alt=""
       />
@@ -147,7 +149,7 @@
         </div>
 
         <!-- phần team -->
-        <div v-if="data.series_team[0]" class="mt-5">
+        <div v-if="data.series_team[0] && data.team[0]" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
           <NuxtLink
             :to="`/team/${data?.series_team[0]?._id}/list-post`"

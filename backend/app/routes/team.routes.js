@@ -15,6 +15,8 @@ module.exports = (app) => {
         .post(ctl.create)
         .delete(ctl.deleteAll)
     
+    
+    
     router.route('/my/:id')
         .get(ctl.findByUser)
     
@@ -23,6 +25,9 @@ module.exports = (app) => {
     
     router.route('/tag/:id/')
         .get(ctl.findByTag)
+    
+    router.route("/:page/:size")
+        .get(ctl.findAllPage)
     
 
     router.route('/:id')

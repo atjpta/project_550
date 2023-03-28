@@ -45,7 +45,7 @@ const menuDashboard = ref([
     }),
   },
   {
-    title: "series",
+    title: "chuỗi bài biết",
     url: `/tag/${route.params.id}/series`,
     sl: computed(() => {
       return useSeries.List_series.length;
@@ -59,7 +59,7 @@ const menuDashboard = ref([
     }),
   },
   {
-    title: "Topic",
+    title: "Chủ đề",
     url: `/tag/${route.params.id}/topic`,
     sl: computed(() => {
       return useTopic.List_topic.length;

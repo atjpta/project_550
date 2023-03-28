@@ -176,7 +176,7 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa series này?",
+        content: "bạn chắc chắn muốn xóa chuỗi bài viết này?",
         btn1: "ok",
         btn2: "hủy",
       },

@@ -105,6 +105,74 @@ exports.findAllInfo = async (req, res, next) => {
 };
 
 
+exports.findAllInfoPage = async (req, res, next) => {
+
+    const size = parseInt(req.params.size)
+    let skip = size * parseInt(req.params.page - 1)
+
+    if (skip < 0) {
+        skip = 0
+    }
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "posts"
+                }
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "questions"
+                }
+            },
+            {
+                $lookup: {
+                    from: "teams",
+                    localField: "_id",
+                    foreignField: "tag",
+                    as: "teams"
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    introduce: 1,
+                    author: 1,
+                    total_count: {
+                        $add: [
+                            { $size: "$posts" },
+                            { $size: "$questions" },
+                            { $size: "$teams" },
+                        ]
+                    }
+                }
+            },
+            {
+                $sort: { 'total_count': -1 }
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: size
+            },
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
+
 exports.findByAuthor = async (req, res, next) => {
     const { id } = req.params;
     try {

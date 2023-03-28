@@ -206,7 +206,7 @@ function openDialogRemoveTeam() {
       {
         title: "Thông báo cực căng!",
         content:
-          "bạn chắc chắn muốn xóa series ra khỏi nhóm? Tất cả bài viết trong series này sẽ không còn trong nhóm này nữa",
+          "bạn chắc chắn muốn xóa chuỗi bài viết này ra khỏi nhóm? Tất cả bài viết trong chuỗi bài viết này sẽ không còn trong nhóm này nữa",
         btn1: "ok",
         btn2: "hủy",
       },

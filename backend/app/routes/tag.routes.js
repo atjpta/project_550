@@ -12,12 +12,16 @@ module.exports = (app) => {
     const router = express.Router();
     router.route("/info")
         .get(ctl.findAllInfo)
-    
+    router.route('/all')
+        .post(ctl.createAll)
     router.route("/")
         .get(ctl.findAll)
         .post([checkDuplicate.check_tag], ctl.create)
         .delete(ctl.deleteAll)
 
+    router.route("/info/:page/:size")
+        .get(ctl.findAllInfoPage)
+    
     router.route('/author/:id')
         .get(ctl.findByAuthor)
     
@@ -26,8 +30,7 @@ module.exports = (app) => {
         .put(ctl.update)
         .delete(ctl.delete)
     
-    router.route('/all')
-        .post(ctl.createAll)
+    
 
     app.use("/api/tag", router);
 

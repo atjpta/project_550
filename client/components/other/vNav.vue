@@ -1,7 +1,17 @@
 <template>
   <div class="">
     <!-- cho mobie -->
-    <div :class="route.path != '/' ? '2xl:dropdown-open' : ''" class="dropdown">
+    <div
+      :class="
+        route.path != '/' &&
+        route.path != '/welcome' &&
+        route.path != '/auth/signup' &&
+        route.path != '/auth/signin'
+          ? '2xl:dropdown-open'
+          : ''
+      "
+      class="dropdown"
+    >
       <label tabindex="0" class="">
         <div class="btn btn-ghost rounded-none">
           <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
@@ -23,7 +33,7 @@
                 class="hover-bordered"
               >
                 <nuxt-link :to="j.url">
-                  <OtherVIcon class-icon="text-2xl" :icon="j.icon" />
+                  <OtherVIcon class-icon="text-2xl w-7" :icon="j.icon" />
                   <div class="text-base">
                     {{ j.name }}
                   </div>
@@ -90,7 +100,7 @@ const dataNav = ref([
       tag: "/question",
     },
     {
-      name: "chủ đề",
+      name: "Chủ đề",
       url: "/topic/new/1",
       icon: "fa-solid fa-layer-group",
       tag: "/topic",
@@ -110,7 +120,7 @@ const dataNav = ref([
       tag: "/user",
     },
     {
-      name: "thẻ tag",
+      name: "Thẻ tag",
       url: "/tag",
       icon: "fa-solid fa-tag",
       tag: "/tag",

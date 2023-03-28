@@ -7,8 +7,14 @@
       </div>
 
       <div class="divider"></div>
-      <div class="text-center uppercase text-3xl font-bold mt-5">
-        danh sách các bài viết
+      <div class="flex justify-center uppercase text-3xl font-bold mt-5">
+        danh sách bài viết
+        <div
+          data-tip="các bài viết riêng tư sẽ không hiện "
+          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2"
+        >
+          <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+        </div>
       </div>
 
       <!-- các btn -->
