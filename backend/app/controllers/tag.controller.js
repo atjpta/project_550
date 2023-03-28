@@ -155,7 +155,7 @@ exports.findAllInfoPage = async (req, res, next) => {
                 }
             },
             {
-                $sort: { 'total_count': -1 }
+                $sort: { total_count: -1, name: -1 }
             },
             {
                 $skip: skip

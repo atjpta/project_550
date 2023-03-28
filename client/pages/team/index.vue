@@ -138,7 +138,13 @@ function openDialogSignin() {
 }
 
 async function getApiNext(page) {
-  await useTeam.findAllPage(page, size);
+  loadingSkeleton.value = true;
+  try {
+    await useTeam.findAllPage(page, size);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const getApi = async () => {

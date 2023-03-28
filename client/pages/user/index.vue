@@ -106,7 +106,13 @@ function goToNext() {
 }
 
 async function getApiNext(page) {
-  await useUser.findAllOverViewPage(page, size);
+  loadingSkeleton.value = true;
+  try {
+    await useUser.findAllOverViewPage(page, size);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getApi() {

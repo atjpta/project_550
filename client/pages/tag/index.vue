@@ -97,7 +97,7 @@ const loadingSkeleton = ref(false);
 
 const useSearch = searchStore();
 const selectPage = ref(1);
-const size = 2;
+const size = 3;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_tag.length / size);
 });
@@ -117,7 +117,13 @@ function goToNext() {
 }
 
 async function getApiNext(page) {
-  await useTag.findAllInfoPage(page, size);
+  loadingSkeleton.value = true;
+  try {
+    await useTag.findAllInfoPage(page, size);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getApi() {
