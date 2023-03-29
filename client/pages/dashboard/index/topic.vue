@@ -9,6 +9,11 @@
         tạo topic mới
       </button>
     </div>
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <TopicVSkeleton />
+      </div>
+    </div>
     <div class="space-y-5 mt-5" v-if="useTopic.List_topic.length > 0">
       <div v-for="i in useTopic.List_topic" :key="i.id">
         <TopicVMonoD :data="i" />
@@ -30,6 +35,7 @@ import { dialogStore } from "~~/stores/dialog.store";
 const useTopic = topicStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
+const loadingSkeleton = ref(false);
 const useRoute = routeStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -49,8 +55,18 @@ function openDialogSignin() {
     navigateTo("/topic/edit");
   }
 }
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useTopic.findByAuthor(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useTopic.findByAuthor(useAuth.user.id);
+  getApi();
 });
 </script>
 

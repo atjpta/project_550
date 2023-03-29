@@ -1,6 +1,10 @@
 <template>
   <div class="my-5">
-    <!-- các nut lọc -->
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <SeriesVSkeleton />
+      </div>
+    </div>
 
     <div class="space-y-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
@@ -24,6 +28,7 @@ const useSeries = seriesStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
+const loadingSkeleton = ref(false);
 const route = useRoute();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -43,8 +48,19 @@ function openDialogSignin() {
     navigateTo("/series/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useSeries.findByOther(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useSeries.findByOther(route.params.id);
+  getApi();
 });
 </script>
 

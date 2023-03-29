@@ -17,6 +17,9 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
+    
+    router.route("/admin")
+        .get(ctl.findByAdmin)
 
     router.route('/:filter/:page/:size')
         .get(ctl.findPerFilter)

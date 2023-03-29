@@ -10,6 +10,12 @@
       </button>
     </div>
 
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <QuestionVSkeleton />
+      </div>
+    </div>
+
     <div class="space-y-5 mt-5" v-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
@@ -32,6 +38,8 @@ const useQuestion = questionStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRoute = routeStore();
+const loadingSkeleton = ref(false);
+
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -50,8 +58,19 @@ function openDialogSignin() {
     navigateTo("/question/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useQuestion.findByAuthor(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useQuestion.findByAuthor(useAuth.user.id);
+  getApi();
 });
 </script>
 

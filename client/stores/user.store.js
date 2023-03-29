@@ -10,6 +10,13 @@ export const userStore = defineStore("userStore", {
         };
     },
     getters: {
+        isAdmin(state) {
+            let temp = false;
+            if (state.user?.role?.name == 'admin') {
+                temp = true;
+            }
+            return temp;
+        },
 
     },
     actions: {

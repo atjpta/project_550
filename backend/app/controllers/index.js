@@ -15,6 +15,7 @@ const member = require('./member.controller');
 const role = require('./role.controller');
 const follow = require('./follow.controller');
 const notification = require('./notification.controller');
+const report = require('./report.controller')
 module.exports = {
     auth,
     image,
@@ -33,4 +34,5 @@ module.exports = {
     role,
     follow,
     notification,
+    report,
 }

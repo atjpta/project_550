@@ -10,6 +10,12 @@
       </button>
     </div>
 
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <PostVSkeleton />
+      </div>
+    </div>
+
     <div v-if="listPost.listPins.length + listPost.listNoPins.length > 0">
       <div
         v-if="listPost.listPins.length > 0"
@@ -51,6 +57,8 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRoute = routeStore();
 
+const loadingSkeleton = ref(false);
+
 const listPost = computed(() => {
   let listPins = [];
   let listNoPins = [];
@@ -82,8 +90,19 @@ function openDialogSignin() {
     navigateTo("/post/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await usePost.findByAuthor(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  usePost.findByAuthor(useAuth.user.id);
+  getApi();
 });
 </script>
 

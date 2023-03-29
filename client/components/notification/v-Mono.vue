@@ -1,29 +1,17 @@
 <template>
   <div>
     <div class="flex justify-between">
-      <div
-        @click="goto()"
-        :class="borderNotification"
-        class="bg-gradient-to-r flex ml-5 mr-0 btn-ghost py-2 cursor-pointer border-l-4 border-0 w-full"
-      >
+      <div @click="goto()" :class="borderNotification"
+        class="bg-gradient-to-r flex ml-5 mr-0 btn-ghost py-2 cursor-pointer border-l-4 border-0 w-full">
         <div class="mr-5 flex items-center">
           <div v-if="data.type == 'info'">
-            <OtherVIcon
-              class-icon="text-2xl text-info ml-3"
-              icon="fa-solid fa-circle-info"
-            />
+            <OtherVIcon class-icon="text-2xl text-info ml-3" icon="fa-solid fa-circle-info" />
           </div>
           <div v-if="data.type == 'warning'">
-            <OtherVIcon
-              class-icon="text-2xl text-warning ml-3"
-              icon="fa-solid fa-triangle-exclamation"
-            />
+            <OtherVIcon class-icon="text-2xl text-warning ml-3" icon="fa-solid fa-triangle-exclamation" />
           </div>
           <div v-if="data.type == 'error'">
-            <OtherVIcon
-              class-icon="text-2xl text-error ml-3"
-              icon="fa-solid fa-circle-exclamation"
-            />
+            <OtherVIcon class-icon="text-2xl text-error ml-3" icon="fa-solid fa-circle-exclamation" />
           </div>
         </div>
         <div class="flex justify-between w-full">
@@ -42,11 +30,7 @@
           <div @click="removeView()" v-if="!data.view" class="btn btn-ghost no-animation">
             <OtherVIcon class-icon="text-xl text-primary" icon="fa-solid fa-circle" />
           </div>
-          <div
-            @click="deleteNotification()"
-            :class="[loading ? 'loading' : '']"
-            class="btn btn-ghost"
-          >
+          <div @click="deleteNotification()" :class="[loading ? 'loading' : '']" class="btn btn-ghost">
             <OtherVIcon class-icon="text-xl text-error " icon="fa-solid fa-x" />
           </div>
         </div>
@@ -78,7 +62,9 @@ const borderNotification = computed(() => {
 
 async function goto() {
   await removeView();
-  navigateTo(props.data.url);
+  if (props.data.url) {
+    navigateTo(props.data.url);
+  }
 }
 
 async function removeView() {

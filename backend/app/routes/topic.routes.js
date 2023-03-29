@@ -18,7 +18,8 @@ module.exports = (app) => {
     router.route('/getedit')
         .get(ctl.findAll2)
     
-    
+    router.route("/admin")
+        .get(ctl.findByAdmin)
     
     router.route('/my/:id/:team')
         .get(ctl.findByUserTeam)

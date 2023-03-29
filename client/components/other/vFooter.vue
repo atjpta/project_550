@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <footer class="footer p-10 text-base-content">
       <div>
         <span class="footer-title">nội dung</span>
@@ -24,12 +24,17 @@
       <div class="items-center grid-flow-col">
         <div
           @click="navigateTo('/')"
-          class="btn btn-ghost bg-transparent hover:bg-transparent text-2xl font-bold"
+          class="btn btn-ghost bg-transparent hover:bg-transparent text-2xl font-black"
         >
+          <!-- logo -->
           <span
-            class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 relative inline-block"
+            class="before:ring-8 before:ring-indigo-500/20 hover:before:translate-x-2 hover:before:rotate-180 before:duration-500 before:rounded-tr-none before:rounded-bl-rounded-tr-none translate before:block before:absolute before:-inset-1 before:skew-y-12 before:skew-x-12 before:bg-gradient-to-r before:from-green-500 before:via-teal-500/50 before:to-blue-500 relative inline-block"
           >
-            <span class="relative text-white">abctu</span>
+            <span
+              class="before:ring-8 before:ring-pink-500/20 hover:before:-translate-x-2 hover:before:-rotate-180 before:duration-500 before:rounded-tl-rounded-tr-none before:rounded-br-rounded-tr-none before:block before:absolute before:-inset-1 before:-skew-y-12 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500/50 before:to-pink-500 relative inline-block"
+            >
+              <span class="relative italic px-2 text-white">abctu</span>
+            </span>
           </span>
         </div>
         <p>ABCTU - Trang hỏi đáp chia sẻ <br />Design by B1910027</p>

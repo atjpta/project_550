@@ -3,6 +3,78 @@ const DB = require("../models");
 const model = DB.series;
 const ObjectId = mongoose.Types.ObjectId;
 
+exports.findByAdmin = async (req, res, next) => {
+    let slModelReport = 0
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'reports',
+                    localField: '_id',
+                    foreignField: 'model',
+                    as: 'reports',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'author',
+                                foreignField: '_id',
+                                as: 'author',
+                            },
+
+                        },
+                        {
+                            $project: {
+                                "_id": 1,
+                                "content": 1,
+                                "author._id": 1,
+                                "author.name": 1,
+                                'author.avatar_url': 1,
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $addFields: {
+                    slReport: {
+                        $size: '$reports'
+                    }
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'name': 1,
+                    'createdAt': 1,
+                    'slReport': 1,
+                    'reports': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                }
+            },
+            {
+                $sort: { 'slReport': -1, 'createdAt': -1 }
+            }
+        ])
+        return res.send(document)
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findBySeries ' + error })
+        )
+    }
+};
+
 exports.findPerFilter = async (req, res, next) => {
 
     let { filter } = req.params

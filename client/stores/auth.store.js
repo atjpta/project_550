@@ -20,20 +20,20 @@ export const authStore = defineStore("authStore", {
                 return state.user.accessToken
             }
             else return null
-        }
+        },
         
-        // isAdmin(state) {
-        //     let temp = false;
-        //     if (state.user) {
-        //         state.user.roles.forEach(role => {
-        //             if (role == 'admin') {
-        //                 temp = true;
-        //                 return;
-        //             }
-        //         });
-        //     }
-        //     return temp;
-        // },
+        isAdmin(state) {
+            let temp = false;
+            if (state.user) {
+                state.user.roles.forEach(role => {
+                    if (role == 'admin') {
+                        temp = true;
+                        return;
+                    }
+                });
+            }
+            return temp;
+        },
     },
     actions: {
         loadAuthState() {

@@ -7,6 +7,17 @@ const url = config.url.api + '/topic'
 
 export default {
 
+    findByAdmin: async (id) => {
+        const { data: data, error } = await useFetch(url + `/admin`, {
+            method: "get",
+        })
+        if (error.value) {
+            useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findByAuthor: async (id) => {
         const { data: data, error } = await useFetch(url + `/author/${id}`, {
             method: "get",

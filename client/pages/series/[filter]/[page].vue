@@ -1,5 +1,10 @@
 <template>
   <div class="">
+    <span
+      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block"
+    >
+      <span class="relative text-white text-3xl font-black px-5">Chuỗi bài viết</span>
+    </span>
     <!-- các nut lọc -->
     <div class="flex justify-end">
       <button

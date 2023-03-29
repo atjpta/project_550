@@ -13,6 +13,9 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .delete(ctl.deleteAll)
     
+    router.route("/admin")
+        .get(ctl.findByAdmin)
+    
     router.route("/alloverview")
         .get(ctl.findAllOverView)
     

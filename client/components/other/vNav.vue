@@ -19,14 +19,28 @@
       </label>
       <div
         tabindex="0"
-        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 mt-1.5 w-60 h-screen"
+        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 mt-1.5 w-60 h-[calc(96vh)]"
       >
         <ul class="menu">
+          <!-- chỉ admin -->
+          <li
+            v-if="useUser.isAdmin"
+            :class="tagUrl.slice(0, 6) == '/admin' ? 'router-link-active' : ''"
+            class="hover-bordered"
+          >
+            <nuxt-link to="/admin/post">
+              <OtherVIcon class-icon="text-2xl w-7" icon="fa-solid fa-bars-progress" />
+              <div class="text-base">
+                {{ "Trang admin" }}
+              </div>
+            </nuxt-link>
+          </li>
+          <!-- người dùng bth -->
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">
               <li
                 :class="
-                  tagUrl.slice(0, j.tag.length) == j.tag && j.tag != '/'
+                  tagUrl.slice(0, j.tag?.length) == j.tag && j.tag != '/'
                     ? 'router-link-active'
                     : ''
                 "
@@ -49,6 +63,10 @@
 </template>
 
 <script setup>
+import { userStore } from "~~/stores/user.store";
+
+const useUser = userStore();
+
 const showtext = ref(false);
 const open = ref(false);
 const route = useRoute();
@@ -71,6 +89,14 @@ const dataNav = ref([
       icon: "fa-solid fa-magnifying-glass",
       tag: "/search",
     },
+    // useUser.isAdmin == true
+    //   ? {
+    //       name: "Admin",
+    //       url: "/search",
+    //       icon: "fa-solid fa-bars-progress",
+    //       tag: "/search",
+    //     }
+    //   : "",
     {
       name: "test",
       url: "/test",

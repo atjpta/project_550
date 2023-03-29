@@ -7,26 +7,10 @@ const schema = mongoose.Schema(
             ref: "user"
         },
         content: String,
-        post: {
+        model: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "post"
         },
-        question: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "question"
-        },
-        topic: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "topic"
-        },
-        series: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "series"
-        },
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }
     },
 );
 

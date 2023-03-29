@@ -1,5 +1,11 @@
 <template>
   <div class="my-5">
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <QuestionVSkeleton />
+      </div>
+    </div>
+
     <div class="space-y-5" v-if="useQuestion.list.length > 0">
       <div v-for="i in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
@@ -22,6 +28,7 @@ const useQuestion = questionStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
+const loadingSkeleton = ref(false);
 const route = useRoute();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -41,8 +48,19 @@ function openDialogSignin() {
     navigateTo("/question/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useQuestion.findByOther(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useQuestion.findByOther(route.params.id);
+  getApi();
 });
 </script>
 

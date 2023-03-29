@@ -3,8 +3,81 @@ const DB = require("../models");
 const model = DB.post;
 const ObjectId = mongoose.Types.ObjectId;
 
-exports.findPerFilter = async (req, res, next) => {
 
+
+exports.findByAdmin = async (req, res, next) => {
+    let slModelReport = 0
+    try {
+        const document = await model.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'reports',
+                    localField: '_id',
+                    foreignField: 'model',
+                    as: 'reports',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'author',
+                                foreignField: '_id',
+                                as: 'author',
+                            },
+                            
+                        },
+                        {
+                            $project: {
+                                "_id": 1,
+                                "content": 1,
+                                "author._id": 1,
+                                "author.name": 1,
+                                'author.avatar_url': 1,
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $addFields: {
+                    slReport: {
+                        $size: '$reports'
+                    }
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'createdAt': 1,
+                    'slReport': 1,
+                    'reports': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                }
+            },
+            {
+                $sort: { 'slReport': -1, 'createdAt': -1 }
+            }
+        ])
+        return res.send(document)
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findBySeries ' + error })
+        )
+    }
+};
+
+exports.findPerFilter = async (req, res, next) => {
     let { filter } = req.params
     if (filter == 'vote') {
         filter = 'vote.val'
@@ -15,7 +88,6 @@ exports.findPerFilter = async (req, res, next) => {
     if (skip < 0) {
         skip = 0
     }
-
     try {
         const document = await model.aggregate([
             // lọc ra các phần muốn lấy
@@ -638,179 +710,179 @@ exports.create = async (req, res, next) => {
 }
 
 exports.findAll = async (req, res, next) => {
-        try {
-            const document = await model.aggregate([
-                // lọc ra các phần muốn lấy
-                // {
-                //     $match: {
-                //         team: null,
-                //     }
-                // },
-                {
-                    $lookup: {
-                        from: 'comments',
-                        localField: '_id',
-                        foreignField: 'post',
-                        as: 'comment',
-                        pipeline: [
-                            {
-                                $group: {
-                                    _id: '$post',
-                                    count: { $sum: 1 },
-                                }
-                            }
-                        ]
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'votes',
-                        localField: '_id',
-                        foreignField: 'post',
-                        as: 'vote',
-                        pipeline: [
-                            {
-                                $group: {
-                                    _id: '$post',
-                                    val: { $sum: '$val' },
-
-                                },
-                            }
-                        ]
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'users',
-                        localField: 'author',
-                        foreignField: '_id',
-                        as: 'author',
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'tags',
-                        localField: 'tag',
-                        foreignField: '_id',
-                        as: 'tag',
-                    },
-                },
-
-                {
-                    $lookup: {
-                        from: 'series',
-                        localField: 'series',
-                        foreignField: '_id',
-                        as: 'series',
-
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'teams',
-                        localField: 'series.team',
-                        foreignField: '_id',
-                        as: 'seriesTeam',
-
-                    },
-                },
-
-                {
-                    $lookup: {
-                        from: 'teams',
-                        localField: 'team',
-                        foreignField: '_id',
-                        as: 'team',
-
-                    },
-                },
-
-                {
-                    $lookup: {
-                        from: 'status',
-                        localField: 'status',
-                        foreignField: '_id',
-                        as: 'statusPost',
-                    },
-                },
-
-                {
-                    $lookup: {
-                        from: 'status',
-                        localField: 'team.status',
-                        foreignField: '_id',
-                        as: 'statusTeam',
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'status',
-                        localField: 'series.status',
-                        foreignField: '_id',
-                        as: 'statusSeries',
-                    },
-                },
-                {
-                    $lookup: {
-                        from: 'status',
-                        localField: 'seriesTeam.status',
-                        foreignField: '_id',
-                        as: 'statusSeriesTeam',
-                    },
-                },
-                {
-                    $project: {
-                        "_id": 1,
-                        'title': 1,
-                        'image_cover_url': 1,
-                        'createdAt': 1,
-                        "author._id": 1,
-                        "author.name": 1,
-                        'author.avatar_url': 1,
-                        "tag._id": 1,
-                        "tag.name": 1,
-                        'view': 1,
-                        'comment': 1,
-                        'vote': 1,
-                        // 'statusPost.name': 1,
-                        // 'statusTeam.name': 1,
-                        // 'statusSeries.name': 1,
-                        // 'statusSeriesTeam.name': 1,
-                        // nếu team trong series private thì k lấy dc
-                        // nếu series private thì k lấy dc
-                        // nếu team private thì k lấy dc
-                        // nếu post private thì k lấy dc
-                        isPublic: {
-                            $cond: {
-                                if: {
-                                    $or: [
-                                        { $eq: ['$statusPost.name', ['private']] },
-                                        {
-                                            $and: [
-                                                { $eq: ['$statusTeam.name', ['private']] },
-                                                { $eq: ['$statusSeries', []] }
-                                            ]
-                                        },
-                                        { $eq: ['$statusSeries.name', ['private']] },
-                                        { $eq: ['$statusSeriesTeam.name', ['private']] },
-                                    ]
-                                },
-                                then: false,
-                                else: true
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            // {
+            //     $match: {
+            //         team: null,
+            //     }
+            // },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
                             }
                         }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'series',
+                    localField: 'series',
+                    foreignField: '_id',
+                    as: 'series',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'series.team',
+                    foreignField: '_id',
+                    as: 'seriesTeam',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusPost',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'team.status',
+                    foreignField: '_id',
+                    as: 'statusTeam',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'series.status',
+                    foreignField: '_id',
+                    as: 'statusSeries',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'seriesTeam.status',
+                    foreignField: '_id',
+                    as: 'statusSeriesTeam',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    // 'statusPost.name': 1,
+                    // 'statusTeam.name': 1,
+                    // 'statusSeries.name': 1,
+                    // 'statusSeriesTeam.name': 1,
+                    // nếu team trong series private thì k lấy dc
+                    // nếu series private thì k lấy dc
+                    // nếu team private thì k lấy dc
+                    // nếu post private thì k lấy dc
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusPost.name', ['private']] },
+                                    {
+                                        $and: [
+                                            { $eq: ['$statusTeam.name', ['private']] },
+                                            { $eq: ['$statusSeries', []] }
+                                        ]
+                                    },
+                                    { $eq: ['$statusSeries.name', ['private']] },
+                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
                     }
-                },
-                {
-                    $match: {
-                        isPublic: true,
-                    }
-                },
-                {
-                    $sort: { createdAt: -1 }
-                },
-            ])
-            return res.json(document);
+                }
+            },
+            {
+                $match: {
+                    isPublic: true,
+                }
+            },
+            {
+                $sort: { createdAt: -1 }
+            },
+        ])
+        return res.json(document);
     } catch (error) {
         return next(
             res.status(500).json({ Message: 'không  thể  lấy getLength' + error })

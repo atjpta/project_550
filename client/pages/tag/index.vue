@@ -3,8 +3,12 @@
     <div
       class="bg-gradient-to-r from-info/10 via-info/5 to-pink-500/5 rounded-2xl border-b-4 border-info p-5"
     >
-      <div class="text-4xl font-bold uppercase mb-3">các thẻ tag</div>
-      <div class="text-xl indent-8">
+      <span
+        class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block"
+      >
+        <span class="relative text-white text-3xl font-black px-5">Thẻ tag</span>
+      </span>
+      <div class="text-xl indent-8 mt-3">
         Các bài viết, câu hỏi, sẽ được gắn các hash tag để có thể tìm thấy 1 cách nhanh
         chóng
       </div>

@@ -9,6 +9,12 @@
         tạo series mới
       </button>
     </div>
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <SeriesVSkeleton />
+      </div>
+    </div>
+
     <div class="space-y-5 mt-5" v-if="useSeries.List_series.length > 0">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMonoD :data="i" />
@@ -30,6 +36,7 @@ import { dialogStore } from "~~/stores/dialog.store";
 const useSeries = seriesStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
+const loadingSkeleton = ref(false);
 const useRoute = routeStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -49,8 +56,19 @@ function openDialogSignin() {
     navigateTo("/series/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useSeries.findByAuthor(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useSeries.findByAuthor(useAuth.user.id);
+  getApi();
 });
 </script>
 

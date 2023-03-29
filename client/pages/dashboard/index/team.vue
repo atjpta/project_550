@@ -9,7 +9,12 @@
         tạo Nhóm mới
       </button>
     </div>
-    <div>
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <TeamVSkeleton />
+      </div>
+    </div>
+    <div class="space-y-5">
       <div v-for="i in useMember.List_myteam" :key="i.id">
         <TeamVMonoD :data="i" />
       </div>
@@ -30,6 +35,7 @@ const useAuth = authStore();
 const useDialog = dialogStore();
 const useRoute = routeStore();
 const useRole = roleStore();
+const loadingSkeleton = ref(false);
 const useMember = memberStore();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -51,8 +57,14 @@ function openDialogSignin() {
 }
 
 async function getApi() {
-  await useRole.findAll();
-  await useMember.findTeamByUser(useAuth.user.id);
+  loadingSkeleton.value = true;
+  try {
+    await useRole.findAll();
+    await useMember.findTeamByUser(useAuth.user.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 onMounted(() => {
   getApi();

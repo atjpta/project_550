@@ -14,6 +14,10 @@ module.exports = (app) => {
         .get(ctl.findAllInfo)
     router.route('/all')
         .post(ctl.createAll)
+    
+    router.route("/admin")
+        .get(ctl.findByAdmin)
+    
     router.route("/")
         .get(ctl.findAll)
         .post([checkDuplicate.check_tag], ctl.create)

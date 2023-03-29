@@ -1,5 +1,10 @@
 <template>
   <div class="my-5">
+    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
+      <div v-for="i in 5" :key="i">
+        <TopicVSkeleton />
+      </div>
+    </div>
     <div class="space-y-5" v-if="useTopic.List_topic.length > 0">
       <div v-for="i in useTopic.List_topic" :key="i.id">
         <TopicVMonoD :data="i" />
@@ -22,6 +27,7 @@ const useTopic = topicStore();
 const useAuth = authStore();
 const useDialog = dialogStore();
 const useRouteS = routeStore();
+const loadingSkeleton = ref(false);
 const route = useRoute();
 function openDialogSignin() {
   if (!useAuth.isUserLoggedIn) {
@@ -41,8 +47,19 @@ function openDialogSignin() {
     navigateTo("/topic/edit");
   }
 }
+
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useTopic.findByOther(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(() => {
-  useTopic.findByOther(route.params.id);
+  getApi();
 });
 </script>
 

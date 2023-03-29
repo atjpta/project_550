@@ -15,6 +15,9 @@ module.exports = (app) => {
         .post(ctl.create)
         .delete(ctl.deleteAll)
     
+    router.route("/admin")
+        .get(ctl.findByAdmin)
+    
     router.route('/my/:id/:team')
         .get(ctl.findByUserTeam)
     
