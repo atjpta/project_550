@@ -57,7 +57,7 @@
                     <a>
                       <div>
                         <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo bài viết
+                        báo cáo
                       </div>
                     </a>
                   </li>

@@ -1,187 +1,165 @@
 <template>
-  <div>
-    <transition name="bounce">
-      <div
-        :class="
-          data.choice.length
-            ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
-            : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
-        "
-        class="rounded-2xl p-5"
-      >
-        <div>
-          <!-- phần đầu -->
-          <div class="flex justify-between">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
-              <!-- tác giả -->
-              <div class="flex">
-                <div class="avatar">
-                  <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author[0].avatar_url" />
-                  </div>
-                </div>
-                <div class="text-2xl mx-3">
-                  {{ data.author[0].name }}
-                  <div class="text-sm italic">
-                    <i>{{ data.createdAt }}</i>
-                  </div>
-                </div>
-              </div>
-            </nuxtLink>
+  <div
+    class="w-full duration-500 hover:bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-3 rounded-2xl">
+    <div class="flex justify-between items-center">
+      <!-- tác giả -->
+      <div class="basis-1/3">
+        <nuxt-link :to="`/user/${data.author[0]._id}/overview`" class="flex items-center space-x-3 hover:text-info">
+          <div class="avatar">
+            <div class="mask mask-squircle w-12 h-12">
+              <img :src="data.author[0].avatar_url" />
+            </div>
+          </div>
+          <div>
+            <div class="font-bold">{{ data.author[0].name }}</div>
+          </div>
+        </nuxt-link>
+      </div>
+      <!-- tiêu đề -->
+      <div class="text-left w-full ml-5">
+        {{ data.title }}
+      </div>
 
-            <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end">
-              <label tabindex="0" class="btn btn-ghost btn-primary">
-                <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-              </label>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo bài viết
-                    </div>
-                  </a>
-                </li>
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogRemoveSave(removeSave)">
-                      <OtherVIcon icon="fa-solid fa-x" />
-                      bỏ Lưu câu hỏi
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <!-- các nút chức năng -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
+        <div @click="showDataReport()" data-tip="xem báo cáo"
+          class="h-10 w-10 indicator flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-primary">
+          <OtherVIcon icon="fa-solid fa-flag" />
+          <span v-if="data.reports.length > 0" class="indicator-item mt-2 mr-2 badge badge-secondary">{{ data.slReport
+          }}</span>
+        </div>
+        <nuxtLink :to="`/question/${data._id}`" data-tip="xem chi tiết"
+          class="h-10 w-10 flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info">
+          <OtherVIcon icon="fa-solid fa-eye" />
+        </nuxtLink>
+
+        <div data-tip="cảnh báo chủ sở hữu" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+          <div :class="[loading == 'warning' ? 'loading ' : '']"
+            @click="openDialogInput(warning, 'hãy cảnh báo gì đó cho người dùng')"
+            class="h-10 w-10 btn btn-sm btn-ghost text-warning">
+            <OtherVIcon icon="fa-solid fa-triangle-exclamation" />
           </div>
-          <!-- ảnh bìa và tiêu đề -->
-          <div @click="goReadPost()" class="cursor-pointer">
-            <div class="hover:text-info">
-              <img
-                class="rounded-2xl my-2 mx-auto"
-                :src="data.question[0].image_cover_url"
-                alt=""
-              />
-              <div class="font-bold text-4xl">{{ data.question[0].title }}</div>
-            </div>
-          </div>
-          <!-- tag -->
-          <div class="mt-4 flex">
-            <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link
-                :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
-                >{{ "#" + i.name }}</nuxt-link
-              >
-            </div>
-          </div>
-          <!-- các trạng thái của bài viết  -->
-          <div class="flex space-x-5 mt-2">
-            <div class="tooltip" data-tip="điểm câu hỏi">
-              <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
-              {{ valVote }}
-            </div>
-            <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon
-                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
-                :icon="
-                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-                "
-              />
-              {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
-            </div>
-            <div class="tooltip" data-tip="lượt bình luận">
-              <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
-              {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
-            </div>
-            <div class="tooltip" data-tip="lượt xem">
-              <div>
-                <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
-                {{ data.question[0].view }}
-              </div>
-            </div>
+        </div>
+
+        <div data-tip="xóa câu hỏi" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+          <div :class="[loading ? 'deleteModel ' : '']"
+            @click="openDialogInput(deleteModel, 'nhập lí do xóa câu hỏi này')"
+            class="h-10 w-10 btn btn-sm btn-ghost text-error">
+            <OtherVIcon icon="fa-solid fa-trash" />
           </div>
         </div>
       </div>
-    </transition>
+    </div>
+    <div v-if="showReport && data.reports.length > 0">
+      <div class="divider"></div>
+      <div class="ml-10">
+        <div class="flex items-center justify-between font-black uppercase mb-2">
+          <div class="">người báo cáo</div>
+          <div>nội dung</div>
+
+          <div data-tip="xóa tất cả báo cáo" class="font-medium flex tooltip tooltip-left lg:tooltip-top">
+            <div :class="[loading == 'deleteByModel' ? 'loading ' : '']" @click="deleteByModel()"
+              class="btn btn-sm btn-ghost text-error">
+              xóa tất cả
+            </div>
+          </div>
+        </div>
+        <div>
+          <div v-for="(i, n) in data.reports" :key="i._id">
+            <AdminVMonoReport class="" :data="i" />
+            <div v-if="n < data.reports.length - 1" class="divider my-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { authStore } from "~~/stores/auth.store";
+import { alertStore } from "~~/stores/alert.store";
 import { dialogStore } from "~~/stores/dialog.store";
-import { followStore } from "~~/stores/follow.store";
+import { notificationStore } from "~~/stores/notification.store";
 import { questionStore } from "~~/stores/question.store";
+import { reportStore } from "~~/stores/report.store";
 import { routeStore } from "~~/stores/route.store";
 
-const useDialog = dialogStore();
-const useAuth = authStore();
-const useQuestion = questionStore();
 const useRouteS = routeStore();
-const useFollow = followStore();
-
+const useReport = reportStore();
+const useAlert = alertStore();
+const useDialog = dialogStore();
+const useNotification = notificationStore();
+const useQuestion = questionStore();
 const props = defineProps({
   data: Object,
 });
+const showReport = ref(false);
+const loading = ref("");
 
-const isAuthor = computed(() => {
-  if (useAuth.user && props.data.author) {
-    return useAuth.user.id == props.data.author[0]._id;
+function showDataReport() {
+  showReport.value = !showReport.value;
+  if (props.data.reports.length == 0) {
+    useAlert.setInfo("câu hỏi này không có báo cáo nào cả!!!!!!");
   }
-});
-
-const valVote = computed(() => {
-  if (props.data.vote) {
-    let val = props.data.vote[0]?.val;
-    if (val != undefined) {
-      if (val > 0) {
-        return "+" + val;
-      } else if (val == 0) {
-        return 0;
-      } else return val;
-    }
-  }
-  return 0;
-});
-
-async function goReadPost() {
-  if (useAuth.user && useAuth.user.id == props.data.author[0]._id) {
-  } else {
-    await useQuestion.update({
-      id: props.data.question[0]._id,
-      view: props.data.question[0].view + 1,
-    });
-  }
-  navigateTo(`/question/${props.data.question[0]._id}`);
 }
 
-const removeSave = async () => {
+async function deleteByModel() {
+  loading.value = "deleteByModel";
   try {
-    await useFollow.deleteOne(props.data._id);
+    await useReport.deleteByModel(props.data._id);
+    await useRouteS.refreshData();
+    useAlert.setSuccess(" đã xóa thành công");
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
+
+async function warning(input) {
+  loading.value = "warning";
+  try {
+    const dataNotifi = {
+      to: props.data.author[0]._id,
+      content: `câu hỏi "${props.data.title}" của bạn bị cảnh báo:  ${input}`,
+      type: "warning",
+    };
+    await await useNotification.createOne(dataNotifi);
+    useAlert.setSuccess("đã gửi cảnh báo đi thành công");
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = "";
+  }
+}
+
+async function deleteModel(input) {
+  loading.value = "deleteModel";
+  try {
+    const dataNotifi = {
+      to: props.data.author[0]._id,
+      content: `câu hỏi "${props.data.title}" của bạn đã bị xóa vì:  ${input}`,
+      type: "error",
+    };
+    await useQuestion.deleteOne(props.data._id);
+    await useNotification.createOne(dataNotifi);
+    useAlert.setSuccess("đã xóa thành công");
     await useRouteS.refreshData();
   } catch (error) {
-    console.log(erorr);
-    console.log("lỗi save");
+    console.log(error);
+  } finally {
+    loading.value = "";
   }
-};
+}
 
-function openDialogRemoveSave(cb) {
-  useDialog.showDialog(
+function openDialogInput(cb, contentT) {
+  useDialog.showDialogInput(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn xóa bài viết khỏi danh sách lưu trữ",
-      btn1: "ok",
+      content: contentT,
+      btn1: "gửi",
       btn2: "hủy",
     },
-    () => {
-      cb();
-    }
+    cb
   );
 }
 </script>

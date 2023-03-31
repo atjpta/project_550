@@ -36,7 +36,7 @@
         <div data-tip="cảnh báo chủ sở hữu" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
           <div :class="[loading == 'warning' ? 'loading ' : '']"
             @click="openDialogInput(warning, 'hãy cảnh báo gì đó cho người dùng')"
-            class="h-10 w-10 btn btn-sm btn-ghost text-error">
+            class="h-10 w-10 btn btn-sm btn-ghost text-warning">
             <OtherVIcon icon="fa-solid fa-triangle-exclamation" />
           </div>
         </div>

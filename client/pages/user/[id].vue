@@ -3,10 +3,7 @@
     <UserVInfo />
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuDashboard" :key="i">
-        <nuxtLink
-          :to="`/user/${route.params.id}` + i.url"
-          class="btn btn-sm btn-outline mr-1 mb-1"
-        >
+        <nuxtLink :to="`/user/${route.params.id}` + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
           <div>
             {{ i.title }}
           </div>
@@ -53,6 +50,10 @@ async function getApi() {
 
 onMounted(() => {
   getApi();
+});
+
+onUnmounted(() => {
+  useUser.overview = {};
 });
 </script>
 

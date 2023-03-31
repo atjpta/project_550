@@ -1,20 +1,12 @@
 <template>
   <div>
     <transition name="bounce">
-      <div
-        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0 rounded-2xl p-5"
-      >
+      <div class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0 rounded-2xl p-5">
         <div class="flex">
           <!-- ảnh series -->
-          <NuxtLink
-            :to="`/series/${data._id}`"
-            class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl"
-          >
-            <img
-              class="rounded-2xl w-32 h-32 hover:scale-110 duration-500"
-              :src="data.image_cover_url"
-              alt=""
-            />
+          <NuxtLink :to="`/series/${data._id}`"
+            class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl">
+            <img class="rounded-2xl w-32 h-32 hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
           </NuxtLink>
           <div class="w-full">
             <div>
@@ -22,39 +14,20 @@
                 <div class="flex space-x-2 justify-end">
                   <div v-if="isEditT" class="tooltip" data-tip="xóa series ra khỏi nhóm">
                     <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
-                      <OtherVIcon
-                        class-icon="text-warning text-xl"
-                        icon="fa-solid fa-x"
-                      />
+                      <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
                     </div>
                   </div>
                   <!-- phần tùy chọn cho người đọc -->
-                  <div
-                    v-if="!isAuthor && useAuth.isUserLoggedIn"
-                    class="dropdown dropdown-end flex justify-end"
-                  >
-                    <label tabindex="0" class="flex justify-end">
-                      <div class="btn btn-ghost">
-                        <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-                      </div>
+                  <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+                    <label tabindex="0" class="btn btn-ghost">
+                      <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                     </label>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                    >
-                      <li class="hover-bordered">
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <li @click="openDialogReport()" class="hover-bordered">
                         <a>
-                          <div @click="openDialogReport()">
+                          <div>
                             <OtherVIcon icon="fa-solid fa-flag" />
-                            báo cáo Nhóm
-                          </div>
-                        </a>
-                      </li>
-                      <li class="hover-bordered">
-                        <a>
-                          <div @click="openDialogReport()">
-                            <OtherVIcon icon="fa-solid fa-bookmark" />
-                            Lưu bài viết
+                            báo cáo
                           </div>
                         </a>
                       </li>
@@ -63,11 +36,7 @@
                   <!-- edit cho tác giả -->
                   <div v-if="isAuthor">
                     <div class="space-x-2 flex justify-end">
-                      <nuxtLink
-                        :to="`/series/edit/${data._id}`"
-                        class="tooltip"
-                        data-tip="sửa series"
-                      >
+                      <nuxtLink :to="`/series/edit/${data._id}`" class="tooltip" data-tip="sửa series">
                         <div class="btn btn-ghost text-primary">
                           <OtherVIcon icon="fa-solid fa-pen-to-square" />
                         </div>
@@ -81,10 +50,7 @@
                     </div>
                   </div>
                 </div>
-                <nuxtLink
-                  class="hover:text-sky-500 hover:scale-110 duration-500"
-                  :to="`/series/${data._id}`"
-                >
+                <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/series/${data._id}`">
                   <!-- tên series -->
                   <div class="text-2xl font-bold uppercase">
                     {{ data.name }}
@@ -95,11 +61,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in list_tag" :key="i._id" class="">
-                <nuxt-link
-                  :to="`/tag/${i._id}/post`"
-                  class="btn btn-outline btn-sm mr-1 mt-1"
-                  >{{ "#" + i.name }}</nuxt-link
-                >
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+                }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -125,6 +88,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { postStore } from "~~/stores/post.store";
+import { reportStore } from "~~/stores/report.store";
 import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
 
@@ -132,7 +96,7 @@ const props = defineProps({
   data: Object,
   isEditT: Boolean,
 });
-
+const useReport = reportStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
@@ -216,6 +180,25 @@ function openDialogRemoveTeam() {
           team: " ",
         });
         await useRouteS.refreshData();
+      }
+    );
+  }
+}
+function openDialogReport() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialogInput(
+      {
+        title: "Thông báo cực căng!",
+        content: "Chuỗi bài viết này có vấn để?!",
+        btn1: "gửi",
+        btn2: "hủy",
+      },
+      async (input) => {
+        await useReport.create({
+          author: useAuth.user.id,
+          content: input,
+          model: props.data._id,
+        });
       }
     );
   }

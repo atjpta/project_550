@@ -54,10 +54,10 @@ exports.findByAdmin = async (req, res, next) => {
             {
                 $project: {
                     "_id": 1,
-                    'title': 1,
                     'createdAt': 1,
                     'slReport': 1,
                     'reports': 1,
+                    'name': 1,
                     "author._id": 1,
                     "author.name": 1,
                     'author.avatar_url': 1,

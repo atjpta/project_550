@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
-    >
+    <div class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
       <div>
         <!-- phần đầu -->
         <div class="flex justify-end">
@@ -10,26 +8,16 @@
           <div v-if="isAuthor">
             <div class="space-x-2 static flex">
               <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
-                <div
-                  @click="openDialogRemoveSeries()"
-                  class="btn btn-sm btn-ghost text-xl text-warning"
-                >
+                <div @click="openDialogRemoveSeries()" class="btn btn-sm btn-ghost text-xl text-warning">
                   <OtherVIcon icon="fa-solid fa-xmark" />
                 </div>
               </div>
               <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
-                <div
-                  @click="openDialogAddSeries()"
-                  class="btn btn-sm btn-ghost text-xl text-success"
-                >
+                <div @click="openDialogAddSeries()" class="btn btn-sm btn-ghost text-xl text-success">
                   <OtherVIcon icon="fa-solid fa-plus" />
                 </div>
               </div>
-              <nuxtLink
-                :to="`/post/edit/${data._id}`"
-                class="tooltip"
-                data-tip="sửa bài viết"
-              >
+              <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="sửa bài viết">
                 <div class="btn btn-sm btn-ghost text-primary">
                   <OtherVIcon icon="fa-solid fa-pen-to-square" />
                 </div>
@@ -43,30 +31,16 @@
           </div>
 
           <!-- phần tùy chọn cho người đọc -->
-          <div
-            v-if="!isAuthor && useAuth.isUserLoggedIn"
-            class="dropdown dropdown-end z-10"
-          >
-            <label tabindex="0" class="btn btn-ghost btn-primary">
+          <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <label tabindex="0" class="btn btn-ghost">
               <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
             </label>
-            <ul
-              tabindex="0"
-              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li class="hover-bordered">
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li @click="openDialogReport()" class="hover-bordered">
                 <a>
-                  <div @click="openDialogReport()">
+                  <div>
                     <OtherVIcon icon="fa-solid fa-flag" />
-                    báo cáo bài viết
-                  </div>
-                </a>
-              </li>
-              <li class="hover-bordered">
-                <a>
-                  <div @click="openDialogReport()">
-                    <OtherVIcon icon="fa-solid fa-bookmark" />
-                    Lưu bài viết
+                    báo cáo
                   </div>
                 </a>
               </li>
@@ -130,12 +104,14 @@ import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { notificationStore } from "~~/stores/notification.store";
 import { postStore } from "~~/stores/post.store";
+import { reportStore } from "~~/stores/report.store";
 import { routeStore } from "~~/stores/route.store";
 import { seriesStore } from "~~/stores/series.store";
 
 const props = defineProps({
   data: Object,
 });
+const useReport = reportStore();
 const userouteS = routeStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
@@ -243,5 +219,24 @@ async function goReadPost() {
     view: props.data.view + 1,
   });
   navigateTo(`/post/${props.data._id}`);
+}
+function openDialogReport() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialogInput(
+      {
+        title: "Thông báo cực căng!",
+        content: "Bài viết này có vấn để?!",
+        btn1: "gửi",
+        btn2: "hủy",
+      },
+      async (input) => {
+        await useReport.create({
+          author: useAuth.user.id,
+          content: input,
+          model: props.data._id,
+        });
+      }
+    );
+  }
 }
 </script>

@@ -1,21 +1,16 @@
 <template>
   <div>
     <transition name="bounce">
-      <div
-        :class="
-          data.choice.length
-            ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
-            : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
-        "
-        class="rounded-2xl p-5"
-      >
+      <div :class="
+        data.choice.length
+          ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
+          : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
+      " class="rounded-2xl p-5">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${data?.author[0]?._id}/overview`">
               <!-- tác giả -->
               <div class="flex">
                 <div class="avatar">
@@ -35,17 +30,13 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
-                <nuxtLink
-                  :to="`/question/edit/${data._id}`"
-                  class="tooltip"
-                  data-tip="sửa bài viết"
-                >
+                <nuxtLink :to="`/question/edit/${data._id}`" class="tooltip" data-tip="sửa câu hỏi">
                   <div class="btn btn-ghost text-primary">
                     <OtherVIcon icon="fa-solid fa-pen-to-square" />
                   </div>
                 </nuxtLink>
 
-                <div class="tooltip" data-tip="xóa bài viết">
+                <div class="tooltip" data-tip="xóa câu hỏi">
                   <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                     <OtherVIcon icon="fa-solid fa-trash-can" />
                   </div>
@@ -54,27 +45,16 @@
             </div>
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end">
-              <label tabindex="0" class="btn btn-ghost btn-primary">
+            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+              <label tabindex="0" class="btn btn-ghost">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li class="hover-bordered">
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li @click="openDialogReport()" class="hover-bordered">
                   <a>
-                    <div @click="openDialogReport()">
+                    <div>
                       <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo bài viết
-                    </div>
-                  </a>
-                </li>
-                <li class="hover-bordered">
-                  <a>
-                    <div @click="openDialogReport()">
-                      <OtherVIcon icon="fa-solid fa-bookmark" />
-                      Lưu bài viết
+                      báo cáo
                     </div>
                   </a>
                 </li>
@@ -91,11 +71,8 @@
           <!-- tag -->
           <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link
-                :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
-                >{{ "#" + i.name }}</nuxt-link
-              >
+              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+              }}</nuxt-link>
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
@@ -105,12 +82,9 @@
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon
-                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
-                :icon="
-                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-                "
-              />
+              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="
+                data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+              " />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
@@ -134,6 +108,7 @@
 import { authStore } from "~~/stores/auth.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { questionStore } from "~~/stores/question.store";
+import { reportStore } from "~~/stores/report.store";
 
 const props = defineProps({
   data: Object,
@@ -142,7 +117,7 @@ const props = defineProps({
 const useDialog = dialogStore();
 const useAuth = authStore();
 const useQuestion = questionStore();
-
+const useReport = reportStore();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;
@@ -189,5 +164,25 @@ async function goReadPost() {
     });
   }
   navigateTo(`/post/${props.data._id}`);
+}
+
+function openDialogReport() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialogInput(
+      {
+        title: "Thông báo cực căng!",
+        content: "Bài viết này có vấn để?!",
+        btn1: "gửi",
+        btn2: "hủy",
+      },
+      async (input) => {
+        await useReport.create({
+          author: useAuth.user.id,
+          content: input,
+          model: props.data._id,
+        });
+      }
+    );
+  }
 }
 </script>

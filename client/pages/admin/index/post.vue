@@ -19,8 +19,8 @@
     </div>
     <!-- tiêu đề -->
     <div class="flex justify-between text-xl font-black uppercase mb-2">
-      <div class="basis-1/3">tác giả bài viết</div>
-      <div>tiêu đề bài viết</div>
+      <div class="basis-1/3">tác giả</div>
+      <div>tiêu đề</div>
       <div class="basis-1/3"></div>
     </div>
     <!-- loadingSkeleton -->

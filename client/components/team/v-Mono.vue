@@ -1,20 +1,13 @@
 <template>
   <div>
     <transition name="bounce">
-      <div
-        class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
-      >
+      <div class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div class="flex">
           <!-- ảnh team -->
           <nuxtLink class="" :to="`/team/${data._id}/list-post`">
-            <div
-              class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden"
-            >
-              <img
-                class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110"
-                :src="data.image_cover_url"
-                alt=""
-              />
+            <div class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden">
+              <img class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110" :src="data.image_cover_url"
+                alt="" />
             </div>
           </nuxtLink>
 
@@ -23,9 +16,7 @@
               <div>
                 <nuxtLink class="" :to="`/team/${data._id}/list-post`">
                   <!-- tên team -->
-                  <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
-                  >
+                  <div class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500">
                     {{ data.name }}
                   </div>
                 </nuxtLink>
@@ -34,22 +25,14 @@
               <!-- phần tùy chọn cho chủ nhóm -->
               <div v-if="data.role == 'chief'" class="flex justify-end">
                 <div class="space-x-1 flex justify-end">
-                  <nuxtLink
-                    :to="`/team/edit/${data._id ?? data.id}`"
-                    class="tooltip"
-                    data-tip="sửa team"
-                  >
+                  <nuxtLink :to="`/team/edit/${data._id ?? data.id}`" class="tooltip" data-tip="sửa team">
                     <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
 
                   <div class="tooltip" data-tip="xóa team">
-                    <div
-                      :class="[loading ? 'loading' : '']"
-                      @click="openDialogDelete()"
-                      class="btn btn-ghost text-error"
-                    >
+                    <div :class="[loading ? 'loading' : '']" @click="openDialogDelete()" class="btn btn-ghost text-error">
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
                   </div>
@@ -59,59 +42,42 @@
               <!-- phần tùy chọn cho người đọc -->
               <div v-else class="dropdown dropdown-end flex justify-end">
                 <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
-                  <div
-                    @click="openDialogJoinTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-secondary mr-1"
-                  >
+                  <div @click="openDialogJoinTeam()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-secondary mr-1">
                     gia nhập
                   </div>
                 </div>
 
                 <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
-                  <div
-                    @click="openDialogDeleteRequest()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-warning mr-1"
-                  >
+                  <div @click="openDialogDeleteRequest()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-warning mr-1">
                     hủy gia nhập
                   </div>
                 </div>
 
                 <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
-                  <div
-                    @click="openDialogOutTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-error mr-1"
-                  >
+                  <div @click="openDialogOutTeam()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-error mr-1">
                     thoát
                   </div>
                 </div>
 
-                <label tabindex="0" class="btn btn-ghost btn-primary">
-                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-                </label>
-                <ul
-                  tabindex="0"
-                  class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo Nhóm
-                      </div>
-                    </a>
-                  </li>
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-bookmark" />
-                        Lưu bài viết
-                      </div>
-                    </a>
-                  </li>
-                </ul>
+                <!-- phần tùy chọn cho người đọc -->
+                <div class="dropdown dropdown-end z-10 h-5">
+                  <label tabindex="0" class="btn btn-ghost">
+                    <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                  </label>
+                  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li @click="openDialogReport()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon icon="fa-solid fa-flag" />
+                          báo cáo
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <!-- ảnh bìa và tiêu đề -->
@@ -119,11 +85,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in data.tag" :key="i._id" class="">
-                <nuxt-link
-                  :to="`/tag/${i._id}/post`"
-                  class="btn btn-outline btn-sm mr-1 mt-1"
-                  >{{ "#" + i.name }}</nuxt-link
-                >
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+                }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -152,11 +115,12 @@ import { teamStore } from "~~/stores/team.store";
 import { routeStore } from "~~/stores/route.store";
 import { memberStore } from "~~/stores/member.store";
 import { roleStore } from "~~/stores/role.store";
+import { reportStore } from "~~/stores/report.store";
 
 const props = defineProps({
   data: Object,
 });
-
+const useReport = reportStore();
 const useDialog = dialogStore();
 const useAuth = authStore();
 const useTeam = teamStore();
@@ -308,6 +272,26 @@ async function openDialogJoinTeam() {
       () => {
         useRouteS.redirectedFrom = route.fullPath;
         navigateTo("/auth/signin");
+      }
+    );
+  }
+}
+
+function openDialogReport() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialogInput(
+      {
+        title: "Thông báo cực căng!",
+        content: "Nhóm này có vấn để?!",
+        btn1: "gửi",
+        btn2: "hủy",
+      },
+      async (input) => {
+        await useReport.create({
+          author: useAuth.user.id,
+          content: input,
+          model: props.data._id,
+        });
       }
     );
   }

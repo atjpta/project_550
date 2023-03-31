@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import reportService from "~~/services/report.service";
-import { authStore } from "./auth.store";
 import postService from "~~/services/post.service";
 import questionService from "~~/services/question.service";
 import seriesService from "~~/services/series.service";
@@ -8,12 +7,7 @@ import topicService from "~~/services/topic.service";
 import teamService from "~~/services/team.service";
 import tagService from "~~/services/tag.service";
 import userService from "~~/services/user.service";
-import relativeTime from 'dayjs/plugin/relativeTime';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import vi from 'dayjs/locale/vi'
-dayjs.extend(localizedFormat);
-dayjs.locale(vi);
+
 export const reportStore = defineStore("reportStore", {
     id: 'report',
     state() {
@@ -172,11 +166,6 @@ export const reportStore = defineStore("reportStore", {
             await reportService.delete(id)
         },
 
-        setTime(time) {
-            dayjs.extend(relativeTime)
-            return dayjs(time).fromNow()
-        },
-
         async getApi() {
             await this.getPost()
             await this.getQuestion()
@@ -189,15 +178,9 @@ export const reportStore = defineStore("reportStore", {
         },
         async getPost() {
             this.list_post = await postService.findByAdmin()
-            this.list_post.forEach((e, i) => {
-                this.list_post[i].createdAt = this.setTime(this.list_post[i].createdAt);
-            });
         },
         async getQuestion() {
             this.list_question = await questionService.findByAdmin()
-            this.list_question.forEach((e, i) => {
-                this.list_question[i].createdAt = this.setTime(this.list_question[i].createdAt);
-            });
         },
         async getSeries() {
             this.list_series = await seriesService.findByAdmin()

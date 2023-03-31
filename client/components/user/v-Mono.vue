@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <div class="hover:bg-base-200 rounded-2xl p-2">
+  <div class="">
+    <div class="indicator hover:bg-base-200 rounded-2xl p-2 w-full flex justify-center">
       <div class="text-center">
-        <nuxtLink
-          class="hover:text-sky-500 hover:scale-110 duration-500"
-          :to="`/user/${data._id}/overview`"
-        >
+        <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/user/${data._id}/overview`">
           <!-- tác giả -->
           <div class="">
             <div class="avatar">
@@ -30,15 +27,64 @@
             </div>
           </div>
         </nuxtLink>
+        <div class="indicator-item mt-10 mr-10">
+          <!-- phần tùy chọn cho người đọc -->
+          <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <label tabindex="0" class="btn btn-ghost">
+              <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+            </label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li @click="openDialogReport()" class="hover-bordered">
+                <a>
+                  <div>
+                    <OtherVIcon icon="fa-solid fa-flag" />
+                    báo cáo
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { authStore } from "~~/stores/auth.store";
+import { dialogStore } from "~~/stores/dialog.store";
+import { reportStore } from "~~/stores/report.store";
+
 const props = defineProps({
   data: Object,
 });
-</script>
+const useReport = reportStore();
+const useDialog = dialogStore();
+const useAuth = authStore();
 
-<style></style>
+const isAuthor = computed(() => {
+  if (useAuth.user && props.data._id) {
+    return useAuth.user.id == props.data._id;
+  }
+});
+
+function openDialogReport() {
+  if (useAuth.isUserLoggedIn) {
+    useDialog.showDialogInput(
+      {
+        title: "Thông báo cực căng!",
+        content: "Người dùng này có vấn để?!",
+        btn1: "gửi",
+        btn2: "hủy",
+      },
+      async (input) => {
+        await useReport.create({
+          author: useAuth.user.id,
+          content: input,
+          model: props.data._id,
+        });
+      }
+    );
+  }
+}
+</script>

@@ -10,14 +10,7 @@ exports.findByAdmin = async (req, res, next) => {
     let slModelReport = 0
     try {
         const document = await model.aggregate([
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: 'author',
-                    foreignField: '_id',
-                    as: 'author',
-                },
-            },
+
             {
                 $lookup: {
                     from: 'reports',
@@ -54,6 +47,48 @@ exports.findByAdmin = async (req, res, next) => {
                     }
                 }
             },
+
+            {
+                $lookup: {
+                    from: 'members',
+                    localField: '_id',
+                    foreignField: 'team',
+                    as: 'member',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'roles',
+                                localField: 'role',
+                                foreignField: '_id',
+                                as: 'role',
+
+                            },
+                        },
+                        {
+                            $match: { 'role.name': 'chief' }
+                        },
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'user',
+                                foreignField: '_id',
+                                as: 'chief',
+
+                            }
+                        },
+                        {
+                            $project: {
+                                "_id": 1,
+                                "content": 1,
+                                "chief._id": 1,
+                                "chief.name": 1,
+                                'chief.avatar_url': 1,
+                            }
+                        }
+                    ]
+                },
+            },
+
             {
                 $project: {
                     "_id": 1,
@@ -61,9 +96,7 @@ exports.findByAdmin = async (req, res, next) => {
                     'createdAt': 1,
                     'slReport': 1,
                     'reports': 1,
-                    "author._id": 1,
-                    "author.name": 1,
-                    'author.avatar_url': 1,
+                    'member': 1,
                 }
             },
             {
