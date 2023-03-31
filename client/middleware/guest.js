@@ -4,14 +4,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user) {
-        if (to.path != '/') {
-            return navigateTo('/')
+        if (to.path == '/') {
+            return navigateTo('/post/new/1')
         }
     }
-    else {
-        if (to.path != '/welcome') {
-            return navigateTo('/welcome')
-        }
-    }
-
 })

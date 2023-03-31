@@ -1,37 +1,22 @@
 <template>
   <div class="mb-5">
     <div
-      class="bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex"
-    >
+      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex">
       <!-- phần người gửi -->
       <div>
         <div class="flex">
           <!-- các btn -->
           <div class="flex flex-col mr-2 space-y-1">
-            <div
-              v-if="loading == 'up'"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
-            ></div>
-            <div
-              v-else-if="loadingVote != 'up'"
-              @click="openDialogSignin(up)"
-              :class="classUp"
-              class="btn-sm btn-circle btn btn-ghost"
-            >
+            <div v-if="loading == 'up'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
+            <div v-else-if="loadingVote != 'up'" @click="openDialogSignin(up)" :class="classUp"
+              class="btn-sm btn-circle btn btn-ghost">
               <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-caret-up" />
             </div>
 
             <div class="btn-sm btn-circle btn btn-ghost no-animation">{{ valVote }}</div>
-            <div
-              v-if="loading == 'down'"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
-            ></div>
-            <div
-              v-else-if="loadingVote != 'down'"
-              @click="openDialogSignin(down)"
-              :class="classDown"
-              class="btn-sm btn-circle btn btn-ghost"
-            >
+            <div v-if="loading == 'down'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
+            <div v-else-if="loadingVote != 'down'" @click="openDialogSignin(down)" :class="classDown"
+              class="btn-sm btn-circle btn btn-ghost">
               <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-caret-down" />
             </div>
 
@@ -43,10 +28,8 @@
           </div>
           <!-- tác giả -->
           <div class="w-fit">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${data?.author[0]?._id}/overview`">
               <div class="flex">
                 <div class="avatar">
                   <div class="w-12 h-12 rounded-full">
@@ -62,23 +45,13 @@
               </div>
             </nuxtLink>
             <!-- phần tag name -->
-            <nuxtLink
-              :to="`/user/${i._id}`"
-              v-for="i in data.tag_name"
-              :key="i"
-              class="btn btn-info btn-sm btn-ghost mt-2"
-            >
+            <nuxtLink :to="`/user/${i._id}`" v-for="i in data.tag_name" :key="i"
+              class="btn btn-info btn-sm btn-ghost mt-2">
               {{ "@" + i.name }}
             </nuxtLink>
             <!-- phần nội dung -->
             <div class="-z-30">
-              <QuillEditor
-                :content="data.content"
-                ref="quill"
-                :readOnly="true"
-                theme="bubble"
-                :toolbar="[]"
-              />
+              <QuillEditor :content="data.content" ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
             </div>
           </div>
         </div>
@@ -86,30 +59,17 @@
     </div>
     <!-- phần hiện ẩn cmt con -->
     <div v-if="countCmt > 0" class="ml-5">
-      <div
-        @click="showChildCmt()"
-        v-show="!childCmt"
-        class="btn btn-ghost btn-xs italic lowercase"
-      >
+      <div @click="showChildCmt()" v-show="!childCmt" class="btn btn-ghost btn-xs italic lowercase">
         hiện {{ countCmt }} bình luận con
       </div>
-      <div
-        @click="childCmt = !childCmt"
-        v-show="childCmt"
-        class="btn btn-ghost btn-xs italic lowercase"
-      >
+      <div @click="childCmt = !childCmt" v-show="childCmt" class="btn btn-ghost btn-xs italic lowercase">
         ẩn {{ countCmt }} bình luận con
       </div>
     </div>
     <!-- input rep cmt -->
     <transition name="bounce">
       <div v-if="inputRep">
-        <CommentsVInputCmt
-          @send="openDialogSignin(rep)"
-          :loading="loading"
-          :data="dataInput"
-          :reset="resetInput"
-        />
+        <CommentsVInputCmt @send="openDialogSignin(rep)" :loading="loading" :data="dataInput" :reset="resetInput" />
       </div>
     </transition>
     <!-- cmt con -->

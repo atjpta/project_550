@@ -5,7 +5,7 @@
         data.choice.length
           ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
           : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
-      " class="rounded-2xl p-5">
+      " class="rounded-2xl p-5 hover:bg-gradient-to-l">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">

@@ -1,7 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5"
-  >
+    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5">
     <!-- hiển thị -->
     <div v-if="!openEdit">
       <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
@@ -29,27 +28,15 @@
     <div v-else>
       <div class="text-xl font-bold uppercase flex">
         #
-        <input
-          v-model="nameT"
-          type="text"
-          class="input input-sm bg-inherit border-0 border-b-2 border-primary w-full"
-        />
+        <input v-model="nameT" type="text" class="input input-sm bg-inherit border-0 border-b-2 border-primary w-full" />
       </div>
       <div class="ml-3">
-        <textarea
-          v-model="introduceT"
-          rows="3"
-          placeholder="nhập lời giới thiệu"
-          class="h-20 mt-4 textarea textarea-xs w-full bg-inherit border-0 border-b-2 border-primary"
-        ></textarea>
+        <textarea v-model="introduceT" rows="3" placeholder="nhập lời giới thiệu"
+          class="h-20 mt-4 textarea textarea-xs w-full bg-inherit border-0 border-b-2 border-primary"></textarea>
       </div>
       <!-- <div class="indent-8 h-24 overflow-auto">{{ data.introduce }}</div> -->
       <div class="flex justify-around">
-        <div
-          @click="update()"
-          :class="[loading ? 'loading' : '']"
-          class="btn btn-sm text-primary btn-ghost"
-        >
+        <div @click="update()" :class="[loading ? 'loading' : '']" class="btn btn-sm text-primary btn-ghost">
           <OtherVIcon icon="fa-solid fa-floppy-disk" />
         </div>
         <div @click="cancelEdit()" class="btn btn-sm text-error btn-ghost">

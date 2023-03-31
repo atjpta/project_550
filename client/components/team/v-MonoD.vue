@@ -3,24 +3,17 @@
     <nuxtLink class="" :to="`/team/${data.team._id}/list-post`">
       <transition name="bounce">
         <div
-          class="rounded-2xl p-5 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10"
-        >
+          class="rounded-2xl p-5 hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10">
           <div class="flex">
             <!-- ảnh team -->
             <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-              <img
-                class="rounded-2xl w-32 h-32"
-                :src="data.team.image_cover_url"
-                alt=""
-              />
+              <img class="rounded-2xl w-32 h-32" :src="data.team.image_cover_url" alt="" />
             </div>
             <div class="w-full">
               <div class="flex justify-between flex-col-reverse lg:flex-row">
                 <div>
                   <!-- tên team -->
-                  <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
-                  >
+                  <div class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500">
                     {{ data.team.name }}
                   </div>
                 </div>
@@ -30,11 +23,8 @@
               <!-- tag -->
               <div class="mt-4 flex">
                 <div v-for="i in data.tag" :key="i._id" class="">
-                  <nuxt-link
-                    :to="`/tag/${i._id}/post`"
-                    class="btn btn-outline btn-sm mr-1 mt-1"
-                    >{{ "#" + i.name }}</nuxt-link
-                  >
+                  <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+                  }}</nuxt-link>
                 </div>
               </div>
             </div>

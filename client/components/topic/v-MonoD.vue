@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="bounce">
-      <div class="bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0 rounded-2xl p-5">
+      <div class="hover:bg-gradient-to-l bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0 rounded-2xl p-5">
         <div class="flex">
           <!-- ảnh series -->
           <NuxtLink :to="`/topic/${data._id}`"

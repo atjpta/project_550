@@ -1,7 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5"
-  >
+    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5">
     <div class="flex justify-between">
       <div class="text-xl font-bold uppercase"># {{ data.tags[0].name }}</div>
       <!-- phần tùy chọn cho người đọc -->
@@ -11,10 +10,7 @@
             <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
           </div>
         </label>
-        <ul
-          tabindex="0"
-          class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-        >
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
           <li class="hover-bordered">
             <a>
               <div @click="openDialogReport()">

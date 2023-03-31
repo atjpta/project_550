@@ -1,21 +1,16 @@
 <template>
   <div>
     <transition name="bounce">
-      <div
-        :class="
-          data.choice.length
-            ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
-            : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
-        "
-        class="rounded-2xl p-5"
-      >
+      <div :class="
+        data.choice.length
+          ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
+          : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
+      " class="rounded-2xl p-5 hover:bg-gradient-to-l">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${data?.author[0]?._id}/overview`">
               <!-- tác giả -->
               <div class="flex">
                 <div class="avatar">
@@ -37,10 +32,7 @@
               <label tabindex="0" class="btn btn-ghost btn-primary">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li class="hover-bordered">
                   <a>
                     <div @click="openDialogReport()">
@@ -63,22 +55,15 @@
           <!-- ảnh bìa và tiêu đề -->
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
-              <img
-                class="rounded-2xl my-2 mx-auto"
-                :src="data.question[0].image_cover_url"
-                alt=""
-              />
+              <img class="rounded-2xl my-2 mx-auto" :src="data.question[0].image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.question[0].title }}</div>
             </div>
           </div>
           <!-- tag -->
           <div class="mt-4 flex">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link
-                :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
-                >{{ "#" + i.name }}</nuxt-link
-              >
+              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+              }}</nuxt-link>
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
@@ -88,12 +73,9 @@
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon
-                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
-                :icon="
-                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-                "
-              />
+              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="
+                data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+              " />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
