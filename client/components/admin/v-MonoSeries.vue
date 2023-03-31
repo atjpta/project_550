@@ -121,6 +121,7 @@ async function warning(input) {
     const dataNotifi = {
       to: props.data.author[0]._id,
       content: `chuỗi bài viết "${props.data.name}" của bạn bị cảnh báo:  ${input}`,
+      url: `/series/${props.data._id}`,
       type: "warning",
     };
     await await useNotification.createOne(dataNotifi);

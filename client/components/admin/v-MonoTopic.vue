@@ -121,6 +121,7 @@ async function warning(input) {
     const dataNotifi = {
       to: props.data.author[0]._id,
       content: `chủ đề "${props.data.name}" của bạn bị cảnh báo:  ${input}`,
+      url: `/topcic/${props.data._id}`,
       type: "warning",
     };
     await await useNotification.createOne(dataNotifi);

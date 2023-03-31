@@ -4,7 +4,8 @@
       <div class="flex justify-between">
         <div class="flex">
           <OtherVNav class="" @click="open = true" />
-          <div @click="navigateTo('/')" class="btn btn-ghost bg-transparent hover:bg-transparent font-black text-white">
+          <div @click="navigateTo('/')"
+            class="2xl:ml-10 btn btn-ghost bg-transparent hover:bg-transparent font-black text-white">
             <!-- logo -->
             <span
               class="before:ring-8 before:ring-indigo-500/20 hover:before:translate-x-2 hover:before:rotate-180 before:duration-500 before:rounded-tr-none before:rounded-bl-rounded-tr-none translate before:block before:absolute before:-inset-1 before:skew-y-12 before:skew-x-12 before:bg-gradient-to-r before:from-green-500 before:via-teal-500/50 before:to-blue-500 relative inline-block">

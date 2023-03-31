@@ -122,6 +122,7 @@ async function warning(input) {
     const dataNotifi = {
       to: props.data.member[0].chief[0]._id,
       content: `Nhóm "${props.data.name}" của bạn bị cảnh báo:  ${input}`,
+      url: `/team/${props.data._id}`,
       type: "warning",
     };
     await await useNotification.createOne(dataNotifi);

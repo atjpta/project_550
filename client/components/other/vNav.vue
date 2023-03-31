@@ -1,33 +1,25 @@
 <template>
   <div class="">
     <!-- cho mobie -->
-    <div
-      :class="
-        route.path != '/' &&
+    <div :class="
+      route.path != '/' &&
         route.path != '/welcome' &&
         route.path != '/auth/signup' &&
         route.path != '/auth/signin'
-          ? '2xl:dropdown-open'
-          : ''
-      "
-      class="dropdown"
-    >
+        ? '2xl:dropdown-open'
+        : ''
+    " class="dropdown">
       <label tabindex="0" class="">
-        <div class="btn btn-ghost rounded-none">
+        <div class="btn btn-ghost rounded-none 2xl:hidden">
           <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
         </div>
       </label>
-      <div
-        tabindex="0"
-        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 mt-1.5 w-60 h-[calc(96vh)]"
-      >
+      <div tabindex="0"
+        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 2xl:mt-9 mt-1.5 w-60 h-[calc(96vh)]">
         <ul class="menu">
           <!-- chỉ admin -->
-          <li
-            v-if="useUser.isAdmin"
-            :class="tagUrl.slice(0, 6) == '/admin' ? 'router-link-active' : ''"
-            class="hover-bordered"
-          >
+          <li v-if="useUser.isAdmin" :class="tagUrl.slice(0, 6) == '/admin' ? 'router-link-active' : ''"
+            class="hover-bordered">
             <nuxt-link to="/admin/post">
               <OtherVIcon class-icon="text-2xl w-7" icon="fa-solid fa-bars-progress" />
               <div class="text-base">
@@ -38,14 +30,11 @@
           <!-- người dùng bth -->
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">
-              <li
-                :class="
-                  tagUrl.slice(0, j.tag?.length) == j.tag && j.tag != '/'
-                    ? 'router-link-active'
-                    : ''
-                "
-                class="hover-bordered"
-              >
+              <li :class="
+                tagUrl.slice(0, j.tag?.length) == j.tag && j.tag != '/'
+                  ? 'router-link-active'
+                  : ''
+              " class="hover-bordered">
                 <nuxt-link :to="j.url">
                   <OtherVIcon class-icon="text-2xl w-7" :icon="j.icon" />
                   <div class="text-base">
@@ -181,13 +170,16 @@ onUpdated(() => {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
+
 .bounce2-leave-active {
   animation: bounce-in 0.5s reverse;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
