@@ -156,9 +156,6 @@ async function getApi() {
 onMounted(() => {
   getApi();
 });
-definePageMeta({
-  middleware: "guest",
-});
 </script>
 
 <style></style>

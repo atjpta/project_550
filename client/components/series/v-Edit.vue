@@ -195,7 +195,7 @@ async function getApi() {
     await useSeries.findOneEdit(route.params.id);
     if (useSeries.series.author._id != useAuth.user.id) {
       useAlert.setWarning("bạn không có quyền truy cập");
-      navigateTo("/");
+      return navigateTo("/");
     }
     useSeries.series_edit = useSeries.series;
   } else {

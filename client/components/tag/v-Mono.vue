@@ -4,7 +4,7 @@
     <div class="flex justify-between">
       <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
       <!-- phần tùy chọn cho người đọc -->
-      <div v-if="isAuthor" class="dropdown dropdown-end z-10 h-5">
+      <div v-if="!isAuthor" class="dropdown dropdown-end z-10 h-5">
         <label tabindex="0" class="btn btn-ghost">
           <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
         </label>
@@ -64,6 +64,19 @@ function openDialogReport() {
           content: input,
           model: props.data._id,
         });
+      }
+    );
+  } else {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để tạo bài viết",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        useRouteS.redirectedFrom = useRoute().fullPath;
+        return navigateTo("/auth/signin");
       }
     );
   }

@@ -110,20 +110,26 @@ function openDialogSignin() {
         btn2: "hủy",
       },
       () => {
-        navigateTo("/auth/signin");
         useRouteS.redirectedFrom = "/series/edit";
+        return navigateTo("/auth/signin");
       }
     );
   } else {
-    navigateTo("/series/edit");
+    return navigateTo("/series/edit");
   }
 }
 
 async function getApi() {
+  if (route.params.page < 1) {
+    return navigateTo(`/series/${route.params.filter}/1`);
+  }
   if (useSearch.mark.Series != 1) {
     console.log("goi 1 lan ");
     await useSearch.getSeries();
     useSearch.mark.Series = 1;
+  }
+  if (route.params.page > maxPage.value) {
+    return navigateTo(`/series/${route.params.filter}/${maxPage.value}`);
   }
   loadingSkeleton.value = true;
 
@@ -134,7 +140,7 @@ async function getApi() {
       size
     );
     if (useSeries.List_series.length == 0) {
-      navigateTo(`/series/${route.params.filter}/1`);
+      return navigateTo(`/series/${route.params.filter}/1`);
     }
     loadingSkeleton.value = false;
   } catch (error) {

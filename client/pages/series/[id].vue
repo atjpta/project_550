@@ -9,10 +9,8 @@
       <div class="divider"></div>
       <div class="flex justify-center uppercase text-3xl font-bold mt-5">
         danh sách bài viết
-        <div
-          data-tip="các bài viết riêng tư sẽ không hiện "
-          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2"
-        >
+        <div data-tip="các bài viết riêng tư sẽ không hiện "
+          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2">
           <OtherVIcon class-icon="" icon="fa-solid fa-info" />
         </div>
       </div>
@@ -20,25 +18,19 @@
       <!-- các btn -->
       <div class="justify-between my-3 lg:flex">
         <div>
-          <button
-            v-if="
-              useAuth.isUserLoggedIn &&
-              useSeries.series.author &&
-              useAuth.user?.id == useSeries.series.author[0]?._id
-            "
-            @click="openAddSeries()"
-            class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
-          >
+          <button v-if="
+            useAuth.isUserLoggedIn &&
+            useSeries.series.author &&
+            useAuth.user?.id == useSeries.series.author[0]?._id
+          " @click="openAddSeries()" class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0">
             {{ isSeries ? "hiện danh sách" : "thêm bài viết vào series" }}
           </button>
-          <div
-            v-if="
-              !isSeries &&
-              useAuth.isUserLoggedIn &&
-              useSeries.series.author &&
-              useAuth.user?.id == useSeries.series.author[0]?._id
-            "
-          >
+          <div v-if="
+            !isSeries &&
+            useAuth.isUserLoggedIn &&
+            useSeries.series.author &&
+            useAuth.user?.id == useSeries.series.author[0]?._id
+          ">
             <div @click="gotoCreate()">
               <div class="btn btn-ghost btn-xs italic lowercase">tạo bài viết mới?</div>
             </div>
@@ -130,9 +122,11 @@ async function getApi() {
   try {
     await useSeries.findOne(route.params.id);
     await usePost.findBySeries(route.params.id);
-    await usePost.findByNoSeries(useAuth.user.id);
-    if (useSeries.series.team[0]) {
-      await useMember.checkIsMember(useSeries.series.team[0]._id, useAuth.user.id);
+    if (useAuth.user) {
+      await usePost.findByNoSeries(useAuth.user.id);
+      if (useSeries.series.team[0]) {
+        await useMember.checkIsMember(useSeries.series.team[0]._id, useAuth.user.id);
+      }
     }
     loadingSkeleton.value = false;
   } catch (error) {

@@ -180,7 +180,7 @@ async function getApi() {
     await useTopic.findOneEdit(route.params.id);
     if (useTopic.topic.author._id != useAuth.user.id) {
       useAlert.setWarning("bạn không có quyền truy cập");
-      navigateTo("/");
+      return navigateTo("/");
     }
     useTopic.topic_edit = useTopic.topic;
   } else {

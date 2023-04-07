@@ -120,6 +120,7 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const usePost = postStore();
 const useRouteS = routeStore();
+const route = useRoute();
 const isAuthor = computed(() => {
   if (useAuth.user && props.data.author) {
     return useAuth.user.id == props.data.author[0]._id;
@@ -203,6 +204,19 @@ function openDialogReport() {
           content: input,
           model: props.data._id,
         });
+      }
+    );
+  } else {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để tạo bài viết",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        useRouteS.redirectedFrom = useRoute().fullPath;
+        return navigateTo("/auth/signin");
       }
     );
   }

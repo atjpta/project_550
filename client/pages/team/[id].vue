@@ -11,7 +11,7 @@
         }}</nuxt-link>
       </div>
     </div>
-    <NuxtPage v-if="useTeam.team[0]?.status[0] == 'public' || useMember.isMember" />
+    <NuxtPage v-if="useTeam.team[0]?.status[0].name == 'public' || useMember.isMember" />
   </div>
 </template>
 
@@ -52,13 +52,15 @@ const menuTab = ref([
 async function getApi() {
   await useRole.findAll();
   await useTeam.findOne(route.params.id);
-  await useMember.checkIsMember(route.params.id, useAuth.user.id);
-  if (useTeam?.team[0].role == "chief" || useTeam?.team[0].role == "handler") {
-    useMember.isEditT = true;
-    menuTab.value.push({
-      title: "yêu cầu",
-      url: `/team/${route.params.id}/list-request`,
-    });
+  if (useAuth.user) {
+    await useMember.checkIsMember(route.params.id, useAuth.user.id);
+    if (useTeam?.team[0].role == "chief" || useTeam?.team[0].role == "handler") {
+      useMember.isEditT = true;
+      menuTab.value.push({
+        title: "yêu cầu",
+        url: `/team/${route.params.id}/list-request`,
+      });
+    }
   }
 }
 

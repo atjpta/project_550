@@ -197,12 +197,12 @@ function openDialogSignin() {
         btn2: "hủy",
       },
       () => {
-        navigateTo("/auth/signin");
         useRouteS.redirectedFrom = "/post/edit";
+        return navigateTo("/auth/signin");
       }
     );
   } else {
-    navigateTo("/post/edit");
+    return navigateTo("/post/edit");
   }
 }
 

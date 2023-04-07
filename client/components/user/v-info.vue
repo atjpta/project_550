@@ -3,28 +3,18 @@
     <div class="lg:flex justify-evenly">
       <!-- ảnh -->
       <div class="w-64 mx-auto lg:mx-0">
-        <img
-          class="bg-black/50 h-64 w-64 rounded-full"
-          :src="useUser.overview.avatar_url"
-          alt=""
-        />
-        <div v-if="!isSelf">
-          <div v-if="!useFollow.follow" class="text-center m-5">
-            <div
-              @click="addFollow()"
-              :class="[loading ? 'loading' : '']"
-              class="btn btn-outline btn-primary"
-            >
-              theo dõi
+        <img class="bg-black/50 h-64 w-64 rounded-full" :src="useUser.overview.avatar_url" alt="" />
+        <div v-if="useAuth.user">
+          <div v-if="!isSelf">
+            <div v-if="!useFollow.follow" class="text-center m-5">
+              <div @click="addFollow()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-primary">
+                theo dõi
+              </div>
             </div>
-          </div>
-          <div v-else class="text-center m-5">
-            <div
-              @click="removeFollow()"
-              :class="[loading ? 'loading' : '']"
-              class="btn btn-outline btn-error"
-            >
-              hủy theo dõi
+            <div v-else class="text-center m-5">
+              <div @click="removeFollow()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-error">
+                hủy theo dõi
+              </div>
             </div>
           </div>
         </div>
@@ -55,8 +45,10 @@ const useFollow = followStore();
 const route = useRoute();
 const loading = ref(false);
 const isSelf = computed(() => {
-  if (useAuth.user.id == useUser.overview._id) {
-    return true;
+  if (useAuth.user) {
+    if (useAuth.user.id == useUser.overview._id) {
+      return true;
+    }
   }
   return false;
 });
@@ -92,7 +84,9 @@ async function removeFollow() {
 }
 
 async function getApi() {
-  await useFollow.findByFollow(route.params.id, useAuth.user.id);
+  if (useAuth.user) {
+    await useFollow.findByFollow(route.params.id, useAuth.user.id);
+  }
 }
 
 onMounted(() => {

@@ -3,10 +3,7 @@
     <div class="flex items-center text-left">
       <!-- tên -->
       <div class="basis-1/2">
-        <nuxt-link
-          :to="`/user/${data.user._id}/overview`"
-          class="flex items-center space-x-3 hover:text-info"
-        >
+        <nuxt-link :to="`/user/${data.user._id}/overview`" class="flex items-center space-x-3 hover:text-info">
           <div class="avatar">
             <div class="mask mask-squircle w-12 h-12">
               <img :src="data.user.avatar_url" />
@@ -23,19 +20,12 @@
       </div>
       <!-- các btn -->
       <div v-if="isEdit" class="flex space-x-1">
-        <div
-          @click="openEdit = !openEdit"
-          class="btn btn-primary btn-sm btn-outline tooltip flex"
-          data-tip="chỉnh chức vụ"
-        >
+        <div @click="openEdit = !openEdit" class="btn btn-primary btn-sm btn-outline tooltip flex"
+          data-tip="chỉnh chức vụ">
           <OtherVIcon icon="fa-solid fa-pen-to-square" />
         </div>
-        <div
-          @click="openDialogDelete()"
-          :class="[loading ? 'loading' : '']"
-          data-tip="xóa khỏi nhóm"
-          class="btn btn-sm btn-error btn-outline tooltip flex"
-        >
+        <div @click="openDialogDelete()" :class="[loading ? 'loading' : '']" data-tip="xóa khỏi nhóm"
+          class="btn btn-sm btn-error btn-outline tooltip flex">
           <OtherVIcon icon="fa-solid fa-x" />
         </div>
       </div>
@@ -45,20 +35,14 @@
     <div v-if="openEdit" class="items-center lg:flex justify-center space-y-1">
       <div class="lg:flex space-y-1 lg:space-y-0">
         <div class="">
-          <select
-            v-model="selectRole"
-            class="select-sm select select-primary w-full max-w-xs lg:w-fit"
-          >
+          <select v-model="selectRole" class="select-sm select select-primary w-full max-w-xs lg:w-fit">
             <option :value="i" v-for="i in useRole.List_role_team" :key="i.id">
               {{ i.name }}
             </option>
           </select>
         </div>
-        <div
-          @click="update"
-          :class="[loading ? 'loading' : '']"
-          class="btn btn-sm btn-primary btn-outline lg:ml-1 lg:w-fit w-full"
-        >
+        <div @click="update" :class="[loading ? 'loading' : '']"
+          class="btn btn-sm btn-primary btn-outline lg:ml-1 lg:w-fit w-full">
           <OtherVIcon icon="fa-solid fa-floppy-disk" />
         </div>
       </div>

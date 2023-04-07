@@ -163,7 +163,7 @@ async function getApi() {
     await useMember.checkIsChief(route.params.id, useAuth.user.id);
     if (!useMember.isChief) {
       useAlert.setWarning("bạn không có quyền truy cập");
-      navigateTo("/");
+      return navigateTo("/");
     }
     await useTeam.findOneEdit(route.params.id);
     useTeam.team_edit = useTeam.team;

@@ -213,6 +213,19 @@ function openDialogReport() {
         });
       }
     );
+  } else {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để tạo bài viết",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        useRouteS.redirectedFrom = useRoute().fullPath;
+        return navigateTo("/auth/signin");
+      }
+    );
   }
 }
 </script>

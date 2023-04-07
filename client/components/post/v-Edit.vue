@@ -290,7 +290,7 @@ async function getApi() {
     await usePost.findOneEdit(route.params.id);
     if (usePost.post.author._id != useAuth.user.id) {
       useAlert.setWarning("bạn không có quyền truy cập");
-      navigateTo("/");
+      return navigateTo("/");
     }
     usePost.post_edit = usePost.post;
     if (usePost.post_edit.status) {

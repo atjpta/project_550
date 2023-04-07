@@ -64,7 +64,7 @@
           </div>
           <p class="text-xl">Nơi các câu hỏi có cũng một chủ để bàn luận</p>
           <div class="card-actions justify-end">
-            <nuxtLink to="/series/new/1" class="btn btn-primary">xem ngay</nuxtLink>
+            <nuxtLink to="/topic/new/1" class="btn btn-primary">xem ngay</nuxtLink>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
             Nơi không gian riêng tư cho nhóm của bạn trong cộng động này
           </p>
           <div class="card-actions justify-end">
-            <nuxtLink to="/series/new/1" class="btn btn-primary">xem ngay</nuxtLink>
+            <nuxtLink to="/team" class="btn btn-primary">xem ngay</nuxtLink>
           </div>
         </div>
       </div>

@@ -134,7 +134,7 @@ async function getApi() {
     // await useTopic.findAll();
     useTopic.List_topic = await useTopic.findPerFilter("vote", route.params.page, size);
     if (useTopic.List_topic.length == 0) {
-      navigateTo(`/topic/${route.params.filter}/1`);
+      return navigateTo(`/topic/${route.params.filter}/1`);
     }
     loadingSkeleton.value = false;
   } catch (error) {
