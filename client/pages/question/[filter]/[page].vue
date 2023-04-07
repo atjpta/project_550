@@ -35,14 +35,16 @@
       </div>
     </div>
     <!-- QuestionVSkeleton -->
-    <div class="mt-5 space-y-5" v-if="loadingSkeleton">
-      <div v-for="i in 9" :key="i">
+    <div class="my-5 space-y-5" v-if="loadingSkeleton">
+      <div v-for="(i, n) in 9" :key="i">
         <QuestionVSkeleton />
+        <div v-if="n < 8" class="divider my-0"></div>
       </div>
     </div>
-    <div v-else class="mt-5 space-y-5">
-      <div v-for="i in useQuestion.list" :key="i.id">
+    <div v-else class="my-5">
+      <div v-for="(i, n) in useQuestion.list" :key="i.id">
         <QuestionVMono :data="i" />
+        <div v-if="n < useQuestion.list.length - 1" class="divider my-0"></div>
       </div>
     </div>
 
@@ -140,6 +142,11 @@ function openDialogSignin() {
 }
 
 async function getApi() {
+  if (useSearch.mark.question != 1) {
+    console.log("goi 1 lan ");
+    await useSearch.getQuestion();
+    useSearch.mark.question = 1;
+  }
   loadingSkeleton.value = true;
   try {
     useQuestion.list = await useQuestion.findPerFilter(

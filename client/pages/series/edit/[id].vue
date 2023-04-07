@@ -42,13 +42,16 @@ async function save() {
     }
     await useSeries.update(data);
     useSeries.resetSeriesEdit();
-    navigateTo(`/series/${data.id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

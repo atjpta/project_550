@@ -59,13 +59,16 @@ async function save() {
     }
     const id = await useTeam.create(data);
     useTeam.resetTeamEdit();
-    navigateTo(`/team/${id}/list-post`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

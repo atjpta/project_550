@@ -10,6 +10,7 @@ export const memberStore = defineStore("memberStore", {
             member: {},
             List_myteam: [],
             isMember: false,
+            isChief: false,
             isEditT: false
         };
     },
@@ -59,6 +60,15 @@ export const memberStore = defineStore("memberStore", {
             const member = await memberService.findIsMember(team, user)
             if (member) {
                 this.isMember = true
+            }
+        },
+
+        async checkIsChief(team, user) {
+            const chief = await memberService.findIsMember(team, user)
+            if (chief) {
+                if (chief.role.name == 'chief') {
+                    this.isChief = true
+                }
             }
         }
     }

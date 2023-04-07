@@ -12,7 +12,7 @@ export default {
             method: "get",
         })
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         return data.value
@@ -27,7 +27,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -43,7 +43,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -59,7 +59,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -76,7 +76,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("sửa thành công");
@@ -91,13 +91,13 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
     },
-    
+
 
     findAll: async (id) => {
         const { data: data, error } = await useFetch(url, {
@@ -108,11 +108,11 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
         return data.value
     },
-    
+
 } 

@@ -1,10 +1,7 @@
 <template>
-  <div
-    :class="
-      !preview ? 'bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0' : ''
-    "
-    class="p-5 rounded-2xl"
-  >
+  <div :class="
+    !preview ? 'bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0' : ''
+  " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa topic</div>
@@ -18,12 +15,8 @@
               </div>
             </div>
           </div>
-          <input
-            v-model="useTopic.topic_edit.name"
-            placeholder="nhập tên topic"
-            type="text"
-            class="input input-primary w-full"
-          />
+          <input v-model="useTopic.topic_edit.name" placeholder="nhập tên topic" type="text"
+            class="input input-primary w-full" />
         </div>
 
         <!-- ảnh bìa -->
@@ -44,16 +37,9 @@
             </div>
           </div>
           <div class="">
-            <input
-              disabled
-              placeholder="nhập tag"
-              type="text"
-              class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
-            />
-            <div
-              disabled="disabled"
-              class="btn btn-sm mb-1 btn-primary btn-outline disabled"
-            >
+            <input disabled placeholder="nhập tag" type="text"
+              class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full" />
+            <div disabled="disabled" class="btn btn-sm mb-1 btn-primary btn-outline disabled">
               thêm
             </div>
           </div>
@@ -70,10 +56,7 @@
             </div>
           </div>
 
-          <select
-            v-model="useTopic.topic_edit.team"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="useTopic.topic_edit.team" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Chung</option>
             <option :value="i" v-for="i in list_team" :key="i">
               {{ i.name }}
@@ -92,11 +75,7 @@
             </div>
           </div>
 
-          <select
-            disabled
-            v-model="useTopic.topic_edit.status"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select disabled v-model="useTopic.topic_edit.status" class="select-sm select select-primary w-full max-w-xs">
             <option :value="useTopic.topic_edit.status">Công khai</option>
           </select>
         </div>
@@ -111,12 +90,8 @@
               </div>
             </div>
           </div>
-          <textarea
-            v-model="useTopic.topic_edit.introduce"
-            placeholder="nhập nội dung"
-            type="text"
-            class="textarea textarea-primary w-full h-20"
-          />
+          <textarea v-model="useTopic.topic_edit.introduce" placeholder="nhập nội dung" type="text"
+            class="textarea textarea-primary w-full h-20" />
         </div>
       </div>
     </transition>
@@ -128,25 +103,13 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
-      <div
-        v-if="preview == false"
-        @click="showPreview()"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
         xem trước
       </div>
-      <div
-        v-if="preview == true"
-        @click="preview = false"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div
-        @click="save()"
-        :class="[loading ? 'loading' : '']"
-        class="btn btn-outline btn-sm btn-primary"
-      >
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
         lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
@@ -215,6 +178,10 @@ function showPreview() {
 async function getApi() {
   if (route.params.id) {
     await useTopic.findOneEdit(route.params.id);
+    if (useTopic.topic.author._id != useAuth.user.id) {
+      useAlert.setWarning("bạn không có quyền truy cập");
+      navigateTo("/");
+    }
     useTopic.topic_edit = useTopic.topic;
   } else {
     useTopic.resettopicEdit();

@@ -86,13 +86,17 @@ async function saveEdit() {
     }
     await usePost.update(data);
     usePost.resetPostEdit();
-    navigateTo(`/post/${data.id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

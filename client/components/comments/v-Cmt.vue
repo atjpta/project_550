@@ -1,7 +1,6 @@
 <template>
   <div class="mb-5">
-    <div
-      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex">
+    <div class="hover:bg-gradient-to-l from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex">
       <!-- phần người gửi -->
       <div>
         <div class="flex">
@@ -74,9 +73,12 @@
     </transition>
     <!-- cmt con -->
     <transition name="bounce">
-      <div v-if="childCmt" class="ml-5">
-        <div v-for="i in list_child" :key="i">
+      <div v-if="childCmt" class="ml-10">
+        <div class="divider my-0"></div>
+
+        <div v-for="(i, n) in list_child" :key="i">
           <CommentsVCmt :data="i" />
+          <div v-if="n < list_child.length - 1" class="divider my-0"></div>
         </div>
       </div>
     </transition>

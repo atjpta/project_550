@@ -1,12 +1,9 @@
 <template>
-  <div
-    :class="
-      preview
-        ? 'bg-base-100'
-        : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
-    "
-    class="p-5 rounded-2xl"
-  >
+  <div :class="
+    preview
+      ? 'bg-base-100'
+      : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
+  " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa bài viết</div>
@@ -21,12 +18,8 @@
             </div>
           </div>
 
-          <input
-            v-model="usePost.post_edit.title"
-            placeholder="nhập tiêu đề"
-            type="text"
-            class="input input-primary w-full"
-          />
+          <input v-model="usePost.post_edit.title" placeholder="nhập tiêu đề" type="text"
+            class="input input-primary w-full" />
         </div>
 
         <!-- ảnh bìa -->
@@ -58,10 +51,7 @@
               </div>
             </div>
           </div>
-          <select
-            v-model="usePost.post_edit.series"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="usePost.post_edit.series" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Không có</option>
             <option :value="i" v-for="i in list_series" :key="i">
               {{ i.name }}
@@ -82,19 +72,13 @@
               </div>
             </div>
           </div>
-          <select
-            v-model="usePost.post_edit.team"
-            v-if="!usePost.post_edit.series?.team && list_team.length != 0"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="usePost.post_edit.team" v-if="!usePost.post_edit.series?.team && list_team.length != 0"
+            class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Chung</option>
             <option :value="i" v-for="i in list_team" :key="i">{{ i.name }}</option>
           </select>
-          <select
-            disabled
-            v-if="usePost.post_edit.series?.team || list_team.length == 0"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select disabled v-if="usePost.post_edit.series?.team || list_team.length == 0"
+            class="select-sm select select-primary w-full max-w-xs">
             <option v-if="list_team.length == 0">Chung</option>
             <option v-if="list_team.length == 1">
               {{ list_team[0].name }}
@@ -111,10 +95,7 @@
               </div>
             </div>
           </div>
-          <select
-            v-model="selectStatus"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
             <option :value="i" v-for="i in list_status" :key="i">
               {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
             </option>
@@ -134,13 +115,7 @@
         </div>
 
         <div class="-z-10">
-          <QuillEditor
-            :modules="modules"
-            placeholder="nhập nội dung"
-            ref="quill"
-            theme="snow"
-            toolbar="full"
-          />
+          <QuillEditor :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow" toolbar="full" />
         </div>
       </div>
     </transition>
@@ -152,25 +127,13 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-3 my-5">
-      <div
-        v-if="preview == false"
-        @click="showPreview()"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
         xem trước
       </div>
-      <div
-        v-if="preview == true"
-        @click="preview = false"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div
-        @click="save()"
-        :class="[loading ? 'loading' : '']"
-        class="btn btn-outline btn-sm btn-primary"
-      >
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
         lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
@@ -192,6 +155,7 @@ import { postStore } from "~~/stores/post.store";
 import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
+import { alertStore } from "~/stores/alert.store";
 const supabase = useSupabaseClient();
 
 const url = config.url.apiimage;
@@ -233,6 +197,7 @@ const useTeam = teamStore();
 const useSeries = seriesStore();
 const usePost = postStore();
 const route = useRoute();
+const useAlert = alertStore();
 const selectStatus = ref();
 // const list_status = computed(() => {
 //   if (!selectStatus.value) {
@@ -323,6 +288,10 @@ const setContent = () => {
 async function getApi() {
   if (route.params.id) {
     await usePost.findOneEdit(route.params.id);
+    if (usePost.post.author._id != useAuth.user.id) {
+      useAlert.setWarning("bạn không có quyền truy cập");
+      navigateTo("/");
+    }
     usePost.post_edit = usePost.post;
     if (usePost.post_edit.status) {
       selectStatus.value = {

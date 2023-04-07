@@ -106,7 +106,7 @@
     </div>
 
     <!-- cmt -->
-    <div class="ml-5">
+    <div class="ml-10">
       <!-- input rep cmt -->
       <transition name="bounce">
         <div v-if="inputRep">
@@ -116,8 +116,11 @@
       <!-- list cmt  -->
       <transition name="bounce">
         <div v-if="childCmt">
-          <div v-for="i in list_child" :key="i">
+          <div class="divider my-0"></div>
+
+          <div v-for="(i, n) in list_child" :key="i">
             <CommentsVCmt :data="i" />
+            <div v-if="n < list_child.length - 1" class="divider my-0"></div>
           </div>
         </div>
       </transition>

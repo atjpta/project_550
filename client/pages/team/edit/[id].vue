@@ -59,13 +59,16 @@ async function saveEdit() {
     }
     await useTeam.update(data);
     useTeam.resetTeamEdit();
-    navigateTo(`/team/${data.id}/list-post`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

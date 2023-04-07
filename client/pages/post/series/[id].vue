@@ -62,7 +62,7 @@ async function save() {
     }
     const id = await usePost.create(data);
     usePost.resetPostEdit();
-    navigateTo(`/post/${id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
@@ -72,6 +72,9 @@ async function save() {
 
 onMounted(() => {
   usePost.resetPostEdit();
+});
+definePageMeta({
+  middleware: "guest",
 });
 </script>
 

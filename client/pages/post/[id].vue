@@ -4,10 +4,7 @@
     <div v-else>
       <PostVPost :data="usePost.post" />
       <div class="flex">
-        <div
-          @click="openInputCmt = !openInputCmt"
-          class="btn btn-sm btn-ghost text-primary mb-2"
-        >
+        <div @click="openInputCmt = !openInputCmt" class="btn btn-sm btn-ghost text-primary mb-2">
           Nhập bình luận
           <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
             <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
@@ -35,17 +32,13 @@
       <!-- list cmt -->
 
       <div v-if="openInputCmt">
-        <CommentsVInputCmt
-          @send="openDialogSignin(send)"
-          :loading="loading"
-          :data="dataInput"
-          :reset="resetInput"
-        />
+        <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
       </div>
 
       <div>
-        <div v-for="i in useCmt.list_cmt" :key="i">
+        <div v-for="(i, n) in useCmt.list_cmt" :key="i">
           <CommentsVCmt :data="i" />
+          <div v-if="n < useCmt.list_cmt.length - 1" class="divider my-0"></div>
         </div>
       </div>
     </div>
@@ -60,9 +53,11 @@ import { routeStore } from "~~/stores/route.store";
 import { dialogStore } from "~~/stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
 import { notificationStore } from "~~/stores/notification.store";
+import { alertStore } from "~/stores/alert.store";
 
 const openFilter = ref(false);
 const route = useRoute();
+const useAlert = alertStore();
 const usePost = postStore();
 const useUser = userStore();
 const useCmt = cmtStore();
@@ -149,6 +144,7 @@ async function getApi() {
   try {
     useCmt.list_cmt = [];
     await usePost.findOne(route.params.id);
+
     await useUser.findAll();
     await useCmt.getBy("post", route.params.id);
     loadingSkeleton.value = false;
@@ -159,6 +155,9 @@ async function getApi() {
 
 onMounted(() => {
   getApi();
+});
+definePageMeta({
+  middleware: "guest",
 });
 </script>
 

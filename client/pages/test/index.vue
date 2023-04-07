@@ -1,5 +1,5 @@
 <template>
-  <div>test nè</div>
+  <div>weghow</div>
 </template>
 
 <script setup></script>

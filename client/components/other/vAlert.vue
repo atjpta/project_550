@@ -1,21 +1,23 @@
 <template>
-  <div class="">
-    <div class="fixed top-20 right-5 z-50 space-y-5">
+  <div class="sticky z-40 top-20 right-5 w-fit ml-auto">
+    <div class="">
       <!-- thông báo bình thường -->
-      <div v-if="useAlert.info.set > 0" class="alert alert-info shadow-lg z-50">
+      <div v-if="useAlert.success.info > 0" class="alert alert-info shadow-lg w-fit ml-auto">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             class="stroke-current flex-shrink-0 w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
-          <span> {{ useAlert.info.message || "đây là cảnh báo bình thường" }} </span>
+          <span>
+            {{ useAlert.info.message || "đây là cảnh báo bình thường" }}
+          </span>
         </div>
       </div>
 
       <!-- thông báo thành công -->
       <div v-if="useAlert.success.set > 0" class="">
-        <div class="alert alert-success shadow-lg z-50">
+        <div class="alert alert-success shadow-lg w-fit ml-auto">
           <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
             viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -28,7 +30,7 @@
       </div>
 
       <!-- lỗi -->
-      <div v-if="useAlert.error.set > 0" class="alert alert-error shadow-lg z-50">
+      <div v-if="useAlert.error.set > 0" class="alert alert-error shadow-lg w-fit ml-auto">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
             viewBox="0 0 24 24">
@@ -41,7 +43,7 @@
 
       <!-- cảnh báo -->
 
-      <div v-if="useAlert.warning.set > 0" class="alert alert-warning shadow-lg z-50">
+      <div v-if="useAlert.warning.set > 0" class="alert alert-warning shadow-lg w-fit ml-auto">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
             viewBox="0 0 24 24">

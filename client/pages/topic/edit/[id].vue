@@ -42,13 +42,16 @@ async function save() {
     }
     await useTopic.update(data);
     useTopic.resettopicEdit();
-    navigateTo(`/topic/${data.id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

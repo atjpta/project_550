@@ -4,8 +4,7 @@
       <div class="flex justify-between">
         <div class="flex">
           <OtherVNav class="" @click="open = true" />
-          <div @click="navigateTo('/')"
-            class="2xl:ml-10 btn btn-ghost bg-transparent hover:bg-transparent font-black text-white">
+          <div @click="navigateTo('/')" class="btn btn-ghost bg-transparent hover:bg-transparent font-black text-white">
             <!-- logo -->
             <span
               class="before:ring-8 before:ring-indigo-500/20 hover:before:translate-x-2 hover:before:rotate-180 before:duration-500 before:rounded-tr-none before:rounded-bl-rounded-tr-none translate before:block before:absolute before:-inset-1 before:skew-y-12 before:skew-x-12 before:bg-gradient-to-r before:from-green-500 before:via-teal-500/50 before:to-blue-500 relative inline-block">
@@ -16,12 +15,31 @@
             </span>
           </div>
         </div>
-        <div class="sm:flex hidden form-control w-1/2 relative">
+        <div class="lg:flex hidden">
+          <div v-for="i in dataHeader" :key="i.name">
+            <div @click="navigateTo(i.url)" class="btn btn-ghost">
+              {{ i.title }}
+            </div>
+          </div>
+
+          <div v-if="useAuth.user" class="dropdown dropdown-hover">
+            <label tabindex="0" class="btn btn-ghost">đăng bài</label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li class="hover-bordered">
+                <nuxtLink to="/post/edit">bài viết mới</nuxtLink>
+              </li>
+              <li class="hover-bordered">
+                <nuxtLink to="/question/edit">câu hỏi mới</nuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sm:flex hidden form-control w-1/3 relative">
           <div class="input-group">
             <input v-if="route.path.slice(0, 7) != '/search'" v-model="useSearch.key" type="text" placeholder="Tìm kiếm…"
-              class="input input-bordered w-lg w-full" />
+              class="input input-bordered w-full" />
 
-            <input v-else disabled type="text" placeholder="Tìm kiếm…" class="input input-bordered w-lg" />
+            <input v-else disabled type="text" placeholder="Tìm kiếm…" class="input input-bordered w-full" />
 
             <button class="btn btn-square">
               <OtherVIcon icon="fa-solid fa-magnifying-glass" />
@@ -30,6 +48,7 @@
           <SearchVDataSearch v-if="useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'"
             class="absolute top-14" />
         </div>
+
         <div class="flex">
           <NotificationVList v-if="useAuth.user" />
           <OtherVTheme2 />
@@ -37,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div @click="open = false" v-if="open" class="fixed h-screen w-screen"></div>
+    <div @click="open = false" v-if="open" class="fixed h-screen w-screen sm:hidden"></div>
   </div>
 </template>
 
@@ -50,12 +69,38 @@ const useAuth = authStore();
 const open = ref(false);
 const useSearch = searchStore();
 const route = useRoute();
+const countKey = ref(0);
+
+const dataHeader = ref([
+  {
+    title: "Bài viết",
+    url: "/post/new/1",
+  },
+  {
+    title: "Câu hỏi",
+    url: "/question/new/1",
+  },
+]);
+
+onUpdated(() => {
+  if (useSearch.key.length > 0 && countKey.value == 0) {
+    useSearch.getApi();
+    countKey.value = 1;
+  }
+});
+
+async function getApi() {
+  try {
+    useAuth.loadAuthState();
+    if (useAuth.user) {
+      await useUser.findOne(useAuth.user.id);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 onMounted(() => {
-  useAuth.loadAuthState();
-  if (useAuth.user) {
-    useUser.findOne(useAuth.user.id);
-  }
-  useSearch.getApi();
+  getApi();
 });
 </script>

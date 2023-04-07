@@ -7,9 +7,8 @@
         <!-- post -->
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_post" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('post', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="bài viết" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-lines" />
               </div>
@@ -23,9 +22,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_series" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('series', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="chuỗi bài viết" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-layer-group" />
               </div>
@@ -39,9 +37,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_question" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('question', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="câu hỏi" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-circle-question" />
               </div>
@@ -55,9 +52,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_topic" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('topic', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="chủ đề" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-layer-group" />
               </div>
@@ -71,9 +67,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_user" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('user', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="người dùng" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-users" />
               </div>
@@ -87,9 +82,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_team" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('team', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="nhóm" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-building-user" />
               </div>
@@ -103,9 +97,8 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_tag" :key="i._id">
-            <div
-              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer"
-            >
+            <div @click="goTo('tag', i._id)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="tag" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-tag" />
               </div>
@@ -129,15 +122,20 @@ const useSearch = searchStore();
 const sumLength = computed(() => {
   return (
     useSearch.list_search_post.length +
-      useSearch.list_search_question.length +
-      useSearch.list_search_series.length +
-      useSearch.list_search_topic.length +
-      useSearch.list_search_user.length +
-      useSearch.list_search_team.length +
-      useSearch.list_search_tag.length ==
+    useSearch.list_search_question.length +
+    useSearch.list_search_series.length +
+    useSearch.list_search_topic.length +
+    useSearch.list_search_user.length +
+    useSearch.list_search_team.length +
+    useSearch.list_search_tag.length ==
     0
   );
 });
+
+function goTo(type, id) {
+  navigateTo(`/${type}/${id}`);
+  useSearch.key = "";
+}
 </script>
 
 <style></style>

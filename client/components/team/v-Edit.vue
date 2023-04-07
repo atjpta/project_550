@@ -1,12 +1,9 @@
 <template>
-  <div
-    :class="
-      !preview
-        ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10'
-        : ''
-    "
-    class="p-5 rounded-2xl"
-  >
+  <div :class="
+    !preview
+      ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10'
+      : ''
+  " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa nhóm</div>
@@ -20,12 +17,8 @@
               </div>
             </div>
           </div>
-          <input
-            v-model="useTeam.team_edit.name"
-            placeholder="nhập tiêu đề"
-            type="text"
-            class="input input-primary w-full"
-          />
+          <input v-model="useTeam.team_edit.name" placeholder="nhập tiêu đề" type="text"
+            class="input input-primary w-full" />
         </div>
 
         <!-- ảnh bìa -->
@@ -58,10 +51,7 @@
             </div>
           </div>
 
-          <select
-            v-model="useTeam.team_edit.status"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="useTeam.team_edit.status" class="select-sm select select-primary w-full max-w-xs">
             <option :value="i" v-for="i in list_status" :key="i">
               {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
             </option>
@@ -78,12 +68,8 @@
               </div>
             </div>
           </div>
-          <textarea
-            v-model="useTeam.team_edit.introduce"
-            placeholder="nhập nội dung"
-            type="text"
-            class="textarea textarea-primary w-full h-20"
-          />
+          <textarea v-model="useTeam.team_edit.introduce" placeholder="nhập nội dung" type="text"
+            class="textarea textarea-primary w-full h-20" />
         </div>
       </div>
     </transition>
@@ -95,25 +81,13 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
-      <div
-        v-if="preview == false"
-        @click="showPreview()"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
         xem trước
       </div>
-      <div
-        v-if="preview == true"
-        @click="preview = false"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div
-        @click="save()"
-        :class="[loading ? 'loading' : '']"
-        class="btn btn-outline btn-sm btn-primary"
-      >
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
         lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
@@ -128,6 +102,8 @@ import { seriesStore } from "~~/stores/series.store";
 import { authStore } from "~~/stores/auth.store";
 import { imageStore } from "~~/stores/image.store";
 import { statusStore } from "~~/stores/status.store";
+import { memberStore } from "~/stores/member.store";
+import { alertStore } from "~/stores/alert.store";
 
 const props = defineProps({
   loading: Boolean,
@@ -140,6 +116,8 @@ const useStatus = statusStore();
 const useImage = imageStore();
 const useTeam = teamStore();
 const route = useRoute();
+const useAlert = alertStore();
+const useMember = memberStore();
 
 // const list_status = computed(() => {
 //   useStatus.getPost.forEach((e) => {
@@ -182,6 +160,11 @@ function showPreview() {
 
 async function getApi() {
   if (route.params.id) {
+    await useMember.checkIsChief(route.params.id, useAuth.user.id);
+    if (!useMember.isChief) {
+      useAlert.setWarning("bạn không có quyền truy cập");
+      navigateTo("/");
+    }
     await useTeam.findOneEdit(route.params.id);
     useTeam.team_edit = useTeam.team;
   } else {

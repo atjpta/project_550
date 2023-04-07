@@ -1,12 +1,9 @@
 <template>
-  <div
-    :class="
-      !preview
-        ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0'
-        : ''
-    "
-    class="p-5 rounded-2xl"
-  >
+  <div :class="
+    !preview
+      ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0'
+      : ''
+  " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-semibold">Chỉnh sửa series</div>
@@ -20,12 +17,8 @@
               </div>
             </div>
           </div>
-          <input
-            v-model="useSeries.series_edit.name"
-            placeholder="nhập tên series"
-            type="text"
-            class="input input-primary w-full"
-          />
+          <input v-model="useSeries.series_edit.name" placeholder="nhập tên series" type="text"
+            class="input input-primary w-full" />
         </div>
 
         <!-- ảnh bìa -->
@@ -46,16 +39,9 @@
             </div>
           </div>
           <div class="">
-            <input
-              disabled
-              placeholder="nhập tag"
-              type="text"
-              class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full"
-            />
-            <div
-              disabled="disabled"
-              class="btn btn-sm mb-1 btn-primary btn-outline disabled"
-            >
+            <input disabled placeholder="nhập tag" type="text"
+              class="input relative bg-inherit border-0 border-b-2 border-primary mb-1 w-full" />
+            <div disabled="disabled" class="btn btn-sm mb-1 btn-primary btn-outline disabled">
               thêm
             </div>
           </div>
@@ -72,10 +58,7 @@
             </div>
           </div>
 
-          <select
-            v-model="useSeries.series_edit.team"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="useSeries.series_edit.team" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Chung</option>
             <option :value="i" v-for="i in list_team" :key="i">
               {{ i.name }}
@@ -94,10 +77,7 @@
             </div>
           </div>
 
-          <select
-            v-model="useSeries.series_edit.status"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="useSeries.series_edit.status" class="select-sm select select-primary w-full max-w-xs">
             <option :value="i" v-for="i in list_status" :key="i">
               {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
             </option>
@@ -114,12 +94,8 @@
               </div>
             </div>
           </div>
-          <textarea
-            v-model="useSeries.series_edit.introduce"
-            placeholder="nhập nội dung"
-            type="text"
-            class="textarea textarea-primary w-full h-20"
-          />
+          <textarea v-model="useSeries.series_edit.introduce" placeholder="nhập nội dung" type="text"
+            class="textarea textarea-primary w-full h-20" />
         </div>
       </div>
     </transition>
@@ -131,25 +107,13 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
-      <div
-        v-if="preview == false"
-        @click="showPreview()"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
         xem trước
       </div>
-      <div
-        v-if="preview == true"
-        @click="preview = false"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div
-        @click="save()"
-        :class="[loading ? 'loading' : '']"
-        class="btn btn-outline btn-sm btn-primary"
-      >
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
         lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
@@ -164,6 +128,7 @@ import { seriesStore } from "~~/stores/series.store";
 import { authStore } from "~~/stores/auth.store";
 import { imageStore } from "~~/stores/image.store";
 import { statusStore } from "~~/stores/status.store";
+import { alertStore } from "~/stores/alert.store";
 
 const props = defineProps({
   loading: Boolean,
@@ -176,6 +141,7 @@ const useStatus = statusStore();
 const useImage = imageStore();
 const useSeries = seriesStore();
 const route = useRoute();
+const useAlert = alertStore();
 const useTeam = teamStore();
 
 const list_status = computed(() => {
@@ -227,6 +193,10 @@ function showPreview() {
 async function getApi() {
   if (route.params.id) {
     await useSeries.findOneEdit(route.params.id);
+    if (useSeries.series.author._id != useAuth.user.id) {
+      useAlert.setWarning("bạn không có quyền truy cập");
+      navigateTo("/");
+    }
     useSeries.series_edit = useSeries.series;
   } else {
     useSeries.resetSeriesEdit();

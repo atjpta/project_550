@@ -6,10 +6,7 @@
     <div v-else>
       <QuestionVQuestion :data="useQuestion.question" />
       <!-- bình luận của câu hỏi -->
-      <div
-        @click="openInputCmt = !openInputCmt"
-        class="btn btn-sm text-primary btn-ghost mb-2"
-      >
+      <div @click="openInputCmt = !openInputCmt" class="btn btn-sm text-primary btn-ghost mb-2">
         Nhập bình luận
         <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
           <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -18,35 +15,24 @@
         </div>
       </div>
       <div v-if="openInputCmt">
-        <CommentsVInputCmt
-          @send="openDialogSignin(send)"
-          :loading="loading"
-          :data="dataInput"
-          :reset="resetInput"
-        />
+        <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
       </div>
 
       <div>
-        <div v-for="i in useCmt.list_cmt" :key="i">
+        <div v-for="(i, n) in useCmt.list_cmt" :key="i">
           <CommentsVCmt :data="i" />
+          <div v-if="n < useCmt.list_cmt.length - 1" class="divider my-0"></div>
         </div>
       </div>
 
       <!-- nhập câu trả lời -->
       <div>
-        <div
-          @click="openInputAnswer = !openInputAnswer"
-          class="btn btn-sm btn-success mb-2 mt-5"
-        >
+        <div @click="openInputAnswer = !openInputAnswer" class="btn btn-sm btn-success mb-2 mt-5">
           Nhập câu trả lời
         </div>
         <div v-if="openInputAnswer">
-          <AnswerVInputAnswer
-            @send="openDialogSignin(sendAnswer)"
-            :loading="loading"
-            :data="dataInput"
-            :reset="resetInput"
-          />
+          <AnswerVInputAnswer @send="openDialogSignin(sendAnswer)" :loading="loading" :data="dataInput"
+            :reset="resetInput" />
         </div>
         <div class="lg:flex justify-between mb-3 lg:mb-0">
           <div class="text-2xl font-bold mb-3">
@@ -61,9 +47,11 @@
         <div>
           <div v-for="i in list_answer.listAnswer" :key="i">
             <AnswerVAnswer :data="i" />
+            <!-- <div v-if="n < list_answer.listAnswer.length - 1" class="divider my-0"></div> -->
           </div>
           <div v-for="i in list_answer.listNoAnswer" :key="i">
             <AnswerVAnswer :data="i" />
+            <!-- <div v-if="n < list_answer.listNoAnswer.length - 1" class="divider my-0"></div> -->
           </div>
         </div>
       </div>

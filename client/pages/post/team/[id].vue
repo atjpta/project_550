@@ -61,7 +61,7 @@ async function save() {
     }
     const id = await usePost.create(data);
     usePost.resetPostEdit();
-    navigateTo(`/post/${id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {

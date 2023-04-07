@@ -1,33 +1,14 @@
 <template>
-  <div class="">
+  <div class="pl-1">
     <!-- cho mobie -->
-    <div :class="
-      route.path != '/' &&
-        route.path != '/welcome' &&
-        route.path != '/auth/signup' &&
-        route.path != '/auth/signin'
-        ? '2xl:dropdown-open'
-        : ''
-    " class="dropdown">
+    <div class="dropdown">
       <label tabindex="0" class="">
-        <div class="btn btn-ghost rounded-none 2xl:hidden">
-          <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-bars" />
+        <div class="btn btn-ghost rounded-none">
+          <OtherVIcon class-icon="text-2xl " icon="fa-solid fa-bars" />
         </div>
       </label>
-      <div tabindex="0"
-        class="dropdown-content glass bg-base-100/90 hover:bg-base-100/90 2xl:mt-9 mt-1.5 w-60 h-[calc(96vh)]">
+      <div tabindex="0" class="dropdown-content glass bg-base-100/90 mt-2 hover:bg-base-100/90 w-60 h-[calc(96vh)]">
         <ul class="menu">
-          <!-- chỉ admin -->
-          <li v-if="useUser.isAdmin" :class="tagUrl.slice(0, 6) == '/admin' ? 'router-link-active' : ''"
-            class="hover-bordered">
-            <nuxt-link to="/admin/post">
-              <OtherVIcon class-icon="text-2xl w-7" icon="fa-solid fa-bars-progress" />
-              <div class="text-base">
-                {{ "Trang admin" }}
-              </div>
-            </nuxt-link>
-          </li>
-          <!-- người dùng bth -->
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">
               <li :class="
@@ -67,32 +48,31 @@ const tagUrl = computed(() => {
 const dataNav = ref([
   [
     {
-      name: "Trang chủ",
-      url: "/",
-      icon: "fa-solid fa-house",
-      tag: "/",
-    },
-    {
       name: "Tìm kiếm",
       url: "/search",
       icon: "fa-solid fa-magnifying-glass",
       tag: "/search",
     },
-    // useUser.isAdmin == true
-    //   ? {
-    //       name: "Admin",
-    //       url: "/search",
-    //       icon: "fa-solid fa-bars-progress",
-    //       tag: "/search",
-    //     }
-    //   : "",
     {
-      name: "test",
-      url: "/test",
-      icon: "fa-solid fa-vial-circle-check",
-      tag: "/test",
+      name: "Nhóm",
+      url: "/team",
+      icon: "fa-solid fa-building-user",
+      tag: "/team",
+    },
+    {
+      name: "Người dùng",
+      url: "/user",
+      icon: "fa-solid fa-users",
+      tag: "/user",
+    },
+    {
+      name: "Thẻ tag",
+      url: "/tag",
+      icon: "fa-solid fa-tag",
+      tag: "/tag",
     },
   ],
+
   [
     {
       name: "Bài viết",
@@ -119,26 +99,6 @@ const dataNav = ref([
       url: "/topic/new/1",
       icon: "fa-solid fa-layer-group",
       tag: "/topic",
-    },
-  ],
-  [
-    {
-      name: "Nhóm",
-      url: "/team",
-      icon: "fa-solid fa-building-user",
-      tag: "/team",
-    },
-    {
-      name: "Người dùng",
-      url: "/user",
-      icon: "fa-solid fa-users",
-      tag: "/user",
-    },
-    {
-      name: "Thẻ tag",
-      url: "/tag",
-      icon: "fa-solid fa-tag",
-      tag: "/tag",
     },
   ],
 ]);

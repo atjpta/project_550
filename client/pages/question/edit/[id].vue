@@ -86,13 +86,16 @@ async function saveEdit() {
     }
     await useQuestion.update(data);
     useQuestion.resetQuestionEdit();
-    navigateTo(`/question/${data.id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

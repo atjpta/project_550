@@ -149,12 +149,17 @@ const menuAdmin = ref([
 async function getApi() {
   loadingSkeleton.value = true;
   try {
-    if (!useUser.user.id) {
-      await useUser.findOne(useAuth.user.id);
-      if (!useUser.isAdmin) {
-        useAlert.setWarning("bạn không có quyền truy cập trang này");
-        navigateTo(route.redirectedFrom);
+    if (useAuth.user) {
+      if (!useUser.user.id) {
+        await useUser.findOne(useAuth.user.id);
+        if (!useUser.isAdmin) {
+          useAlert.setWarning("bạn không có quyền truy cập trang này");
+          navigateTo(route.redirectedFrom);
+        }
       }
+    } else {
+      useAlert.setWarning("bạn không có quyền truy cập trang này");
+      navigateTo(route.redirectedFrom);
     }
     useReport.getApi();
     loadingSkeleton.value = false;

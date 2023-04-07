@@ -56,13 +56,16 @@ async function save() {
     const data = formatData(listtag);
     const id = await useQuestion.create(data);
     useQuestion.resetQuestionEdit();
-    navigateTo(`/question/${id}`);
+    useRouter().back();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
 }
+definePageMeta({
+  middleware: "guest",
+});
 </script>
 
 <style></style>

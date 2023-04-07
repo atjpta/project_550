@@ -118,7 +118,7 @@ exports.findOne = async (req, res, next) => {
 exports.findIsMember = async (req, res, next) => {
     const { team, user } = req.params;
     try {
-        const document = await model.findOne({ is_member : true, team: team, user: user })
+        const document = await model.findOne({ is_member: true, team: team, user: user }).populate('role', 'id name')
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
