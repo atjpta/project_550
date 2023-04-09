@@ -6,9 +6,10 @@
       </div>
     </div>
 
-    <div class="space-y-5" v-if="useQuestion.list.length > 0">
-      <div v-for="i in useQuestion.list" :key="i.id">
+    <div class="mt-5" v-if="useQuestion.list.length > 0">
+      <div v-for="(i, n) in useQuestion.list" :key="i.id">
         <QuestionVMonoD :data="i" />
+        <div v-if="n < useQuestion.list.length - 1" class="divider my-0"></div>
       </div>
     </div>
 

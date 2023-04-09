@@ -14,16 +14,17 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post([memberMid.check_request], ctl.create)
         .delete(ctl.deleteAll)
-    
+
     router.route('/myteam/:id')
         .get(ctl.findTeamByUser)
-    
+
     router.route('/team/:id')
         .get(ctl.findByTeam)
-    
+        .delete(ctl.deleteAllByTeam)
+
     router.route('/request/:id')
         .get(ctl.findByRequestTeam)
-    
+
     router.route('/:team/:user')
         .get(ctl.findIsMember)
 

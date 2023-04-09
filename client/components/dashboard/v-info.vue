@@ -3,43 +3,28 @@
     <div class="lg:flex justify-evenly">
       <!-- ảnh -->
       <div class="w-64 mx-auto lg:mx-0">
-        <UploadVAvatar />
+        <UploadVAvatar :manager="manager" />
       </div>
-
       <div class="mt-5 lg:mt-0 px-5 lg:w-96">
         <div class="mb-5">
           <!-- tên -->
           <div class="text-3xl font-bold">
             <div v-if="!openEditName" class="flex space-x-2">
               <div class="text-3xl font-semibold">{{ useUser.user.name }}</div>
-              <div
-                @click="openEditNameF()"
-                class="btn btn-ghost text-primary btn-sm tooltip flex w-fit"
-                data-tip="sửa tên"
-              >
+              <div v-if="manager" @click="openEditNameF()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit"
+                data-tip="sửa tên">
                 <OtherVIcon icon="fa-solid fa-pen-to-square" />
               </div>
             </div>
-            <input
-              v-if="openEditName"
-              v-model="name"
-              type="text"
-              class="input input-primary w-full"
-            />
+            <input v-if="openEditName" v-model="name" type="text" class="input input-primary w-full" />
           </div>
           <div v-if="openEditName" class="flex space-x-1">
-            <div
-              @click="updateName()"
-              class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên"
-            >
+            <div @click="updateName()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
+              data-tip="sửa tên">
               <OtherVIcon class-icon="" icon="fa-solid fa-save" />
             </div>
-            <div
-              @click="closeEditNameF()"
-              class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên"
-            >
+            <div @click="closeEditNameF()" class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
+              data-tip="sửa tên">
               <OtherVIcon class-icon="" icon="fa-solid fa-x" />
             </div>
           </div>
@@ -52,37 +37,23 @@
               <div class="">
                 {{ useUser.user.introduce || "chưa có lời giới thiệu" }}
               </div>
-              <div
-                @click="openEditIntroduceF()"
-                class="btn btn-ghost text-primary btn-sm tooltip flex w-fit"
-                data-tip="sửa lời giới thiệu"
-              >
+              <div v-if="manager" @click="openEditIntroduceF()"
+                class="btn btn-ghost text-primary btn-sm tooltip flex w-fit" data-tip="sửa lời giới thiệu">
                 <OtherVIcon icon="fa-solid fa-pen-to-square" />
               </div>
             </div>
 
             <!-- xs -->
-            <textarea
-              v-if="openEditIntroduce"
-              v-model="introduce"
-              rows="5"
-              placeholder="nhập lời giới thiệu"
-              class="textarea textarea-xs w-full textarea-primary h-20"
-            ></textarea>
+            <textarea v-if="openEditIntroduce" v-model="introduce" rows="5" placeholder="nhập lời giới thiệu"
+              class="textarea textarea-xs w-full textarea-primary h-20"></textarea>
           </div>
           <div v-if="openEditIntroduce" class="flex space-x-1">
-            <div
-              @click="updateIntroduce()"
-              class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên"
-            >
+            <div @click="updateIntroduce()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
+              data-tip="sửa tên">
               <OtherVIcon class-icon="" icon="fa-solid fa-save" />
             </div>
-            <div
-              @click="closeEditIntroduceF()"
-              class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên"
-            >
+            <div @click="closeEditIntroduceF()" class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
+              data-tip="sửa tên">
               <OtherVIcon class-icon="" icon="fa-solid fa-x" />
             </div>
           </div>
@@ -94,7 +65,9 @@
 
 <script setup>
 import { userStore } from "~~/stores/user.store";
-
+const props = defineProps({
+  manager: Boolean,
+});
 const useUser = userStore();
 const name = ref("");
 const openEditName = ref(false);

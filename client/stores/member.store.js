@@ -53,7 +53,11 @@ export const memberStore = defineStore("memberStore", {
             this.member = await memberService.update(data)
         },
         async deleteOne(id) {
-            this.member = await memberService.deleteOne(id)
+            await memberService.deleteOne(id)
+        },
+
+        async deleteAllByTeam(id) {
+            await memberService.deleteAllByTeam(id)
         },
 
         async checkIsMember(team, user) {

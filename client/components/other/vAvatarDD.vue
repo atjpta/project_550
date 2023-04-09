@@ -45,7 +45,7 @@ const dataAvatar = [
   },
   {
     name: "Trang dashboard",
-    url: "/dashboard/overview",
+    url: "/dashboard/read/overview",
     icon: "fa-solid fa-address-card",
   },
 

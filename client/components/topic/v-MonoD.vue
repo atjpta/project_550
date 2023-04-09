@@ -12,12 +12,6 @@
             <div class="">
               <div>
                 <!-- phần tùy chọn cho người đọc -->
-                <div v-if="isEditT" class="tooltip" data-tip="xóa topic ra khỏi nhóm">
-                  <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
-                    <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
-                  </div>
-                </div>
-                <!-- phần tùy chọn cho người đọc -->
                 <div v-if="!isAuthor" class="dropdown dropdown-end z-10 flex justify-end">
                   <label tabindex="0" class="btn btn-ghost">
                     <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />

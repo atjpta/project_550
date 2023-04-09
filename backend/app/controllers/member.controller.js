@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
 const model = DB.member;
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res, next) => {
     const modelO = new model({
@@ -37,14 +38,18 @@ exports.findTeamByUser = async (req, res, next) => {
 
     try {
         const document = await model.find({ user: id, is_member: true })
+            .populate('role')
             .populate({
                 path: 'team',
-                select: 'name image_cover_url introduce tag',
+                select: 'name image_cover_url introduce tag createdAt',
                 populate: {
                     path: 'tag',
                     select: 'id name'
-                }
+                },
+            }).sort({
+                'createdAt': -1,
             })
+
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
@@ -181,6 +186,19 @@ exports.delete = async (req, res, next) => {
 exports.deleteAll = async (req, res, next) => {
     try {
         const data = await model.deleteMany({});
+        return res.send({ message: `${data.deletedCount}  model đã xóa thành công` });
+    }
+    catch (error) {
+        return next(
+            res.status(500).json({ Message: ` có lỗi khi đang xóa tất cả model` + error })
+        )
+    }
+}
+
+exports.deleteAllByTeam = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        const data = await model.deleteMany({ team: ObjectId(id) });
         return res.send({ message: `${data.deletedCount}  model đã xóa thành công` });
     }
     catch (error) {

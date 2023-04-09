@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxtLink class="" :to="`/team/${data.team._id}/list-post`">
+    <nuxtLink class="" :to="`/team/${data.team?._id}/list-post`">
       <transition name="bounce">
         <div
           class="rounded-2xl p-5 hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10">

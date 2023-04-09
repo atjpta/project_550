@@ -114,7 +114,7 @@ export default {
         return data.value
     },
 
-    
+
 
     create: async (dataO) => {
         const { data: data, error } = await useFetch(url + '', {
@@ -146,6 +146,21 @@ export default {
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("thao tác thành công");
+
+        return data.value
+    },
+
+    deleteAllByTeam: async (id) => {
+        const { data: data, error } = await useFetch(url + `/team/${id}`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "delete",
+        })
+
+        if (error.value) {
+            throw new Error(error.value.data);
+        }
 
         return data.value
     },
