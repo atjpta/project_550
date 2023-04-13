@@ -208,7 +208,6 @@ function openDialogSignin() {
 
 async function getApi() {
   if (useSearch.mark.post != 1) {
-    console.log("goi 1 lan ");
     await useSearch.getPost();
     useSearch.mark.post = 1;
   }

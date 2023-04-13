@@ -29,7 +29,7 @@
           <span v-if="data.reports.length > 0" class="indicator-item mt-2 mr-2 badge badge-secondary">{{ data.slReport
           }}</span>
         </div>
-        <nuxtLink :to="`/team/${data._id}/list-post`" data-tip="xem chi tiết"
+        <nuxtLink :to="`/team/${data._id}/read/post`" data-tip="xem chi tiết"
           class="h-10 w-10 flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info">
           <OtherVIcon icon="fa-solid fa-eye" />
         </nuxtLink>

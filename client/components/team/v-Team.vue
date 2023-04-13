@@ -10,7 +10,7 @@
           <div class="w-full">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
-                <nuxtLink class="" :to="`/team/${data?._id}/list-post`">
+                <nuxtLink class="" :to="`/team/${data?._id}/read/post`">
                   <!-- tên team -->
                   <div class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500">
                     {{ data?.name }}
@@ -64,28 +64,6 @@
                     thoát
                   </div>
                 </div>
-
-                <!-- <label tabindex="0" class="btn btn-ghost btn-primary">
-                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-                </label>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo Nhóm
-                      </div>
-                    </a>
-                  </li>
-                  <li class="hover-bordered">
-                    <a>
-                      <div @click="openDialogReport()">
-                        <OtherVIcon icon="fa-solid fa-bookmark" />
-                        Lưu bài viết
-                      </div>
-                    </a>
-                  </li>
-                </ul> -->
               </div>
             </div>
             <!-- ảnh bìa và tiêu đề -->
@@ -216,8 +194,13 @@ async function openDialogDelete() {
         btn2: "hủy",
       },
       async () => {
-        await useTeam.deleteOne(props.data?._id || props.data?.id);
-        await useTeam.findAll();
+        try {
+          await useMember.deleteAllByTeam(props.data._id || props.data.id);
+          await useTeam.deleteOne(props.data?._id || props.data?.id);
+          return navigateTo("/team");
+        } catch (error) {
+          console.log(error);
+        }
       }
     );
   }

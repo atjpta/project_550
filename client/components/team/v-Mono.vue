@@ -5,7 +5,7 @@
         class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div class="flex">
           <!-- ảnh team -->
-          <nuxtLink class="" :to="`/team/${data._id}/list-post`">
+          <nuxtLink class="" :to="`/team/${data._id}/read/post`">
             <div class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden">
               <img class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110" :src="data.image_cover_url"
                 alt="" />
@@ -15,7 +15,7 @@
           <div class="w-full">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
-                <nuxtLink class="" :to="`/team/${data._id}/list-post`">
+                <nuxtLink class="" :to="`/team/${data._id}/read/post`">
                   <!-- tên team -->
                   <div class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500">
                     {{ data.name }}
@@ -42,7 +42,7 @@
 
               <!-- phần tùy chọn cho người đọc -->
               <div v-else class="dropdown dropdown-end flex justify-end">
-                <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
+                <!-- <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
                   <div @click="openDialogJoinTeam()" :class="[loading ? 'loading' : '']"
                     class="btn btn-ghost text-secondary mr-1">
                     gia nhập
@@ -61,7 +61,7 @@
                     class="btn btn-ghost text-error mr-1">
                     thoát
                   </div>
-                </div>
+                </div> -->
 
                 <!-- phần tùy chọn cho người đọc -->
                 <div class="dropdown dropdown-end z-10 h-5">
@@ -184,6 +184,7 @@ async function openDialogDelete() {
       async () => {
         try {
           loading.value = true;
+          await useMember.deleteAllByTeam(props.data._id || props.data.id);
           await useTeam.deleteOne(props.data._id || props.data.id);
           useRouteS.refreshData();
         } catch (error) {

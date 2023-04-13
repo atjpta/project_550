@@ -124,7 +124,6 @@ function openDialogSignin() {
 
 async function getApi() {
   if (useSearch.mark.Topic != 1) {
-    console.log("goi 1 lan ");
     await useSearch.getTopic();
     useSearch.mark.Topic = 1;
   }

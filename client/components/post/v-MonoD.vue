@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="bounce">
-      <div
+      <div :class="data.pins ? 'border-l-4 border-info' : ''"
         class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div>
           <!-- phần đầu -->

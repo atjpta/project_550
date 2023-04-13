@@ -124,7 +124,6 @@ async function getApi() {
     return navigateTo(`/series/${route.params.filter}/1`);
   }
   if (useSearch.mark.Series != 1) {
-    console.log("goi 1 lan ");
     await useSearch.getSeries();
     useSearch.mark.Series = 1;
   }

@@ -126,7 +126,6 @@ async function getApiNext(page) {
 
 const getApi = async () => {
   if (useSearch.mark.Team != 1) {
-    console.log("goi 1 lan ");
     await useSearch.getTeam();
     useSearch.mark.Team = 1;
   }

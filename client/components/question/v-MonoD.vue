@@ -8,25 +8,7 @@
       " class="p-5 hover:bg-gradient-to-l">
         <div>
           <!-- phần đầu -->
-          <div class="flex justify-between">
-            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`">
-              <!-- tác giả -->
-              <div class="flex">
-                <div class="avatar">
-                  <div class="w-12 h-12 rounded-full">
-                    <img :src="data.author[0].avatar_url" />
-                  </div>
-                </div>
-                <div class="text-2xl mx-3">
-                  {{ data.author[0].name }}
-                  <div class="text-sm italic">
-                    <i>{{ data.createdAt }}</i>
-                  </div>
-                </div>
-              </div>
-            </nuxtLink>
-
+          <div class="flex justify-end">
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
@@ -163,7 +145,7 @@ async function goReadPost() {
       view: props.data.view + 1,
     });
   }
-  navigateTo(`/post/${props.data._id}`);
+  navigateTo(`/question/${props.data._id}`);
 }
 
 function openDialogReport() {

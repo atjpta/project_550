@@ -24,15 +24,13 @@
       </div>
     </div>
     <div v-else>
-      <div class="mt-5 space-y-3" v-if="dataPerPage[0]">
-        <div v-for="i in dataPerPage" :key="i._id">
-          <PostVMono :data="i" />
+      <div class="space-y-3 mt-5" v-if="dataPerPage[0]">
+        <div v-for="i in dataPerPage" :key="i.id">
+          <MemberVMono :data="i" />
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">
-          chưa bài viết có tag #{{ useTag.tag.name }} nào cả!!!
-        </div>
+        <div class="text-center text-2xl my-10">không có câu hỏi nào !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->
@@ -56,21 +54,14 @@
 </template>
 
 <script setup>
-import { routeStore } from "~~/stores/route.store";
-import { authStore } from "~/stores/auth.store";
-import { postStore } from "~/stores/post.store";
-import { tagStore } from "~/stores/tag.store";
-
+import { memberStore } from "~~/stores/member.store";
 const loadingSkeleton = ref(false);
-const useRouteS = routeStore();
-const useAuth = authStore();
-const useTag = tagStore();
-const usePost = postStore();
 const route = useRoute();
+const useMember = memberStore();
 const size = 5;
 const maxPage = computed(() => {
   selectPage.value = 1;
-  return Math.ceil(usePost.list.length / size);
+  return Math.ceil(useMember.List_member.length / size);
 });
 const selectPage = ref(1);
 
@@ -79,7 +70,7 @@ const dataPerPage = computed(() => {
   let index = size * (selectPage.value - 1);
 
   for (let i = 0; i < size; i++) {
-    if (index < usePost.list.length) list.push(usePost.list[index]);
+    if (index < useMember.List_member.length) list.push(useMember.List_member[index]);
     index++;
   }
 
@@ -93,12 +84,19 @@ function goToPre() {
 function goToNext() {
   selectPage.value += 1;
 }
-async function getApi() {
-  await usePost.findByTag(route.params.id);
-}
 
+async function getApi() {
+  loadingSkeleton.value = true;
+  try {
+    await useMember.findByTeam(route.params.id);
+
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
 onMounted(() => {
-  useRouteS.cb = getApi;
+  getApi();
 });
 </script>
 

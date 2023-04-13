@@ -102,7 +102,7 @@
         <!-- phần team -->
         <div v-if="data.series_team[0] && data.team[0]" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
-          <NuxtLink :to="`/team/${data?.series_team[0]?._id}/list-post`" class="btn btn-ghost justify-start">{{
+          <NuxtLink :to="`/team/${data?.series_team[0]?._id}/read/post`" class="btn btn-ghost justify-start">{{
             data.series_team[0]?.name }}</NuxtLink>
         </div>
       </div>
@@ -111,7 +111,7 @@
         <!-- phần team -->
         <div v-if="data.team[0]" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
-          <NuxtLink :to="`/team/${data.team[0]?._id}/list-post`" class="btn btn-ghost justify-start">{{ data.team[0]?.name
+          <NuxtLink :to="`/team/${data.team[0]?._id}/read/post`" class="btn btn-ghost justify-start">{{ data.team[0]?.name
           }}</NuxtLink>
         </div>
       </div>

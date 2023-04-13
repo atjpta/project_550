@@ -1,5 +1,11 @@
 <template>
   <div class="mt-5">
+    <!-- btn chuyển trang -->
+    <div class="flex justify-end">
+      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm lg:btn-md mb-5">
+        tạo bài viết
+      </button>
+    </div>
     <div class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
@@ -18,21 +24,19 @@
 
     <!-- loadingSkeleton -->
 
-    <div v-if="loadingSkeleton || !dataPerPage[0]" class="space-y-5">
+    <div v-if="loadingSkeleton" class="space-y-5">
       <div v-for="i in size" :key="i">
         <AdminVSkeleton />
       </div>
     </div>
     <div v-else>
-      <div class="mt-5 space-y-3" v-if="dataPerPage[0]">
-        <div v-for="i in dataPerPage" :key="i._id">
+      <div class="space-y-3 mt-5" v-if="dataPerPage[0]">
+        <div v-for="(i) in dataPerPage" :key="i._id">
           <PostVMono :data="i" />
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">
-          chưa bài viết có tag #{{ useTag.tag.name }} nào cả!!!
-        </div>
+        <div class="text-center text-2xl my-10">không có câu hỏi nào !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->
@@ -59,14 +63,14 @@
 import { routeStore } from "~~/stores/route.store";
 import { authStore } from "~/stores/auth.store";
 import { postStore } from "~/stores/post.store";
-import { tagStore } from "~/stores/tag.store";
+import { teamStore } from "~/stores/team.store";
 
 const loadingSkeleton = ref(false);
 const useRouteS = routeStore();
-const useAuth = authStore();
-const useTag = tagStore();
 const usePost = postStore();
+const useAuth = authStore();
 const route = useRoute();
+const useTeam = teamStore();
 const size = 5;
 const maxPage = computed(() => {
   selectPage.value = 1;
@@ -93,12 +97,39 @@ function goToPre() {
 function goToNext() {
   selectPage.value += 1;
 }
+
+function openDialogSignin() {
+  if (!useAuth.isUserLoggedIn) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn cần đăng nhập để tạo bài viết",
+        btn1: "đăng nhập",
+        btn2: "hủy",
+      },
+      () => {
+        navigateTo("/auth/signin");
+        useRouteS.redirectedFrom = `/post/team/${useTeam.team[0]._id}`;
+      }
+    );
+  } else {
+    navigateTo(`/post/team/${useTeam.team[0]._id}`);
+  }
+}
+
 async function getApi() {
-  await usePost.findByTag(route.params.id);
+  loadingSkeleton.value = true;
+  try {
+    await usePost.findByTeam(route.params.id);
+    loadingSkeleton.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(() => {
   useRouteS.cb = getApi;
+  getApi();
 });
 </script>
 

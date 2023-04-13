@@ -154,12 +154,12 @@ async function getApi() {
         await useUser.findOne(useAuth.user.id);
         if (!useUser.isAdmin) {
           useAlert.setWarning("bạn không có quyền truy cập trang này");
-          navigateTo(route.redirectedFrom);
+          return navigateTo(route.redirectedFrom);
         }
       }
     } else {
       useAlert.setWarning("bạn không có quyền truy cập trang này");
-      navigateTo(route.redirectedFrom);
+      return navigateTo(route.redirectedFrom);
     }
     useReport.getApi();
     loadingSkeleton.value = false;

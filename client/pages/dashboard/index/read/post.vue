@@ -1,63 +1,94 @@
 <template>
-  <div class="mb-5">
-    <!-- các nut lọc -->
+  <div class="mt-5">
     <div class="flex justify-end">
-      <button
-        @click="openDialogSignin()"
-        class="btn btn-outline btn-success btn-sm lg:btn-md"
-      >
+      <nuxtLink to="/post/edit" class="btn btn-outline btn-success btn-sm lg:btn-md">
         tạo bài viết
-      </button>
+      </nuxtLink>
     </div>
+    <!-- btn chuyển trang -->
 
-    <div v-if="loadingSkeleton" class="space-y-5 mt-5">
-      <div v-for="i in 5" :key="i">
-        <PostVSkeleton />
+    <div class="form-control mx-auto w-fit my-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select v-model="selectPage" class="select select-bordered lg:select-md select-sm">
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
       </div>
     </div>
 
-    <div v-if="listPost.listPins.length + listPost.listNoPins.length > 0">
-      <div
-        v-if="listPost.listPins.length > 0"
-        class="border-2 shadow-md border-info mt-5 rounded-2xl indicator w-full"
-      >
-        <div class="indicator-item indicator-end mr-10">
-          <OtherVIcon
-            class-icon="rotate-45 text-3xl text-primary"
-            icon="fa-solid fa-thumbtack"
-          />
-        </div>
-        <div class="w-full m-5 space-y-5">
-          <div v-for="i in listPost.listPins" :key="i.id">
-            <PostVMonoD :data="i" />
-          </div>
-        </div>
-      </div>
-      <div class="space-y-5 mt-5">
-        <div v-for="i in listPost.listNoPins" :key="i.id">
-          <PostVMonoD :data="i" />
-        </div>
+    <!-- loadingSkeleton -->
+    <div v-if="loadingSkeleton || !dataPerPage[0]" class="space-y-5">
+      <div v-for="i in size" :key="i">
+        <AdminVSkeleton />
       </div>
     </div>
 
     <div v-else>
-      <div class="text-4xl text-center m-5">chưa có bài viết nào cả!!!</div>
+      <div class="mt-5 space-y-5" v-if="dataPerPage[0]">
+        <div v-for="i in dataPerPage" :key="i._id">
+          <PostVMonoD :data="i" />
+        </div>
+      </div>
+
+      <div v-else>
+        <div class="text-center text-2xl my-10">Bạn chưa lưu bài viết nào cả !?</div>
+      </div>
+    </div>
+    <!-- btn chuyển trang -->
+
+    <div class="form-control mx-auto w-fit my-3">
+      <div class="input-group lg:input-group-md input-group-sm">
+        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+        </button>
+        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+            trang {{ i }}
+          </option>
+        </select>
+        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { authStore } from "~~/stores/auth.store";
-import { postStore } from "~~/stores/post.store";
 import { routeStore } from "~~/stores/route.store";
-import { dialogStore } from "~~/stores/dialog.store";
-
-const usePost = postStore();
-const useAuth = authStore();
-const useDialog = dialogStore();
-const useRoute = routeStore();
+import { postStore } from "~/stores/post.store";
+import { authStore } from "~/stores/auth.store";
 
 const loadingSkeleton = ref(false);
+const useRouteS = routeStore();
+const usePost = postStore();
+const useAuth = authStore();
+const size = 5;
+const maxPage = computed(() => {
+  selectPage.value = 1;
+  return Math.ceil(usePost.list.length / size);
+});
+const selectPage = ref(1);
+
+const dataPerPage = computed(() => {
+  let list = [];
+  let index = size * (selectPage.value - 1);
+
+  for (let i = 0; i < size; i++) {
+    if (index < listPost.value.length) {
+      list.push(listPost.value[index]);
+    }
+    index++;
+  }
+  return list;
+});
 
 const listPost = computed(() => {
   let listPins = [];
@@ -67,34 +98,22 @@ const listPost = computed(() => {
       listPins.push(e);
     } else listNoPins.push(e);
   });
-  return {
-    listPins,
-    listNoPins,
-  };
+  return [...listPins, ...listNoPins];
 });
-function openDialogSignin() {
-  if (!useAuth.isUserLoggedIn) {
-    useDialog.showDialog(
-      {
-        title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
-      },
-      () => {
-        navigateTo("/auth/signin");
-        useRoute.redirectedFrom = "/post/edit";
-      }
-    );
-  } else {
-    navigateTo("/post/edit");
-  }
+
+function goToPre() {
+  selectPage.value -= 1;
+}
+
+function goToNext() {
+  selectPage.value += 1;
 }
 
 async function getApi() {
   loadingSkeleton.value = true;
   try {
     await usePost.findByAuthor(useAuth.user.id);
+
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);
@@ -102,6 +121,7 @@ async function getApi() {
 }
 
 onMounted(() => {
+  useRouteS.cb = getApi;
   getApi();
 });
 </script>

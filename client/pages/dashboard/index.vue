@@ -1,7 +1,8 @@
 <template>
   <div>
     <DashboardVInfo :manager="manager" />
-    <!-- nút chuyển trang -->
+    <!-- chuyển chế độ -->
+
     <div>
       <div @click="goTo()" v-if="!manager" class="btn btn-primary btn-sm btn-outline">
         chế độ quản lý
@@ -10,6 +11,7 @@
         chế độ xem
       </div>
     </div>
+    <!-- nút chuyển trang -->
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menu" :key="i">
         <nuxtLink :to="'/dashboard' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
@@ -104,14 +106,14 @@ async function getApi() {
   // await useUser.findOne(useAuth.user.id);
 }
 
-const router = useRoute();
+const route = useRoute();
 
 onMounted(() => {
   getApi();
-  if (router.fullPath == "/dashboard" || router.fullPath == "/dashboard/read") {
+  if (route.fullPath == "/dashboard" || route.fullPath == "/dashboard/read") {
     navigateTo("/dashboard/read/overview");
   }
-  const typePage = router.fullPath.split("/")[2];
+  const typePage = route.fullPath.split("/")[2];
 
   if (typePage == "read") {
     manager.value = false;

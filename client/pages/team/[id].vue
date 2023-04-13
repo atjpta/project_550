@@ -3,11 +3,18 @@
     <div>
       <TeamVTeam :data="useTeam.team[0]" />
     </div>
-
+    <!-- chuyển chế độ -->
+    <div v-if="useMember.isEditT" class="my-1">
+      <div @click="goTo()" v-if="!manager" class="btn btn-primary btn-sm btn-outline">
+        chế độ quản lý
+      </div>
+      <div @click="goTo()" v-if="manager" class="btn btn-primary btn-sm btn-outline">
+        chế độ xem
+      </div>
+    </div>
     <div class="mb-4 flex flex-wrap">
-      <div v-for="i in menuTab" :key="i.title">
-        <nuxt-link :to="i.url" class="btn btn-outline btn-sm mr-1 mb-1">{{
-          i.title
+      <div v-for="i in menu" :key="i.title">
+        <nuxt-link :to="`/team/${route.params.id}${i.url}`" class="btn btn-outline btn-sm mr-1 mb-1">{{ i.title
         }}</nuxt-link>
       </div>
     </div>
@@ -26,28 +33,75 @@ const useTeam = teamStore();
 const useRole = roleStore();
 const useMember = memberStore();
 const useAuth = authStore();
-const menuTab = ref([
+const manager = ref(false);
+
+const menu = computed(() => {
+  if (manager.value) {
+    return menuDashboardManager.value;
+  } else {
+    return menuDashboard.value;
+  }
+});
+
+const menuDashboard = ref([
   {
     title: "bài viết",
-    url: `/team/${route.params.id}/list-post`,
+    url: "/read/post",
   },
   {
     title: "chuỗi bài viết",
-    url: `/team/${route.params.id}/list-series`,
+    url: "/read/series",
   },
   {
-    title: "Câu hỏi",
-    url: `/team/${route.params.id}/list-question`,
+    title: "câu hỏi",
+    url: "/read/question",
   },
   {
     title: "chủ đề",
-    url: `/team/${route.params.id}/list-topic`,
+    url: "/read/topic",
   },
   {
     title: "thành viên",
-    url: `/team/${route.params.id}/list-member`,
+    url: "/read/member",
   },
 ]);
+
+const menuDashboardManager = ref([
+  {
+    title: "bài viết",
+    url: "/manager/post",
+  },
+  {
+    title: "chuỗi bài viết",
+    url: "/manager/series",
+  },
+  {
+    title: "câu hỏi",
+    url: "/manager/question",
+  },
+  {
+    title: "chủ đề",
+    url: "/manager/topic",
+  },
+  {
+    title: "thành viên",
+    url: "/manager/member",
+  },
+  {
+    title: "Yêu cầu",
+    url: "/manager/request",
+  },
+]);
+
+function goTo() {
+  if (manager.value) {
+    manager.value = false;
+    return navigateTo(`/team/${route.params.id}/read/post`);
+  } else {
+    manager.value = true;
+    return navigateTo(`/team/${route.params.id}/manager/post`);
+  }
+}
 
 async function getApi() {
   await useRole.findAll();
@@ -56,16 +110,21 @@ async function getApi() {
     await useMember.checkIsMember(route.params.id, useAuth.user.id);
     if (useTeam?.team[0].role == "chief" || useTeam?.team[0].role == "handler") {
       useMember.isEditT = true;
-      menuTab.value.push({
-        title: "yêu cầu",
-        url: `/team/${route.params.id}/list-request`,
-      });
+    } else {
+      useMember.isEditT = false;
     }
   }
 }
 
 onMounted(() => {
   getApi();
+  const typePage = route.fullPath.split("/")[3];
+
+  if (typePage == "read") {
+    manager.value = false;
+  } else if (typePage == "manager") {
+    manager.value = true;
+  }
 });
 </script>
 

@@ -218,7 +218,6 @@ export default {
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("tạo thành công");
-        console.log(data.value);
         return data.value
     },
 } 
