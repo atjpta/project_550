@@ -16,6 +16,7 @@ const role = require('./role.routes')
 const follow = require('./follow.routes')
 const notification = require('./notification.routes')
 const report = require('./report.routes')
+const typecourse = require('./typecourse.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -35,4 +36,5 @@ exports.Start = (app) => {
     follow(app)
     notification(app)
     report(app)
+    typecourse(app)
 }

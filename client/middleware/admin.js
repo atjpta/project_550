@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (from.path.slice(0, 6) != '/admin') {
         if (!useUser.isAdmin) {
             useAlert.setWarning('bạn không có quyền truy cập');
-            return navigateTo(from.fullPath)
+            return navigateTo('/')
         }
     }
     else {

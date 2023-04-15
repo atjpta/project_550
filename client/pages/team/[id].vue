@@ -14,8 +14,11 @@
     </div>
     <div class="mb-4 flex flex-wrap">
       <div v-for="i in menu" :key="i.title">
-        <nuxt-link :to="`/team/${route.params.id}${i.url}`" class="btn btn-outline btn-sm mr-1 mb-1">{{ i.title
-        }}</nuxt-link>
+        <nuxt-link
+          :to="`/team/${route.params.id}${i.url}`"
+          class="btn btn-outline btn-sm mr-1 mb-1"
+          >{{ i.title }}</nuxt-link
+        >
       </div>
     </div>
     <NuxtPage v-if="useTeam.team[0]?.status[0].name == 'public' || useMember.isMember" />
@@ -119,7 +122,7 @@ async function getApi() {
 onMounted(() => {
   getApi();
   const typePage = route.fullPath.split("/")[3];
-
+  // console.log(route.fullPath.split("/")[3]);
   if (typePage == "read") {
     manager.value = false;
   } else if (typePage == "manager") {

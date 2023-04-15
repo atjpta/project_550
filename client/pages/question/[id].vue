@@ -3,10 +3,16 @@
     <div v-if="loadingSkeleton">
       <QuestionVSkeleton />
     </div>
-    <div v-else>
+    <div
+      v-else
+      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+    >
       <QuestionVQuestion :data="useQuestion.question" />
       <!-- bình luận của câu hỏi -->
-      <div @click="openInputCmt = !openInputCmt" class="btn btn-sm text-primary btn-ghost mb-2">
+      <div
+        @click="openInputCmt = !openInputCmt"
+        class="btn btn-sm text-primary btn-ghost mb-2"
+      >
         Nhập bình luận
         <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
           <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -15,7 +21,12 @@
         </div>
       </div>
       <div v-if="openInputCmt">
-        <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
+        <CommentsVInputCmt
+          @send="openDialogSignin(send)"
+          :loading="loading"
+          :data="dataInput"
+          :reset="resetInput"
+        />
       </div>
 
       <div>
@@ -27,12 +38,19 @@
 
       <!-- nhập câu trả lời -->
       <div>
-        <div @click="openInputAnswer = !openInputAnswer" class="btn btn-sm btn-success mb-2 mt-5">
+        <div
+          @click="openInputAnswer = !openInputAnswer"
+          class="btn btn-sm btn-success mb-2 mt-5"
+        >
           Nhập câu trả lời
         </div>
         <div v-if="openInputAnswer">
-          <AnswerVInputAnswer @send="openDialogSignin(sendAnswer)" :loading="loading" :data="dataInput"
-            :reset="resetInput" />
+          <AnswerVInputAnswer
+            @send="openDialogSignin(sendAnswer)"
+            :loading="loading"
+            :data="dataInput"
+            :reset="resetInput"
+          />
         </div>
         <div class="lg:flex justify-between mb-3 lg:mb-0">
           <div class="text-2xl font-bold mb-3">

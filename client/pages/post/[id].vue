@@ -1,10 +1,16 @@
 <template>
   <div class="">
     <PostVSkeleton v-if="loadingSkeleton" />
-    <div v-else>
+    <div
+      v-else
+      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
+    >
       <PostVPost :data="usePost.post" />
       <div class="flex">
-        <div @click="openInputCmt = !openInputCmt" class="btn btn-sm btn-ghost text-primary mb-2">
+        <div
+          @click="openInputCmt = !openInputCmt"
+          class="btn btn-sm btn-ghost text-primary mb-2"
+        >
           Nhập bình luận
           <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
             <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
@@ -32,7 +38,12 @@
       <!-- list cmt -->
 
       <div v-if="openInputCmt">
-        <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
+        <CommentsVInputCmt
+          @send="openDialogSignin(send)"
+          :loading="loading"
+          :data="dataInput"
+          :reset="resetInput"
+        />
       </div>
 
       <div>

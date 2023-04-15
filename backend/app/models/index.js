@@ -16,14 +16,15 @@ const report = require('./report.models')
 const vote = require('./vote.model')
 const tag = require('./tag.models')
 const follow = require('./follow.model')
-function innitDB (){
+const typecourse = require('./typecouse.models');
+function innitDB() {
     roleM.initRole()
     statusM.initStatus()
     notificationtypeM.initNotificationtype()
 }
 
 const role = roleM.role
-const status = statusM.status 
+const status = statusM.status
 const notificationtype = notificationtypeM.notificationtype
 
 
@@ -46,5 +47,6 @@ module.exports = {
     vote,
     tag,
     follow,
+    typecourse,
     innitDB,
 }

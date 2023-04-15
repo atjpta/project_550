@@ -125,10 +125,12 @@ export default {
             method: "post",
         })
 
+
         if (error.value) {
-            useAlert.setError(error.value.data)
+            useAlert.setError(error.value.data.message)
             throw new Error(error.value.data);
         }
+
         useAlert.setSuccess("Xin vào thành công");
         return data.value
     },
@@ -145,7 +147,7 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        useAlert.setSuccess("thao tác thành công");
+        // useAlert.setSuccess("thao tác thành công");
 
         return data.value
     },

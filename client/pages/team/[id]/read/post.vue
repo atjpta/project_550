@@ -2,21 +2,35 @@
   <div class="mt-5">
     <!-- btn chuyển trang -->
     <div class="flex justify-end">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm lg:btn-md mb-5">
+      <button
+        @click="openDialogSignin()"
+        class="btn btn-outline btn-success btn-sm lg:btn-md mb-5"
+      >
         tạo bài viết
       </button>
     </div>
     <div class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select v-model="selectPage" class="select select-bordered lg:select-md select-sm">
+        <select
+          v-model="selectPage"
+          class="select select-bordered lg:select-md select-sm"
+        >
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
             trang {{ i }}
           </option>
         </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>
@@ -31,7 +45,7 @@
     </div>
     <div v-else>
       <div class="space-y-3 mt-5" v-if="dataPerPage[0]">
-        <div v-for="(i) in dataPerPage" :key="i._id">
+        <div v-for="i in dataPerPage" :key="i._id">
           <PostVMono :data="i" />
         </div>
       </div>
@@ -43,15 +57,27 @@
 
     <div class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
             trang {{ i }}
           </option>
         </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>
@@ -64,10 +90,12 @@ import { routeStore } from "~~/stores/route.store";
 import { authStore } from "~/stores/auth.store";
 import { postStore } from "~/stores/post.store";
 import { teamStore } from "~/stores/team.store";
+import { dialogStore } from "~~/stores/dialog.store";
 
 const loadingSkeleton = ref(false);
 const useRouteS = routeStore();
 const usePost = postStore();
+const useDialog = dialogStore();
 const useAuth = authStore();
 const route = useRoute();
 const useTeam = teamStore();
