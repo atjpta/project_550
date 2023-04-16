@@ -5,42 +5,26 @@
       <span class="relative text-white text-3xl font-black px-5">Nhóm</span>
     </span>
     <!-- các nut lọc -->
-    <div class="flex justify-end mt-3">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm lg:btn-md">
+    <div class="flex justify-end">
+      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm">
         tạo Nhóm mới
       </button>
     </div>
-    <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit mt-3">
-      <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
-        </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
-          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
-          </option>
-        </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
-        </button>
-      </div>
-    </div>
     <!-- loadingSkeleton -->
-    <div v-if="loadingSkeleton" class="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-5">
+    <div v-if="loadingSkeleton" class="grid lg:grid-cols-2 grid-cols-1 gap-5 my-5">
       <div v-for="i in 7" :key="i">
         <TeamVSkeleton />
       </div>
     </div>
-    <div v-else class="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-5">
+    <div v-else class="grid lg:grid-cols-2 grid-cols-1 gap-5 my-5">
       <div v-for="i in useTeam.List_team" :key="i.id">
         <TeamVMono :data="i" />
       </div>
     </div>
     <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit mt-3">
+    <div class="form-control mx-auto w-fit">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />

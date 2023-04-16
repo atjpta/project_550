@@ -1,5 +1,5 @@
 <template>
-  <div class="pl-1">
+  <div class="">
     <!-- cho mobie -->
     <div class="dropdown">
       <label tabindex="0" class="">
@@ -7,7 +7,7 @@
           <OtherVIcon class-icon="text-2xl " icon="fa-solid fa-bars" />
         </div>
       </label>
-      <div tabindex="0" class="dropdown-content glass bg-base-100/90 mt-2 hover:bg-base-100/90 w-60 h-[calc(96vh)]">
+      <div tabindex="0" class="dropdown-content glass bg-base-100/90 mt-2 hover:bg-base-100/90 w-60 h-[calc(93vh)]">
         <ul class="menu">
           <div v-for="i in dataNav" :key="i">
             <div v-for="j in i" :key="j.name">
@@ -121,12 +121,6 @@ onUpdated(() => {
 </script>
 
 <style>
-.router-link-active,
-.router-link-exact-active {
-  color: rgb(255, 255, 255);
-  background: rgba(120, 0, 255);
-}
-
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }

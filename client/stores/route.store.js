@@ -11,8 +11,8 @@ export const routeStore = defineStore("routeStore", {
 
     },
     actions: {
-        async refreshData() {
-           await this.cb();
+        async refreshData(page) {
+            await this.cb(page);
         }
     },
 });

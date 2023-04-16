@@ -11,39 +11,21 @@
       </div>
     </div>
 
-    <!-- btn chuyển trang -->
-
-    <div class="form-control mx-auto w-fit mt-3">
-      <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
-        </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
-          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
-          </option>
-        </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
-        </button>
-      </div>
-    </div>
-
     <!-- loadingSkeleton -->
 
-    <div v-if="loadingSkeleton" class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div v-if="loadingSkeleton" class="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       <div v-for="i in 7" :key="i._id">
         <TagVSkeleton />
       </div>
     </div>
-    <div v-else class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div v-else class="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       <div v-for="i in useTag.List_tag" :key="i._id">
         <TagVMono :data="i" />
       </div>
     </div>
     <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit mt-3">
+    <div class="form-control mx-auto w-fit">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />

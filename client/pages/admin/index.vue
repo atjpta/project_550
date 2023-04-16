@@ -1,19 +1,14 @@
 <template>
   <div>
     <span
-      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block"
-    >
+      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block">
       <span class="relative text-white text-3xl font-black px-5">Trang admin</span>
     </span>
     <!-- <SearchVInput /> -->
     <div class="form-control mt-3">
       <div class="input-group">
-        <input
-          v-model="useReport.key"
-          type="text"
-          placeholder="Tìm kiếm…"
-          class="input lg:input-md input-sm input-bordered lg:w-1/2 w-3/5"
-        />
+        <input v-model="useReport.key" type="text" placeholder="Tìm kiếm…"
+          class="input lg:input-md input-sm input-bordered lg:w-1/2 w-3/5" />
         <button @click="getApi()" class="btn btn-square lg:btn-md btn-sm">
           <OtherVIcon icon="fa-solid fa-magnifying-glass" />
         </button>
@@ -21,17 +16,12 @@
     </div>
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuAdmin" :key="i">
-        <nuxtLink
-          :to="'/admin' + i.url"
-          class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1"
-        >
+        <nuxtLink :to="'/admin' + i.url" class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1">
           <div>
             {{ i.title }}
           </div>
-          <div
-            :data-tip="` ${i.slReport} ${i.title} có báo cáo`"
-            class="space-x-1 flex tooltip text-primary"
-          >
+          <div :data-tip="` ${i.slReport} ${i.title} có báo cáo`"
+            class="space-x-1 flex tooltip tooltip-left md:tooltip-top text-primary">
             <OtherVIcon icon="fa-solid fa-flag" />
             <div>
               {{ i.slReport }}
@@ -40,10 +30,7 @@
         </nuxtLink>
       </div>
       <div v-for="i in menuAdmin2" :key="i">
-        <nuxtLink
-          :to="'/admin' + i.url"
-          class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1"
-        >
+        <nuxtLink :to="'/admin' + i.url" class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1">
           <div>
             {{ i.title }}
           </div>

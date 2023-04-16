@@ -7,6 +7,7 @@ export const userStore = defineStore("userStore", {
             user: {},
             list_user: [],
             overview: {},
+            maxlength: 0,
         };
     },
     getters: {
@@ -23,7 +24,7 @@ export const userStore = defineStore("userStore", {
         async findOne(id) {
             this.user = await userService.findOne(id);
         },
-       
+
         clear() {
             this.user = {};
         },
@@ -36,6 +37,9 @@ export const userStore = defineStore("userStore", {
 
         async findAllOverViewPage(page, size) {
             this.list_user = await userService.findAllOverViewPage(page, size);
+        },
+        async getMaxLength() {
+            this.maxlength = await userService.maxLength();
         },
         async update(data) {
             await userService.update(data);

@@ -90,6 +90,18 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+
+exports.maxLength = async (req, res, next) => {
+    try {
+        const document = await model.find();
+        return res.json(document.length);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+        )
+    }
+};
+
 exports.findOne = async (req, res, next) => {
     const { id } = req.params;
     const condition = {
@@ -411,6 +423,9 @@ exports.findAllOverViewPage = async (req, res, next) => {
         );
     }
 };
+
+
+
 
 exports.findAllOverView = async (req, res, next) => {
     try {

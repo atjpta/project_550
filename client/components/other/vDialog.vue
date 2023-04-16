@@ -23,11 +23,12 @@
         <div class="card-body mt-5">
           <h2 class="card-title">{{ useDialog.dataInput.title }}</h2>
           <p>{{ useDialog.dataInput.content }}</p>
-          <textarea autofocus v-model="inputData" class="textarea textarea-primary w-full" type="text"
+          <textarea autofocus v-model="useDialog.dataInput.input" class="textarea textarea-primary w-full" type="text"
             placeholder="nhập..." />
           <div class="card-actions justify-around mx-5 mt-5">
             <!-- tùy chọn btn -->
-            <div @click="triggerCbInput(inputData)" :class="[loading ? 'loading' : '']" class="btn btn-primary">
+            <div @click="triggerCbInput(useDialog.dataInput.input)" :class="[loading ? 'loading' : '']"
+              class="btn btn-primary">
               {{ useDialog.dataInput.btn1 }}
             </div>
             <div @click="useDialog.hiddenDialog()" class="btn btn-ghost text-error">
@@ -45,7 +46,6 @@ import { dialogStore } from "~~/stores/dialog.store";
 
 const loading = ref(false);
 const useDialog = dialogStore();
-const inputData = ref("");
 
 async function triggerCb() {
   loading.value = true;
@@ -72,15 +72,6 @@ async function triggerCbInput(input) {
     useDialog.hiddenDialog();
   }
 }
-
-watch(
-  () => useDialog.dataInput,
-  (bf) => {
-    if (!bf.title) {
-      inputData.value = "";
-    }
-  }
-);
 </script>
 
 <style></style>

@@ -17,13 +17,31 @@
         </div>
         <div class="lg:flex hidden">
           <div v-for="i in dataHeader" :key="i.name">
-            <div @click="navigateTo(i.url)" class="btn btn-ghost">
+            <nuxtLink :class="
+              tagUrl[1] == i.tag && tagUrl[2] != 'edit' ? 'router-link-active' : ''
+            " :to="i.url" class="btn btn-ghost">
               {{ i.title }}
-            </div>
+            </nuxtLink>
           </div>
 
           <div v-if="useAuth.user" class="dropdown dropdown-hover">
-            <label tabindex="0" class="btn btn-ghost">đăng bài</label>
+            <label tabindex="0" :class="
+              (tagUrl[1] == 'post' || tagUrl[1] == 'question') && tagUrl[2] == 'edit'
+                ? 'router-link-active'
+                : ''
+            " class="btn btn-ghost">đăng bài</label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li class="hover-bordered">
+                <nuxtLink to="/post/edit">bài viết mới</nuxtLink>
+              </li>
+              <li class="hover-bordered">
+                <nuxtLink to="/question/edit">câu hỏi mới</nuxtLink>
+              </li>
+            </ul>
+          </div>
+
+          <div v-if="useAuth.user" class="dropdown dropdown-hover">
+            <label tabindex="0" class="btn btn-ghost">môn học</label>
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
               <li class="hover-bordered">
                 <nuxtLink to="/post/edit">bài viết mới</nuxtLink>
@@ -35,18 +53,19 @@
           </div>
         </div>
         <div class="sm:flex hidden form-control w-1/3 relative">
-          <div class="input-group">
-            <input v-if="route.path.slice(0, 7) != '/search'" v-model="useSearch.key" type="text" placeholder="Tìm kiếm…"
-              class="input input-bordered w-full" />
+          <div>
+            <div class="input-group" v-if="route.path.slice(0, 7) != '/search'">
+              <input @focusout="focus = false" @focusin="focus = true" v-model="useSearch.key" type="text"
+                placeholder="Tìm kiếm…" class="input input-bordered w-full" />
 
-            <input v-else disabled type="text" placeholder="Tìm kiếm…" class="input input-bordered w-full" />
-
-            <button class="btn btn-square">
-              <OtherVIcon icon="fa-solid fa-magnifying-glass" />
-            </button>
+              <button class="btn btn-square">
+                <OtherVIcon icon="fa-solid fa-magnifying-glass" />
+              </button>
+            </div>
           </div>
-          <SearchVDataSearch v-if="useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'"
-            class="absolute top-14" />
+          <SearchVDataSearch v-if="
+            focus && useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'
+          " class="absolute top-14" />
         </div>
 
         <div class="flex">
@@ -70,15 +89,21 @@ const open = ref(false);
 const useSearch = searchStore();
 const route = useRoute();
 const countKey = ref(0);
+const focus = ref(false);
+const tagUrl = computed(() => {
+  return route.fullPath.split("/");
+});
 
 const dataHeader = ref([
   {
     title: "Bài viết",
     url: "/post/new/1",
+    tag: "post",
   },
   {
     title: "Câu hỏi",
     url: "/question/new/1",
+    tag: "question",
   },
 ]);
 

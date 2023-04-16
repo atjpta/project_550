@@ -28,8 +28,8 @@ export const typecourseStore = defineStore("typecourseStore", {
         async deleteOne(id) {
             await typecourseService.deleteOne(id);
         },
-        async maxLength(id) {
-            this.maxLength = await typecourseService.deleteOne(id);
+        async getMaxLength() {
+            this.maxLength = await typecourseService.maxLength();
         },
 
 

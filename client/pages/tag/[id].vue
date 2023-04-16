@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div><TagVTag /></div>
+    <div>
+      <TagVTag />
+    </div>
     <div>
       <div class="flex flex-wrap mt-3">
         <div v-for="i in menuDashboard" :key="i">
-          <nuxtLink :to="i.url" class="btn btn-sm btn-outline mr-1 mb-1">
+          <nuxtLink :to="i.url" class="btn btn-sm btn-outline mr-1 mb-1 indicator">
             <div>
               {{ i.title }}
-              <div class="badge badge-secondary border-0">
+              <div v-show="i?.sl > 0" class="indicator-item badge badge-secondary border-0 mr-2">
                 {{ i?.sl }}
               </div>
             </div>

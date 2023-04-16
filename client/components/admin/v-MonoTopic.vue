@@ -41,9 +41,8 @@
           </div>
         </div>
 
-        <div data-tip="xóa bài viết" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
-          <div :class="[loading ? 'deleteModel ' : '']"
-            @click="openDialogInput(deleteModel, 'nhập lí do xóa bài viết này')"
+        <div data-tip="xóa chủ đề" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+          <div :class="[loading ? 'deleteModel ' : '']" @click="openDialogInput(deleteModel, 'nhập lí do xóa chủ đề này')"
             class="h-10 w-10 btn btn-sm btn-ghost text-error">
             <OtherVIcon icon="fa-solid fa-trash" />
           </div>

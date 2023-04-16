@@ -2,15 +2,12 @@
   <div>
     <transition name="bounce">
       <div
-        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
-      >
+        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`"
-            >
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${data?.author[0]?._id}/overview`">
               <!-- tác giả -->
               <div class="flex">
                 <div class="avatar">
@@ -36,16 +33,9 @@
               <!-- edit cho tác giả -->
               <div v-if="isAuthor">
                 <div class="space-x-2 static flex">
-                  <nuxtLink
-                    :to="`/post/edit/${data._id}`"
-                    class="tooltip"
-                    data-tip="sửa bài viết"
-                  >
+                  <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="sửa bài viết">
                     <div class="btn btn-ghost">
-                      <OtherVIcon
-                        class-icon="text-primary"
-                        icon="fa-solid fa-pen-to-square"
-                      />
+                      <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
 
@@ -62,10 +52,7 @@
                 <label tabindex="0" class="btn btn-ghost">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
-                <ul
-                  tabindex="0"
-                  class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                   <li @click="openDialogReport()" class="hover-bordered">
                     <a>
                       <div>
@@ -82,23 +69,18 @@
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
               <div class="overflow-hidden rounded-2xl my-2 mx-auto">
-                <img
-                  class="rounded-2xl hover:scale-110 duration-500"
-                  :src="data.image_cover_url"
-                  alt=""
-                />
+                <img class="rounded-2xl hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
               </div>
-              <div class="font-bold text-4xl">{{ data.title }}</div>
+              <div class="font-bold text-4xl">
+                {{ data.title }}
+              </div>
             </div>
           </div>
           <!-- tag -->
           <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link
-                :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
-                >{{ "#" + i.name }}</nuxt-link
-              >
+              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+              }}</nuxt-link>
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->

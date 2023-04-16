@@ -3,7 +3,7 @@
     <div>
       <div class="space-y-5" v-if="useSearch.list_search_post[0]">
         <div v-for="i in useSearch.list_search_post" :key="i.id">
-          <SearchVMonoPost :data="i" />
+          <PostVMono :data="i" />
         </div>
       </div>
       <div v-else>

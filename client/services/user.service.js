@@ -18,6 +18,22 @@ export default {
         return data.value
     },
 
+    maxLength: async () => {
+        const { data: data, error } = await useFetch(url + `/maxlength`, {
+            headers: {
+                authorization: authStore().getToken
+            },
+            method: "get",
+        })
+
+        if (error.value) {
+            // useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        // useAlert.setSuccess("test thành công");
+        return data.value
+    },
+
     findAllOverView: async (id) => {
         const { data: data, error } = await useFetch(url + `/alloverview`, {
             headers: {

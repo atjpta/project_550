@@ -1,15 +1,7 @@
 <template>
   <div class="flex">
-    <button
-      @click="theme = !theme"
-      class="btn btn-ghost"
-      data-toggle-theme="dark,cupcake"
-      data-act-class="ACTIVECLASS"
-    >
-      <OtherVIcon
-        classIcon="text-2xl"
-        :icon="theme ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"
-      />
+    <button @click="theme = !theme" class="btn btn-ghost" data-toggle-theme="dark,light" data-act-class="ACTIVECLASS">
+      <OtherVIcon classIcon="text-2xl" :icon="theme ? 'fa-solid fa-sun' : 'fa-solid fa-moon'" />
       <!-- <input
         v-model="theme"
         type="checkbox"

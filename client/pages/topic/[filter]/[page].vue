@@ -6,7 +6,7 @@
       <span class="relative text-white text-3xl font-black px-5">Chủ đề</span>
     </span>
     <div class="flex justify-end">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm lg:btn-md">
+      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm">
         tạo topic mới
       </button>
     </div>

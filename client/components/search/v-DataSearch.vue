@@ -1,7 +1,8 @@
 <template>
-  <div class="w-full">
+  <div class="w-full bg-base-100">
     <transition name="bounce">
-      <div class="bg-base-300 h-72 p-5 rounded-2xl overflow-y-auto space-y-2">
+      <div
+        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 h-72 p-5 rounded-2xl overflow-y-auto space-y-2">
         <div v-if="sumLength" class="text-center">không có dữ liệu</div>
 
         <!-- post -->
