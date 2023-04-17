@@ -1,44 +1,33 @@
 <template>
-  <div>
-    <QuillEditor ref="quill" :modules="modules" toolbar="full" />
-    <div class="btn" @click="test()">get data</div>
-  </div>
+  <suspense @fallback="test2()">
+    <!-- Async component here -->
+    <template #default>
+      <!-- Sync loading state component here -->
+      <div>
+        {{ data }}
+      </div>
+    </template>
+
+    <template #fallback>
+      <!-- Sync loading state component here -->
+      <div>loading</div>
+    </template>
+  </suspense>
 </template>
 
 <script setup>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import ImageUploader from "quill-image-uploader";
-import config from "~~/config";
-import axios from "axios";
-const quill = ref();
-const url = config.url.apiimage + "/image";
-const modules = {
-  name: "imageUploader",
-  module: ImageUploader,
-  options: {
-    upload: (file) => {
-      return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append("image", file);
+import { typecourseStore } from "~/stores/typecourse.store";
+const useTypeCourse = typecourseStore();
+const data = ref();
+await test();
 
-        axios
-          .post(url, formData)
-          .then((res) => {
-            resolve(url + "/" + res.data.filename);
-          })
-          .catch((err) => {
-            reject("Upload failed");
-            console.error("Error:", err);
-          });
-      });
-    },
-  },
-};
-
-function test() {
-  console.log(quill.value.getContents());
+function test2() {
+  console.log("egfoufo");
+}
+async function test() {
+  await setTimeout(async () => {
+    data.value = await useTypeCourse.findAll();
+  }, 2000);
 }
 </script>
-
 <style></style>

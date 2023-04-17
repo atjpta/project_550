@@ -39,18 +39,6 @@
               </li>
             </ul>
           </div>
-
-          <div v-if="useAuth.user" class="dropdown dropdown-hover">
-            <label tabindex="0" class="btn btn-ghost">môn học</label>
-            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-              <li class="hover-bordered">
-                <nuxtLink to="/post/edit">bài viết mới</nuxtLink>
-              </li>
-              <li class="hover-bordered">
-                <nuxtLink to="/question/edit">câu hỏi mới</nuxtLink>
-              </li>
-            </ul>
-          </div>
         </div>
         <div class="sm:flex hidden form-control w-1/3 relative">
           <div>
@@ -80,6 +68,7 @@
 </template>
 
 <script setup>
+import { typecourseStore } from "~/stores/typecourse.store";
 import { authStore } from "~~/stores/auth.store";
 import { searchStore } from "~~/stores/search.store";
 import { userStore } from "~~/stores/user.store";
@@ -89,6 +78,7 @@ const open = ref(false);
 const useSearch = searchStore();
 const route = useRoute();
 const countKey = ref(0);
+const useTypeCourse = typecourseStore();
 const focus = ref(false);
 const tagUrl = computed(() => {
   return route.fullPath.split("/");
@@ -105,6 +95,11 @@ const dataHeader = ref([
     url: "/question/new/1",
     tag: "question",
   },
+  {
+    title: "Môn học",
+    url: "/course",
+    tag: "course",
+  },
 ]);
 
 onUpdated(() => {
@@ -117,6 +112,7 @@ onUpdated(() => {
 async function getApi() {
   try {
     useAuth.loadAuthState();
+
     if (useAuth.user) {
       await useUser.findOne(useAuth.user.id);
     }

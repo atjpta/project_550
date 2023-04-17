@@ -16,17 +16,20 @@ const report = require('./report.models')
 const vote = require('./vote.model')
 const tag = require('./tag.models')
 const follow = require('./follow.model')
-const typecourse = require('./typecouse.models');
+const typecourseM = require('./typecouse.models');
+const course = require('./course.model');
+const review = require('./review.model')
 function innitDB() {
     roleM.initRole()
     statusM.initStatus()
     notificationtypeM.initNotificationtype()
+    typecourseM.initTypeCourse()
 }
 
 const role = roleM.role
 const status = statusM.status
 const notificationtype = notificationtypeM.notificationtype
-
+const typecourse = typecourseM.typecourse
 
 module.exports = {
     user,
@@ -48,5 +51,7 @@ module.exports = {
     tag,
     follow,
     typecourse,
+    course,
+    review,
     innitDB,
 }

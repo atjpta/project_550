@@ -17,6 +17,8 @@ const follow = require('./follow.routes')
 const notification = require('./notification.routes')
 const report = require('./report.routes')
 const typecourse = require('./typecourse.routes')
+const course = require('./course.routes')
+const review = require('./review.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -37,4 +39,6 @@ exports.Start = (app) => {
     notification(app)
     report(app)
     typecourse(app)
+    course(app)
+    review(app)
 }

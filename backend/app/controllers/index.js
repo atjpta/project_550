@@ -17,6 +17,8 @@ const follow = require('./follow.controller');
 const notification = require('./notification.controller');
 const report = require('./report.controller')
 const typecourse = require('./typecourse.controller')
+const course = require('./course.controller');
+const review = require('./review.controller')
 module.exports = {
     auth,
     image,
@@ -37,4 +39,6 @@ module.exports = {
     notification,
     report,
     typecourse,
+    course,
+    review,
 }

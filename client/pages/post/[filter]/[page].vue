@@ -2,7 +2,7 @@
   <div class="">
     <!-- <span
       class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block">
-      <span class="relative text-white text-3xl font-black px-5">Bài viết</span>
+      <span class="relative text-white text-3xl font-black px-3   ">Bài viết</span>
     </span> -->
     <!-- các nut lọc -->
     <div class="flex justify-between">
@@ -27,38 +27,38 @@
     </div>
 
     <div v-else>
-      <div class="my-5 2xl:grid hidden grid-cols-3 space-x-5">
-        <div class="space-y-5">
+      <div class="my-5 2xl:grid hidden grid-cols-3 space-x-3">
+        <div class="space-y-3">
           <div v-for="i in posts.list31" :key="i.id">
             <PostVMono :data="i" />
           </div>
         </div>
-        <div class="space-y-5">
+        <div class="space-y-3">
           <div v-for="i in posts.list32" :key="i.id">
             <PostVMono :data="i" />
           </div>
         </div>
-        <div class="space-y-5">
+        <div class="space-y-3">
           <div v-for="i in posts.list33" :key="i.id">
             <PostVMono :data="i" />
           </div>
         </div>
       </div>
 
-      <div class="my-5 md:grid 2xl:hidden hidden grid-cols-2 space-x-5">
-        <div class="space-y-5">
+      <div class="my-5 md:grid 2xl:hidden hidden grid-cols-2 space-x-3">
+        <div class="space-y-3">
           <div v-for="i in posts.list21" :key="i.id">
             <PostVMono :data="i" />
           </div>
         </div>
-        <div class="space-y-5">
+        <div class="space-y-3">
           <div v-for="i in posts.list22" :key="i.id">
             <PostVMono :data="i" />
           </div>
         </div>
       </div>
 
-      <div class="my-5 space-y-5 md:hidden">
+      <div class="my-5 space-y-3 md:hidden">
         <div v-for="i in usePost.list" :key="i.id">
           <PostVMono :data="i" />
         </div>
@@ -69,7 +69,6 @@
       <nutxLink to="/" class="btn btn-outline btn-primary mx-auto"> trở lại </nutxLink>
     </div> -->
     <!-- btn chuyển trang -->
-
     <div class="form-control mx-auto w-fit">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">

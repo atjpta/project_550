@@ -1,28 +1,14 @@
 <template>
-  <div class="mt-5">
+  <div class="my-5">
     <div class="flex justify-end">
-      <div @click="openDialogCreate()" class="btn btn-primary">tạo loại môn học</div>
-    </div>
-    <!-- btn chuyển trang -->
-    <div class="form-control mx-auto w-fit my-3">
-      <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
-        </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
-          <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
-          </option>
-        </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
-          <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
-        </button>
+      <div @click="openDialogCreate()" class="btn btn-success btn-outline btn-sm">
+        tạo loại môn học
       </div>
     </div>
 
     <!-- loadingSkeleton -->
 
-    <div v-if="loadingSkeleton || !useTypeCourse.list[0]" class="space-y-5">
+    <div v-if="loadingSkeleton" class="space-y-5">
       <div v-for="i in size" :key="i">
         <AdminVSkeleton />
       </div>
@@ -35,12 +21,12 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">Bạn chưa lưu bài viết nào cả !?</div>
+        <div class="text-center text-2xl my-10">Bạn chưa có loại bài viết nào cả !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit my-3">
+    <div v-if="useTypeCourse.list[0]" class="form-control mx-auto w-fit">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />

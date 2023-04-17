@@ -1,32 +1,21 @@
 <template>
   <div class="mt-5">
     <div class="flex justify-end">
-      <div class="btn btn-primary">tạo môn học</div>
+      <nuxtLink to="/admin/course/edit" class="btn btn-success btn-outline btn-sm">tạo môn học</nuxtLink>
     </div>
     <!-- btn chuyển trang -->
 
     <div class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
-        <button
-          @click="goToPre()"
-          :disabled="selectPage == 1"
-          class="btn lg:btn-md btn-sm"
-        >
+        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select
-          v-model="selectPage"
-          class="select select-bordered lg:select-md select-sm"
-        >
+        <select v-model="selectPage" class="select select-bordered lg:select-md select-sm">
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
             trang {{ i }}
           </option>
         </select>
-        <button
-          @click="goToNext()"
-          :disabled="selectPage == maxPage"
-          class="btn btn-sm lg:btn-md text-2xl"
-        >
+        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>
@@ -59,27 +48,15 @@
 
     <div class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
-        <button
-          @click="goToPre()"
-          :disabled="selectPage == 1"
-          class="btn lg:btn-md btn-sm"
-        >
+        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select
-          v-model="selectPage"
-          @change="goToPage()"
-          class="select select-bordered lg:select-md select-sm"
-        >
+        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
             trang {{ i }}
           </option>
         </select>
-        <button
-          @click="goToNext()"
-          :disabled="selectPage == maxPage"
-          class="btn btn-sm lg:btn-md text-2xl"
-        >
+        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>

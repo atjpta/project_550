@@ -16,18 +16,19 @@
     </div>
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuAdmin" :key="i">
-        <nuxtLink :to="'/admin' + i.url" class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1">
-          <div>
-            {{ i.title }}
-          </div>
-          <div :data-tip="` ${i.slReport} ${i.title} có báo cáo`"
-            class="space-x-1 flex tooltip tooltip-left md:tooltip-top text-primary">
-            <OtherVIcon icon="fa-solid fa-flag" />
+        <div class="indicator">
+          <nuxtLink :to="'/admin' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
             <div>
-              {{ i.slReport }}
+              {{ i.title }}
             </div>
-          </div>
-        </nuxtLink>
+            <div v-if="i.slReport" class="indicator-item mr-2">
+              <div :data-tip="` ${i.slReport} ${i.title} có báo cáo`"
+                class="badge badge-secondary border-none tooltip tooltip-left md:tooltip-top text-primary">
+                {{ i.slReport }}
+              </div>
+            </div>
+          </nuxtLink>
+        </div>
       </div>
       <div v-for="i in menuAdmin2" :key="i">
         <nuxtLink :to="'/admin' + i.url" class="flex space-x-1 btn btn-sm btn-outline mr-1 mb-1">
@@ -157,7 +158,7 @@ const menuAdmin = ref([
 const menuAdmin2 = ref([
   {
     title: "môn học",
-    url: "/course",
+    url: "/courses",
   },
   {
     title: "loại môn học",

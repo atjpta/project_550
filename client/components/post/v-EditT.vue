@@ -1,18 +1,15 @@
 <template>
-  <div
-    :class="
-      preview
-        ? 'bg-base-100'
-        : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
-    "
-    class="p-5 rounded-2xl"
-  >
+  <div :class="
+    preview
+      ? 'bg-base-100'
+      : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
+  " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-semibold">Chỉnh sửa bài viết</div>
+        <div class="text-4xl text-center font-extrabold">Chỉnh sửa bài viết</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Tiêu đề
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
@@ -20,16 +17,12 @@
               </div>
             </div>
           </div>
-          <input
-            v-model="usePost.post_edit.title"
-            placeholder="nhập tiêu đề"
-            type="text"
-            class="input input-primary w-full"
-          />
+          <input v-model="usePost.post_edit.title" placeholder="nhập tiêu đề" type="text"
+            class="input input-primary w-full" />
         </div>
 
         <!-- ảnh bìa -->
-        <div class="text-xl font-semibold mt-5">
+        <div class="text-xl font-extrabold mt-5">
           Ảnh bìa cho bài viết
           <div>
             <ImageVUploadsimple :data="usePost.post_edit.image_cover_url" />
@@ -37,7 +30,7 @@
         </div>
         <!-- phần tag của bài viết -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Chọn tag
             <div class="tooltip" data-tip="được chọn tối đa 5 tag">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -49,7 +42,7 @@
         </div>
         <!-- phần chọn serise -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn chuỗi bài viết
             <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -57,10 +50,7 @@
               </div>
             </div>
           </div>
-          <select
-            v-model="usePost.post_edit.series"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="usePost.post_edit.series" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Không có</option>
             <option :value="i" v-for="i in list_series" :key="i">
               {{ i.name }}
@@ -73,7 +63,7 @@
 
         <!-- chọn trạng thái -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn trạng thái bài viết
             <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -81,10 +71,7 @@
               </div>
             </div>
           </div>
-          <select
-            v-model="selectStatus"
-            class="select-sm select select-primary w-full max-w-xs"
-          >
+          <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
             <option :value="i" v-for="i in list_status" :key="i">
               {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
             </option>
@@ -93,7 +80,7 @@
 
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
-          <div class="text-xl font-semibold">
+          <div class="text-xl font-extrabold">
             Nội dung
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
@@ -104,13 +91,7 @@
         </div>
 
         <div class="-z-10">
-          <QuillEditor
-            :modules="modules"
-            placeholder="nhập nội dung"
-            ref="quill"
-            theme="snow"
-            toolbar="full"
-          />
+          <QuillEditor :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow" toolbar="full" />
         </div>
       </div>
     </transition>
@@ -122,28 +103,16 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
-      <div
-        v-if="preview == false"
-        @click="showPreview()"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
         xem trước
       </div>
-      <div
-        v-if="preview == true"
-        @click="preview = false"
-        class="btn btn-outline btn-sm btn-info"
-      >
+      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div
-        @click="save()"
-        :class="[loading ? 'loading' : '']"
-        class="btn btn-outline btn-sm btn-primary"
-      >
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
         lưu
       </div>
-      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
     </div>
   </div>
 </template>

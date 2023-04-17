@@ -6,10 +6,10 @@
   " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-semibold">Chỉnh sửa câu hỏi</div>
+        <div class="text-4xl text-center font-extrabold">Chỉnh sửa câu hỏi</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Tiêu đề
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
@@ -23,7 +23,7 @@
 
         <!-- phần tag của bài viết -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Chọn tag
             <div class="tooltip" data-tip="được chọn tối đa 5 tag">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -35,7 +35,7 @@
         </div>
         <!-- phần chọn serise -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn chủ đề câu hỏi
             <div class="tooltip" data-tip="cần có chủ đề câu hỏi trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -56,7 +56,7 @@
         <!-- phần chọn team -->
 
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn nhóm
             <div class="tooltip" data-tip="Cần tham gia nhóm trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -80,7 +80,7 @@
         </div>
         <!-- chọn trạng thái -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn trạng thái bài viết
             <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -97,7 +97,7 @@
 
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
-          <div class="text-xl font-semibold">
+          <div class="text-xl font-extrabold">
             Tiêu đề
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
@@ -126,10 +126,10 @@
       <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
         lưu
       </div>
-      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
     </div>
   </div>
 </template>

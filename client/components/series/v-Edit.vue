@@ -6,10 +6,10 @@
   " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-semibold">Chỉnh sửa series</div>
+        <div class="text-4xl text-center font-extrabold">Chỉnh sửa series</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Tên series
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
@@ -22,7 +22,7 @@
         </div>
 
         <!-- ảnh bìa -->
-        <div class="text-xl font-semibold mt-5">
+        <div class="text-xl font-extrabold mt-5">
           Biểu tượng series
           <div>
             <ImageVUploadsimple :data="useSeries.series_edit.image_cover_url" />
@@ -30,7 +30,7 @@
         </div>
         <!-- phần tag của bài viết -->
         <div>
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Chọn tag
             <div class="tooltip" data-tip="tag sẽ được thêm theo tag bài viết">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -49,7 +49,7 @@
 
         <!-- chọn nhóm cho bài viết -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Chọn nhóm cho bài viết
             <div class="tooltip" data-tip="bạn phải vào trong nhóm trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -68,7 +68,7 @@
 
         <!-- chọn trạng thái -->
         <div>
-          <div class="text-xl font-semibold mt-5 mb-2">
+          <div class="text-xl font-extrabold mt-5 mb-2">
             Trạng thái của series
             <div class="tooltip" data-tip="riêng tư là chỉ bạn xem được">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
@@ -86,7 +86,7 @@
 
         <!-- phần nội dung bài viết -->
         <div class="mt-5 mb-2">
-          <div class="text-xl font-semibold mt-5">
+          <div class="text-xl font-extrabold mt-5">
             Tóm tắt
             <div class="tooltip" data-tip="không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">

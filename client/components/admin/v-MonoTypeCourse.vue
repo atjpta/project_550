@@ -75,6 +75,7 @@ function openDialogDelete() {
             try {
                 await useTypeCourse.deleteOne(props.data.id);
                 useRouteS.refreshData(1);
+                useAlert.setSuccess("xóa thành công");
             } catch (error) {
                 console.log(error);
             }
