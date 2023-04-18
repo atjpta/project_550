@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5">
+  <div class="">
     <div class="hover:bg-gradient-to-l from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl px-5 py-3 flex">
       <!-- phần người gửi -->
       <div>

@@ -3,73 +3,99 @@
     <div v-if="loadingSkeleton">
       <QuestionVSkeleton />
     </div>
-    <div
-      v-else
-      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5"
-    >
+    <div v-else
+      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
       <QuestionVQuestion :data="useQuestion.question" />
-      <!-- bình luận của câu hỏi -->
-      <div
-        @click="openInputCmt = !openInputCmt"
-        class="btn btn-sm text-primary btn-ghost mb-2"
-      >
-        Nhập bình luận
-        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
-          <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+      <!-- chọn cái xem -->
+      <div class="flex flex-wrap">
+        <div @click="selectviewcmt = false" :class="!selectviewcmt ? 'text-primary' : ''"
+          class="btn btn-sm btn-outline mr-1 mb-1">
+          xem câu trả lời
+        </div>
+        <div @click="selectviewcmt = true" :class="selectviewcmt ? 'text-primary' : ''"
+          class="btn btn-sm btn-outline mr-1 mb-1">
+          xem bình luận
+        </div>
+      </div>
+      <div v-if="selectviewcmt">
+        <!-- bình luận của câu hỏi -->
+        <div @click="openInputCmt = !openInputCmt" class="btn btn-sm text-primary btn-ghost mb-2">
+          Nhập bình luận
+          <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+            <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+              <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+            </div>
+          </div>
+        </div>
+        <div v-if="openInputCmt">
+          <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
+        </div>
+
+        <div>
+          <div v-for="(i, n) in dataPerPage" :key="i">
+            <CommentsVCmt :data="i" />
+            <div v-if="n < (dataPerPage.length > size ? size : dataPerPage.length) - 1" class="divider my-0"></div>
+          </div>
+        </div>
+        <!-- btn chuyển trang cmt -->
+        <div v-if="dataPerPage.length > 0" class="form-control mx-auto w-fit">
+          <div class="input-group lg:input-group-md input-group-sm">
+            <button @click="goToPre()" :disabled="selectPage == 1" class="btn btn-sm">
+              <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+            </button>
+            <select v-model="selectPage" class="select select-bordered select-sm">
+              <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+                trang {{ i }}
+              </option>
+            </select>
+            <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm text-2xl">
+              <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+            </button>
           </div>
         </div>
       </div>
-      <div v-if="openInputCmt">
-        <CommentsVInputCmt
-          @send="openDialogSignin(send)"
-          :loading="loading"
-          :data="dataInput"
-          :reset="resetInput"
-        />
-      </div>
 
-      <div>
-        <div v-for="(i, n) in useCmt.list_cmt" :key="i">
-          <CommentsVCmt :data="i" />
-          <div v-if="n < useCmt.list_cmt.length - 1" class="divider my-0"></div>
-        </div>
-      </div>
-
-      <!-- nhập câu trả lời -->
-      <div>
-        <div
-          @click="openInputAnswer = !openInputAnswer"
-          class="btn btn-sm btn-success mb-2 mt-5"
-        >
-          Nhập câu trả lời
-        </div>
-        <div v-if="openInputAnswer">
-          <AnswerVInputAnswer
-            @send="openDialogSignin(sendAnswer)"
-            :loading="loading"
-            :data="dataInput"
-            :reset="resetInput"
-          />
-        </div>
-        <div class="lg:flex justify-between mb-3 lg:mb-0">
-          <div class="text-2xl font-bold mb-3">
-            {{ useAnswer.list_answer.length }} câu trả lời
+      <div v-else>
+        <!-- nhập câu trả lời -->
+        <div>
+          <div @click="openInputAnswer = !openInputAnswer" class="btn btn-sm text-success btn-ghost">
+            Nhập câu trả lời
           </div>
-          <!-- <div class="flex space-x-1">
+          <div v-if="openInputAnswer">
+            <AnswerVInputAnswer @send="openDialogSignin(sendAnswer)" :loading="loading" :data="dataInput"
+              :reset="resetInput" />
+          </div>
+          <div class="lg:flex justify-between mb-3 lg:mb-0">
+            <div class="text-2xl font-bold mb-3">
+              {{ useAnswer.list_answer.length }} câu trả lời
+            </div>
+            <!-- <div class="flex space-x-1">
           <div class="btn btn-sm btn-outline">lọc</div>
           <div class="btn btn-sm btn-outline">lọc</div>
           <div class="btn btn-sm btn-outline">lọc</div>
         </div> -->
-        </div>
-        <div>
-          <div v-for="i in list_answer.listAnswer" :key="i">
-            <AnswerVAnswer :data="i" />
-            <!-- <div v-if="n < list_answer.listAnswer.length - 1" class="divider my-0"></div> -->
           </div>
-          <div v-for="i in list_answer.listNoAnswer" :key="i">
-            <AnswerVAnswer :data="i" />
-            <!-- <div v-if="n < list_answer.listNoAnswer.length - 1" class="divider my-0"></div> -->
+          <div>
+            <div v-for="i in dataPerPageA" :key="i">
+              <AnswerVAnswer :data="i" />
+              <!-- <div v-if="n < list_answer.listAnswer.length - 1" class="divider my-0"></div> -->
+            </div>
+          </div>
+        </div>
+        <!-- btn chuyển trang cmt -->
+        <div v-if="dataPerPageA.length > 0" class="form-control mx-auto w-fit">
+          <div class="input-group lg:input-group-md input-group-sm">
+            <button @click="goToPreA()" :disabled="selectPageA == 1" class="btn btn-sm">
+              <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+            </button>
+            <select v-model="selectPageA" class="select select-bordered select-sm">
+              <option :value="i" :disabled="i == selectPageA" v-for="i in maxPageA" :key="i">
+                trang {{ i }}
+              </option>
+            </select>
+            <button @click="goToNextA()" :disabled="selectPageA == maxPageA" class="btn btn-sm text-2xl">
+              <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+            </button>
           </div>
         </div>
       </div>
@@ -87,6 +113,7 @@ import { authStore } from "~~/stores/auth.store";
 import { questionStore } from "~~/stores/question.store";
 import { notificationStore } from "~~/stores/notification.store";
 
+const selectviewcmt = ref(false);
 const route = useRoute();
 const useQuestion = questionStore();
 const useUser = userStore();
@@ -98,6 +125,60 @@ const useAuth = authStore();
 const useNotification = notificationStore();
 const resetInput = ref(0);
 const loadingSkeleton = ref(false);
+
+const size = 5;
+const maxPage = computed(() => {
+  selectPage.value = 1;
+  return Math.ceil(useCmt.list_cmt.length / size);
+});
+const selectPage = ref(1);
+
+const dataPerPage = computed(() => {
+  let list = [];
+  let index = size * (selectPage.value - 1);
+
+  for (let i = 0; i < size; i++) {
+    if (index < useCmt.list_cmt.length) list.push(useCmt.list_cmt[index]);
+    index++;
+  }
+
+  return list;
+});
+
+function goToPre() {
+  selectPage.value -= 1;
+}
+
+function goToNext() {
+  selectPage.value += 1;
+}
+
+const maxPageA = computed(() => {
+  selectPageA.value = 1;
+  return Math.ceil(useAnswer.list_answer.length / size);
+});
+const selectPageA = ref(1);
+
+const dataPerPageA = computed(() => {
+  let list = [];
+  let index = size * (selectPageA.value - 1);
+
+  for (let i = 0; i < size; i++) {
+    if (index < list_answer.value.length) list.push(list_answer.value[index]);
+    index++;
+  }
+
+  return list;
+});
+
+function goToPreA() {
+  selectPageA.value -= 1;
+}
+
+function goToNextA() {
+  selectPageA.value += 1;
+}
+
 const dataInput = ref({
   content: {},
   tagname: [],
@@ -111,10 +192,7 @@ const list_answer = computed(() => {
       listAnswer.push(e);
     } else listNoAnswer.push(e);
   });
-  return {
-    listAnswer,
-    listNoAnswer,
-  };
+  return [...listAnswer, ...listNoAnswer];
 });
 const openInputCmt = ref(false);
 const openInputAnswer = ref(false);

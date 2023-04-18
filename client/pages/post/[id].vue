@@ -36,9 +36,27 @@
       </div>
 
       <div>
-        <div v-for="(i, n) in useCmt.list_cmt" :key="i">
+        <div v-for="(i, n) in dataPerPage" :key="i">
           <CommentsVCmt :data="i" />
-          <div v-if="n < useCmt.list_cmt.length - 1" class="divider my-0"></div>
+          <div v-if="n < (dataPerPage.length > size ? size : dataPerPage.length) - 1" class="divider my-0"></div>
+        </div>
+      </div>
+
+      <!-- btn chuyển trang cmt -->
+
+      <div v-if="dataPerPage.length > 0" class="form-control mx-auto w-fit">
+        <div class="input-group lg:input-group-md input-group-sm">
+          <button @click="goToPre()" :disabled="selectPage == 1" class="btn btn-sm">
+            <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+          </button>
+          <select v-model="selectPage" class="select select-bordered select-sm">
+            <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+              trang {{ i }}
+            </option>
+          </select>
+          <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm text-2xl">
+            <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+          </button>
         </div>
       </div>
     </div>
@@ -67,6 +85,34 @@ const useAuth = authStore();
 const resetInput = ref(0);
 const useNotification = notificationStore();
 const loadingSkeleton = ref(false);
+
+const size = 5;
+const maxPage = computed(() => {
+  selectPage.value = 1;
+  return Math.ceil(useCmt.list_cmt.length / size);
+});
+const selectPage = ref(1);
+
+const dataPerPage = computed(() => {
+  let list = [];
+  let index = size * (selectPage.value - 1);
+
+  for (let i = 0; i < size; i++) {
+    if (index < useCmt.list_cmt.length) list.push(useCmt.list_cmt[index]);
+    index++;
+  }
+
+  return list;
+});
+
+function goToPre() {
+  selectPage.value -= 1;
+}
+
+function goToNext() {
+  selectPage.value += 1;
+}
+
 const dataInput = ref({
   content: {},
   tagname: [],

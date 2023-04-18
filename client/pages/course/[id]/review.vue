@@ -22,6 +22,43 @@
             <ReviewVReview :data="useReview.review" />
         </div>
         <!-- phần cmt -->
+        <div class="flex justify-between">
+            <div @click="openInputCmt = !openInputCmt" class="btn btn-sm btn-ghost text-primary my-2">
+                Nhập bình luận
+                <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+                    <div class="btn-xs btn btn-info btn-outline btn-circle h-1 w-6">
+                        <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="openInputCmt">
+            <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
+        </div>
+
+        <div>
+            <div v-for="(i, n) in dataPerPage" :key="i">
+                <CommentsVCmt :data="i" />
+                <div v-if="n < (dataPerPage.length > size ? size : dataPerPage.length) - 1" class="divider my-0"></div>
+            </div>
+        </div>
+
+        <!-- btn chuyển trang cmt -->
+        <div v-if="dataPerPage.length > 0" class="form-control mx-auto w-fit">
+            <div class="input-group lg:input-group-md input-group-sm">
+                <button @click="goToPre()" :disabled="selectPage == 1" class="btn btn-sm">
+                    <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+                </button>
+                <select v-model="selectPage" class="select select-bordered select-sm">
+                    <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+                        trang {{ i }}
+                    </option>
+                </select>
+                <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm text-2xl">
+                    <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,16 +68,102 @@ import { dialogStore } from "../../../stores/dialog.store";
 import { routeStore } from "~/stores/route.store";
 import { reviewStore } from "~/stores/review.store";
 import { alertStore } from "~/stores/alert.store";
+import { cmtStore } from "~/stores/cmt.store";
+import { notificationStore } from "~/stores/notification.store";
+import { courseStore } from "~/stores/course.store";
 
+const openInputCmt = ref(false);
 const openEdit = ref(false);
+const useCmt = cmtStore();
 const useDialog = dialogStore();
 const data = ref({});
 const useAuth = authStore();
 const route = useRoute();
 const useReview = reviewStore();
 const useRouteS = routeStore();
+const useCourse = courseStore();
 const loading = ref(false);
 const useAlert = alertStore();
+const useNotification = notificationStore();
+
+const size = 5;
+const maxPage = computed(() => {
+    selectPage.value = 1;
+    return Math.ceil(useCmt.list_cmt.length / size);
+});
+const selectPage = ref(1);
+
+const dataPerPage = computed(() => {
+    let list = [];
+    let index = size * (selectPage.value - 1);
+
+    for (let i = 0; i < size; i++) {
+        if (index < useCmt.list_cmt.length) list.push(useCmt.list_cmt[index]);
+        index++;
+    }
+
+    return list;
+});
+
+function goToPre() {
+    selectPage.value -= 1;
+}
+
+function goToNext() {
+    selectPage.value += 1;
+}
+
+const dataInput = ref({
+    content: {},
+    tagname: [],
+});
+const resetInput = ref(0);
+
+const send = async () => {
+    loading.value = true;
+    let list = [];
+    dataInput.value.tagname.forEach((e) => {
+        list.push(e.id);
+    });
+    const dataSend = {
+        author: useAuth.user.id,
+        post: route.params.id,
+        content: dataInput.value.content,
+        tag_name: list,
+    };
+
+    const dataNotification = {
+        author: useAuth.user.id,
+        model: route.params.id,
+        content: `bạn có bình luận mới về môn học "${useCourse.course.name}"`,
+        url: route.fullPath,
+        type: "info",
+        // listTagName: list,
+    };
+
+    try {
+        if (
+            dataSend.content.ops.length > 1 ||
+            typeof dataSend.content.ops[0].insert != "string" ||
+            dataSend.content.ops[0].insert.trim() != "" ||
+            dataSend.tag_name.length
+        ) {
+            await useCmt.create(dataSend);
+            await useNotification.create(dataNotification);
+            await useCmt.getBy("post", route.params.id);
+            dataInput.value.content = { ops: [{ insert: "\n" }] };
+            dataInput.value.tagname = [];
+            resetInput.value++;
+        } else {
+            useAlert.setWarning("hãy nhập bình luận");
+        }
+    } catch (error) {
+        console.log("lỗi gửi cmt");
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
+};
 
 async function save() {
     loading.value = true;
@@ -62,7 +185,7 @@ async function save() {
     }
 }
 
-function openDialogSignin() {
+function openDialogSignin(cb) {
     if (!useAuth.isUserLoggedIn) {
         useDialog.showDialog(
             {
@@ -77,6 +200,10 @@ function openDialogSignin() {
             }
         );
     } else {
+        if (cb) {
+            cb();
+            return;
+        }
         openEdit.value = true;
     }
 }
@@ -103,6 +230,7 @@ async function getEdit() {
 async function getApi() {
     try {
         await useReview.findAvg(route.params.id);
+        await useCmt.getBy("post", route.params.id);
     } catch (error) {
         console.log(error);
     }

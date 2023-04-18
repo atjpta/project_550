@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5">
+  <div v-if="data.author" class="mb-5">
     <div :class="[
       data.choice
         ? 'bg-gradient-to-r from-success/10 via-success/5 to-pink-500/0'
