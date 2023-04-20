@@ -48,6 +48,14 @@ async function getApi() {
 onMounted(() => {
     getApi();
 });
+
+const title = computed(() => {
+    return useCourse.course.name;
+});
+
+useHead({
+    title: title,
+});
 </script>
 
 <style></style>

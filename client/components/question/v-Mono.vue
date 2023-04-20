@@ -5,7 +5,7 @@
         data.choice.length
           ? ' from-teal-500/10 via-teal-500/5 to-pink-500/0'
           : ' from-warning/10 via-warning/5 to-pink-500/0'
-      " class="p-5 hover:bg-gradient-to-l">
+      " class="p-5 hover:bg-gradient-to-l indicator w-full">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -33,37 +33,40 @@
                   <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
                 </div>
               </div>
-              <!-- edit cho tác giả -->
-              <div v-if="isAuthor">
-                <div class="space-x-2 static flex">
-                  <nuxtLink :to="`/question/edit/${data._id}`" class="tooltip" data-tip="sửa câu hỏi">
-                    <div class="btn btn-ghost text-primary">
-                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </nuxtLink>
-
-                  <div class="tooltip" data-tip="xóa câu hỏi">
-                    <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                      <OtherVIcon icon="fa-solid fa-trash-can" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <!-- phần tùy chọn cho người đọc -->
-              <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+              <div class="dropdown dropdown-left indicator-item mr-10 mt-10">
                 <label tabindex="0" class="btn btn-ghost">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li @click="openDialogReport()" class="hover-bordered">
-                    <a>
-                      <div>
-                        <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo
-                      </div>
-                    </a>
-                  </li>
+                  <div v-if="!isAuthor">
+                    <li @click="openDialogReport()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon icon="fa-solid fa-flag" />
+                          báo cáo
+                        </div>
+                      </a>
+                    </li>
+                  </div>
+                  <div>
+                    <li @click="navigateTo(`/question/edit/${data._id}`)" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                          sửa
+                        </div>
+                      </a>
+                    </li>
+                    <li @click="openDialogDelete()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                          xóa
+                        </div>
+                      </a>
+                    </li>
+                  </div>
                 </ul>
               </div>
             </div>

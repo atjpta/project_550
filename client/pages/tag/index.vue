@@ -100,6 +100,10 @@ async function getApi() {
 onMounted(() => {
   getApi();
 });
+
+useHead({
+  title: "thẻ tag",
+});
 </script>
 
 <style></style>

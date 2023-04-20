@@ -10,7 +10,7 @@
               class="before:ring-8 before:ring-indigo-500/20 hover:before:translate-x-2 hover:before:rotate-180 before:duration-500 before:rounded-tr-none before:rounded-bl-rounded-tr-none translate before:block before:absolute before:-inset-1 before:skew-y-12 before:skew-x-12 before:bg-gradient-to-r before:from-green-500 before:via-teal-500/50 before:to-blue-500 relative inline-block">
               <span
                 class="before:ring-8 before:ring-pink-500/20 hover:before:-translate-x-2 hover:before:-rotate-180 before:duration-500 before:rounded-tl-rounded-tr-none before:rounded-br-rounded-tr-none before:block before:absolute before:-inset-1 before:-skew-y-12 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500/50 before:to-pink-500 relative inline-block">
-                <span class="relative italic px-2">abctu</span>
+                <span class="relative italic px-2">ctuf</span>
               </span>
             </span>
           </div>
@@ -41,19 +41,21 @@
           </div>
         </div>
         <div class="sm:flex hidden form-control w-1/3 relative">
-          <div>
-            <div class="input-group" v-if="route.path.slice(0, 7) != '/search'">
-              <input @focusout="focus = false" @focusin="focus = true" v-model="useSearch.key" type="text"
-                placeholder="Tìm kiếm…" class="input input-bordered w-full" />
+          <div @mouseleave="focus = false" @mouseenter="focus = true">
+            <div>
+              <div class="input-group" v-if="route.path.slice(0, 7) != '/search'">
+                <input @focusin="focus = true" v-model="useSearch.key" type="text" placeholder="Tìm kiếm…"
+                  class="input input-bordered w-full" />
 
-              <button class="btn btn-square">
-                <OtherVIcon icon="fa-solid fa-magnifying-glass" />
-              </button>
+                <button class="btn btn-square">
+                  <OtherVIcon icon="fa-solid fa-magnifying-glass" />
+                </button>
+              </div>
             </div>
+            <SearchVDataSearch v-if="
+              focus && useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'
+            " class="absolute top-12" />
           </div>
-          <SearchVDataSearch v-if="
-            focus && useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'
-          " class="absolute top-14" />
         </div>
 
         <div class="flex">

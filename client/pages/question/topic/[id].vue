@@ -66,6 +66,14 @@ async function save() {
 definePageMeta({
   middleware: "guest",
 });
+
+const title = computed(() => {
+  return useQuestion.question.title;
+});
+
+useHead({
+  title: "tạo câu hỏi",
+});
 </script>
 
 <style></style>

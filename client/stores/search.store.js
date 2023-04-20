@@ -6,6 +6,7 @@ import topicService from "~~/services/topic.service";
 import teamService from "~~/services/team.service";
 import tagService from "~~/services/tag.service";
 import userService from "~~/services/user.service";
+import courseService from "~/services/course.service";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -23,6 +24,7 @@ export const searchStore = defineStore("searchStore", {
             list_team: [],
             list_user: [],
             list_tag: [],
+            list_course: [],
             key: '',
             keySave: '',
             mark: {},
@@ -143,6 +145,22 @@ export const searchStore = defineStore("searchStore", {
             return list;
         },
 
+        list_search_course(state) {
+            let list = [];
+            if (state.key.length > 0) {
+                list = state.list_course.filter((e) => {
+                    if (e.name) {
+                        return (
+                            e.name.toLowerCase().trim().indexOf(state.key.toLowerCase().trim()) > -1
+                        );
+                    }
+                    return false;
+                });
+            }
+            // return state.list_tag
+            return list;
+        },
+
     },
     actions: {
         setTime(time) {
@@ -158,6 +176,7 @@ export const searchStore = defineStore("searchStore", {
             await this.getUser()
             await this.getTeam()
             await this.getTag()
+            await this.getCourse()
 
         },
 
@@ -187,6 +206,9 @@ export const searchStore = defineStore("searchStore", {
         },
         async getTag() {
             this.list_tag = await tagService.findAllInfo()
+        },
+        async getCourse() {
+            this.list_course = await courseService.findAll()
         },
 
 

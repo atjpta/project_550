@@ -16,13 +16,13 @@
       </div>
 
       <!-- các btn -->
-      <div class="justify-between my-3 lg:flex">
+      <div class="flex justify-end my-3 lg:flex">
         <div>
           <button v-if="
             useAuth.isUserLoggedIn &&
             useSeries.series.author &&
             useAuth.user?.id == useSeries.series.author[0]?._id
-          " @click="openAddSeries()" class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0">
+          " @click="openAddSeries()" class="btn btn-outline btn-success btn-sm mt-1 lg:mt-0">
             {{ isSeries ? "hiện danh sách" : "thêm bài viết vào series" }}
           </button>
           <div v-if="
@@ -110,10 +110,13 @@ function gotoCreate() {
   if (useMember.isMember) {
     navigateTo(`/post/series/${route.params.id}`);
   } else {
-    if (useSeries.series?.team[0])
+    if (useSeries.series?.team[0]) {
       useAlert.setError(
         `bạn không thuộc vào nhóm ${useSeries.series.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
       );
+    } else {
+      navigateTo(`/post/series/${route.params.id}`);
+    }
   }
 }
 
@@ -136,6 +139,14 @@ async function getApi() {
 
 onMounted(() => {
   getApi();
+});
+
+const title = computed(() => {
+  return useSeries.series.name;
+});
+
+useHead({
+  title: title,
 });
 </script>
 

@@ -88,6 +88,10 @@ async function getApi() {
 onMounted(() => {
   getApi();
 });
+
+useHead({
+  title: "người dùng",
+});
 </script>
 
 <style></style>

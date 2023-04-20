@@ -17,13 +17,15 @@ export const followStore = defineStore("followStore", {
             follow_series: [],
             follow_team: [],
             follow_tag: [],
+            follow_course: [],
+
         };
     },
     getters: {
 
     },
 
-    
+
 
     actions: {
         setTime(time) {
@@ -34,7 +36,7 @@ export const followStore = defineStore("followStore", {
             this.follow = await followService.findByFollow(user, follow);
         },
         async findByMyUser(id) {
-            this.follow_user = await followService.findByMy('myuser',id);
+            this.follow_user = await followService.findByMy('myuser', id);
         },
         async findByMyPost(id) {
             this.follow_post = await followService.findByMy('mypost', id);
@@ -43,23 +45,27 @@ export const followStore = defineStore("followStore", {
             });
         },
         async findByMyQuestion(id) {
-            this.follow_question = await followService.findByMy('myquestion',id);
+            this.follow_question = await followService.findByMy('myquestion', id);
             this.follow_question.forEach((e, i) => {
                 this.follow_question[i].createdAt = this.setTime(e.question[0].createdAt)
             });
         },
         async findByMySeries(id) {
-            this.follow_series = await followService.findByMy('myseries',id);
+            this.follow_series = await followService.findByMy('myseries', id);
         },
         async findByMyTopic(id) {
-            this.follow_topic = await followService.findByMy('mytopic',id);
+            this.follow_topic = await followService.findByMy('mytopic', id);
         },
         async findByMyTeam(id) {
-            this.follow_team = await followService.findByMy('myteam',id);
+            this.follow_team = await followService.findByMy('myteam', id);
         },
 
         async findByMyTag(id) {
             this.follow_tag = await followService.findByMy('mytag', id);
+        },
+
+        async findByMyCourse(id) {
+            this.follow_course = await followService.findByMy('mycourse', id);
         },
 
         async create(data) {

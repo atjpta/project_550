@@ -125,6 +125,10 @@ onMounted(() => {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "trang cá nhân",
+});
 </script>
 
 <style></style>

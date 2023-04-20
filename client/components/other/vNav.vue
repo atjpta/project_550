@@ -54,6 +54,12 @@ const dataNav = ref([
       tag: "/search",
     },
     {
+      name: "Môn học",
+      url: "/course",
+      icon: "fa-solid fa-book",
+      tag: "/course",
+    },
+    {
       name: "Nhóm",
       url: "/team",
       icon: "fa-solid fa-building-user",

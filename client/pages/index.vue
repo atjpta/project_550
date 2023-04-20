@@ -113,6 +113,8 @@ definePageMeta({
   layout: "welcome",
   middleware: "guest",
 });
+
+
 </script>
 
 <style></style>

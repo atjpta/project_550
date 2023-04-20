@@ -52,6 +52,10 @@ async function getApi() {
 onMounted(() => {
   getApi();
 });
+
+useHead({
+  title: "sửa môn học",
+});
 </script>
 
 <style></style>

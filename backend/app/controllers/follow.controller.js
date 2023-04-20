@@ -918,6 +918,52 @@ exports.findMyFollowTeam = async (req, res, next) => {
 }
 
 
+exports.findMyFollowCourse = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    follow: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: "courses",
+                    localField: "user",
+                    foreignField: "_id",
+                    as: "course",
+                },
+            },
+            {
+                $match: {
+                    "course.0": { $exists: true },
+                },
+            },
+
+            {
+                $project: {
+                    _id: 1,
+                    'course._id': 1,
+                    'course.name': 1,
+                }
+            },
+            {
+                $sort: { 'createdAt': -1 }
+            }
+        ])
+        if (!document) {
+            return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
+        }
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findMyFollowCourse' + error })
+        )
+    }
+}
+
+
 
 exports.findMyFollowTag = async (req, res, next) => {
     const { id } = req.params;

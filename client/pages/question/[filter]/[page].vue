@@ -152,6 +152,10 @@ onMounted(() => {
 onUnmounted(() => {
   useQuestion.list = [];
 });
+
+useHead({
+  title: "câu hỏi",
+});
 </script>
 
 <style></style>

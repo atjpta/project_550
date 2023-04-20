@@ -52,6 +52,14 @@ async function save() {
 definePageMeta({
   middleware: "guest",
 });
+
+const title = computed(() => {
+  return useQuestion.question.title;
+});
+
+useHead({
+  title: "tạo chuỗi bài viết",
+});
 </script>
 
 <style></style>

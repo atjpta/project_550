@@ -10,30 +10,22 @@
 
       <div class="flex justify-center uppercase text-3xl font-bold mt-5">
         danh sách câu hỏi
-        <div
-          data-tip="các Câu hỏi riêng tư sẽ không hiện "
-          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2"
-        >
+        <div data-tip="các Câu hỏi riêng tư sẽ không hiện "
+          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2">
           <OtherVIcon class-icon="" icon="fa-solid fa-info" />
         </div>
       </div>
 
       <!-- các btn -->
-      <div class="justify-between my-3 lg:flex">
+      <div class="flex justify-end my-3 lg:flex">
         <div>
-          <div
-            @click="openDialogSignin(addTopic)"
-            class="btn btn-outline btn-success btn-sm lg:btn-md mt-1 lg:mt-0"
-          >
+          <div @click="openDialogSignin(addTopic)" class="btn btn-outline btn-success btn-sm mt-1 lg:mt-0">
             {{ isTopic ? "hiện danh sách" : "thêm câu hỏi vào Topic" }}
           </div>
           <div v-if="!isTopic">
-            <div
-              @click="
-                openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
-              "
-              class="btn btn-ghost btn-xs italic lowercase"
-            >
+            <div @click="
+              openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
+            " class="btn btn-ghost btn-xs italic lowercase">
               tạo câu hỏi mới?
             </div>
           </div>
@@ -41,13 +33,9 @@
       </div>
       <div v-if="listPost.length == 0" class="text-center text-xl">
         <div>chưa có câu hỏi nào hết !!!</div>
-        <div
-          v-if="isTopic"
-          @click="
-            openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
-          "
-          class="btn btn-ghost italic lowercase"
-        >
+        <div v-if="isTopic" @click="
+          openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
+        " class="btn btn-ghost italic lowercase">
           tạo câu hỏi mới?
         </div>
       </div>
@@ -143,6 +131,14 @@ async function getApi() {
 
 onMounted(() => {
   getApi();
+});
+
+const title = computed(() => {
+  return useTopic.topic.name;
+});
+
+useHead({
+  title: title,
 });
 </script>
 

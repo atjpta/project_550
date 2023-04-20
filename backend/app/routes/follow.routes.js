@@ -14,9 +14,9 @@ module.exports = (app) => {
     const router = express.Router();
     router.route("/")
         .get(ctl.findAll)
-        .post([mid.check_create],ctl.create)
+        .post([mid.check_create], ctl.create)
         .delete(ctl.deleteAll)
-    
+
     router.route('/myuser/:id')
         .get(ctl.findMyFollowUser)
     router.route('/mypost/:id')
@@ -30,13 +30,15 @@ module.exports = (app) => {
     router.route('/myteam/:id')
         .get(ctl.findMyFollowTeam)
     router.route('/mytag/:id')
-            .get(ctl.findMyFollowTag)
+        .get(ctl.findMyFollowTag)
+    router.route('/mycourse/:id')
+        .get(ctl.findMyFollowCourse)
 
     router.route('/:id')
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
-    
+
     router.route('/:user/:follow')
         .get(ctl.findByFollow)
 

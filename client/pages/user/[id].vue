@@ -55,6 +55,14 @@ onMounted(() => {
 onUnmounted(() => {
   useUser.overview = {};
 });
+
+const title = computed(() => {
+  return useUser.overview.name;
+});
+
+useHead({
+  title: title,
+});
 </script>
 
 <style></style>

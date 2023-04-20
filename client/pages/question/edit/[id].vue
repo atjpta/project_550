@@ -109,6 +109,10 @@ async function saveEdit() {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "sửa câu hỏi",
+});
 </script>
 
 <style></style>

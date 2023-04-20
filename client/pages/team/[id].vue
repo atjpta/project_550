@@ -14,11 +14,8 @@
     </div>
     <div class="mb-4 flex flex-wrap">
       <div v-for="i in menu" :key="i.title">
-        <nuxt-link
-          :to="`/team/${route.params.id}${i.url}`"
-          class="btn btn-outline btn-sm mr-1 mb-1"
-          >{{ i.title }}</nuxt-link
-        >
+        <nuxt-link :to="`/team/${route.params.id}${i.url}`" class="btn btn-outline btn-sm mr-1 mb-1">{{ i.title
+        }}</nuxt-link>
       </div>
     </div>
     <NuxtPage v-if="useTeam.team[0]?.status[0].name == 'public' || useMember.isMember" />
@@ -128,6 +125,14 @@ onMounted(() => {
   } else if (typePage == "manager") {
     manager.value = true;
   }
+});
+
+const title = computed(() => {
+  return useTeam.team[0].name;
+});
+
+useHead({
+  title: title,
 });
 </script>
 

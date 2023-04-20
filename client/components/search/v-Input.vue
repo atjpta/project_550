@@ -1,29 +1,22 @@
 <template>
   <div>
     <div class="">
-      <input
-        @keyup.enter="select_data()"
-        placeholder="nhập tag"
-        v-model="input_data"
-        type="text"
-        class="input relative input-primary mb-1 w-full"
-      />
+      <input @keyup.enter="select_data()" placeholder="nhập tag" v-model="input_data" type="text"
+        class="input relative input-primary mb-1 w-full" />
       <div @click="select_data()" class="btn btn-sm mb-1 btn-primary btn-outline">
         {{ btnInput.name }}
       </div>
     </div>
     <transition name="bounce">
-      <div
-        v-if="input_data"
-        class="z-40 absolute bg-base-300 h-60 w-80 p-5 rounded-2xl overflow-y-auto"
-      >
-        <div v-if="dataResult.length == 0" class="text-center">không có dữ liệu</div>
-        <div v-for="i in dataResult" :key="i" class="">
-          <div
-            @click="select_data2(i)"
-            class="bg-base-100 my-1 btn btn-block btn-ghost justify-start shadow-sm shadow-primary"
-          >
-            {{ i.name }}
+      <div class="bg-base-100 z-40 absolute">
+        <div v-if="input_data"
+          class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 h-60 w-80 p-5 rounded-2xl overflow-y-auto">
+          <div v-if="dataResult.length == 0" class="text-center">không có dữ liệu</div>
+          <div v-for="i in dataResult" :key="i" class="">
+            <div @click="select_data2(i)"
+              class="bg-base-100 my-1 btn btn-block btn-ghost justify-start shadow-sm shadow-primary">
+              {{ i.name }}
+            </div>
           </div>
         </div>
       </div>
@@ -87,10 +80,12 @@ function select_data2(data) {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }

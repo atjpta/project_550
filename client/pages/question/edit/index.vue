@@ -32,7 +32,7 @@ function formatData(listtag) {
     data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
   } else {
     data.team = question.team.id || question.team._id;
-    data.topic = question.series.id;
+    data.topic = question.topic.id;
   }
   if (listtag) {
     const array = Array.from(question.tag);
@@ -103,6 +103,10 @@ async function save() {
 }
 definePageMeta({
   middleware: "guest",
+});
+
+useHead({
+  title: "tạo câu hỏi",
 });
 </script>
 

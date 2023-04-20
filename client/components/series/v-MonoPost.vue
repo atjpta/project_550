@@ -1,50 +1,61 @@
 <template>
   <div>
     <div
-      class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
+      class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
       <div>
         <!-- phần đầu -->
         <div class="flex justify-end">
-          <!-- edit cho tác giả -->
-          <div v-if="isAuthor">
-            <div class="space-x-2 static flex">
-              <div v-if="data.series" class="tooltip" data-tip="xóa khỏi series">
-                <div @click="openDialogRemoveSeries()" class="btn btn-sm btn-ghost text-xl text-warning">
-                  <OtherVIcon icon="fa-solid fa-xmark" />
-                </div>
-              </div>
-              <div v-if="!data.series" class="tooltip" data-tip="thêm vào series">
-                <div @click="openDialogAddSeries()" class="btn btn-sm btn-ghost text-xl text-success">
-                  <OtherVIcon icon="fa-solid fa-plus" />
-                </div>
-              </div>
-              <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="sửa bài viết">
-                <div class="btn btn-sm btn-ghost text-primary">
-                  <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                </div>
-              </nuxtLink>
-              <div class="tooltip" data-tip="xóa bài viết">
-                <div @click="openDialogDelete()" class="btn btn-sm btn-ghost text-error">
-                  <OtherVIcon icon="fa-solid fa-trash-can" />
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- phần tùy chọn cho người đọc -->
-          <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+          <div class="dropdown dropdown-left indicator-item mr-10 mt-10">
             <label tabindex="0" class="btn btn-ghost">
               <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
             </label>
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-              <li @click="openDialogReport()" class="hover-bordered">
-                <a>
-                  <div>
-                    <OtherVIcon icon="fa-solid fa-flag" />
-                    báo cáo
-                  </div>
-                </a>
-              </li>
+              <div v-if="!isAuthor">
+                <li @click="openDialogReport()" class="hover-bordered">
+                  <a>
+                    <div>
+                      <OtherVIcon icon="fa-solid fa-flag" />
+                      báo cáo
+                    </div>
+                  </a>
+                </li>
+              </div>
+
+              <div v-if="isAuthor">
+                <li v-if="data.series" @click="openDialogRemoveSeries()" class="hover-bordered">
+                  <a>
+                    <div>
+                      <OtherVIcon class-icon="text-warning" icon="fa-solid fa-xmark" />
+                      xóa khỏi chuỗi bài viết
+                    </div>
+                  </a>
+                </li>
+                <li v-if="!data.series" @click="openDialogAddSeries()" class="hover-bordered">
+                  <a>
+                    <div>
+                      <OtherVIcon class-icon="text-success" icon="fa-solid fa-plus" />
+                      thêm vào
+                    </div>
+                  </a>
+                </li>
+                <li @click="navigateTo(`/post/edit/${data._id}`)" class="hover-bordered">
+                  <a>
+                    <div>
+                      <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                      sửa
+                    </div>
+                  </a>
+                </li>
+                <li @click="openDialogDelete()" class="hover-bordered">
+                  <a>
+                    <div>
+                      <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                      xóa
+                    </div>
+                  </a>
+                </li>
+              </div>
             </ul>
           </div>
         </div>
@@ -179,7 +190,7 @@ function openDialogAddSeries() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "nhóm và series của bài viết sẽ bị thay đổi",
+        content: "nhóm và chuỗi bài viết của bài viết sẽ bị thay đổi",
         btn1: "ok",
         btn2: "hủy",
       },

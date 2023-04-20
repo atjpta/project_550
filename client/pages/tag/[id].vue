@@ -91,6 +91,14 @@ onMounted(() => {
   useTeam.reset();
   getApi();
 });
+
+const title = computed(() => {
+  return "#" + useTag.tag.name;
+});
+
+useHead({
+  title: title,
+});
 </script>
 
 <style></style>

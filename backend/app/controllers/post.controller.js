@@ -557,6 +557,7 @@ exports.updateSeries = async (req, res, next) => {
                 await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
                 delete req.body.team;
             }
+            await model.findByIdAndUpdate(condition, { $unset: { course: 1 } });
             // add series
             const document = await model.findByIdAndUpdate(condition, req.body, {
                 new: true
@@ -582,6 +583,7 @@ exports.findByNoSeries = async (req, res, next) => {
             // lọc ra các phần muốn lấy
             {
                 $match: {
+                    course: null,
                     series: null,
                     author: ObjectId(id),
                 }

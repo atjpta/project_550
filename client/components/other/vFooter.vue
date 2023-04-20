@@ -28,11 +28,11 @@
             class="before:ring-8 before:ring-indigo-500/20 hover:before:translate-x-2 hover:before:rotate-180 before:duration-500 before:rounded-tr-none before:rounded-bl-rounded-tr-none translate before:block before:absolute before:-inset-1 before:skew-y-12 before:skew-x-12 before:bg-gradient-to-r before:from-green-500 before:via-teal-500/50 before:to-blue-500 relative inline-block">
             <span
               class="before:ring-8 before:ring-pink-500/20 hover:before:-translate-x-2 hover:before:-rotate-180 before:duration-500 before:rounded-tl-rounded-tr-none before:rounded-br-rounded-tr-none before:block before:absolute before:-inset-1 before:-skew-y-12 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500/50 before:to-pink-500 relative inline-block">
-              <span class="relative italic px-2 text-white">abctu</span>
+              <span class="relative italic px-2 text-white">ctuf</span>
             </span>
           </span>
         </div>
-        <p>ABCTU - Trang hỏi đáp chia sẻ <br />Design by B1910027</p>
+        <p>CTUF - Trang hỏi đáp chia sẻ <br />Design by B1910027</p>
       </div>
       <div class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">

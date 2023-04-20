@@ -52,6 +52,14 @@ async function save() {
 definePageMeta({
   middleware: "guest",
 });
+
+const title = computed(() => {
+  return usePost.post.title;
+});
+
+useHead({
+  title: "tạo chủ đề",
+});
 </script>
 
 <style></style>

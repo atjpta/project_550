@@ -33,6 +33,7 @@ export default {
         })
 
         if (error.value) {
+
             useAlert.setError(error.value.data.message)
             throw new Error(error.value.data.message);
         }

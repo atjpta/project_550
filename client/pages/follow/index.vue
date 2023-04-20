@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="text-3xl font-bold uppercase mb-5">đã lưu</div>
+    <span
+      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block">
+      <span class="relative text-white text-3xl font-black px-5">Theo dõi</span>
+    </span>
+
     <div class="flex flex-wrap mt-3">
       <div v-for="i in menuDashboard" :key="i">
         <nuxtLink :to="'/follow' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
@@ -22,6 +26,10 @@ const useUser = userStore();
 const useAuth = authStore();
 const route = useRoute();
 const menuDashboard = ref([
+  {
+    title: "môn học",
+    url: "/course",
+  },
   {
     title: "bài viết",
     url: "/post",
@@ -58,9 +66,13 @@ async function getApi() {
 
 onMounted(() => {
   if (route.path == "/follow") {
-    navigateTo("/follow/post");
+    navigateTo("/follow/course");
   }
   getApi();
+});
+
+useHead({
+  title: "theo dõi",
 });
 </script>
 

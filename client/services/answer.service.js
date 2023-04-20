@@ -17,7 +17,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("gửi câu trả lời thành công");
@@ -37,7 +37,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         return data.value
@@ -52,7 +52,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("sửa thành công");
@@ -68,7 +68,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("xóa thành công");

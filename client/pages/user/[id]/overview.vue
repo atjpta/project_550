@@ -10,7 +10,7 @@
           <div class="stat-value">{{ score }}</div>
         </div>
       </div>
-      <div class="stats shadow mb-2 mr-2">
+      <div @click="navigateTo(`/user/${useUser.overview._id}/post`)" class="stats shadow mb-2 mr-2 cursor-pointer">
         <div class="stat">
           <div class="stat-figure">
             <OtherVIcon class-icon="text-info text-2xl" icon="fa-solid fa-file-lines" />
@@ -19,37 +19,28 @@
           <div class="stat-value">{{ useUser.overview.postCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow mb-2 mr-2">
+      <div @click="navigateTo(`/user/${useUser.overview._id}/series`)" class="stats shadow mb-2 mr-2 cursor-pointer">
         <div class="stat">
           <div class="stat-figure">
-            <OtherVIcon
-              class-icon="text-primary text-2xl"
-              icon="fa-solid fa-layer-group"
-            />
+            <OtherVIcon class-icon="text-primary text-2xl" icon="fa-solid fa-layer-group" />
           </div>
           <div class="stat-title">series</div>
           <div class="stat-value">{{ useUser.overview.seriesCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow mb-2 mr-2">
+      <div @click="navigateTo(`/user/${useUser.overview._id}/question`)" class="stats shadow mb-2 mr-2 cursor-pointer">
         <div class="stat">
           <div class="stat-figure">
-            <OtherVIcon
-              class-icon="text-info text-2xl"
-              icon="fa-solid fa-file-circle-question"
-            />
+            <OtherVIcon class-icon="text-info text-2xl" icon="fa-solid fa-file-circle-question" />
           </div>
           <div class="stat-title">câu hỏi</div>
           <div class="stat-value">{{ useUser.overview.questionCount || 0 }}</div>
         </div>
       </div>
-      <div class="stats shadow mb-2 mr-2">
+      <div @click="navigateTo(`/user/${useUser.overview._id}/topic`)" class="stats shadow mb-2 mr-2 cursor-pointer">
         <div class="stat">
           <div class="stat-figure">
-            <OtherVIcon
-              class-icon="text-secondary text-2xl"
-              icon="fa-solid fa-layer-group"
-            />
+            <OtherVIcon class-icon="text-secondary text-2xl" icon="fa-solid fa-layer-group" />
           </div>
           <div class="stat-title">topic</div>
           <div class="stat-value">{{ useUser.overview.topicCount || 0 }}</div>

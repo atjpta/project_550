@@ -12,6 +12,7 @@ exports.findByCourse = async (req, res, next) => {
             {
                 $match: {
                     course: ObjectId(id),
+
                 }
             },
             {
@@ -697,6 +698,8 @@ exports.updateTopic = async (req, res, next) => {
                 await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
                 delete req.body.team;
             }
+            await model.findByIdAndUpdate(condition, { $unset: { course: 1 } });
+
             // add topic
             const document = await model.findByIdAndUpdate(condition, req.body, {
                 new: true
@@ -722,6 +725,7 @@ exports.findByNoTopic = async (req, res, next) => {
             // lọc ra các phần muốn lấy
             {
                 $match: {
+                    course: null,
                     topic: null,
                     author: ObjectId(id),
                 }

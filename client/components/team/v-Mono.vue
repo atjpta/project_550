@@ -2,17 +2,31 @@
   <div>
     <transition name="bounce">
       <div
-        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div class="flex">
-          <!-- ảnh team -->
-          <nuxtLink class="" :to="`/team/${data._id}/read/post`">
-            <div class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden">
-              <img class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110" :src="data.image_cover_url"
-                alt="" />
-            </div>
-          </nuxtLink>
+          <div>
+            <!-- ảnh team -->
+            <nuxtLink class="" :to="`/team/${data._id}/read/post`">
+              <div class="rounded-2xl mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden">
+                <img class="cursor-pointer duration-500 rounded-2xl w-32 h-32 hover:scale-110" :src="data.image_cover_url"
+                  alt="" />
+              </div>
+            </nuxtLink>
 
-          <div class="w-full">
+            <!-- các trạng thái của team  -->
+            <div class="flex space-x-5 mt-2">
+              <div class="tooltip" data-tip="điểm nhóm">
+                <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
+                {{ valVote }}
+              </div>
+              <div class="tooltip" data-tip="số lượng thành viên">
+                <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
+                {{ slmember }}
+              </div>
+            </div>
+          </div>
+
+          <div class="ml-5">
             <div class="flex justify-between flex-col-reverse lg:flex-row">
               <div>
                 <nuxtLink class="" :to="`/team/${data._id}/read/post`">
@@ -23,52 +37,13 @@
                 </nuxtLink>
               </div>
 
-              <!-- phần tùy chọn cho chủ nhóm -->
-              <div v-if="data.role == 'chief'" class="flex justify-end">
-                <div class="space-x-1 flex justify-end">
-                  <nuxtLink :to="`/team/edit/${data._id ?? data.id}`" class="tooltip" data-tip="sửa team">
-                    <div class="btn btn-ghost text-primary">
-                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </nuxtLink>
-
-                  <div class="tooltip" data-tip="xóa team">
-                    <div :class="[loading ? 'loading' : '']" @click="openDialogDelete()" class="btn btn-ghost text-error">
-                      <OtherVIcon icon="fa-solid fa-trash-can" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <!-- phần tùy chọn cho người đọc -->
-              <div v-else class="dropdown dropdown-end flex justify-end">
-                <!-- <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
-                  <div @click="openDialogJoinTeam()" :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-secondary mr-1">
-                    gia nhập
-                  </div>
-                </div>
-
-                <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
-                  <div @click="openDialogDeleteRequest()" :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-warning mr-1">
-                    hủy gia nhập
-                  </div>
-                </div>
-
-                <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
-                  <div @click="openDialogOutTeam()" :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-error mr-1">
-                    thoát
-                  </div>
-                </div> -->
-
-                <!-- phần tùy chọn cho người đọc -->
-                <div class="dropdown dropdown-end z-10 h-5">
-                  <label tabindex="0" class="btn btn-ghost">
-                    <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
-                  </label>
-                  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <div class="dropdown dropdown-end indicator-item mt-10 mr-10">
+                <label tabindex="0" class="btn btn-ghost">
+                  <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                </label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <div v-if="data.role != 'chief'">
                     <li @click="openDialogReport()" class="hover-bordered">
                       <a>
                         <div>
@@ -77,8 +52,27 @@
                         </div>
                       </a>
                     </li>
-                  </ul>
-                </div>
+                  </div>
+                  <!-- tùy chọn cho trường nhóm -->
+                  <div v-if="data.role == 'chief'">
+                    <li @click="navigateTo(`/team/edit/${data._id ?? data.id}`)" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                          sửa
+                        </div>
+                      </a>
+                    </li>
+                    <li @click="openDialogDelete()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash" />
+                          xóa
+                        </div>
+                      </a>
+                    </li>
+                  </div>
+                </ul>
               </div>
             </div>
             <!-- ảnh bìa và tiêu đề -->
@@ -90,18 +84,6 @@
                 }}</nuxt-link>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- các trạng thái của team  -->
-        <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm nhóm">
-            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
-            {{ valVote }}
-          </div>
-          <div class="tooltip" data-tip="số lượng thành viên">
-            <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
-            {{ slmember }}
           </div>
         </div>
       </div>

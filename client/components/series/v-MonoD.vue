@@ -2,76 +2,80 @@
   <div>
     <transition name="bounce">
       <div
-        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0 rounded-2xl p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0 rounded-2xl p-5">
         <div class="flex">
-          <!-- ảnh series -->
-          <NuxtLink :to="`/series/${data._id}`"
-            class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl">
-            <img class="rounded-2xl w-32 h-32 hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
-          </NuxtLink>
-          <div class="w-full">
+          <div>
+            <!-- ảnh series -->
+            <NuxtLink :to="`/series/${data._id}`"
+              class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl">
+              <img class="rounded-2xl w-32 h-32 hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
+            </NuxtLink>
+            <!-- các trạng thái của team  -->
+            <div class="flex space-x-5">
+              <div class="tooltip" data-tip="điểm series">
+                <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
+                {{ data.valScore }}
+              </div>
+              <div class="tooltip" data-tip="số bài viết">
+                <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
+                {{ data.post[0]?.count || 0 }}
+              </div>
+            </div>
+          </div>
+          <div class="">
             <div class="">
               <div>
                 <!-- phần tùy chọn cho người đọc -->
-                <div v-if="!isAuthor" class="dropdown dropdown-end z-10 flex justify-end">
+                <div class="dropdown dropdown-left indicator-item mr-10 mt-10">
                   <label tabindex="0" class="btn btn-ghost">
                     <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                   </label>
                   <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li @click="openDialogReport()" class="hover-bordered">
-                      <a>
-                        <div>
-                          <OtherVIcon icon="fa-solid fa-flag" />
-                          báo cáo
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- edit cho tác giả -->
-                <div v-if="isAuthor">
-                  <div class="space-x-2 flex justify-end">
-                    <nuxtLink :to="`/series/edit/${data._id}`" class="tooltip" data-tip="sửa series">
-                      <div class="btn btn-ghost text-primary">
-                        <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                      </div>
-                    </nuxtLink>
-
-                    <div class="tooltip" data-tip="xóa series">
-                      <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                        <OtherVIcon icon="fa-solid fa-trash-can" />
-                      </div>
+                    <div v-if="!isAuthor">
+                      <li @click="openDialogReport()" class="hover-bordered">
+                        <a>
+                          <div>
+                            <OtherVIcon icon="fa-solid fa-flag" />
+                            báo cáo
+                          </div>
+                        </a>
+                      </li>
                     </div>
-                  </div>
+                    <div v-if="isAuthor">
+                      <li @click="navigateTo(`/series/edit/${data._id}`)" class="hover-bordered">
+                        <a>
+                          <div>
+                            <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                            sửa
+                          </div>
+                        </a>
+                      </li>
+                      <li @click="openDialogDelete()" class="hover-bordered">
+                        <a>
+                          <div>
+                            <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                            xóa
+                          </div>
+                        </a>
+                      </li>
+                    </div>
+                  </ul>
                 </div>
                 <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/series/${data._id}`">
                   <!-- tên series -->
-                  <div class="text-2xl font-bold uppercase">
+                  <div class="text-2xl font-bold uppercase ml-5">
                     {{ data.name }}
                   </div>
                 </nuxtLink>
               </div>
             </div>
-            <!-- ảnh bìa và tiêu đề -->
             <!-- tag -->
-            <div class="mt-4 flex flex-wrap">
+            <div class="mt-4 flex flex-wrap ml-5">
               <div v-for="i in list_tag" :key="i._id" class="">
                 <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
                 }}</nuxt-link>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- các trạng thái của team  -->
-        <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm series">
-            <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
-            {{ data.valScore }}
-          </div>
-          <div class="tooltip" data-tip="số bài viết">
-            <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
-            {{ data.post[0]?.count || 0 }}
           </div>
         </div>
       </div>

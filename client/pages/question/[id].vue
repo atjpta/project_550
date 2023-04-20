@@ -318,6 +318,14 @@ async function getApi() {
 onMounted(() => {
   getApi();
 });
+
+const title = computed(() => {
+  return useQuestion.question.title;
+});
+
+useHead({
+  title: title,
+});
 </script>
 
 <style></style>

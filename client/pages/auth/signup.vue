@@ -4,6 +4,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const title = computed(() => {
+  return useQuestion.question.title;
+});
+
+useHead({
+  title: "đăng kí",
+});
+</script>
 
 <style></style>

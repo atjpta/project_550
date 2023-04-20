@@ -69,6 +69,10 @@ async function saveEdit() {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "sửa nhóm",
+});
 </script>
 
 <style></style>

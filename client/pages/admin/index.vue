@@ -195,6 +195,10 @@ definePageMeta({
 onMounted(() => {
   getApi();
 });
+
+useHead({
+  title: "trang admin",
+});
 </script>
 
 <style></style>

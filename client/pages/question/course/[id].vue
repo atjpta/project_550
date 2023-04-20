@@ -9,11 +9,15 @@ import { imageStore } from "~~/stores/image.store";
 import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
 import { alertStore } from "~~/stores/alert.store";
-
+import { notificationStore } from "~~/stores/notification.store";
+import { courseStore } from "~/stores/course.store";
 const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const useQuestion = questionStore();
+const useNotification = notificationStore();
+const useCourse = courseStore();
+const route = useRoute();
 let question;
 const loading = ref(false);
 
@@ -49,12 +53,21 @@ async function save() {
     return;
   }
   loading.value = true;
+
+  const dataNotification = {
+    model: route.params.id,
+    content: `bạn có câu hỏi mới trong môn học "${useCourse.course.name}"`,
+    url: `/course/${useCourse.course.id}/question`,
+    type: "info",
+  };
+
   try {
     const listtag = await useTag.createAll(question.tag);
     const data = formatData(listtag);
     console.log(data);
     const id = await useQuestion.create(data);
     useQuestion.resetQuestionEdit();
+    await useNotification.create(dataNotification);
     useRouter().back();
   } catch (error) {
     console.log(error);
@@ -64,6 +77,10 @@ async function save() {
 }
 definePageMeta({
   middleware: "guest",
+});
+
+useHead({
+  title: "tạo câu hỏi",
 });
 </script>
 

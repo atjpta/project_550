@@ -2,7 +2,7 @@
   <div>
     <transition name="bounce">
       <div
-        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -30,37 +30,42 @@
                   <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
                 </div>
               </div>
-              <!-- edit cho tác giả -->
-              <div v-if="isAuthor">
-                <div class="space-x-2 static flex">
-                  <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="sửa bài viết">
-                    <div class="btn btn-ghost">
-                      <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </nuxtLink>
-
-                  <div class="tooltip" data-tip="xóa bài viết">
-                    <div @click="openDialogDelete()" class="btn btn-ghost">
-                      <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <!-- phần tùy chọn cho người đọc -->
-              <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+              <div class="indicator-item mt-10 mr-10 dropdown dropdown-left indicator">
                 <label tabindex="0" class="btn btn-ghost">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li @click="openDialogReport()" class="hover-bordered">
-                    <a>
-                      <div>
-                        <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo
-                      </div>
-                    </a>
-                  </li>
+                  <div v-if="!isAuthor">
+                    <li @click="openDialogReport()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon icon="fa-solid fa-flag" />
+                          báo cáo
+                        </div>
+                      </a>
+                    </li>
+                  </div>
+                  <!-- edit cho tác giả -->
+                  <div v-if="isAuthor">
+                    <li @click="navigateTo(`/post/edit/${data._id}`)" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                          sửa
+                        </div>
+                      </a>
+                    </li>
+                    <li @click="openDialogDelete()" class="hover-bordered">
+                      <a>
+                        <div>
+                          <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                          xóa
+                        </div>
+                      </a>
+                    </li>
+                  </div>
                 </ul>
               </div>
             </div>

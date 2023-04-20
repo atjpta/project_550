@@ -4,8 +4,8 @@ const useAlert = alertStore()
 const url = config.url.api + '/auth'
 
 export default {
-    signin : async (user) => {
-        const { data: data, error} = await useFetch(url + '/signin', {
+    signin: async (user) => {
+        const { data: data, error } = await useFetch(url + '/signin', {
             method: "POST",
             body: user
         })
@@ -18,13 +18,13 @@ export default {
         return data.value
     },
 
-    signup : async (user) => {
+    signup: async (user) => {
         const { data: data, error } = await useFetch(url + '/signup', {
             method: "POST",
             body: user
         })
         if (error.value) {
-            useAlert.setError(error.value.data)
+            useAlert.setError(error.value.data.message)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("Đăng kí thành công ");

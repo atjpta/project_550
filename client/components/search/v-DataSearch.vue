@@ -5,6 +5,20 @@
         class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 h-72 p-5 rounded-2xl overflow-y-auto space-y-2">
         <div v-if="sumLength" class="text-center">không có dữ liệu</div>
 
+        <!-- course -->
+        <div class="w-full space-y-2">
+          <div v-for="i in useSearch.list_search_course" :key="i.id">
+            <div @click="navigateTo(`/course/${i.id}/review`)"
+              class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
+              <div data-tip="môn học" class="mr-5 tooltip text">
+                <OtherVIcon icon="fa-solid fa-book" />
+              </div>
+              <div class="overflow-hidden truncate">
+                {{ i.name }}
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- post -->
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_post" :key="i._id">
@@ -128,6 +142,7 @@ const sumLength = computed(() => {
     useSearch.list_search_topic.length +
     useSearch.list_search_user.length +
     useSearch.list_search_team.length +
+    useSearch.list_search_course.length +
     useSearch.list_search_tag.length ==
     0
   );
@@ -135,7 +150,6 @@ const sumLength = computed(() => {
 
 function goTo(type, id) {
   navigateTo(`/${type}/${id}`);
-  useSearch.key = "";
 }
 </script>
 

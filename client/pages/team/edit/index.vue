@@ -69,6 +69,10 @@ async function save() {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "tạo nhóm",
+});
 </script>
 
 <style></style>

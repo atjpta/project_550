@@ -17,7 +17,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         return data.value
@@ -32,13 +32,13 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("đã đánh dấu tất cả")
         return data.value
     },
-    
+
     findOne: async (id) => {
         const { data: data, error } = await useFetch(url + `/${id}`, {
             headers: {
@@ -48,7 +48,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -63,7 +63,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -103,10 +103,10 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        useAlert.setSuccess("thao tác thành công");
+        useAlert.setSuccess("xóa tác thành công");
         return data.value
     },
 
@@ -118,10 +118,10 @@ export default {
             method: "delete",
         })
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        useAlert.setSuccess("thao tác thành công");
+        useAlert.setSuccess("xóa tác thành công");
         return data.value
     },
 } 

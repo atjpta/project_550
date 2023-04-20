@@ -46,6 +46,13 @@ const useSearch = searchStore();
 const loadingSkeleton = ref(false);
 const menuDashboard = ref([
   {
+    title: "môn học",
+    url: "/course",
+    sl: computed(() => {
+      return useSearch.list_search_course.length;
+    }),
+  },
+  {
     title: "bài viết",
     url: "/post",
     sl: computed(() => {
@@ -110,13 +117,17 @@ onMounted(() => {
   useSearch.key = useSearch.keySave;
   getApi();
   if (route.path == "/search") {
-    navigateTo("/search/post");
+    navigateTo("/search/course");
   }
 });
 
 onUnmounted(() => {
   useSearch.keySave = useSearch.key;
   useSearch.key = "";
+});
+
+useHead({
+  title: "tìm kiếm",
 });
 </script>
 

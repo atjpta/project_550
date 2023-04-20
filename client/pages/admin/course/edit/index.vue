@@ -37,6 +37,10 @@ async function save() {
   }
   loading.value = false;
 }
+
+useHead({
+  title: "tạo môn học",
+});
 </script>
 
 <style></style>

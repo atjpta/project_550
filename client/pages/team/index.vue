@@ -127,6 +127,10 @@ onMounted(() => {
   useRouteS.cb = getApi;
   getApi();
 });
+
+useHead({
+  title: "nhóm",
+});
 </script>
 
 <style></style>

@@ -17,7 +17,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("gửi bình luận thành công");
@@ -25,7 +25,7 @@ export default {
     },
     getBy: async (type, id, user) => {
         let apiurl = url + `/${type}/${id}`
-        
+
         if (!!user) {
             apiurl = url + `/${type}/${id}/${user}`
         }
@@ -37,7 +37,7 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
         return data.value

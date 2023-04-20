@@ -204,6 +204,8 @@ export default {
         })
 
         if (error.value) {
+            useAlert.setWarning('không có trang này')
+            navigateTo('/')
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -222,6 +224,8 @@ export default {
         })
 
         if (error.value) {
+            useAlert.setWarning('không có trang này')
+            navigateTo('/')
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }

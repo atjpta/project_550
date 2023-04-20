@@ -76,6 +76,10 @@ onMounted(() => {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "tạo bài viết",
+});
 </script>
 
 <style></style>

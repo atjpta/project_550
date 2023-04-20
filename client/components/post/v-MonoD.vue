@@ -2,12 +2,12 @@
   <div>
     <transition name="bounce">
       <div :class="data.pins ? 'border-l-4 border-info' : ''"
-        class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-end">
             <!-- edit cho tác giả -->
-            <div v-if="isAuthor">
+            <!-- <div v-if="isAuthor">
               <div class="space-x-2 static flex">
                 <div v-if="!data.pins" class="tooltip" data-tip="ghim bài viết">
                   <div @click="openDialogPins()" class="btn btn-ghost text-info">
@@ -31,22 +31,59 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10">
+            <div class="indicator-item mt-10 mr-10 dropdown dropdown-left">
               <label tabindex="0" class="btn btn-ghost">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li @click="openDialogReport()" class="hover-bordered">
-                  <a>
-                    <div>
-                      <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo
-                    </div>
-                  </a>
-                </li>
+                <div v-if="!isAuthor">
+                  <li @click="openDialogReport()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon icon="fa-solid fa-flag" />
+                        báo cáo
+                      </div>
+                    </a>
+                  </li>
+                </div>
+                <!-- edit cho tác giả -->
+                <div v-if="isAuthor">
+                  <li @click="openDialogPins()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="rotate-45 text-info" icon="fa-solid fa-thumbtack" />
+                        ghim bài viết
+                      </div>
+                    </a>
+                  </li>
+                  <li @click="openDialogDeletePins()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="rotate-45 text-error" icon="fa-solid fa-thumbtack" />
+                        hủy ghim bài viết
+                      </div>
+                    </a>
+                  </li>
+                  <li @click="navigateTo(`/post/edit/${data._id}`)" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                        sửa bài viết
+                      </div>
+                    </a>
+                  </li>
+                  <li @click="openDialogDelete()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                        xóa bài viết
+                      </div>
+                    </a>
+                  </li>
+                </div>
               </ul>
             </div>
           </div>

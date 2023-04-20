@@ -217,6 +217,10 @@ onMounted(() => {
 onUnmounted(() => {
   usePost.list = [];
 });
+
+useHead({
+  title: `bài viết`,
+});
 </script>
 
 <style></style>

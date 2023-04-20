@@ -52,6 +52,10 @@ async function save() {
 definePageMeta({
   middleware: "guest",
 });
+
+useHead({
+  title: "sửa chuỗi bài viết",
+});
 </script>
 
 <style></style>

@@ -7,7 +7,7 @@
 
     <div class="flex justify-end">
       <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm">
-        tạo topic mới
+        tạo Chuỗi bài viết mới
       </button>
     </div>
 
@@ -16,7 +16,7 @@
         <SeriesVSkeleton />
       </div>
     </div>
-    <div v-else class="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-5">
+    <div v-else class="grid lg:grid-cols-2 grid-cols-1 gap-3 mt-5">
       <div v-for="i in useSeries.List_series" :key="i.id">
         <SeriesVMono :data="i" />
       </div>
@@ -137,6 +137,14 @@ async function getApi() {
 onMounted(() => {
   useRouteS.cb = getApi;
   getApi();
+});
+
+const title = computed(() => {
+  return useQuestion.question.title;
+});
+
+useHead({
+  title: "chuỗi bài viết",
 });
 </script>
 

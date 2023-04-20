@@ -19,16 +19,16 @@ export default defineNuxtConfig({
     app: {
         // pageTransition: { name: 'bounce'}
         head: {
-            title: 'abctu',
+            title: 'ctu forum',
             meta: [
                 {
-                    content: 'đây là app gì đó'
+                    content: 'trang chia sẽ kiến thức'
                 }
             ],
             link: [
                 {
                     rel: 'icon',
-                    href: 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/meo.jpg'
+                    href: 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/logo.png'
                 }
             ]
         }
