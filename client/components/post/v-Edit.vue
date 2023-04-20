@@ -41,65 +41,87 @@
           </div>
           <TagVInputTag :data="usePost.post_edit.tag" />
         </div>
-        <!-- phần chọn serise -->
+
+        <!-- phần chọn mon học -->
         <div>
           <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn chuỗi bài viết
-            <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
+            Chọn môn học
+            <!-- <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
-            </div>
+            </div> -->
           </div>
-          <select v-model="usePost.post_edit.series" class="select-sm select select-primary w-full max-w-xs">
+          <select v-model="usePost.post_edit.course" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Không có</option>
-            <option :value="i" v-for="i in list_series" :key="i">
+            <option :value="i" v-for="i in useCourse.list" :key="i">
               {{ i.name }}
             </option>
           </select>
         </div>
-        <nuxt-link to="/series/edit">
-          <div class="btn btn-ghost btn-xs italic lowercase">tạo chuỗi bài viết mới?</div>
-        </nuxt-link>
-        <!-- phần chọn team -->
+        <div v-if="!usePost.post_edit?.course?.name">
+          <!-- phần chọn serise -->
+          <div>
+            <div class="text-xl font-extrabold mt-5 mb-2">
+              Chọn chuỗi bài viết
+              <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
+                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+                </div>
+              </div>
+            </div>
+            <select v-model="usePost.post_edit.series" class="select-sm select select-primary w-full max-w-xs">
+              <option :value="{}">Không có</option>
+              <option :value="i" v-for="i in list_series" :key="i">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <nuxt-link to="/series/edit">
+            <div class="btn btn-ghost btn-xs italic lowercase">
+              tạo chuỗi bài viết mới?
+            </div>
+          </nuxt-link>
+          <!-- phần chọn team -->
 
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn nhóm
-            <div class="tooltip" data-tip="Cần tham gia nhóm trước">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+          <div>
+            <div class="text-xl font-extrabold mt-5 mb-2">
+              Chọn nhóm
+              <div class="tooltip" data-tip="Cần tham gia nhóm trước">
+                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+                </div>
               </div>
             </div>
+            <select v-model="usePost.post_edit.team" v-if="!usePost.post_edit.series?.team && list_team.length != 0"
+              class="select-sm select select-primary w-full max-w-xs">
+              <option :value="{}">Chung</option>
+              <option :value="i" v-for="i in list_team" :key="i">{{ i.name }}</option>
+            </select>
+            <select disabled v-if="usePost.post_edit.series?.team || list_team.length == 0"
+              class="select-sm select select-primary w-full max-w-xs">
+              <option v-if="list_team.length == 0">Chung</option>
+              <option v-if="list_team.length == 1">
+                {{ list_team[0].name }}
+              </option>
+            </select>
           </div>
-          <select v-model="usePost.post_edit.team" v-if="!usePost.post_edit.series?.team && list_team.length != 0"
-            class="select-sm select select-primary w-full max-w-xs">
-            <option :value="{}">Chung</option>
-            <option :value="i" v-for="i in list_team" :key="i">{{ i.name }}</option>
-          </select>
-          <select disabled v-if="usePost.post_edit.series?.team || list_team.length == 0"
-            class="select-sm select select-primary w-full max-w-xs">
-            <option v-if="list_team.length == 0">Chung</option>
-            <option v-if="list_team.length == 1">
-              {{ list_team[0].name }}
-            </option>
-          </select>
-        </div>
-        <!-- chọn trạng thái -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn trạng thái bài viết
-            <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+          <!-- chọn trạng thái -->
+          <div>
+            <div class="text-xl font-extrabold mt-5 mb-2">
+              Chọn trạng thái bài viết
+              <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
+                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+                </div>
               </div>
             </div>
+            <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
+              <option :value="i" v-for="i in list_status" :key="i">
+                {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
+              </option>
+            </select>
           </div>
-          <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
-          </select>
         </div>
 
         <!-- phần nội dung bài viết -->
@@ -156,6 +178,7 @@ import ImageUploader from "quill-image-uploader";
 import config from "~~/config";
 import axios from "axios";
 import { alertStore } from "~/stores/alert.store";
+import { courseStore } from "~/stores/course.store";
 const supabase = useSupabaseClient();
 
 const url = config.url.apiimage;
@@ -199,6 +222,7 @@ const usePost = postStore();
 const route = useRoute();
 const useAlert = alertStore();
 const selectStatus = ref();
+const useCourse = courseStore();
 // const list_status = computed(() => {
 //   if (!selectStatus.value) {
 //     useStatus.getPost.forEach((e) => {
@@ -293,11 +317,20 @@ async function getApi() {
       return navigateTo("/");
     }
     usePost.post_edit = usePost.post;
-    if (usePost.post_edit.status) {
+    if (usePost.post_edit.status[0]) {
       selectStatus.value = {
         id: usePost.post_edit.status[0]._id,
         name: usePost.post_edit.status[0].name,
       };
+    }
+    if (usePost.post_edit.course) {
+      useCourse.list.forEach((e, i) => {
+        if (e.id == usePost.post_edit.course._id) {
+          useCourse.list[i] = usePost.post_edit.course;
+        }
+      });
+    } else {
+      usePost.post_edit.course = {};
     }
 
     setContent();
@@ -308,11 +341,16 @@ async function getApi() {
 
 onMounted(() => {
   useSeries.reset();
+  useCourse.findAll();
   useTeam.reset();
   useTeam.findByUser(useAuth.user.id);
   useSeries.findByUser(useAuth.user.id);
   useStatus.findAll();
   getApi();
+});
+
+onUnmounted(() => {
+  usePost.resetPostEdit();
 });
 </script>
 

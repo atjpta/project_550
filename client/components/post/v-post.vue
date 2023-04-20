@@ -90,6 +90,13 @@
           <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name }}</nuxt-link>
         </div>
       </div>
+      <!-- môn học -->
+      <div v-if="data.course[0]">
+        <div class="text-2xl font-semibold">Môn học</div>
+        <nuxtLink :to="`/course/${data.course[0]._id}/review`" class="btn btn-ghost justify-start">{{ data.course[0].name
+        }}
+        </nuxtLink>
+      </div>
       <!-- nếu có series -->
       <div v-if="data.series[0]">
         <!-- phần series -->
@@ -99,11 +106,13 @@
           </nuxtLink>
         </div>
 
-        <!-- phần team -->
-        <div v-if="data.series_team[0] && data.team[0]" class="mt-5">
-          <div class="text-2xl font-semibold">Nhóm</div>
-          <NuxtLink :to="`/team/${data?.series_team[0]?._id}/read/post`" class="btn btn-ghost justify-start">{{
-            data.series_team[0]?.name }}</NuxtLink>
+        <div v-if="data.series_team">
+          <!-- phần team -->
+          <div v-if="data.series_team[0] && data.team[0]" class="mt-5">
+            <div class="text-2xl font-semibold">Nhóm</div>
+            <NuxtLink :to="`/team/${data?.series_team[0]?._id}/read/post`" class="btn btn-ghost justify-start">{{
+              data.series_team[0]?.name }}</NuxtLink>
+          </div>
         </div>
       </div>
       <!-- nếu không có series -->

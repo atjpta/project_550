@@ -10,12 +10,14 @@ import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
 import { alertStore } from "~~/stores/alert.store";
 import { teamStore } from "~~/stores/team.store";
+import { statusStore } from "~/stores/status.store";
 
 const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
 const useTeam = teamStore();
+const useStatus = statusStore();
 let post;
 const loading = ref(false);
 
@@ -23,12 +25,17 @@ function formatData(listtag) {
   const data = {
     author: post.author.id,
     content: post.content,
-    series: post.series.id,
     status: [post.status.id],
     title: post.title,
-    team: post.team.id || post.team._id,
+    course: post.course.id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
+  if (data.course) {
+    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
+  } else {
+    data.team = post.team.id || post.team._id;
+    data.series = post.series.id;
+  }
   if (listtag) {
     const array = Array.from(post.tag);
     const tag = listtag;
@@ -73,12 +80,15 @@ async function save() {
     useAlert.setError("phải nhập đủ tiêu đề và nội dung");
     return;
   }
-  const check = checkTeam();
-  console.log(check);
-  if (!check) {
-    useAlert.setError("bạn không còn trong nhóm " + usePost.post_edit.team.name);
-    return;
+  let check;
+  if (!post.course) {
+    check = checkTeam();
+    if (!check) {
+      useAlert.setError("bạn không còn trong nhóm " + usePost.post_edit.team.name);
+      return;
+    }
   }
+
   loading.value = true;
   try {
     const listtag = await useTag.createAll(post.tag);

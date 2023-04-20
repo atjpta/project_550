@@ -14,6 +14,10 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "team"
         },
+        course: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "course"
+        },
         tag: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "tag"

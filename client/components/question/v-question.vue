@@ -103,6 +103,12 @@
           <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name }}</nuxt-link>
         </div>
       </div>
+      <div v-if="data.course[0]">
+        <div class="text-2xl font-semibold">Môn học</div>
+        <nuxtLink :to="`/course/${data.course[0]._id}/review`" class="btn btn-ghost justify-start">{{ data.course[0].name
+        }}
+        </nuxtLink>
+      </div>
       <!-- phần series -->
       <div v-if="data.topic?.length > 0" class="mt-5">
         <div class="text-2xl font-semibold">Chủ đề</div>

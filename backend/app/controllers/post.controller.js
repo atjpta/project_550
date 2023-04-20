@@ -3,7 +3,94 @@ const DB = require("../models");
 const model = DB.post;
 const ObjectId = mongoose.Types.ObjectId;
 
+exports.findByCourse = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            // lọc ra các phần muốn lấy
+            {
+                $match: {
+                    course: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
 
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll a ' + error })
+        )
+    }
+};
 
 exports.findByAdmin = async (req, res, next) => {
     let slModelReport = 0
@@ -31,7 +118,7 @@ exports.findByAdmin = async (req, res, next) => {
                                 foreignField: '_id',
                                 as: 'author',
                             },
-                            
+
                         },
                         {
                             $project: {
@@ -693,6 +780,7 @@ exports.create = async (req, res, next) => {
         tag: req.body.tag,
         image_cover_url: req.body.image_cover_url,
         series: req.body.series,
+        course: req.body.course,
         team: req.body.team,
         status: req.body.status,
         view: parseInt(0),
@@ -1431,6 +1519,15 @@ exports.findOne = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'courses',
+                    localField: 'course',
+                    foreignField: '_id',
+                    as: 'course',
+
+                },
+            },
+            {
+                $lookup: {
                     from: 'teams',
                     localField: 'series.team',
                     foreignField: '_id',
@@ -1462,6 +1559,8 @@ exports.findOne = async (req, res, next) => {
                     'series.name': 1,
                     'series_team._id': 1,
                     'series_team.name': 1,
+                    'course.name': 1,
+                    'course._id': 1,
 
                 }
             },
@@ -1554,6 +1653,15 @@ exports.findOneGuest = async (req, res, next) => {
             },
             {
                 $lookup: {
+                    from: 'courses',
+                    localField: 'course',
+                    foreignField: '_id',
+                    as: 'course',
+
+                },
+            },
+            {
+                $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
@@ -1588,6 +1696,8 @@ exports.findOneGuest = async (req, res, next) => {
                     'series.id': 1,
                     'team.name': 1,
                     'series.name': 1,
+                    'course.name': 1,
+                    'course._id': 1,
                 }
             },
             {
@@ -1624,7 +1734,7 @@ exports.findOneEdit = async (req, res, next) => {
                 }
             })
             .populate({
-                path: 'author team tag status view',
+                path: 'author team tag status view course',
                 select: 'name id avatar_url',
             })
         if (!document) {
@@ -1659,6 +1769,11 @@ exports.update = async (req, res, next) => {
         if (req.body.team == ' ') {
             await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
             delete req.body.team;
+        }
+
+        if (req.body.course == ' ') {
+            await model.findByIdAndUpdate(condition, { $unset: { course: 1 } });
+            delete req.body.course;
         }
 
         const document = await model.findByIdAndUpdate(condition, req.body, {

@@ -7,6 +7,17 @@ const url = config.url.api + '/question'
 
 export default {
 
+    findByCourse: async (id) => {
+        const { data: data, error } = await useFetch(url + `/course/${id}`, {
+            method: "get",
+        })
+        if (error.value) {
+            // useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findByAdmin: async (id) => {
         const { data: data, error } = await useFetch(url + `/admin`, {
             method: "get",
@@ -179,6 +190,7 @@ export default {
 
         if (error.value) {
             useAlert.setError(error.value.data)
+
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -196,7 +208,8 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setError(error.value.data)
+            useAlert.setError('không có trang này')
+            return navigateTo('/')
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");

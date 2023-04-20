@@ -74,7 +74,7 @@ exports.create = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
     try {
-        const document = await model.find()
+        const document = await model.find().select('id name')
         return res.json(document);
     } catch (error) {
         return next(

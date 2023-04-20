@@ -3,6 +3,170 @@ const DB = require("../models");
 const model = DB.quenstion;
 const ObjectId = mongoose.Types.ObjectId;
 
+
+
+exports.findByCourse = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    course: ObjectId(id),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'topics',
+                    localField: 'topic',
+                    foreignField: '_id',
+                    as: 'topics',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'topics.team',
+                    foreignField: '_id',
+                    as: 'topicsTeam',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+
+                },
+            },
+
+
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    'answer': 1,
+                    'choice': 1,
+                }
+            },
+
+            {
+                $sort: { createdAt: -1 }
+            },
+
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll a ' + error })
+        )
+    }
+};
+
+
 exports.findByAdmin = async (req, res, next) => {
     let slModelReport = 0
     try {
@@ -286,7 +450,7 @@ exports.findPerFilter = async (req, res, next) => {
                 }
             },
             {
-                $sort: { isUnreply : -1, [filter]: -1, createdAt: -1 }
+                $sort: { isUnreply: -1, [filter]: -1, createdAt: -1 }
             },
             {
                 $skip: skip
@@ -1393,6 +1557,7 @@ exports.findByTag = async (req, res, next) => {
 
 
 exports.create = async (req, res, next) => {
+    console.log(req.body);
     const modelO = new model({
         author: req.body.author,
         title: req.body.title ?? 'tiêu đề nè :3',
@@ -1401,6 +1566,7 @@ exports.create = async (req, res, next) => {
         topic: req.body.topic,
         team: req.body.team,
         status: req.body.status,
+        course: req.body.course,
         view: parseInt(0),
     })
     try {
@@ -1780,6 +1946,15 @@ exports.findOne = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: 'courses',
+                    localField: 'course',
+                    foreignField: '_id',
+                    as: 'course',
+
+                },
+            },
+            {
                 $project: {
                     "_id": 1,
                     'title': 1,
@@ -1802,6 +1977,8 @@ exports.findOne = async (req, res, next) => {
                     'topic.name': 1,
                     'choice': 1,
                     'answer': 1,
+                    'course._id': 1,
+                    'course.name': 1,
                 }
             },
             {
@@ -1948,6 +2125,15 @@ exports.findOneGuest = async (req, res, next) => {
                 },
             },
             {
+                $lookup: {
+                    from: 'courses',
+                    localField: 'course',
+                    foreignField: '_id',
+                    as: 'course',
+
+                },
+            },
+            {
                 $project: {
                     "_id": 1,
                     'title': 1,
@@ -1969,6 +2155,8 @@ exports.findOneGuest = async (req, res, next) => {
                     'topic.name': 1,
                     'choice': 1,
                     'answer': 1,
+                    'course._id': 1,
+                    'course.name': 1,
                 }
             },
             {
@@ -2005,7 +2193,7 @@ exports.findOneEdit = async (req, res, next) => {
                 }
             })
             .populate({
-                path: 'author team tag status view',
+                path: 'author team tag status view course',
                 select: 'name id avatar_url',
             })
         if (!document) {
@@ -2040,6 +2228,11 @@ exports.update = async (req, res, next) => {
         if (req.body.team == ' ') {
             await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
             delete req.body.team;
+        }
+
+        if (req.body.course == ' ') {
+            await model.findByIdAndUpdate(condition, { $unset: { course: 1 } });
+            delete req.body.course;
         }
 
         const document = await model.findByIdAndUpdate(condition, req.body, {

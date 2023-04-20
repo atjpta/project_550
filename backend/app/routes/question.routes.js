@@ -14,26 +14,29 @@ module.exports = (app) => {
         .get(ctl.findAll)
         .post(ctl.create)
         .delete(ctl.deleteAll)
-    
+
     router.route("/admin")
         .get(ctl.findByAdmin)
-    
+
     router.route('/:filter/:page/:size')
         .get(ctl.findPerFilter)
+
+    router.route('/course/:id/')
+        .get(ctl.findByCourse)
 
 
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)
-    
+
     router.route('/team/:id/')
         .get(ctl.findByTeam)
-    
+
     router.route('/tag/:id/')
         .get(ctl.findByTag)
-    
+
     router.route('/author/:id/')
         .get(ctl.findByAuthor)
-    
+
     router.route('/other/:id/')
         .get(ctl.findByOther)
 

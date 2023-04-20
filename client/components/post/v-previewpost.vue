@@ -1,9 +1,7 @@
 <template>
   <div class="rounded-2xl">
     <!-- các tùy chọn -->
-    <div
-      class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between sticky ring-0 top-3"
-    >
+    <div class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between sticky ring-0 top-3">
       <div class="w-fit">
         <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
           <!-- tác giả -->
@@ -23,47 +21,26 @@
       <!-- các btn -->
       <div class="flex">
         <div class="flex justify-evenly mr-2">
-          <div
-            v-if="loading != 'up'"
-            @click="openDialogSignin(up)"
-            :class="classUp"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
+          <div v-if="loading != 'up'" @click="openDialogSignin(up)" :class="classUp"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline">
             <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
           </div>
-          <div
-            v-if="loading == 'up'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-          ></div>
+          <div v-if="loading == 'up'" class="btn-sm lg:btn-md btn btn-circle btn-outline loading"></div>
 
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div
-            v-if="loading != 'down'"
-            @click="openDialogSignin(down)"
-            :class="classDown"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline"
-          >
+          <div v-if="loading != 'down'" @click="openDialogSignin(down)" :class="classDown"
+            class="btn-sm lg:btn-md btn btn-circle btn-outline">
             <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
           </div>
-          <div
-            v-if="loading == 'down'"
-            class="btn-sm lg:btn-md btn btn-circle btn-outline loading"
-          ></div>
+          <div v-if="loading == 'down'" class="btn-sm lg:btn-md btn btn-circle btn-outline loading"></div>
         </div>
-        <div
-          @click="save()"
-          :class="classSave"
-          class="btn-sm lg:btn-md btn btn-outline btn-square"
-        >
+        <div @click="save()" :class="classSave" class="btn-sm lg:btn-md btn btn-outline btn-square">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
         <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon
-            class-icon="text-xl mr-1 text-primary"
-            icon="fa-solid fa-comments"
-          />
+          <OtherVIcon class-icon="text-xl mr-1 text-primary" icon="fa-solid fa-comments" />
           <div class="text-2xl">
             {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
           </div>
@@ -78,11 +55,7 @@
     </div>
     <!-- bài viết -->
     <div class="">
-      <img
-        class="rounded-2xl"
-        :src="useImage.previewImage || data.image_cover_url"
-        alt=""
-      />
+      <img class="rounded-2xl" :src="useImage.previewImage || data.image_cover_url" alt="" />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
       <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
@@ -93,15 +66,28 @@
           {{ "#" + i.name }}
         </div>
       </div>
-      <!-- phần series -->
-      <div v-if="Object.keys(data.series).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">Series</div>
-        <div class="btn btn-ghost justify-start">{{ data.series.name }}</div>
+      <!-- phần mon hoc -->
+      <div v-if="data.course">
+        <div v-if="Object.keys(data.course).length != 0" class="mt-5">
+          <div class="text-2xl font-semibold">môn học</div>
+          <div class="btn btn-ghost justify-start">{{ data.course.name }}</div>
+        </div>
       </div>
-      <!-- phần team -->
-      <div v-if="Object.keys(data.team).length != 0" class="mt-5">
-        <div class="text-2xl font-semibold">Nhóm</div>
-        <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
+      <div v-else>
+        <!-- phần series -->
+        <div v-if="data.series">
+          <div v-if="Object.keys(data.series).length != 0" class="mt-5">
+            <div class="text-2xl font-semibold">Series</div>
+            <div class="btn btn-ghost justify-start">{{ data.series.name }}</div>
+          </div>
+        </div>
+        <!-- phần team -->
+        <div v-if="data.team">
+          <div v-if="Object.keys(data.team).length != 0" class="mt-5">
+            <div class="text-2xl font-semibold">Nhóm</div>
+            <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
+          </div>
+        </div>
       </div>
     </div>
 

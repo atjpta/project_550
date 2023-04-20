@@ -1,6 +1,6 @@
 <template>
   <div>
-    <QuestionVEdit @save="save" :loading="loading" />
+    <QuestionVEditC @save="save" :loading="loading" />
   </div>
 </template>
 
@@ -9,14 +9,11 @@ import { imageStore } from "~~/stores/image.store";
 import { questionStore } from "~~/stores/question.store";
 import { tagStore } from "~~/stores/tag.store";
 import { alertStore } from "~~/stores/alert.store";
-import { teamStore } from "~~/stores/team.store";
-import { statusStore } from "~/stores/status.store";
-const useTeam = teamStore();
+
 const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const useQuestion = questionStore();
-const useStatus = statusStore();
 let question;
 const loading = ref(false);
 
@@ -24,16 +21,9 @@ function formatData(listtag) {
   const data = {
     author: question.author.id,
     content: question.content,
-    status: [question.status.id],
     title: question.title,
+    course: question.course.id,
   };
-
-  if (data.course) {
-    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
-  } else {
-    data.team = question.team.id || question.team._id;
-    data.topic = question.series.id;
-  }
   if (listtag) {
     const array = Array.from(question.tag);
     const tag = listtag;
@@ -52,46 +42,17 @@ function formatData(listtag) {
   return data;
 }
 
-function checkTeam() {
-  let check = false;
-  const id = question.team.id || question.team._id;
-  if (id) {
-    if (useTeam.List_team_ByUser[0]) {
-      useTeam.List_team_ByUser.forEach((e) => {
-        if (e._id == id) {
-          check = true;
-          return;
-        }
-      });
-    } else {
-      return false;
-    }
-  } else {
-    return true;
-  }
-  return check;
-}
-
 async function save() {
   question = useQuestion.question_edit;
   if (!(question.content.ops[0].insert != "\n" && question.title)) {
     useAlert.setError("phải nhập đủ tiêu đề và nội dung");
     return;
   }
-  let check;
-  if (!question.course) {
-    check = checkTeam();
-    if (!check) {
-      useAlert.setError(
-        "bạn không còn trong nhóm " + usequestion.question_edit.team.name
-      );
-      return;
-    }
-  }
   loading.value = true;
   try {
     const listtag = await useTag.createAll(question.tag);
     const data = formatData(listtag);
+    console.log(data);
     const id = await useQuestion.create(data);
     useQuestion.resetQuestionEdit();
     useRouter().back();

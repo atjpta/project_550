@@ -22,50 +22,29 @@
       <div class="flex">
         <div class="flex justify-evenly mr-2">
           <div data-tip="tăng điểm" class="tooltip">
-            <div
-              v-if="loading != 'up'"
-              @click="openDialogSignin(up)"
-              :class="classUp"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
-            >
+            <div v-if="loading != 'up'" @click="openDialogSignin(up)" :class="classUp"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
             </div>
           </div>
-          <div
-            v-if="loading == 'up'"
-            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
-          ></div>
+          <div v-if="loading == 'up'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
 
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
           <div data-tip="giảm điểm" class="tooltip">
-            <div
-              v-if="loading != 'down'"
-              @click="openDialogSignin(down)"
-              :class="classDown"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
-            >
+            <div v-if="loading != 'down'" @click="openDialogSignin(down)" :class="classDown"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
             </div>
           </div>
-          <div
-            v-if="loading == 'down'"
-            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
-          ></div>
+          <div v-if="loading == 'down'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
         </div>
-        <div
-          @click="save()"
-          :class="classSave"
-          class="btn-sm lg:btn-md btn btn-outline btn-square"
-        >
+        <div @click="save()" :class="classSave" class="btn-sm lg:btn-md btn btn-outline btn-square">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
         </div>
         <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
-          <OtherVIcon
-            class-icon="text-xl mr-1 text-primary"
-            icon="fa-solid fa-comments"
-          />
+          <OtherVIcon class-icon="text-xl mr-1 text-primary" icon="fa-solid fa-comments" />
           <div class="text-2xl">
             {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
           </div>
@@ -90,17 +69,21 @@
           {{ i.name }}
         </div>
       </div>
-      <!-- phần topic -->
-      <!-- <div class="mt-5"> -->
-      <div v-if="data.topic?.name" class="mt-5">
-        <div class="text-2xl font-semibold">chủ đề</div>
-        <div class="btn btn-ghost justify-start">{{ data.topic?.name }}</div>
+      <div v-if="data.course" class="mt-5">
+        <div class="text-2xl font-semibold">Môn học</div>
+        <div class="btn btn-ghost justify-start">{{ data.course?.name }}</div>
       </div>
-      <!-- phần team -->
-      <!-- <div class="mt-5"> -->
-      <div v-if="data.team?.name" class="mt-5">
-        <div class="text-2xl font-semibold">Nhóm</div>
-        <div class="btn btn-ghost justify-start">{{ data.team?.name }}</div>
+      <div>
+        <!-- phần topic -->
+        <div v-if="data.topic?.name" class="mt-5">
+          <div class="text-2xl font-semibold">chủ đề</div>
+          <div class="btn btn-ghost justify-start">{{ data.topic?.name }}</div>
+        </div>
+        <!-- phần team -->
+        <div v-if="data.team?.name" class="mt-5">
+          <div class="text-2xl font-semibold">Nhóm</div>
+          <div class="btn btn-ghost justify-start">{{ data.team?.name }}</div>
+        </div>
       </div>
     </div>
 

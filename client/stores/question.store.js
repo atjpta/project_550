@@ -16,11 +16,13 @@ export const questionStore = defineStore("questionStore", {
         return {
             question_edit: {
                 tag: new Set(),
+                course: {},
             },
             question: {
                 tag: new Set(),
                 author: {},
                 status: {},
+                course: {},
                 content: {},
             },
             list: [],
@@ -39,9 +41,16 @@ export const questionStore = defineStore("questionStore", {
 
         resetQuestionEdit() {
             this.question_edit = {
+                tag: new Set(),
+                course: {},
             }
-            this.question_edit.tag = new Set()
-            this.question_edit.topic = {};
+            this.question = {
+                tag: new Set(),
+                author: {},
+                status: {},
+                course: {},
+                content: {},
+            }
         },
 
         check() {
@@ -88,6 +97,13 @@ export const questionStore = defineStore("questionStore", {
 
         async findByTeam(id) {
             this.list = await questionService.findByTeam(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByCourse(id) {
+            this.list = await questionService.findByCourse(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });

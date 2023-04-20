@@ -10,6 +10,13 @@ export const statusStore = defineStore("statusStore", {
     getters: {
         getPost(state) {
             return state.List_status.filter(e => e.name == 'private' || e.name == 'public')
+        },
+
+        getPublic(state) {
+            return state.List_status.filter(e => e.name == 'public')
+        },
+        getPrivate(state) {
+            return state.List_status.filter(e => e.name == 'private')
         }
 
     },

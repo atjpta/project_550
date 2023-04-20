@@ -21,6 +21,8 @@ export const postStore = defineStore("postStore", {
                 team: {},
                 status: {},
                 content: {},
+                course: {},
+
             },
             post: {
                 author: {},
@@ -30,6 +32,8 @@ export const postStore = defineStore("postStore", {
                 status: {},
                 content: {},
                 series_team: [],
+                course: {},
+
             },
             list: [],
             listNoSeries: [],
@@ -53,6 +57,18 @@ export const postStore = defineStore("postStore", {
                 team: {},
                 status: {},
                 content: {},
+                course: {},
+            }
+            this.post = {
+                author: {},
+                tag: new Set(),
+                series: {},
+                team: {},
+                status: {},
+                content: {},
+                series_team: [],
+                course: {},
+
             }
         },
 
@@ -106,6 +122,13 @@ export const postStore = defineStore("postStore", {
 
         async findByTeam(id) {
             this.list = await postService.findByTeam(id);
+            this.list.forEach((e, i) => {
+                this.list[i].createdAt = this.setTime(this.list[i].createdAt);
+            });
+        },
+
+        async findByCourse(id) {
+            this.list = await postService.findByCourse(id);
             this.list.forEach((e, i) => {
                 this.list[i].createdAt = this.setTime(this.list[i].createdAt);
             });
