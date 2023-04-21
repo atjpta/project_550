@@ -6,7 +6,6 @@
       </button>
     </div>
 
-
     <!-- loadingSkeleton -->
 
     <div v-if="loadingSkeleton" class="space-y-5">
@@ -60,7 +59,7 @@ const useDialog = dialogStore();
 const useQuestion = questionStore();
 const useTeam = teamStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useQuestion.list.length / size);

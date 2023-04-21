@@ -6,6 +6,7 @@
         <a @click="goTo('/post/new/1')" class="link link-hover"> Bài viết</a>
         <!-- <NuxtLink to="" class="link link-hover"> Chuỗi bài viết</NuxtLink> -->
         <a @click="goTo('/question/new/1')" class="link link-hover"> Câu hỏi</a>
+        <a @click="goTo('/course')" class="link link-hover">Môn học</a>
         <!-- <NuxtLink to="" class="link link-hover"> Chủ đề</NuxtLink> -->
       </div>
       <div>

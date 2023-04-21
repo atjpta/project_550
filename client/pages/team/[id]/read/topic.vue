@@ -58,7 +58,7 @@ const useTeam = teamStore();
 const useAuth = authStore();
 const useTopic = topicStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useTopic.List_topic.length / size);

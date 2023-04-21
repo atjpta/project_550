@@ -28,6 +28,7 @@ export const searchStore = defineStore("searchStore", {
             key: '',
             keySave: '',
             mark: {},
+            loadingSkeleton: false,
         };
     },
     getters: {
@@ -169,14 +170,20 @@ export const searchStore = defineStore("searchStore", {
         },
 
         async getApi() {
-            await this.getPost()
-            await this.getQuestion()
-            await this.getSeries()
-            await this.getTopic()
-            await this.getUser()
-            await this.getTeam()
-            await this.getTag()
-            await this.getCourse()
+            this.loadingSkeleton = true
+            try {
+                await this.getPost()
+                await this.getQuestion()
+                await this.getSeries()
+                await this.getTopic()
+                await this.getUser()
+                await this.getTeam()
+                await this.getTag()
+                await this.getCourse()
+                this.loadingSkeleton = false
+            } catch (error) {
+                console.log(error);
+            }
 
         },
 

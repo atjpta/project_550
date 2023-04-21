@@ -6,6 +6,15 @@
     <div v-else
       class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
       <QuestionVQuestion :data="useQuestion.question" />
+      <!-- các bài viết liên quan -->
+      <div>
+        <div class="text-2xl font-semibold">Các bài liên quan</div>
+        <div class="carousel space-x-5 my-3">
+          <div class="carousel-item" v-for="i in listOther" :key="i">
+            <QuestionVMonoOther :data="i" />
+          </div>
+        </div>
+      </div>
       <!-- chọn cái xem -->
       <div class="flex flex-wrap">
         <div @click="selectviewcmt = false" :class="!selectviewcmt ? 'text-primary' : ''"
@@ -112,11 +121,13 @@ import { dialogStore } from "../../stores/dialog.store";
 import { authStore } from "~~/stores/auth.store";
 import { questionStore } from "~~/stores/question.store";
 import { notificationStore } from "~~/stores/notification.store";
+import { alertStore } from "~/stores/alert.store";
 
 const selectviewcmt = ref(false);
 const route = useRoute();
 const useQuestion = questionStore();
 const useUser = userStore();
+const useAlert = alertStore();
 const useCmt = cmtStore();
 const useAnswer = answerStore();
 const useRouteS = routeStore();
@@ -124,9 +135,10 @@ const useDialog = dialogStore();
 const useAuth = authStore();
 const useNotification = notificationStore();
 const resetInput = ref(0);
+const listOther = ref();
 const loadingSkeleton = ref(false);
 
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useCmt.list_cmt.length / size);
@@ -301,14 +313,41 @@ function openDialogSignin(cb) {
   }
 }
 
+async function getOther() {
+  try {
+    if (useQuestion.question.tag) {
+      const index = Math.floor(Math.random() * useQuestion.question.tag.length);
+      listOther.value = await useQuestion.findOther(
+        route.params.id,
+        useQuestion.question.tag[index]
+      );
+    } else {
+      listOther.value = await useQuestion.findOther(route.params.id);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function getApi() {
   loadingSkeleton.value = true;
   try {
     useCmt.list_cmt = [];
     await useQuestion.findOne(route.params.id);
+    if (!useQuestion.question.isPublic) {
+      if (useQuestion.question.author[0]._id != useAuth.user?.id) {
+        useAlert.setWarning("câu hỏi riêng tư, bạn không thể vào được!!");
+        return navigateTo("/");
+      }
+      if (!useAuth.user) {
+        useAlert.setWarning("câu hỏi riêng tư, bạn không thể vào được!!");
+        return navigateTo("/");
+      }
+    }
     await useUser.findAll();
     await useCmt.getBy("post", route.params.id);
     await useAnswer.getBy(route.params.id);
+    await getOther();
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);

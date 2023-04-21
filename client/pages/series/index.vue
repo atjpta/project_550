@@ -5,7 +5,7 @@
 <script setup>
 onMounted(() => {
   if (useRoute().path == "/series") {
-    navigateTo("/series/new/0");
+    navigateTo("/series/new/1");
   }
 });
 </script>

@@ -44,7 +44,7 @@ const loadingSkeleton = ref(false);
 const useAlert = alertStore();
 const route = useRoute();
 const useMember = memberStore();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useMember.List_member.length / size);

@@ -42,7 +42,7 @@ import { searchStore } from "~~/stores/search.store";
 const route = useRoute();
 const useSearch = searchStore();
 const selectPage = ref(1);
-const size = 1;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useUser.maxlength / size);
 });

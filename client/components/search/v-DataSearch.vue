@@ -3,7 +3,13 @@
     <transition name="bounce">
       <div
         class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 h-72 p-5 rounded-2xl overflow-y-auto space-y-2">
-        <div v-if="sumLength" class="text-center">không có dữ liệu</div>
+        <div v-if="useSearch.loadingSkeleton" class="space-y-2">
+          <div v-for="i in 5" :key="i" class="h-12 w-full bg-base-300 animate-pulse"></div>
+        </div>
+
+        <div v-if="sumLength && !useSearch.loadingSkeleton" class="text-center">
+          không có dữ liệu
+        </div>
 
         <!-- course -->
         <div class="w-full space-y-2">

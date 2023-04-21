@@ -51,7 +51,7 @@ const useSeries = seriesStore();
 const useAuth = authStore();
 const useTag = tagStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useSeries.List_series.length / size);

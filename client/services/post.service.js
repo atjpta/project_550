@@ -7,6 +7,24 @@ const url = config.url.api + '/post'
 
 export default {
 
+    findOther: async (id, tag) => {
+        let customUrl = url
+        if (tag) {
+            customUrl += `/other/${id}/${tag}`;
+        }
+        else {
+            customUrl += `/random/${id}`;
+        }
+        const { data: data, error } = await useFetch(customUrl, {
+            method: "get",
+        })
+        if (error.value) {
+            // useAlert.setError(error.value.data)
+            throw new Error(error.value.data);
+        }
+        return data.value
+    },
+
     findByCourse: async (id) => {
         const { data: data, error } = await useFetch(url + `/course/${id}`, {
             method: "get",
@@ -60,6 +78,7 @@ export default {
         }
         return data.value
     },
+
 
     findByTag: async (id) => {
         const { data: data, error } = await useFetch(url + `/tag/${id}`, {

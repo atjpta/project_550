@@ -6,7 +6,6 @@
       </button>
     </div>
 
-
     <!-- loadingSkeleton -->
 
     <div v-if="loadingSkeleton" class="space-y-5">
@@ -59,7 +58,7 @@ const useRouteS = routeStore();
 const useAuth = authStore();
 const useSeries = seriesStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useSeries.List_series.length / size);

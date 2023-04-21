@@ -21,6 +21,9 @@ module.exports = (app) => {
     router.route("/admin")
         .get(ctl.findByAdmin)
 
+    router.route('/other/:id/:tag')
+        .get(ctl.findOtherByTag)
+
     router.route('/:filter/:page/:size')
         .get(ctl.findPerFilter)
 
@@ -33,6 +36,9 @@ module.exports = (app) => {
     router.route('/tag/:id/')
         .get(ctl.findByTag)
 
+    router.route('/random/:id/')
+        .get(ctl.findRandom)
+
     router.route('/series/:id/')
         .get(ctl.findBySeries)
         .put(ctl.updateSeries)
@@ -42,6 +48,9 @@ module.exports = (app) => {
 
     router.route('/other/:id/')
         .get(ctl.findByOther)
+
+    router.route('/random/:id/')
+        .get(ctl.findRandom)
 
     router.route('/noseries/:id')
         .get(ctl.findByNoSeries)

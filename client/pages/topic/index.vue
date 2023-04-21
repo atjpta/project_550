@@ -5,7 +5,7 @@
 <script setup>
 onMounted(() => {
   if (useRoute().path == "/topic") {
-    navigateTo("/topic/new/0");
+    navigateTo("/topic/new/1");
   }
 });
 </script>

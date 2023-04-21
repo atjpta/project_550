@@ -3,6 +3,16 @@
     <PostVSkeleton v-if="loadingSkeleton" />
     <div v-else class="hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-5">
       <PostVPost :data="usePost.post" />
+
+      <!-- các bài viết liên quan -->
+      <div>
+        <div class="text-2xl font-semibold">Các bài liên quan</div>
+        <div class="carousel space-x-5 my-3">
+          <div class="carousel-item" v-for="i in listOther" :key="i">
+            <PostVMonoOther :data="i" />
+          </div>
+        </div>
+      </div>
       <div class="flex">
         <div @click="openInputCmt = !openInputCmt" class="btn btn-sm btn-ghost text-primary mb-2">
           Nhập bình luận
@@ -12,22 +22,6 @@
             </div>
           </div>
         </div>
-
-        <!-- lọc -->
-        <!-- <div class="static" @mouseleave="openFilter = false">
-          <div @click="openFilter = !openFilter" class="btn btn-ghost btn-sm">
-            <OtherVIcon class-icon="" icon="fa-solid fa-filter" />
-          </div>
-
-          <div class="bg-base-200 menu fixed top-0" v-if="openFilter">
-            <div @click="openFilter = false" class="btn btn-sm btn-ghost text-left">
-              mới nhất
-            </div>
-            <div @click="openFilter = false" class="btn btn-sm btn-ghost text-left">
-              điểm cao nhất
-            </div>
-          </div>
-        </div> -->
       </div>
       <!-- list cmt -->
 
@@ -85,8 +79,8 @@ const useAuth = authStore();
 const resetInput = ref(0);
 const useNotification = notificationStore();
 const loadingSkeleton = ref(false);
-
-const size = 5;
+const listOther = ref();
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useCmt.list_cmt.length / size);
@@ -185,14 +179,37 @@ function openDialogSignin(cb) {
   }
 }
 
+async function getOther() {
+  try {
+    if (usePost.post.tag) {
+      const index = Math.floor(Math.random() * usePost.post.tag.length);
+      listOther.value = await usePost.findOther(route.params.id, usePost.post.tag[index]);
+    } else {
+      listOther.value = await usePost.findOther(route.params.id);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function getApi() {
   loadingSkeleton.value = true;
   try {
     useCmt.list_cmt = [];
     await usePost.findOne(route.params.id);
-
+    if (!usePost.post.isPublic) {
+      if (usePost.post.author[0]._id != useAuth.user?.id) {
+        useAlert.setWarning("bài viết riêng tư, bạn không thể vào được!!");
+        return navigateTo("/");
+      }
+      if (!useAuth.user) {
+        useAlert.setWarning("bài viết riêng tư, bạn không thể vào được!!");
+        return navigateTo("/");
+      }
+    }
     await useUser.findAll();
     await useCmt.getBy("post", route.params.id);
+    await getOther();
     loadingSkeleton.value = false;
   } catch (error) {
     console.log(error);

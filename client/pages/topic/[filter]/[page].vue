@@ -52,7 +52,7 @@ import { searchStore } from "~~/stores/search.store";
 const route = useRoute();
 const useSearch = searchStore();
 const selectPage = ref(route.params.page);
-const size = 3;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_topic.length / size);
 });
@@ -116,6 +116,8 @@ async function getApi() {
     // await useTopic.findAll();
     useTopic.List_topic = await useTopic.findPerFilter("vote", route.params.page, size);
     if (useTopic.List_topic.length == 0) {
+      loadingSkeleton.value = false;
+
       return navigateTo(`/topic/${route.params.filter}/1`);
     }
     loadingSkeleton.value = false;

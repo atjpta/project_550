@@ -41,7 +41,7 @@ import { typecourseStore } from "~/stores/typecourse.store";
 const props = defineProps({
     data: Object,
 });
-const size = 8;
+const size = 9;
 const useCourse = courseStore();
 const useTypeCourse = typecourseStore();
 const loadingSkeleton = ref(false);

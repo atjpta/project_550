@@ -54,7 +54,7 @@ const useTag = tagStore();
 const useTeam = teamStore();
 const useRole = roleStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useTeam.List_team.length / size);

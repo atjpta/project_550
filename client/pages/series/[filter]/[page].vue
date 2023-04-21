@@ -58,7 +58,7 @@ const loadingSkeleton = ref(false);
 const route = useRoute();
 const useSearch = searchStore();
 const selectPage = ref(route.params.page);
-const size = 3;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_series.length / size);
 });
@@ -115,7 +115,7 @@ async function getApi() {
     await useSearch.getSeries();
     useSearch.mark.Series = 1;
   }
-  if (route.params.page > maxPage.value) {
+  if (route.params.page > maxPage.value && maxPage.value != 0) {
     return navigateTo(`/series/${route.params.filter}/${maxPage.value}`);
   }
   loadingSkeleton.value = true;
@@ -127,6 +127,8 @@ async function getApi() {
       size
     );
     if (useSeries.List_series.length == 0) {
+      loadingSkeleton.value = false;
+
       return navigateTo(`/series/${route.params.filter}/1`);
     }
     loadingSkeleton.value = false;

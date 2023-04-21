@@ -95,6 +95,14 @@ export const questionStore = defineStore("questionStore", {
 
         },
 
+        async findOther(id, tag) {
+            const list = await questionService.findOther(id, tag);
+            list.forEach((e, i) => {
+                list[i].createdAt = this.setTime(list[i].createdAt);
+            });
+            return list;
+        },
+
         async findByTeam(id) {
             this.list = await questionService.findByTeam(id);
             this.list.forEach((e, i) => {

@@ -57,7 +57,7 @@ const usePost = postStore();
 const useAuth = authStore();
 const route = useRoute();
 const useTeam = teamStore();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(usePost.list.length / size);

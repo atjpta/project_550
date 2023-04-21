@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <!-- loadingSkeleton -->
-    <div v-if="loadingSkeleton || !dataPerPage[0]" class="space-y-5">
+    <div v-if="loadingSkeleton" class="space-y-5">
       <div v-for="i in size" :key="i">
         <AdminVSkeleton />
       </div>
@@ -15,12 +15,12 @@
       </div>
 
       <div v-else>
-        <div class="text-center text-2xl my-10">Bạn chưa lưu bài viết nào cả !?</div>
+        <div class="text-center text-2xl my-10">không có bài viết nào cả !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit my-3">
+    <div v-if="dataPerPage[0]" class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
@@ -47,7 +47,7 @@ const loadingSkeleton = ref(false);
 const useRouteS = routeStore();
 const usePost = postStore();
 const useAuth = authStore();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(usePost.list.length / size);

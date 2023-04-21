@@ -19,13 +19,11 @@
             <input v-if="openEditName" v-model="name" type="text" class="input input-primary w-full" />
           </div>
           <div v-if="openEditName" class="flex space-x-1">
-            <div @click="updateName()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên">
-              <OtherVIcon class-icon="" icon="fa-solid fa-save" />
+            <div @click="updateName()" :class="loading ? 'loading' : ''" class="btn btn-primary btn-sm mt-1">
+              lưu
             </div>
-            <div @click="closeEditNameF()" class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên">
-              <OtherVIcon class-icon="" icon="fa-solid fa-x" />
+            <div @click="closeEditNameF()" class="btn btn-ghost text-error btn-sm mt-1">
+              hủy
             </div>
           </div>
         </div>
@@ -48,13 +46,11 @@
               class="textarea textarea-xs w-full textarea-primary h-20"></textarea>
           </div>
           <div v-if="openEditIntroduce" class="flex space-x-1">
-            <div @click="updateIntroduce()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên">
-              <OtherVIcon class-icon="" icon="fa-solid fa-save" />
+            <div @click="updateIntroduce()" :class="loading ? 'loading' : ''" class="btn btn-primary btn-sm mt-1">
+              lưu
             </div>
-            <div @click="closeEditIntroduceF()" class="btn btn-ghost text-error btn-sm tooltip flex w-fit mt-1"
-              data-tip="sửa tên">
-              <OtherVIcon class-icon="" icon="fa-solid fa-x" />
+            <div @click="closeEditIntroduceF()" class="btn btn-ghost text-error btn-sm mt-1">
+              hủy
             </div>
           </div>
         </div>

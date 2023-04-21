@@ -1,7 +1,5 @@
 <template>
   <div class="mt-5">
-
-
     <!-- loadingSkeleton -->
 
     <div v-if="loadingSkeleton || !dataPerPage[0]" class="space-y-5">
@@ -44,7 +42,7 @@ import { memberStore } from "~~/stores/member.store";
 const loadingSkeleton = ref(false);
 const route = useRoute();
 const useMember = memberStore();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useMember.List_member.length / size);

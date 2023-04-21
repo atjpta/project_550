@@ -86,7 +86,7 @@ const loading = ref(false);
 const useAlert = alertStore();
 const useNotification = notificationStore();
 
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
     selectPage.value = 1;
     return Math.ceil(useCmt.list_cmt.length / size);

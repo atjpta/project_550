@@ -66,7 +66,7 @@ const loadingSkeleton = ref(false);
 const route = useRoute();
 const useSearch = searchStore();
 const selectPage = ref(route.params.page);
-const size = 3;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_question.length / size);
 });

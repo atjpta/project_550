@@ -128,7 +128,7 @@ onMounted(() => {
 });
 
 const title = computed(() => {
-  return useTeam.team[0].name;
+  return useTeam.team[0]?.name;
 });
 
 useHead({

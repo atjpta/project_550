@@ -18,17 +18,16 @@
         <div v-for="(i, n) in dataPerPage" :key="i._id">
           <AdminVMonoPost :data="i" />
 
-          <div v-if="
-            n <
+          <div v-if="n <
             (useReport.list_search_post.length > size
               ? size
               : useReport.list_search_post.length) -
             1
-          " class="divider"></div>
+            " class="divider"></div>
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">Bạn chưa lưu bài viết nào cả !?</div>
+        <div class="text-center text-2xl my-10">không có bài viết nào cả !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->

@@ -60,7 +60,7 @@ const useRole = roleStore();
 const route = useRoute();
 const useSearch = searchStore();
 const selectPage = ref(1);
-const size = 3;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_team.length / size);
 });

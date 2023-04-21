@@ -3,7 +3,10 @@
     <!-- các tùy chọn -->
     <div class="glass rounded-2xl ring-0 p-2 lg:flex justify-between sticky top-14 z-10">
       <div class="w-fit">
-        <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/user/${data?.author[0]?._id}/overview`">
+        <nuxtLink
+          class="hover:text-sky-500 hover:scale-110 duration-500"
+          :to="`/user/${data?.author[0]?._id}/overview`"
+        >
           <!-- tác giả -->
           <div class="flex">
             <div class="avatar">
@@ -24,49 +27,81 @@
       <div class="flex">
         <div class="flex justify-evenly mr-2">
           <div data-tip="tăng điểm" class="tooltip">
-            <div v-if="loading != 'up'" @click="openDialogSignin(up)" :class="classUp"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost">
+            <div
+              v-if="loading != 'up'"
+              @click="openDialogSignin(up)"
+              :class="classUp"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
             </div>
           </div>
-          <div v-if="loading == 'up'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
+          <div
+            v-if="loading == 'up'"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
+          ></div>
 
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
           <div data-tip="giảm điểm" class="tooltip">
-            <div v-if="loading != 'down'" @click="openDialogSignin(down)" :class="classDown"
-              class="btn-sm lg:btn-md btn btn-circle btn-ghost">
+            <div
+              v-if="loading != 'down'"
+              @click="openDialogSignin(down)"
+              :class="classDown"
+              class="btn-sm lg:btn-md btn btn-circle btn-ghost"
+            >
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
             </div>
           </div>
-          <div v-if="loading == 'down'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
+          <div
+            v-if="loading == 'down'"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
+          ></div>
         </div>
         <div class="tooltip" data-tip="lưu câu hỏi">
-          <div v-if="loading != 'save'" @click="openDialogSignin(save)" :class="classSave"
-            class="btn-sm lg:btn-md btn btn-ghost btn-square">
+          <div
+            v-if="loading != 'save'"
+            @click="openDialogSignin(save)"
+            :class="classSave"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
+          >
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
           </div>
-          <div v-if="loading == 'save'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
+          <div
+            v-if="loading == 'save'"
+            class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"
+          ></div>
         </div>
 
         <!-- thông báo  -->
-        <div v-if="useFollow.follow && useAuth.user" class="ml-1 tooltip"
-          :data-tip="useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'">
-          <div @click="setOnAndoff()" :class="loading == 'notification' ? 'loading' : ''"
-            class="btn-sm lg:btn-md btn btn-ghost btn-square">
-            <OtherVIcon class-icon="text-xl text-warning" :icon="
-              useFollow.follow.notification
-                ? 'fa-solid fa-bell-slash'
-                : 'fa-solid fa-bell'
-            " />
+        <div
+          v-if="useFollow.follow && useAuth.user"
+          class="ml-1 tooltip"
+          :data-tip="useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'"
+        >
+          <div
+            @click="setOnAndoff()"
+            :class="loading == 'notification' ? 'loading' : ''"
+            class="btn-sm lg:btn-md btn btn-ghost btn-square"
+          >
+            <OtherVIcon
+              class-icon="text-xl text-warning"
+              :icon="
+                useFollow.follow.notification
+                  ? 'fa-solid fa-bell-slash'
+                  : 'fa-solid fa-bell'
+              "
+            />
           </div>
         </div>
 
         <div class="tooltip flex" data-tip="lượt trả lời">
           <a class="btn-sm lg:btn-md btn btn-ghost">
-            <OtherVIcon :class-icon="haveAnswerChoice ? 'text-success text-2xl' : ' text-2xl'"
-              :icon="haveAnswerChoice ? 'fa-solid fa-check' : 'fa-solid fa-question'" />
+            <OtherVIcon
+              :class-icon="haveAnswerChoice ? 'text-success text-2xl' : ' text-2xl'"
+              :icon="haveAnswerChoice ? 'fa-solid fa-check' : 'fa-solid fa-question'"
+            />
             <div class="text-2xl">
               {{ countAnwser }}
             </div>
@@ -74,7 +109,10 @@
         </div>
         <div class="tooltip flex" data-tip="lượt bình luận">
           <a href="#comment" class="btn-sm lg:btn-md btn btn-ghost">
-            <OtherVIcon class-icon="text-xl mr-1 text-primary" icon="fa-solid fa-comments" />
+            <OtherVIcon
+              class-icon="text-xl mr-1 text-primary"
+              icon="fa-solid fa-comments"
+            />
             <div class="text-2xl">
               {{ data.comment && data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
@@ -92,7 +130,11 @@
     </div>
     <!-- bài viết -->
     <div class="">
-      <img class="rounded-2xl" :src="useImage.previewImage || data.image_cover_url" alt="" />
+      <img
+        class="rounded-2xl"
+        :src="useImage.previewImage || data.image_cover_url"
+        alt=""
+      />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
       <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
@@ -100,31 +142,40 @@
       <!-- tag -->
       <div class="mt-4 flex">
         <div v-for="i in data.tag" :key="i._id" class="">
-          <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name }}</nuxt-link>
+          <nuxt-link
+            :to="`/tag/${i._id}/post`"
+            class="btn btn-outline btn-sm mr-1 mt-1"
+            >{{ "#" + i.name }}</nuxt-link
+          >
         </div>
       </div>
       <div v-if="data.course[0]">
         <div class="text-2xl font-semibold">Môn học</div>
-        <nuxtLink :to="`/course/${data.course[0]._id}/review`" class="btn btn-ghost justify-start">{{ data.course[0].name
-        }}
+        <nuxtLink
+          :to="`/course/${data.course[0]._id}/review`"
+          class="btn btn-ghost justify-start"
+          >{{ data.course[0].name }}
         </nuxtLink>
       </div>
       <!-- phần series -->
       <div v-if="data.topic?.length > 0" class="mt-5">
         <div class="text-2xl font-semibold">Chủ đề</div>
-        <nuxtLink :to="`/topic/${data.topic[0]?._id}`" class="btn btn-ghost justify-start">{{ data.topic[0]?.name }}
+        <nuxtLink :to="`/topic/${data.topic[0]?._id}`" class="btn btn-ghost justify-start"
+          >{{ data.topic[0]?.name }}
         </nuxtLink>
       </div>
       <!-- phần team -->
       <div v-if="data.team?.length > 0" class="mt-5">
         <div class="text-2xl font-semibold">Nhóm</div>
-        <nuxtLink :to="`/team/${data.team[0]?._id}/read/post`" class="btn btn-ghost justify-start">{{ data.team[0]?.name
-        }}
+        <nuxtLink
+          :to="`/team/${data.team[0]?._id}/read/post`"
+          class="btn btn-ghost justify-start"
+          >{{ data.team[0]?.name }}
         </nuxtLink>
       </div>
     </div>
 
-    <div id="comment" class="divider"></div>
+    <div id="comment"></div>
   </div>
 </template>
 

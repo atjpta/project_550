@@ -36,6 +36,7 @@ export const postStore = defineStore("postStore", {
 
             },
             list: [],
+            listOther: [],
             listNoSeries: [],
         };
     },
@@ -111,6 +112,14 @@ export const postStore = defineStore("postStore", {
             });
             return list;
 
+        },
+
+        async findOther(id, tag) {
+            const list = await postService.findOther(id, tag);
+            list.forEach((e, i) => {
+                list[i].createdAt = this.setTime(list[i].createdAt);
+            });
+            return list;
         },
 
         async findAll2() {

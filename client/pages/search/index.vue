@@ -25,7 +25,7 @@
         </nuxtLink>
       </div>
     </div>
-    <div class="space-y-5 mt-5" v-if="!useSearch.list_post[0]">
+    <div class="space-y-5 mt-5" v-if="loadingSkeleton">
       <div v-for="item in 7" :key="item">
         <PostVSkeleton />
       </div>

@@ -18,12 +18,17 @@ module.exports = (app) => {
     router.route("/admin")
         .get(ctl.findByAdmin)
 
+    router.route('/other/:id/:tag')
+        .get(ctl.findOtherByTag)
+
     router.route('/:filter/:page/:size')
         .get(ctl.findPerFilter)
 
     router.route('/course/:id/')
         .get(ctl.findByCourse)
 
+    router.route('/random/:id/')
+        .get(ctl.findRandom)
 
     router.route('/edit/:id/')
         .get(ctl.findOneEdit)

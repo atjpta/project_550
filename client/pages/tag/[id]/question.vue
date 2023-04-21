@@ -52,7 +52,7 @@ const useQuestion = questionStore();
 const useAuth = authStore();
 const useTag = tagStore();
 const route = useRoute();
-const size = 5;
+const size = 9;
 const maxPage = computed(() => {
   selectPage.value = 1;
   return Math.ceil(useQuestion.list.length / size);

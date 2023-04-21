@@ -4,6 +4,433 @@ const model = DB.quenstion;
 const ObjectId = mongoose.Types.ObjectId;
 
 
+exports.findOtherByTag = async (req, res, next) => {
+    let { id } = req.params
+    let { tag } = req.params
+
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    _id: {
+                        $ne: ObjectId(id),
+                    },
+                    tag: ObjectId(tag),
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'topics',
+                    localField: 'topic',
+                    foreignField: '_id',
+                    as: 'topics',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'topics.team',
+                    foreignField: '_id',
+                    as: 'topicsTeam',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusQuestion',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'team.status',
+                    foreignField: '_id',
+                    as: 'statusTeam',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'topicsTeam.status',
+                    foreignField: '_id',
+                    as: 'statusTopicsTeam',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    'answer': 1,
+                    'choice': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusQuestion.name', ['private']] },
+                                    {
+                                        $and: [
+                                            { $eq: ['$statusTeam.name', ['private']] },
+                                            { $eq: ['$topics', []] }
+                                        ]
+                                    },
+                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    },
+                }
+            },
+            {
+                $match: {
+                    isPublic: true,
+                }
+            },
+            { $sample: { size: 5 } },
+            {
+                $sort: { createdAt: -1 }
+            },
+
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll a ' + error })
+        )
+    }
+};
+
+
+exports.findRandom = async (req, res, next) => {
+    let { id } = req.params
+
+    try {
+        const document = await model.aggregate([
+            {
+                $match: {
+                    _id: {
+                        $ne: ObjectId(id),
+                    },
+                }
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'comment',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                count: { $sum: 1 },
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'answer',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'answers',
+                    localField: '_id',
+                    foreignField: 'question',
+                    as: 'choice',
+                    pipeline: [
+                        {
+                            $match: {
+                                choice: true
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: '$question',
+                                count: { $sum: 1 },
+
+                            }
+                        }
+                    ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'votes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'vote',
+                    pipeline: [
+                        {
+                            $group: {
+                                _id: '$post',
+                                val: { $sum: '$val' },
+                            },
+                        }
+                    ]
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'author',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'tags',
+                    localField: 'tag',
+                    foreignField: '_id',
+                    as: 'tag',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'topics',
+                    localField: 'topic',
+                    foreignField: '_id',
+                    as: 'topics',
+
+                },
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'topics.team',
+                    foreignField: '_id',
+                    as: 'topicsTeam',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusQuestion',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'team.status',
+                    foreignField: '_id',
+                    as: 'statusTeam',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'topicsTeam.status',
+                    foreignField: '_id',
+                    as: 'statusTopicsTeam',
+                },
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    'title': 1,
+                    'image_cover_url': 1,
+                    'createdAt': 1,
+                    "author._id": 1,
+                    "author.name": 1,
+                    'author.avatar_url': 1,
+                    "tag._id": 1,
+                    "tag.name": 1,
+                    'view': 1,
+                    'comment': 1,
+                    'vote': 1,
+                    'answer': 1,
+                    'choice': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusQuestion.name', ['private']] },
+                                    {
+                                        $and: [
+                                            { $eq: ['$statusTeam.name', ['private']] },
+                                            { $eq: ['$topics', []] }
+                                        ]
+                                    },
+                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    },
+                }
+            },
+            {
+                $match: {
+                    isPublic: true,
+                }
+            },
+            { $sample: { size: 5 } },
+            {
+                $sort: { createdAt: -1 }
+            },
+
+        ])
+        return res.json(document);
+    } catch (error) {
+        return next(
+            res.status(500).json({ Message: 'không  thể  lấy findAll a ' + error })
+        )
+    }
+};
+
+
+
 
 exports.findByCourse = async (req, res, next) => {
     const { id } = req.params;
@@ -1877,14 +2304,7 @@ exports.findOne = async (req, res, next) => {
                     as: 'author',
                 },
             },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
+
             {
                 $lookup: {
                     from: 'tags',
@@ -1924,6 +2344,32 @@ exports.findOne = async (req, res, next) => {
                             }
                         }
                     ]
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusQuestion',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'team.status',
+                    foreignField: '_id',
+                    as: 'statusTeam',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'topicsTeam.status',
+                    foreignField: '_id',
+                    as: 'statusTopicsTeam',
                 },
             },
 
@@ -1983,6 +2429,24 @@ exports.findOne = async (req, res, next) => {
                     'answer': 1,
                     'course._id': 1,
                     'course.name': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusQuestion.name', ['private']] },
+                                    {
+                                        $and: [
+                                            { $eq: ['$statusTeam.name', ['private']] },
+                                            { $eq: ['$topics', []] }
+                                        ]
+                                    },
+                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
                 }
             },
             {
@@ -2066,14 +2530,6 @@ exports.findOneGuest = async (req, res, next) => {
             },
             {
                 $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
-            {
-                $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
@@ -2106,6 +2562,8 @@ exports.findOneGuest = async (req, res, next) => {
                 },
             },
 
+
+
             {
                 $lookup: {
                     from: 'answers',
@@ -2137,6 +2595,32 @@ exports.findOneGuest = async (req, res, next) => {
 
                 },
             },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'statusQuestion',
+                },
+            },
+
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'team.status',
+                    foreignField: '_id',
+                    as: 'statusTeam',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'status',
+                    localField: 'topicsTeam.status',
+                    foreignField: '_id',
+                    as: 'statusTopicsTeam',
+                },
+            },
             {
                 $project: {
                     "_id": 1,
@@ -2161,6 +2645,24 @@ exports.findOneGuest = async (req, res, next) => {
                     'answer': 1,
                     'course._id': 1,
                     'course.name': 1,
+                    isPublic: {
+                        $cond: {
+                            if: {
+                                $or: [
+                                    { $eq: ['$statusQuestion.name', ['private']] },
+                                    {
+                                        $and: [
+                                            { $eq: ['$statusTeam.name', ['private']] },
+                                            { $eq: ['$topics', []] }
+                                        ]
+                                    },
+                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                ]
+                            },
+                            then: false,
+                            else: true
+                        }
+                    }
                 }
             },
             {

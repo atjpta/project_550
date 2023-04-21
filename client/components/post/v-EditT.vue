@@ -1,9 +1,8 @@
 <template>
-  <div :class="
-    preview
+  <div :class="preview
       ? 'bg-base-100'
       : 'bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5'
-  " class="p-5 rounded-2xl">
+    " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-extrabold">Chỉnh sửa bài viết</div>
@@ -90,8 +89,9 @@
           </div>
         </div>
 
-        <div class="-z-10">
-          <QuillEditor :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow" toolbar="full" />
+        <div class="min-h-[30vh]">
+          <QuillEditor class="min-h-[30vh]" :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow"
+            toolbar="full" />
         </div>
       </div>
     </transition>
