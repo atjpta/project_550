@@ -1,11 +1,10 @@
 <template>
   <div>
     <transition name="bounce">
-      <div :class="
-        data.choice.length
+      <div :class="data.choice.length
           ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
           : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
-      " class="rounded-2xl p-5 hover:bg-gradient-to-l">
+        " class="rounded-2xl p-5 hover:bg-gradient-to-l">
         <div>
           <!-- phần đầu -->
           <div class="flex justify-between">
@@ -27,46 +26,56 @@
               </div>
             </nuxtLink>
 
-            <!-- edit cho tác giả -->
-            <div v-if="isAuthor">
-              <div class="space-x-2 static flex">
-                <div v-if="data.topic" class="tooltip" data-tip="xóa khỏi Topic">
-                  <div @click="openDialogRemoveTopic()" class="btn btn-ghost text-warning text-2xl">
-                    <OtherVIcon icon="fa-solid fa-xmark" />
-                  </div>
-                </div>
-                <div v-if="!data.topic" class="tooltip" data-tip="thêm vào topic">
-                  <div @click="openDialogAddTopic()" class="btn btn-ghost text-success text-2xl">
-                    <OtherVIcon icon="fa-solid fa-plus" />
-                  </div>
-                </div>
-                <nuxtLink :to="`/question/edit/${data._id}`" class="tooltip" data-tip="sửa câu hỏi">
-                  <div class="btn btn-ghost text-primary">
-                    <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                  </div>
-                </nuxtLink>
-                <div class="tooltip" data-tip="xóa câu hỏi">
-                  <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                    <OtherVIcon icon="fa-solid fa-trash-can" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- phần tùy chọn cho người đọc -->
-            <div v-if="!isAuthor" class="dropdown dropdown-end z-10 flex justify-end">
+            <div class="dropdown dropdown-end z-10 flex justify-end">
               <label tabindex="0" class="btn btn-ghost">
                 <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
               </label>
               <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li @click="openDialogReport()" class="hover-bordered">
-                  <a>
-                    <div>
-                      <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo
-                    </div>
-                  </a>
-                </li>
+                <div v-if="!isAuthor">
+                  <li @click="openDialogReport()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon icon="fa-solid fa-flag" />
+                        báo cáo
+                      </div>
+                    </a>
+                  </li>
+                </div>
+                <div v-if="isAuthor">
+                  <!-- <li v-if="data.topic" @click="openDialogRemoveTopic()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-warning" icon="fa-solid fa-xmark" />
+                        xóa khỏi chủ đề
+                      </div>
+                    </a>
+                  </li>
+                  <li v-if="!data.topic" @click="openDialogAddTopic()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-success" icon="fa-solid fa-plus" />
+                        thêm vào chủ đề
+                      </div>
+                    </a>
+                  </li> -->
+                  <li @click="navigateTo(`/question/edit/${data._id}`)" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                        sửa
+                      </div>
+                    </a>
+                  </li>
+                  <li @click="openDialogDelete()" class="hover-bordered">
+                    <a>
+                      <div>
+                        <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                        xóa
+                      </div>
+                    </a>
+                  </li>
+                </div>
               </ul>
             </div>
           </div>
@@ -91,9 +100,8 @@
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="
-                data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-              " />
+              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+                " />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
@@ -166,53 +174,50 @@ function openDialogDelete() {
     );
   }
 }
-function openDialogRemoveTopic() {
-  if (useAuth.isUserLoggedIn) {
-    useDialog.showDialog(
-      {
-        title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa câu hỏi khỏi Topic này?",
-        btn1: "ok",
-        btn2: "hủy",
-      },
-      async () => {
-        await useQuestion.updateTopic(props.data._id);
-        resetData();
-      }
-    );
-  }
-}
+// function openDialogRemoveTopic() {
+//   if (useAuth.isUserLoggedIn) {
+//     useDialog.showDialog(
+//       {
+//         title: "Thông báo cực căng!",
+//         content: "bạn chắc chắn muốn xóa câu hỏi khỏi Topic này?",
+//         btn1: "ok",
+//         btn2: "hủy",
+//       },
+//       async () => {
+//         await useQuestion.updateTopic(props.data._id);
+//         resetData();
+//       }
+//     );
+//   }
+// }
 
-function openDialogAddTopic() {
-  if (useAuth.isUserLoggedIn) {
-    useDialog.showDialog(
-      {
-        title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn thêm câu hỏi vào Topic này?",
-        btn1: "ok",
-        btn2: "hủy",
-      },
-      async () => {
-        const data = {
-          topic: route.params.id,
-        };
-        const dataNotification = {
-          author: useAuth.user.id,
-          model: route.params.id,
-          content: `bạn có câu hỏi mới trong chủ đề "${useTopic.topic.name}"`,
-          url: route.fullPath,
-          type: "info",
-        };
-        if (useTopic.topic.team.length > 0) {
-          data.team = useTopic.topic.team[0]._id;
-        }
-        await useQuestion.updateTopic(props.data._id, data);
-        await useNotification.create(dataNotification);
-        resetData();
-      }
-    );
-  }
-}
+// function openDialogAddTopic() {
+//   if (useAuth.isUserLoggedIn) {
+//     useDialog.showDialog(
+//       {
+//         title: "Thông báo cực căng!",
+//         content: "bạn chắc chắn muốn thêm câu hỏi vào Topic này?",
+//         btn1: "ok",
+//         btn2: "hủy",
+//       },
+//       async () => {
+//         const data = {
+//           topic: route.params.id,
+//         };
+//         const dataNotification = {
+//           author: useAuth.user.id,
+//           model: route.params.id,
+//           content: `bạn có câu hỏi mới trong chủ đề "${useTopic.topic.name}"`,
+//           url: route.fullPath,
+//           type: "info",
+//         };
+//         await useQuestion.updateTopic(props.data._id, data);
+//         await useNotification.create(dataNotification);
+//         resetData();
+//       }
+//     );
+//   }
+// }
 
 async function resetData() {
   await useQuestion.findByTopic(route.params.id);

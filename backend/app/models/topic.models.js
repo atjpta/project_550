@@ -16,14 +16,7 @@ const schema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "tag"
         }],
-        team: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "team"
-        },
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        status: String,
     },
 
     {

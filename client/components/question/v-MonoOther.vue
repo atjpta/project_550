@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <div class="h-60 w-96 glass rounded-sm">{{ data }}</div> -->
-    <div @click="navigateTo(`/question/${data._id}`)">
+    <div @click="goReadPost()">
       <div class="card rounded-md w-96 bg-base-100 cursor-pointer hover:bg-base-200">
         <div class="card-body">
           <div class="w-fit">
@@ -31,9 +31,26 @@
 </template>
 
 <script setup>
+import { authStore } from "~/stores/auth.store";
+import { questionStore } from "~/stores/question.store";
+
 const props = defineProps({
   data: Object,
 });
+
+const useQuestion = questionStore();
+const useAuth = authStore();
+
+async function goReadPost() {
+  if (useAuth.user && useAuth.user.id == props.data.author[0]._id) {
+  } else {
+    await useQuestion.update({
+      id: props.data._id,
+      view: props.data.view + 1,
+    });
+  }
+  navigateTo(`/question/${props.data._id}`);
+}
 </script>
 
 <style></style>

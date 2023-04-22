@@ -23,11 +23,11 @@ export default {
         useAlert.setSuccess("gửi bình luận thành công");
         return data.value
     },
-    getBy: async (type, id, user) => {
-        let apiurl = url + `/${type}/${id}`
+    getBy: async (type, id, user, filter) => {
+        let apiurl = url + `/${type}/${id}/${filter}`
 
         if (!!user) {
-            apiurl = url + `/${type}/${id}/${user}`
+            apiurl = url + `/${type}/${id}/${user}/${filter}`
         }
         const { data: data, error } = await useFetch(apiurl, {
             headers: {

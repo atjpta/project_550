@@ -21,7 +21,7 @@ function formatData(listtag) {
   const data = {
     id: team.id,
     introduce: team.introduce,
-    status: [team.status.id],
+    status: team.status,
     name: team.name,
     image_cover_url: useImage.url ?? team.image_cover_url,
   };

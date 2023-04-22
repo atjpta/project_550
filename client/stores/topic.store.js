@@ -5,11 +5,13 @@ export const topicStore = defineStore("topicStore", {
     state() {
         return {
             List_topic: [],
+            List_topic2: [],
             List_topic_ByUser: [],
             topic: {
             },
             topic_edit: {
                 team: {},
+                status: 'public'
             }
         };
     },
@@ -24,6 +26,8 @@ export const topicStore = defineStore("topicStore", {
             }
             this.topic_edit = {
                 team: {},
+                status: 'public'
+
             }
         },
         async findAll() {
@@ -57,7 +61,7 @@ export const topicStore = defineStore("topicStore", {
         },
 
         async getEdit() {
-            this.List_topic = await topicService.getEdit();
+            this.List_topic2 = await topicService.getEdit();
         },
 
         async findByUser(id) {
@@ -71,6 +75,7 @@ export const topicStore = defineStore("topicStore", {
         resettopicEdit() {
             this.topic_edit = {}
             this.topic_edit.team = {};
+            this.topic_edit.status = 'public'
         },
 
         async findOne(id) {

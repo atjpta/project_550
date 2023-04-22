@@ -1,9 +1,8 @@
 <template>
-  <div :class="
-    !preview
+  <div :class="!preview
       ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/0'
       : ''
-  " class="p-5 rounded-2xl">
+    " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-extrabold">Chỉnh sửa series</div>
@@ -47,41 +46,25 @@
           </div>
         </div>
 
-        <!-- chọn nhóm cho bài viết -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn nhóm cho bài viết
-            <div class="tooltip" data-tip="bạn phải vào trong nhóm trước">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
-
-          <select v-model="useSeries.series_edit.team" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="{}">Chung</option>
-            <option :value="i" v-for="i in list_team" :key="i">
-              {{ i.name }}
-            </option>
-          </select>
-        </div>
-
         <!-- chọn trạng thái -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Trạng thái của series
-            <div class="tooltip" data-tip="riêng tư là chỉ bạn xem được">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
 
-          <select v-model="useSeries.series_edit.status" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
-          </select>
+        <div class="text-xl font-extrabold mt-5 mb-2">Chọn trạng thái</div>
+        <div class="w-full max-w-xs">
+          <div data-tip="mọi người đều xem được bài viết" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">công khai</span>
+              <input @click="useSeries.series_edit.status = 'public'" type="radio" name="radio-10"
+                class="radio checked:bg-red-500" :checked="useSeries.series_edit.status == 'public'" />
+            </label>
+          </div>
+          <div data-tip="bài viết chỉ có bạn thấy được" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">riêng tư</span>
+              <input :checked="useSeries.series_edit.status == 'private'"
+                @click="useSeries.series_edit.status = 'private'" type="radio" name="radio-10"
+                class="radio checked:bg-blue-500" />
+            </label>
+          </div>
         </div>
 
         <!-- phần nội dung bài viết -->
@@ -113,10 +96,10 @@
       <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
         lưu
       </div>
-      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
     </div>
   </div>
 </template>
@@ -143,37 +126,6 @@ const useSeries = seriesStore();
 const route = useRoute();
 const useAlert = alertStore();
 const useTeam = teamStore();
-
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (useSeries.series_edit.status) {
-      if (useSeries.series_edit.status[0]?.name == e.name) {
-        useSeries.series_edit.status = e;
-        return;
-      }
-    } else if (e.name == "public") {
-      useSeries.series_edit.status = e;
-    }
-  });
-  return useStatus.getPost;
-});
-
-const list_team = computed(() => {
-  let list = [];
-  if (!useSeries.series?.team) {
-    useSeries.series.team = {};
-  }
-  if (useTeam.List_team_ByUser) {
-    useTeam.List_team_ByUser.forEach((e) => {
-      list.push({
-        _id: e._id,
-        name: e.name,
-      });
-    });
-  }
-  return list;
-});
-
 const emit = defineEmits(["save"]);
 
 function getdata() {

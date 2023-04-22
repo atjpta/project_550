@@ -188,11 +188,12 @@ function openDialogSignin() {
 }
 
 async function getApi() {
+  loading.value = true;
+
   if (useSearch.mark.post != 1) {
     await useSearch.getPost();
     useSearch.mark.post = 1;
   }
-  loading.value = true;
   try {
     usePost.list = await usePost.findPerFilter(
       route.params.filter,

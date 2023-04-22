@@ -109,57 +109,24 @@ exports.findOtherByTag = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -178,31 +145,10 @@ exports.findOtherByTag = async (req, res, next) => {
                     'vote': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             { $sample: { size: 5 } },
             {
                 $sort: { createdAt: -1 }
@@ -321,57 +267,24 @@ exports.findRandom = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -390,31 +303,10 @@ exports.findRandom = async (req, res, next) => {
                     'vote': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             { $sample: { size: 5 } },
             {
                 $sort: { createdAt: -1 }
@@ -533,31 +425,24 @@ exports.findByCourse = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
+                },
+            },
+            {
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
 
@@ -771,57 +656,24 @@ exports.findPerFilter = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -840,24 +692,7 @@ exports.findPerFilter = async (req, res, next) => {
                     'vote': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                     isUnreply: {
                         $cond: {
                             if: {
@@ -872,11 +707,7 @@ exports.findPerFilter = async (req, res, next) => {
                     }
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { isUnreply: -1, [filter]: -1, createdAt: -1 }
             },
@@ -997,57 +828,24 @@ exports.findByOther = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -1067,31 +865,10 @@ exports.findByOther = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true
-                }
-            },
+
             {
                 $sort: { 'createdAt': -1 }
             }
@@ -1152,7 +929,6 @@ exports.findByNoTopic = async (req, res, next) => {
             // lọc ra các phần muốn lấy
             {
                 $match: {
-                    course: null,
                     topic: null,
                     author: ObjectId(id),
                 }
@@ -1342,19 +1118,6 @@ exports.findByTopic = async (req, res, next) => {
                     as: 'tag',
                 },
             },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
-            {
-                $match: {
-                    'status.name': 'public',
-                }
-            },
 
             {
                 $lookup: {
@@ -1394,6 +1157,27 @@ exports.findByTopic = async (req, res, next) => {
                             }
                         }
                     ]
+                },
+            },
+            {
+                $match: {
+                    status: 'public'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'teams',
+                    localField: 'team',
+                    foreignField: '_id',
+                    as: 'team',
+                },
+            },
+            {
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -1506,58 +1290,9 @@ exports.findByTeam = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
-            },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
-                },
+                $match: {
+                    status: 'public'
+                }
             },
 
             {
@@ -1599,33 +1334,11 @@ exports.findByTeam = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
-                    isTopic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$topics', []]
-                            },
-                            then: true,
-                            else: { $eq: ['$topics.team', [ObjectId(id)]] }
-                        }
-                    },
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$statusQuestion.name', ['private']]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
+
 
                 }
             },
-            {
-                $match: {
-                    isTopic: true,
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'createdAt': -1 }
             }
@@ -1878,57 +1591,24 @@ exports.findByTag = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
 
@@ -1949,31 +1629,10 @@ exports.findByTag = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'createdAt': -1 }
             }
@@ -2131,57 +1790,24 @@ exports.findAll = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'topics',
-                    localField: 'topic',
-                    foreignField: '_id',
-                    as: 'topics',
-
-                },
+                $match: {
+                    status: 'public'
+                }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'topics.team',
-                    foreignField: '_id',
-                    as: 'topicsTeam',
-
-                },
-            },
-
             {
                 $lookup: {
                     from: 'teams',
                     localField: 'team',
                     foreignField: '_id',
                     as: 'team',
-
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
+                $match: {
+                    $or: [
+                        { 'team.status': { $exists: false } },
+                        { 'team.status': 'public' },
+                    ],
                 },
             },
             {
@@ -2200,31 +1826,9 @@ exports.findAll = async (req, res, next) => {
                     'vote': 1,
                     'answer': 1,
                     'choice': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { createdAt: -1 }
             },
@@ -2322,6 +1926,11 @@ exports.findOne = async (req, res, next) => {
                 },
             },
             {
+                $addFields: {
+                    team: { $ifNull: ["$team", []] }
+                }
+            },
+            {
                 $lookup: {
                     from: 'topics',
                     localField: 'topic',
@@ -2344,32 +1953,6 @@ exports.findOne = async (req, res, next) => {
                             }
                         }
                     ]
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
                 },
             },
 
@@ -2433,14 +2016,8 @@ exports.findOne = async (req, res, next) => {
                         $cond: {
                             if: {
                                 $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                    { $eq: ['$status', 'private'] },
+                                    { $eq: ['$team.status', ['private']] },
                                 ]
                             },
                             then: false,
@@ -2537,6 +2114,11 @@ exports.findOneGuest = async (req, res, next) => {
                 },
             },
             {
+                $addFields: {
+                    team: { $ifNull: ["$team", []] }
+                }
+            },
+            {
                 $lookup: {
                     from: 'topics',
                     localField: 'topic',
@@ -2596,31 +2178,7 @@ exports.findOneGuest = async (req, res, next) => {
                 },
             },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusQuestion',
-                },
-            },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'team.status',
-                    foreignField: '_id',
-                    as: 'statusTeam',
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicsTeam.status',
-                    foreignField: '_id',
-                    as: 'statusTopicsTeam',
-                },
-            },
             {
                 $project: {
                     "_id": 1,
@@ -2649,14 +2207,8 @@ exports.findOneGuest = async (req, res, next) => {
                         $cond: {
                             if: {
                                 $or: [
-                                    { $eq: ['$statusQuestion.name', ['private']] },
-                                    {
-                                        $and: [
-                                            { $eq: ['$statusTeam.name', ['private']] },
-                                            { $eq: ['$topics', []] }
-                                        ]
-                                    },
-                                    { $eq: ['$statusTopicsTeam.name', ['private']] },
+                                    { $eq: ['$status', 'private'] },
+                                    { $eq: ['$team.status', ['private']] },
                                 ]
                             },
                             then: false,
@@ -2691,15 +2243,7 @@ exports.findOneEdit = async (req, res, next) => {
     try {
         const document = await model.findOne(condition)
             .populate({
-                path: 'topic',
-                select: 'name id team',
-                populate: {
-                    path: 'team',
-                    select: 'name id'
-                }
-            })
-            .populate({
-                path: 'author team tag status view course',
+                path: 'author team tag status view course topic',
                 select: 'name id avatar_url',
             })
         if (!document) {

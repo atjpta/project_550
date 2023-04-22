@@ -28,10 +28,7 @@ const schema = mongoose.Schema(
         image_cover_url: {
             type: String,
         },
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        status: String,
         view: {
             type: Intl,
             defaule: 0,

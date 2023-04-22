@@ -152,25 +152,8 @@ exports.findPerFilter = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'topicteams',
-                },
-            },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicteams.status',
-                    foreignField: '_id',
-                    as: 'statusTopicteams',
-                },
-            },
 
-            
 
             {
                 $lookup: {
@@ -214,22 +197,10 @@ exports.findPerFilter = async (req, res, next) => {
                     'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$statusTopicteams.name', ['private']]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'valScore': -1, createdAt: -1 }
             },
@@ -254,9 +225,7 @@ exports.create = async (req, res, next) => {
         author: req.body.author,
         name: req.body.name ?? 'tên nè :3',
         image_cover_url: req.body.image_cover_url ?? 'https://axqkgnmnmrlddosqokpa.supabase.co/storage/v1/object/public/blog-files/image/meo.jpg',
-        team: req.body.team,
         introduce: req.body.introduce,
-        status: req.body.status,
     })
     try {
         await modelO.save((error, doc) => {
@@ -283,7 +252,7 @@ exports.findOneEdit = async (req, res, next) => {
 
     try {
         const document = await model.findOne(condition).populate({
-            path: 'team author status tag',
+            path: 'author status tag',
             select: 'id name avatar_url'
         }).sort({ 'createdAt': -1 })
         if (!document) {
@@ -299,10 +268,7 @@ exports.findOneEdit = async (req, res, next) => {
 
 exports.findAll2 = async (req, res, next) => {
     try {
-        const document = await model.find({ _id: { $ne: req.params.id } }).populate({
-            path: 'team status',
-            select: 'id name avatar_url'
-        }).sort({ 'createdAt': -1 })
+        const document = await model.find({ _id: { $ne: req.params.id } }).sort({ 'createdAt': -1 })
         return res.json(document);
     } catch (error) {
         return next(
@@ -375,23 +341,7 @@ exports.findAll = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'topicteams',
-                },
-            },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicteams.status',
-                    foreignField: '_id',
-                    as: 'statusTopicteams',
-                },
-            },
 
             {
                 $lookup: {
@@ -435,22 +385,9 @@ exports.findAll = async (req, res, next) => {
                     'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$statusTopicteams.name', ['private']] 
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'valScore': -1, createdAt: -1 }
             },
@@ -458,7 +395,7 @@ exports.findAll = async (req, res, next) => {
         return res.json(document);
     } catch (error) {
         return next(
-            res.status(500).json({ Message: 'không  thể  lấy findAll' + error })
+            res.status(500).json({ Message: 'không  thể  lấy findAll aaaaaaaaa' + error })
         )
     }
 };
@@ -692,25 +629,9 @@ exports.findByOther = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'topicteams',
-                },
-            },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicteams.status',
-                    foreignField: '_id',
-                    as: 'statusTopicteams',
-                },
-            },
 
-           
+
 
             {
                 $lookup: {
@@ -754,22 +675,10 @@ exports.findByOther = async (req, res, next) => {
                     'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$statusTopicteams.name', ['private']]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'valScore': -1, createdAt: -1 }
             },
@@ -921,13 +830,13 @@ exports.findByAuthor = async (req, res, next) => {
 };
 
 
-exports.findByTag= async (req, res, next) => {
+exports.findByTag = async (req, res, next) => {
     const { id } = req.params;
 
     try {
         const document = await model.aggregate([
             // lọc ra các phần muốn lấy
-            
+
             {
                 $lookup: {
                     from: 'users',
@@ -989,23 +898,7 @@ exports.findByTag= async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'topicteams',
-                },
-            },
 
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'topicteams.status',
-                    foreignField: '_id',
-                    as: 'statusTopicteams',
-                },
-            },
 
             {
                 $lookup: {
@@ -1054,22 +947,10 @@ exports.findByTag= async (req, res, next) => {
                     'question.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $eq: ['$statusTopicteams.name', ['private']]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    },
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { 'valScore': -1, createdAt: -1 }
             },
@@ -1135,14 +1016,7 @@ exports.findOne = async (req, res, next) => {
                     ]
                 },
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'team',
-                },
-            },
+
             {
                 $lookup: {
                     from: 'questions',

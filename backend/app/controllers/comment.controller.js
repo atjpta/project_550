@@ -3,8 +3,11 @@ const DB = require("../models");
 const model = DB.comment;
 const ObjectId = mongoose.Types.ObjectId;
 
-exports.getByGuest  = async (req, res, next) => {
-    const { id, type } = req.params;
+exports.getByGuest = async (req, res, next) => {
+    let { id, type, filter } = req.params;
+    if (filter == 'vote') {
+        filter = 'vote.val'
+    }
     try {
         let document;
         switch (type) {
@@ -85,7 +88,7 @@ exports.getByGuest  = async (req, res, next) => {
                         }
                     },
                     {
-                        $sort: { 'createdAt': -1 }
+                        $sort: { [filter]: -1, 'createdAt': -1 }
                     }
                 ])
                 break;
@@ -366,7 +369,10 @@ exports.getByGuest  = async (req, res, next) => {
 
 
 exports.getBy = async (req, res, next) => {
-    const { id, type, user } = req.params;
+    let { id, type, user, filter } = req.params;
+    if (filter == 'vote') {
+        filter = 'vote.val'
+    }
     try {
         let document;
         switch (type) {
@@ -462,7 +468,7 @@ exports.getBy = async (req, res, next) => {
                         }
                     },
                     {
-                        $sort: { 'createdAt': -1 }
+                        $sort: { [filter]: -1, 'createdAt': -1 }
                     }
                 ])
                 break;

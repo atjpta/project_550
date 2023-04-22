@@ -16,16 +16,20 @@
               </div>
             </div>
           </div>
-
-          <input v-model="usePost.post_edit.title" placeholder="nhập tiêu đề" type="text"
-            class="input input-primary w-full" />
+          <input @blur="!data.title
+              ? (checkTitle = 'không được để tiêu đề trống')
+              : (checkTitle = '')
+            " v-model="data.title" placeholder="nhập tiêu đề" type="text" class="input input-primary w-full" />
+          <!-- <div class="text-error italic">
+            {{ checkTitle }}
+          </div> -->
         </div>
 
         <!-- ảnh bìa -->
         <div class="text-xl font-extrabold mt-5">
           Ảnh bìa cho bài viết
           <div>
-            <ImageVUploadsimple :data="usePost.post_edit.image_cover_url" />
+            <ImageVUploadsimple :data="data.image_cover_url" />
           </div>
         </div>
         <!-- phần tag của bài viết -->
@@ -38,7 +42,7 @@
               </div>
             </div>
           </div>
-          <TagVInputTag :data="usePost.post_edit.tag" />
+          <TagVInputTag :data="data.tag" />
         </div>
 
         <!-- phần chọn mon học -->
@@ -51,14 +55,14 @@
               </div>
             </div> -->
           </div>
-          <select v-model="usePost.post_edit.course" class="select-sm select select-primary w-full max-w-xs">
+          <select v-model="data.course" class="select-sm select select-primary w-full max-w-xs">
             <option :value="{}">Không có</option>
             <option :value="i" v-for="i in useCourse.list" :key="i">
               {{ i.name }}
             </option>
           </select>
         </div>
-        <div v-if="!usePost.post_edit?.course?.name">
+        <div>
           <!-- phần chọn serise -->
           <div>
             <div class="text-xl font-extrabold mt-5 mb-2">
@@ -69,9 +73,9 @@
                 </div>
               </div>
             </div>
-            <select v-model="usePost.post_edit.series" class="select-sm select select-primary w-full max-w-xs">
+            <select v-model="data.series" class="select-sm select select-primary w-full max-w-xs">
               <option :value="{}">Không có</option>
-              <option :value="i" v-for="i in list_series" :key="i">
+              <option :value="i" v-for="i in useSeries.List_series_ByUser" :key="i">
                 {{ i.name }}
               </option>
             </select>
@@ -81,45 +85,46 @@
               tạo chuỗi bài viết mới?
             </div>
           </nuxt-link>
-          <!-- phần chọn team -->
 
+          <!-- phần chọn nhóm -->
           <div>
             <div class="text-xl font-extrabold mt-5 mb-2">
               Chọn nhóm
-              <div class="tooltip" data-tip="Cần tham gia nhóm trước">
+              <div class="tooltip" data-tip="cần có nhóm trước">
                 <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                   <OtherVIcon class-icon="" icon="fa-solid fa-info" />
                 </div>
               </div>
             </div>
-            <select v-model="usePost.post_edit.team" v-if="!usePost.post_edit.series?.team && list_team.length != 0"
-              class="select-sm select select-primary w-full max-w-xs">
-              <option :value="{}">Chung</option>
-              <option :value="i" v-for="i in list_team" :key="i">{{ i.name }}</option>
-            </select>
-            <select disabled v-if="usePost.post_edit.series?.team || list_team.length == 0"
-              class="select-sm select select-primary w-full max-w-xs">
-              <option v-if="list_team.length == 0">Chung</option>
-              <option v-if="list_team.length == 1">
-                {{ list_team[0].name }}
+            <select v-model="data.team" class="select-sm select select-primary w-full max-w-xs">
+              <option :value="{}">Không có</option>
+              <option :value="i" v-for="i in useTeam.List_team_ByUser" :key="i">
+                {{ i.name }}
               </option>
             </select>
           </div>
-          <!-- chọn trạng thái -->
-          <div>
-            <div class="text-xl font-extrabold mt-5 mb-2">
-              Chọn trạng thái bài viết
-              <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
-                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-                </div>
-              </div>
+          <nuxt-link to="/team">
+            <div class="btn btn-ghost btn-xs italic lowercase">tham gia nhóm mới?</div>
+          </nuxt-link>
+
+          <!-- chọn trang thái -->
+
+          <div class="text-xl font-extrabold mt-5 mb-2">Chọn trạng thái</div>
+          <div class="w-full max-w-xs">
+            <div data-tip="mọi người đều xem được bài viết" class="form-control tooltip w-full">
+              <label class="label cursor-pointer">
+                <span class="label-text">công khai</span>
+                <input @click="data.status = 'public'" type="radio" name="radio-10" class="radio checked:bg-red-500"
+                  :checked="data.status == 'public'" />
+              </label>
             </div>
-            <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
-              <option :value="i" v-for="i in list_status" :key="i">
-                {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-              </option>
-            </select>
+            <div data-tip="bài viết chỉ có bạn thấy được" class="form-control tooltip w-full">
+              <label class="label cursor-pointer">
+                <span class="label-text">riêng tư</span>
+                <input :checked="data.status == 'private'" @click="data.status = 'private'" type="radio" name="radio-10"
+                  class="radio checked:bg-blue-500" />
+              </label>
+            </div>
           </div>
         </div>
 
@@ -134,7 +139,7 @@
             </div>
           </div>
         </div>
-
+        {{ checkContent }}
         <div class="min-h-[30vh]">
           <QuillEditor class="min-h-[30vh]" :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow"
             toolbar="full" />
@@ -144,7 +149,7 @@
     <!-- preview -->
     <transition name="bounce">
       <div class="" v-show="preview == true">
-        <PostVPreviewpost :data="usePost.post_edit" />
+        <PostVPreviewpost :data="data" />
       </div>
     </transition>
     <!-- các nút btn -->
@@ -208,9 +213,13 @@ const modules = {
 
 const props = defineProps({
   loading: Boolean,
+  data: Object,
 });
 const quill = ref();
 const preview = ref(false);
+
+const checkTitle = ref();
+const checkContent = ref();
 
 const useUser = userStore();
 const useAuth = authStore();
@@ -223,76 +232,12 @@ const route = useRoute();
 const useAlert = alertStore();
 const selectStatus = ref();
 const useCourse = courseStore();
-// const list_status = computed(() => {
-//   if (!selectStatus.value) {
-//     useStatus.getPost.forEach((e) => {
-//       if (e.name == "public") {
-//         selectStatus.value = e;
-//       }
-//     });
-//   }
-//   return useStatus.getPost;
-// });
-
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (selectStatus.value) {
-      if (selectStatus.value[0]?.name == e.name) {
-        selectStatus.value = e;
-        return;
-      }
-    } else if (e.name == "public") {
-      selectStatus.value = e;
-    }
-  });
-  return useStatus.getPost;
-});
-
-const list_series = computed(() => {
-  if (!usePost.post_edit.series) {
-    usePost.post_edit.series = {};
-  }
-  let list = [];
-  useSeries.List_series_ByUser.forEach((e) => {
-    if (e.id == usePost.post_edit.series?._id) {
-      list.push(usePost.post_edit.series);
-    } else list.push(e);
-  });
-  return list;
-});
-
-let old = {};
-const list_team = computed(() => {
-  let list = [];
-  if (usePost.post_edit.series?.name) {
-    if (usePost.post_edit.series.team?.name) {
-      list.push(usePost.post_edit.series.team);
-      usePost.post_edit.team = {
-        name: usePost.post_edit.series.team.name,
-        id: usePost.post_edit.series.team._id,
-      };
-    } else {
-      list = [];
-      usePost.post_edit.team = {};
-    }
-  } else {
-    list = useTeam.List_team_ByUser;
-    if (!usePost.post_edit.team?.name) {
-      usePost.post_edit.team = {};
-    } else if (usePost.post_edit.team == old) {
-      usePost.post_edit.team = {};
-    }
-  }
-  old = usePost.post_edit.team;
-  return list;
-});
 
 const emit = defineEmits(["save"]);
 
 function getdata() {
-  usePost.post_edit.author = useUser.user;
-  usePost.post_edit.status = selectStatus.value;
-  usePost.post_edit.content = quill.value.getContents();
+  props.data.author = useUser.user;
+  props.data.content = quill.value.getContents();
 }
 
 function save() {
@@ -306,52 +251,27 @@ function showPreview() {
 }
 
 const setContent = () => {
-  quill.value.setContents(usePost.post_edit.content);
+  quill.value.setContents(props.data.content);
 };
+let times = 0;
+watch(props, () => {
+  if (props.data.content && times == 0) {
+    times = 1;
+    setContent();
+  }
+});
 
 async function getApi() {
-  if (route.params.id) {
-    await usePost.findOneEdit(route.params.id);
-    if (usePost.post.author._id != useAuth.user.id) {
-      useAlert.setWarning("bạn không có quyền truy cập");
-      return navigateTo("/");
-    }
-    usePost.post_edit = usePost.post;
-    if (usePost.post_edit.status[0]) {
-      selectStatus.value = {
-        id: usePost.post_edit.status[0]._id,
-        name: usePost.post_edit.status[0].name,
-      };
-    }
-    if (usePost.post_edit.course) {
-      useCourse.list.forEach((e, i) => {
-        if (e.id == usePost.post_edit.course._id) {
-          useCourse.list[i] = usePost.post_edit.course;
-        }
-      });
-    } else {
-      usePost.post_edit.course = {};
-    }
-
-    setContent();
-  } else {
-    usePost.resetPostEdit();
-  }
+  useCourse.findAll();
+  useTeam.findByUser(useAuth.user.id);
+  useSeries.findByUser(useAuth.user.id);
 }
 
 onMounted(() => {
-  useSeries.reset();
-  useCourse.findAll();
-  useTeam.reset();
-  useTeam.findByUser(useAuth.user.id);
-  useSeries.findByUser(useAuth.user.id);
-  useStatus.findAll();
   getApi();
 });
 
-onUnmounted(() => {
-  usePost.resetPostEdit();
-});
+onUnmounted(() => { });
 </script>
 
 <style></style>

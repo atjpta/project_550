@@ -22,9 +22,8 @@ function formatData(listtag) {
     author: post.author.id,
     content: post.content,
     series: post.series.id,
-    status: [post.status.id],
+    status: "public",
     title: post.title,
-    team: post.team._id || post.team.id,
     image_cover_url: useImage.url ?? post.image_cover_url,
   };
   if (listtag) {

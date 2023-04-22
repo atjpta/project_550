@@ -19,14 +19,14 @@ module.exports = (app) => {
         .get(ctl.findOne)
         .put(ctl.update)
         .delete(ctl.delete)
-    
-    router.route('/:type/:id')
+
+    router.route('/:type/:id/:filter')
         .get(ctl.getByGuest)
-    
-    router.route('/:type/:id/:user')
+
+    router.route('/:type/:id/:user/:filter')
         .get(ctl.getBy)
-    
-    
+
+
 
 
     app.use("/api/comment", router);

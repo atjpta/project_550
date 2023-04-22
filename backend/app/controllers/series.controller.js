@@ -7,6 +7,7 @@ exports.findByAdmin = async (req, res, next) => {
     let slModelReport = 0
     try {
         const document = await model.aggregate([
+
             {
                 $lookup: {
                     from: 'users',
@@ -91,6 +92,11 @@ exports.findPerFilter = async (req, res, next) => {
     try {
         const document = await model.aggregate([
             {
+                $match: {
+                    status: 'public',
+                }
+            },
+            {
                 $lookup: {
                     from: 'users',
                     localField: 'author',
@@ -151,32 +157,7 @@ exports.findPerFilter = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'seriesTeam',
 
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusSeries',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'seriesTeam.status',
-                    foreignField: '_id',
-                    as: 'statusSeriesTeam',
-                },
-            },
 
             {
                 $lookup: {
@@ -220,23 +201,7 @@ exports.findPerFilter = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusSeries.name', ['private']] },
-                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
-                }
-            },
-            {
-                $match: {
-                    isPublic: true,
+
                 }
             },
             {
@@ -266,6 +231,7 @@ exports.findByOther = async (req, res, next) => {
             {
                 $match: {
                     author: ObjectId(id),
+                    status: 'public',
                 }
             },
             {
@@ -329,32 +295,7 @@ exports.findByOther = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'seriesTeam',
 
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusSeries',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'seriesTeam.status',
-                    foreignField: '_id',
-                    as: 'statusSeriesTeam',
-                },
-            },
 
             {
                 $lookup: {
@@ -398,25 +339,10 @@ exports.findByOther = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusSeries.name', ['private']] },
-                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { valScore: -1, createdAt: -1 }
             },
@@ -464,7 +390,7 @@ exports.findOneEdit = async (req, res, next) => {
 
     try {
         const document = await model.findOne(condition).populate({
-            path: 'team author status',
+            path: 'author status',
             select: 'id name avatar_url'
         }).sort({ 'createdAt': -1 })
         if (!document) {
@@ -495,6 +421,11 @@ exports.findAll2 = async (req, res, next) => {
 exports.findAll = async (req, res, next) => {
     try {
         const document = await model.aggregate([
+            {
+                $match: {
+                    status: 'public',
+                }
+            },
             {
                 $lookup: {
                     from: 'users',
@@ -556,32 +487,7 @@ exports.findAll = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'seriesTeam',
 
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusSeries',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'seriesTeam.status',
-                    foreignField: '_id',
-                    as: 'statusSeriesTeam',
-                },
-            },
 
             {
                 $lookup: {
@@ -625,25 +531,10 @@ exports.findAll = async (req, res, next) => {
                     'post.count': 1,
                     'valScore': 1,
                     'listtag': 1,
-                    isPublic: {
-                        $cond: {
-                            if: {
-                                $or: [
-                                    { $eq: ['$statusSeries.name', ['private']] },
-                                    { $eq: ['$statusSeriesTeam.name', ['private']] },
-                                ]
-                            },
-                            then: false,
-                            else: true
-                        }
-                    }
+
                 }
             },
-            {
-                $match: {
-                    isPublic: true,
-                }
-            },
+
             {
                 $sort: { valScore: -1, createdAt: -1 }
             },
@@ -660,9 +551,7 @@ exports.findByUser = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        const document = await model.find({ author: id }).populate({
-            path: 'team'
-        })
+        const document = await model.find({ author: id }).select('id name')
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
@@ -853,9 +742,9 @@ exports.findByTeam = async (req, res, next) => {
                 }
             },
             {
-                $sort: {'valScore': -1 , 'createdAt': -1 }
+                $sort: { 'valScore': -1, 'createdAt': -1 }
             },
-            
+
         ])
         return res.json(document);
     } catch (error) {
@@ -1008,6 +897,11 @@ exports.findByTag = async (req, res, next) => {
     try {
         const document = await model.aggregate([
             {
+                $match: {
+                    status: 'public',
+                }
+            },
+            {
                 $lookup: {
                     from: 'users',
                     localField: 'author',
@@ -1068,32 +962,7 @@ exports.findByTag = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'teams',
-                    localField: 'team',
-                    foreignField: '_id',
-                    as: 'seriesTeam',
 
-                },
-            },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'statusSeries',
-                },
-            },
-
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'seriesTeam.status',
-                    foreignField: '_id',
-                    as: 'statusSeriesTeam',
-                },
-            },
 
             {
                 $lookup: {
@@ -1108,7 +977,7 @@ exports.findByTag = async (req, res, next) => {
                                 localField: 'tag',
                                 foreignField: '_id',
                                 as: 'list',
-                                
+
                             },
                         },
                         {
@@ -1157,7 +1026,7 @@ exports.findByTag = async (req, res, next) => {
                     }
                 }
             },
-            
+
             {
                 $match: {
                     isPublic: true,
@@ -1256,14 +1125,6 @@ exports.findOne = async (req, res, next) => {
                     valScore: { $sum: "$score.val" },
                 }
             },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
 
             {
                 $lookup: {
@@ -1310,6 +1171,7 @@ exports.findOne = async (req, res, next) => {
                     'listtag': 1,
                     'team.name': 1,
                     'team._id': 1,
+                    'status': 1,
                 }
             },
             {
@@ -1339,7 +1201,7 @@ exports.update = async (req, res, next) => {
     };
 
     try {
-        
+
         if (req.body.team == ' ') {
             await model.findByIdAndUpdate(condition, { $unset: { team: 1 } });
             delete req.body.team;

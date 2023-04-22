@@ -17,19 +17,17 @@
         </div>
         <div class="lg:flex hidden">
           <div v-for="i in dataHeader" :key="i.name">
-            <nuxtLink :class="
-              tagUrl[1] == i.tag && tagUrl[2] != 'edit' ? 'router-link-active' : ''
-            " :to="i.url" class="btn btn-ghost">
+            <nuxtLink :class="tagUrl[1] == i.tag && tagUrl[2] != 'edit' ? 'router-link-active' : ''
+              " :to="i.url" class="btn btn-ghost">
               {{ i.title }}
             </nuxtLink>
           </div>
 
           <div v-if="useAuth.user" class="dropdown dropdown-hover">
-            <label tabindex="0" :class="
-              (tagUrl[1] == 'post' || tagUrl[1] == 'question') && tagUrl[2] == 'edit'
+            <label tabindex="0" :class="(tagUrl[1] == 'post' || tagUrl[1] == 'question') && tagUrl[2] == 'edit'
                 ? 'router-link-active'
                 : ''
-            " class="btn btn-ghost">đăng bài</label>
+              " class="btn btn-ghost">đăng bài</label>
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
               <li class="hover-bordered">
                 <nuxtLink to="/post/edit">bài viết mới</nuxtLink>
@@ -52,9 +50,8 @@
                 </button>
               </div>
             </div>
-            <SearchVDataSearch v-if="
-              focus && useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'
-            " class="absolute top-12" />
+            <SearchVDataSearch v-if="focus && useSearch.key.length > 0 && route.path.slice(0, 7) != '/search'
+              " class="absolute top-12" />
           </div>
         </div>
 
@@ -119,6 +116,7 @@ async function getApi() {
       await useUser.findOne(useAuth.user.id);
     }
   } catch (error) {
+    useAuth.logout();
     console.log(error);
   }
 }

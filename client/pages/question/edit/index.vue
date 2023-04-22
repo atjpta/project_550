@@ -24,16 +24,13 @@ function formatData(listtag) {
   const data = {
     author: question.author.id,
     content: question.content,
-    status: [question.status.id],
+    status: question.status,
     title: question.title,
+    team: question.team.id || question.team._id,
+    topic: question.topic.id,
+    course: question.course.id,
   };
 
-  if (data.course) {
-    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
-  } else {
-    data.team = question.team.id || question.team._id;
-    data.topic = question.topic.id;
-  }
   if (listtag) {
     const array = Array.from(question.tag);
     const tag = listtag;

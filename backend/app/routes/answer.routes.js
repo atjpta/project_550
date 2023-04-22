@@ -15,15 +15,18 @@ module.exports = (app) => {
         .post(ctl.create)
         .delete(ctl.deleteAll)
 
-    router.route('/:id/:user')
+    router.route('/:id/:user/:filter')
         .get(ctl.getBy)
-    
+
+    router.route('/:id/:filter')
+        .get(ctl.getByGuest)
+
     router.route('/:id')
         .get(ctl.getByGuest)
         .put(ctl.update)
         .delete(ctl.delete)
 
-    
+
 
 
 

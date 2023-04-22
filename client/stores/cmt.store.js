@@ -14,7 +14,7 @@ export const cmtStore = defineStore("cmtStore", {
     id: 'cmt',
     state() {
         return {
-            
+
             cmt: {
             },
             list_cmt: [],
@@ -34,13 +34,13 @@ export const cmtStore = defineStore("cmtStore", {
             const id = await cmtService.create(data);
         },
 
-        async getBy(type, id) {
+        async getBy(type, id, filter) {
             const user = useAuth.user ? useAuth.user.id : '';
-            this.list_cmt = await cmtService.getBy(type, id, user)
+            this.list_cmt = await cmtService.getBy(type, id, user, filter)
             this.list_cmt.forEach((e, i) => {
                 this.list_cmt[i].createdAt = this.setTime(this.list_cmt[i].createdAt);
             });
         }
-       
+
     }
 });

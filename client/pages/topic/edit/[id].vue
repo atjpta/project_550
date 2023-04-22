@@ -15,13 +15,11 @@ const useTopic = topicStore();
 let topic;
 const loading = ref(false);
 
-function formatData(listtag) {
+function formatData() {
   const data = {
     id: topic.id,
-    status: [topic.status.id],
     name: topic.name,
     introduce: topic.introduce,
-    team: topic.team._id ?? " ",
     image_cover_url: useImage.url ?? topic.image_cover_url,
   };
   return data;

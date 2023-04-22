@@ -11,6 +11,7 @@ export const seriesStore = defineStore("seriesStore", {
             },
             series_edit: {
                 team: {},
+                status: 'public'
             }
         };
     },
@@ -26,6 +27,7 @@ export const seriesStore = defineStore("seriesStore", {
             }
             this.series_edit = {
                 team: {},
+                status: 'public'
             }
         },
         async findAll() {
@@ -69,6 +71,7 @@ export const seriesStore = defineStore("seriesStore", {
         resetSeriesEdit() {
             this.series_edit = {}
             this.series_edit.team = {};
+            this.series_edit.status = 'public';
         },
 
         async findOne(id) {
@@ -87,6 +90,6 @@ export const seriesStore = defineStore("seriesStore", {
         async deleteOne(id) {
             this.series = await seriesService.deleteOne(id);
         },
-        
+
     }
 });

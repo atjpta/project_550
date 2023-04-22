@@ -53,7 +53,7 @@ const loadingSkeleton = ref(false);
 
 const useSearch = searchStore();
 const selectPage = ref(1);
-const size = 3;
+const size = 9;
 const maxPage = computed(() => {
   return Math.ceil(useSearch.list_tag.length / size);
 });

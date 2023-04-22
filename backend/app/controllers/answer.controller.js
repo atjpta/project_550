@@ -4,7 +4,10 @@ const model = DB.answer;
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.getByGuest = async (req, res, next) => {
-    const { id } = req.params;
+    let { id, filter } = req.params;
+    if (filter == 'vote') {
+        filter = 'vote.val'
+    }
     try {
         let document;
         document = await model.aggregate([
@@ -79,14 +82,14 @@ exports.getByGuest = async (req, res, next) => {
                     'tag_name.avatar_url': 1,
                     'vote_user': 1,
                     'vote': 1,
-                    'choice' : 1,
+                    'choice': 1,
                 }
             },
             {
-                $sort: { 'createdAt': -1 }
+                $sort: { [filter]: -1, 'createdAt': -1 }
             }
         ])
-        
+
         if (!document) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
@@ -100,7 +103,10 @@ exports.getByGuest = async (req, res, next) => {
 
 
 exports.getBy = async (req, res, next) => {
-    const { id, user } = req.params;
+    let { id, user, filter } = req.params;
+    if (filter == 'vote') {
+        filter = 'vote.val'
+    }
     try {
         let document;
         document = await model.aggregate([
@@ -190,11 +196,11 @@ exports.getBy = async (req, res, next) => {
                     'tag_name.avatar_url': 1,
                     'vote_user': 1,
                     'vote': 1,
-                    'comment':1
+                    'comment': 1
                 }
             },
             {
-                $sort: { 'createdAt': -1 }
+                $sort: { [filter]: -1, 'createdAt': -1 }
             }
         ])
         if (!document) {

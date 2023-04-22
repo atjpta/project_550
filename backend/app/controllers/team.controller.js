@@ -665,14 +665,6 @@ exports.findOne = async (req, res, next) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
-            {
                 $project: {
                     "_id": 1,
                     'name': 1,

@@ -24,10 +24,7 @@ const schema = mongoose.Schema(
         }],
         title: String,
         content: Object,
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        status: String,
         view: {
             type: Intl,
             defaule: 0,

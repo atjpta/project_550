@@ -6,16 +6,15 @@
       <div class="text-left w-full ml-5">
         {{ data.title }}
       </div>
-
       <!-- các nút chức năng -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
-        <div v-if="!data.pins" class="tooltip" data-tip="ghim bài viết">
-          <div @click="openDialogPins()" class="btn btn-ghost text-info">
+        <div v-if="data.pins" class="tooltip indicator" data-tip="hủy ghim bài viết">
+          <div @click="openDialogDeletePins()" class="btn btn-ghost text-error">
             <OtherVIcon class-icon="rotate-45" icon="fa-solid fa-thumbtack" />
           </div>
         </div>
-        <div v-else class="tooltip indicator" data-tip="hủy ghim bài viết">
-          <div @click="openDialogDeletePins()" class="btn btn-ghost text-error">
+        <div v-else class="tooltip" data-tip="ghim bài viết">
+          <div @click="openDialogPins()" class="btn btn-ghost text-info">
             <OtherVIcon class-icon="rotate-45" icon="fa-solid fa-thumbtack" />
           </div>
         </div>

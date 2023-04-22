@@ -51,7 +51,7 @@
                 </div>
                 <!-- edit cho tác giả -->
                 <div v-if="isAuthor">
-                  <li @click="openDialogPins()" class="hover-bordered">
+                  <li v-if="!data.pins" @click="openDialogPins()" class="hover-bordered">
                     <a>
                       <div>
                         <OtherVIcon class-icon="rotate-45 text-info" icon="fa-solid fa-thumbtack" />
@@ -59,7 +59,7 @@
                       </div>
                     </a>
                   </li>
-                  <li @click="openDialogDeletePins()" class="hover-bordered">
+                  <li v-else @click="openDialogDeletePins()" class="hover-bordered">
                     <a>
                       <div>
                         <OtherVIcon class-icon="rotate-45 text-error" icon="fa-solid fa-thumbtack" />

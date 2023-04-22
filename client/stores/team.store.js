@@ -9,6 +9,7 @@ export const teamStore = defineStore("teamStore", {
             List_team_ByUser: [],
             team_edit: {
                 tag: new Set(),
+                status: 'public',
             },
             team: {},
         };
@@ -32,11 +33,12 @@ export const teamStore = defineStore("teamStore", {
         },
 
         check() {
-           
+
             if (this.team.tag) {
                 this.team.tag = new Set(this.team.tag)
             } else {
                 this.team.tag = new Set()
+
             }
         },
         reset() {
@@ -44,6 +46,8 @@ export const teamStore = defineStore("teamStore", {
             this.List_team_ByUser = []
             this.team_edit = {
                 tag: new Set(),
+                status: 'public',
+
             }
             this.team = {}
         },
@@ -53,7 +57,7 @@ export const teamStore = defineStore("teamStore", {
                 this.List_team[i].role = this.roleTeam(this.List_team[i].member)
             })
         },
-        
+
         async findAllPage(page, size) {
             this.List_team = await teamService.findAllPage(page, size);
             this.List_team.forEach((e, i) => {
@@ -68,6 +72,7 @@ export const teamStore = defineStore("teamStore", {
         },
 
         async findByUser(id) {
+            this.List_team_ByUser.length = 0
             const list = await teamService.findByUser(id);
             list.forEach(e => {
                 if (e.team?._id) {
@@ -84,6 +89,7 @@ export const teamStore = defineStore("teamStore", {
         resetTeamEdit() {
             this.team_edit = {}
             this.team_edit.tag = new Set()
+            this.team_edit.status = 'public'
         },
 
         async findOne(id) {

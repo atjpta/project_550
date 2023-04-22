@@ -1,129 +1,141 @@
 <template>
-  <div v-if="data.author" class="mb-5">
-    <div :class="[
-      data.choice
-        ? 'bg-gradient-to-r from-success/10 via-success/5 to-pink-500/0'
-        : 'bg-gradient-to-r from-info/10 via-info/5 to-pink-500/0',
-    ]" class="rounded-2xl hover:bg-gradient-to-l">
-      <div class="rounded-2xl px-5 py-3 flex">
-        <!-- phần người gửi -->
-        <div>
-          <div class="flex">
-            <!-- các btn -->
-            <div class="flex flex-col mr-2 space-y-1">
-              <div v-if="loading == 'up'" class="btn-sm btn btn-circle btn-ghost loading text-2xl"></div>
-              <div v-else-if="loadingVote != 'up'" @click="openDialogSignin(up)" :class="classUp"
-                class="btn-sm btn-circle btn btn-ghost text-2xl">
-                <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
-              </div>
-
-              <div class="btn-sm btn-circle btn btn-ghost no-animation">
-                {{ valVote }}
-              </div>
-              <div v-if="loading == 'down'" class="btn-sm btn btn-circle btn-ghost loading text-2xl"></div>
-              <div v-else-if="loadingVote != 'down'" @click="openDialogSignin(down)" :class="classDown"
-                class="btn-sm btn-circle btn btn-ghost text-2xl">
-                <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
-              </div>
-
-              <div v-if="isAuthorQuestion && !loading" @click="choice()" :class="[data.choice ? 'text-success' : '']"
-                class="btn-sm btn-circle btn btn-ghost">
-                <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
-              </div>
-              <div v-else-if="isAuthorQuestion && loading" class="btn-sm btn-circle btn btn-ghost loading"></div>
-              <div v-else-if="data.choice" class="btn-sm btn-circle btn btn-ghost no-animation text-success">
-                <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
-              </div>
-            </div>
-            <!-- tác giả -->
-            <div>
-              <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
-                :to="`/user/${data?.author[0]?._id}/overview`">
-                <div class="flex">
-                  <div class="avatar">
-                    <div class="w-12 h-12 rounded-full">
-                      <img :src="data?.author[0]?.avatar_url" />
-                    </div>
-                  </div>
-                  <div class="mx-3">
-                    {{ data?.author[0]?.name }}
-                    <div class="text-sm italic">
-                      <i>{{ data.createdAt || "vừa xong" }}</i>
-                    </div>
-                  </div>
+  <div class="indicator w-full">
+    <div v-if="data.author" class="mb-5 w-full">
+      <div :class="[
+          data.choice
+            ? 'bg-gradient-to-r from-success/10 via-success/5 to-pink-500/0'
+            : 'bg-gradient-to-r from-info/10 via-info/5 to-pink-500/0',
+        ]" class="rounded-2xl hover:bg-gradient-to-l">
+        <div class="rounded-2xl px-5 py-3 flex">
+          <!-- phần người gửi -->
+          <div>
+            <div class="flex">
+              <!-- các btn -->
+              <div class="flex flex-col mr-2 space-y-1">
+                <div v-if="loading == 'up'" class="btn-sm btn btn-circle btn-ghost loading text-2xl"></div>
+                <div v-else-if="loadingVote != 'up'" @click="openDialogSignin(up)" :class="classUp"
+                  class="btn-sm btn-circle btn btn-ghost text-2xl">
+                  <OtherVIcon class-icon="" icon="fa-solid fa-caret-up" />
                 </div>
-              </nuxtLink>
 
-              <!-- các btn của tác giả -->
+                <div class="btn-sm btn-circle btn btn-ghost no-animation">
+                  {{ valVote }}
+                </div>
+                <div v-if="loading == 'down'" class="btn-sm btn btn-circle btn-ghost loading text-2xl"></div>
+                <div v-else-if="loadingVote != 'down'" @click="openDialogSignin(down)" :class="classDown"
+                  class="btn-sm btn-circle btn btn-ghost text-2xl">
+                  <OtherVIcon class-icon="" icon="fa-solid fa-caret-down" />
+                </div>
 
-              <div v-if="isAuthorAnswer" class="toast toast-top toast-end">
-                <div class="flex space-x-1">
-                  <div @click="openEditF()" class="tooltip" data-tip="sửa câu trả lời">
-                    <div class="btn btn-ghost text-primary">
-                      <OtherVIcon icon="fa-solid fa-pen-to-square" />
-                    </div>
-                  </div>
-
-                  <div class="tooltip" data-tip="xóa câu trả lời">
-                    <div @click="openDialogDelete()" class="btn btn-ghost text-error">
-                      <OtherVIcon icon="fa-solid fa-trash-can" />
-                    </div>
-                  </div>
+                <div v-if="isAuthorQuestion && !loading" @click="choice()" :class="[data.choice ? 'text-success' : '']"
+                  class="btn-sm btn-circle btn btn-ghost">
+                  <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
+                </div>
+                <div v-else-if="isAuthorQuestion && loading" class="btn-sm btn-circle btn btn-ghost loading"></div>
+                <div v-else-if="data.choice" class="btn-sm btn-circle btn btn-ghost no-animation text-success">
+                  <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-check" />
                 </div>
               </div>
+              <!-- tác giả -->
+              <div>
+                <div class="">
+                  <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+                    :to="`/user/${data?.author[0]?._id}/overview`">
+                    <div class="flex">
+                      <div class="avatar">
+                        <div class="w-12 h-12 rounded-full">
+                          <img :src="data?.author[0]?.avatar_url" />
+                        </div>
+                      </div>
+                      <div class="mx-3">
+                        {{ data?.author[0]?.name }}
+                        <div class="text-sm italic">
+                          <i>{{ data.createdAt || "vừa xong" }}</i>
+                        </div>
+                      </div>
+                    </div>
+                  </nuxtLink>
+                  <div v-if="isAuthorAnswer" class="indicator-item mt-10 mr-10 dropdown dropdown-left indicator">
+                    <label tabindex="0" class="btn btn-ghost">
+                      <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
+                    </label>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <!-- edit cho tác giả -->
+                      <div>
+                        <li @click="openEditF" class="hover-bordered">
+                          <a>
+                            <div>
+                              <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                              sửa
+                            </div>
+                          </a>
+                        </li>
+                        <li @click="openDialogDelete()" class="hover-bordered">
+                          <a>
+                            <div>
+                              <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
+                              xóa
+                            </div>
+                          </a>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
+                </div>
 
-              <!-- phần nội dung -->
-              <div v-if="!openEdit" class="-z-30">
-                <QuillEditor :content="data.content" ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
-              </div>
-              <!-- phần edit nội dung -->
-              <div v-else class="-z-30">
-                <AnswerVInputAnswer @send="update" :loading="loading" :data="dataAnswer" />
+                <!-- phần nội dung -->
+                <div v-if="!openEdit" class="-z-30">
+                  <QuillEditor :content="data.content" ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
+                </div>
+                <!-- phần edit nội dung -->
+                <div v-else class="-z-30">
+                  <AnswerVInputAnswer @send="update" :loading="loading" :data="dataAnswer" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- phần hiện ẩn cmt con -->
-    <div class="ml-5 mt-1 flex items-center">
-      <div @click="openInputRep()" class="btn btn-sm btn-ghost text-primary">
-        Nhập bình luận
-        <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
-          <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-            <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+      <!-- phần hiện ẩn cmt con -->
+      <div class="ml-5 mt-1 flex items-center">
+        <div @click="openInputRep()" class="btn btn-sm btn-ghost text-primary">
+          Nhập bình luận
+          <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+            <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+              <OtherVIcon class-icon="" icon="fa-solid fa-info" />
+            </div>
+          </div>
+        </div>
+        <div v-if="countCmt > 0">
+          <div @click="showChildCmt()" v-show="!childCmt" class="btn btn-ghost btn-xs italic lowercase">
+            hiện {{ countCmt }} bình luận
+          </div>
+          <div @click="childCmt = !childCmt" v-show="childCmt" class="btn btn-ghost btn-xs italic lowercase">
+            ẩn {{ countCmt }} bình luận
           </div>
         </div>
       </div>
-      <div v-if="countCmt > 0">
-        <div @click="showChildCmt()" v-show="!childCmt" class="btn btn-ghost btn-xs italic lowercase">
-          hiện {{ countCmt }} bình luận
-        </div>
-        <div @click="childCmt = !childCmt" v-show="childCmt" class="btn btn-ghost btn-xs italic lowercase">
-          ẩn {{ countCmt }} bình luận
-        </div>
-      </div>
-    </div>
 
-    <!-- cmt -->
-    <div class="ml-10">
-      <!-- input rep cmt -->
-      <transition name="bounce">
-        <div v-if="inputRep">
-          <CommentsVInputCmt @send="openDialogSignin(rep)" :loading="loading" :data="dataInput" :reset="resetInput" />
-        </div>
-      </transition>
-      <!-- list cmt  -->
-      <transition name="bounce">
-        <div v-if="childCmt">
-          <div class="divider my-0"></div>
-
-          <div v-for="(i, n) in list_child" :key="i">
-            <CommentsVCmt :data="i" />
-            <div v-if="n < list_child.length - 1" class="divider my-0"></div>
+      <!-- cmt -->
+      <div class="ml-10">
+        <!-- input rep cmt -->
+        <transition name="bounce">
+          <div v-if="inputRep">
+            <CommentsVInputCmt @send="openDialogSignin(rep)" :loading="loading" :data="dataInput" :reset="resetInput" />
           </div>
-        </div>
-      </transition>
+        </transition>
+        <!-- list cmt  -->
+        <transition name="bounce">
+          <div v-if="childCmt">
+            <div class="divider my-0"></div>
+
+            <div v-for="(i, n) in list_child" :key="i">
+              <CommentsVCmt :data="i" />
+              <div v-if="n < list_child.length - 1" class="divider my-0"></div>
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
   </div>
 </template>

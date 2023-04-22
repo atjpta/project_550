@@ -31,12 +31,31 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <div @click="filterCmt = !filterCmt" class="btn btn-sm btn-ghost mb-2">
+                    <div class="tooltip ml-2" data-tip="lọc bình luận">
+                        <div class="btn-xs btn btn-info btn-ghost h-1 w-6">
+                            <OtherVIcon class-icon="text-primary" icon="fa-solid fa-filter" />
+                        </div>
+                    </div>
+                    {{ filterCmt ? "điểm cao nhất" : "mới nhất" }}
+                </div>
+            </div>
         </div>
         <div v-if="openInputCmt">
             <CommentsVInputCmt @send="openDialogSignin(send)" :loading="loading" :data="dataInput" :reset="resetInput" />
         </div>
 
-        <div>
+        <div v-if="loadingCmt" class="mb-3">
+            <div v-for="(i, n) in 9" :key="i">
+                <div class="animate-pulse bg-base-300 h-32 w-full">
+                    <div></div>
+                </div>
+                <div v-if="n < 8" class="divider my-0"></div>
+            </div>
+        </div>
+
+        <div v-else>
             <div v-for="(i, n) in dataPerPage" :key="i">
                 <CommentsVCmt :data="i" />
                 <div v-if="n < (dataPerPage.length > size ? size : dataPerPage.length) - 1" class="divider my-0"></div>
@@ -85,7 +104,8 @@ const useCourse = courseStore();
 const loading = ref(false);
 const useAlert = alertStore();
 const useNotification = notificationStore();
-
+const filterCmt = ref(false);
+const loadingCmt = ref(false);
 const size = 9;
 const maxPage = computed(() => {
     selectPage.value = 1;
@@ -207,6 +227,26 @@ function openDialogSignin(cb) {
         openEdit.value = true;
     }
 }
+
+watch(filterCmt, async () => {
+    if (filterCmt.value) {
+        try {
+            loadingCmt.value = true;
+            await useCmt.getBy("post", route.params.id, "vote");
+            loadingCmt.value = false;
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        try {
+            loadingCmt.value = true;
+            await useCmt.getBy("post", route.params.id, "new");
+            loadingCmt.value = false;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+});
 
 async function getEdit() {
     try {

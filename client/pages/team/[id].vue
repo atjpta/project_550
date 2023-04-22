@@ -18,7 +18,7 @@
         }}</nuxt-link>
       </div>
     </div>
-    <NuxtPage v-if="useTeam.team[0]?.status[0].name == 'public' || useMember.isMember" />
+    <NuxtPage v-if="useTeam.team[0]?.status == 'public' || useMember.isMember" />
   </div>
 </template>
 
@@ -48,18 +48,18 @@ const menuDashboard = ref([
     title: "bài viết",
     url: "/read/post",
   },
-  {
-    title: "chuỗi bài viết",
-    url: "/read/series",
-  },
+  // {
+  //   title: "chuỗi bài viết",
+  //   url: "/read/series",
+  // },
   {
     title: "câu hỏi",
     url: "/read/question",
   },
-  {
-    title: "chủ đề",
-    url: "/read/topic",
-  },
+  // {
+  //   title: "chủ đề",
+  //   url: "/read/topic",
+  // },
   {
     title: "thành viên",
     url: "/read/member",
@@ -71,18 +71,18 @@ const menuDashboardManager = ref([
     title: "bài viết",
     url: "/manager/post",
   },
-  {
-    title: "chuỗi bài viết",
-    url: "/manager/series",
-  },
+  // {
+  //   title: "chuỗi bài viết",
+  //   url: "/manager/series",
+  // },
   {
     title: "câu hỏi",
     url: "/manager/question",
   },
-  {
-    title: "chủ đề",
-    url: "/manager/topic",
-  },
+  // {
+  //   title: "chủ đề",
+  //   url: "/manager/topic",
+  // },
   {
     title: "thành viên",
     url: "/manager/member",

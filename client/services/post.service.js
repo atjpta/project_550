@@ -19,6 +19,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -30,6 +31,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -41,6 +43,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -62,6 +65,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -73,6 +77,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -85,6 +90,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -96,6 +102,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -107,6 +114,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -118,6 +126,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -143,6 +152,7 @@ export default {
         }
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -160,6 +170,7 @@ export default {
         })
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -174,6 +185,7 @@ export default {
         })
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -187,6 +199,7 @@ export default {
         })
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -202,6 +215,7 @@ export default {
         })
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -225,6 +239,7 @@ export default {
         if (error.value) {
             useAlert.setWarning('không có trang này')
             navigateTo('/')
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -245,6 +260,7 @@ export default {
         if (error.value) {
             useAlert.setWarning('không có trang này')
             navigateTo('/')
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
@@ -263,6 +279,7 @@ export default {
         })
 
         if (error.value) {
+            console.log(error.value.data);
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }

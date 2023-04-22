@@ -27,6 +27,7 @@ function formatData(listtag) {
     content: question.content,
     title: question.title,
     course: question.course.id,
+    status: "public",
   };
   if (listtag) {
     const array = Array.from(question.tag);

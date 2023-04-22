@@ -26,7 +26,7 @@ function formatData(listtag) {
     const data = {
         author: post.author.id,
         content: post.content,
-        status: [post.status.id],
+        status: "public",
         title: post.title,
         course: post.course.id,
         image_cover_url: useImage.url ?? post.image_cover_url,

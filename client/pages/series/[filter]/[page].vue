@@ -108,6 +108,8 @@ function openDialogSignin() {
 }
 
 async function getApi() {
+  loadingSkeleton.value = true;
+
   if (route.params.page < 1) {
     return navigateTo(`/series/${route.params.filter}/1`);
   }
@@ -118,7 +120,6 @@ async function getApi() {
   if (route.params.page > maxPage.value && maxPage.value != 0) {
     return navigateTo(`/series/${route.params.filter}/${maxPage.value}`);
   }
-  loadingSkeleton.value = true;
 
   try {
     useSeries.List_series = await useSeries.findPerFilter(

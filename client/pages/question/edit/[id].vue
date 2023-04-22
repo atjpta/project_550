@@ -23,19 +23,12 @@ function formatData(listtag) {
   const data = {
     id: question.id,
     content: question.content,
-    status: [question.status.id || question.status._id],
+    status: question.status,
     title: question.title,
-
+    topic: (question.topic.id || question.topic._id) ?? " ",
+    team: (question.team.id || question.team._id) ?? " ",
     course: (question.course.id || question.course._id) ?? " ",
   };
-  if (data.course != " ") {
-    data.topic = " ";
-    data.team = " ";
-    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
-  } else {
-    data.topic = (question.topic.id || question.topic._id) ?? " ";
-    data.team = (question.team.id || question.team._id) ?? " ";
-  }
   if (listtag) {
     const array = Array.from(question.tag);
     const tag = listtag;

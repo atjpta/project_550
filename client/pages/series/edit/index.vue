@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SeriesVEdit @save="save" :loading="loading" />
+    <SeriesVEdit :data="data" @save="save" :loading="loading" />
   </div>
 </template>
 
@@ -14,14 +14,12 @@ const useImage = imageStore();
 const useSeries = seriesStore();
 let series;
 const loading = ref(false);
-
-function formatData(listtag) {
+function formatData() {
   const data = {
     author: series.author.id,
-    status: [series.status.id],
+    status: series.status,
     name: series.name,
     introduce: series.introduce,
-    team: series.team._id,
     image_cover_url: useImage.url ?? series.image_cover_url,
   };
   return data;

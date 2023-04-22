@@ -19,30 +19,34 @@
       <!-- các btn -->
       <div class="flex justify-end my-3 lg:flex">
         <div>
-          <div @click="openDialogSignin(addTopic)" class="btn btn-outline btn-success btn-sm mt-1 lg:mt-0">
-            {{ isTopic ? "hiện danh sách" : "thêm câu hỏi vào Topic" }}
+          <div @click="navigateTo(`/question/topic/${route.params.id}`)"
+            class="btn btn-outline btn-success btn-sm mt-1 lg:mt-0">
+            {{ "tạo thêm câu hỏi vào Topic" }}
           </div>
-          <div v-if="!isTopic">
-            <div @click="
-              openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
-            " class="btn btn-ghost btn-xs italic lowercase">
-              tạo câu hỏi mới?
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="listPost.length == 0" class="text-center text-xl">
-        <div>chưa có câu hỏi nào hết !!!</div>
-        <div v-if="isTopic" @click="
-          openDialogSignin(() => navigateTo(`/question/topic/${route.params.id}`))
-        " class="btn btn-ghost italic lowercase">
-          tạo câu hỏi mới?
         </div>
       </div>
 
-      <div class="space-y-5">
-        <div v-for="i in listPost" :key="i.id">
+      <div class="mb-5 space-y-5" v-if="dataPerPage[0]">
+        <div v-for="(i, n) in dataPerPage" :key="n">
           <TopicVMonoQuestion :data="i" />
+        </div>
+      </div>
+
+      <!-- btn chuyển trang -->
+
+      <div v-if="dataPerPage[0]" class="form-control mx-auto w-fit my-3">
+        <div class="input-group lg:input-group-md input-group-sm">
+          <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+            <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
+          </button>
+          <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+            <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
+              trang {{ i }}
+            </option>
+          </select>
+          <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+            <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
+          </button>
         </div>
       </div>
     </div>
@@ -69,13 +73,35 @@ const useAuth = authStore();
 const useTeam = teamStore();
 
 const loading = ref(false);
-const isTopic = ref(false);
 
-const listPost = computed(() => {
-  if (isTopic.value) {
-    return useQuestion.listNoTopic;
-  } else return useQuestion.list;
+const size = 9;
+const maxPage = computed(() => {
+  selectPage.value = 1;
+  return Math.ceil(useQuestion.list.length / size);
 });
+const selectPage = ref(1);
+
+const dataPerPage = computed(() => {
+  let list = [];
+  let index = size * (selectPage.value - 1);
+
+  for (let i = 0; i < size; i++) {
+    if (index < useQuestion.list.length) {
+      list.push(useQuestion.list[index]);
+    }
+    index++;
+  }
+  return list;
+});
+
+function goToPre() {
+  selectPage.value -= 1;
+}
+
+function goToNext() {
+  selectPage.value += 1;
+}
+
 function openDialogSignin(cb) {
   if (!useAuth.isUserLoggedIn) {
     useDialog.showDialog(
@@ -94,25 +120,6 @@ function openDialogSignin(cb) {
     cb();
   }
 }
-
-const addTopic = () => {
-  if (useTopic.topic.team.length > 0) {
-    let mark = false;
-    useTeam.List_team_ByUser.forEach((e) => {
-      if (e._id == useTopic.topic.team[0]._id) {
-        mark = true;
-      }
-    });
-    if (mark) {
-      isTopic.value = !isTopic.value;
-    } else
-      useAlert.setError(
-        `bạn không thuộc vào nhóm ${useTopic.topic.team[0].name}. Bạn hãy gia nhập nhóm và thử lại sau`
-      );
-  } else {
-    isTopic.value = !isTopic.value;
-  }
-};
 
 async function getApi() {
   loadingSkeleton.value = true;

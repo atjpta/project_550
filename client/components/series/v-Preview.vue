@@ -2,14 +2,9 @@
   <div>
     <transition name="bounce">
       <div class="rounded-2xl">
-        <div
-          class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-16"
-        >
+        <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-16">
           <div class="w-fit">
-            <nuxtLink
-              class="hover:text-sky-500 hover:scale-110 duration-500"
-              to="/user/1"
-            >
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
               <!-- tác giả -->
               <div class="flex">
                 <div class="avatar">
@@ -25,33 +20,23 @@
           </div>
           <!-- các btn -->
           <div class="flex space-x-3 mt-1">
-            <div class="btn-sm lg:btn-md btn btn-ghost">
-              <OtherVIcon
-                class-icon="text-xl mr-1 text-warning"
-                icon="fa-solid fa-star"
-              />
-              <div class="text-2xl">0</div>
-            </div>
-            <div class="btn-sm lg:btn-md btn btn-ghost">
-              <OtherVIcon
-                class-icon="text-xl mr-1 text-info"
-                icon="fa-solid fa-file-lines"
-              />
-              <div class="text-2xl">0</div>
-            </div>
-            <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+            <div class="btn-disabled btn-sm lg:btn-md btn btn-ghost btn-square">
               <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
+            </div>
+            <div class="btn-sm lg:btn-md btn btn-ghost">
+              <OtherVIcon class-icon="text-xl mr-1 text-warning" icon="fa-solid fa-star" />
+              <div class="text-2xl">0</div>
+            </div>
+            <div class="btn-sm lg:btn-md btn btn-ghost">
+              <OtherVIcon class-icon="text-xl mr-1 text-info" icon="fa-solid fa-file-lines" />
+              <div class="text-2xl">0</div>
             </div>
           </div>
         </div>
         <div class="flex">
           <!-- ảnh team -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img
-              class="rounded-2xl w-32 h-32"
-              :src="useImage.previewImage || data.image_cover_url"
-              alt=""
-            />
+            <img class="rounded-2xl w-32 h-32" :src="useImage.previewImage || data.image_cover_url" alt="" />
           </div>
           <div class="w-full">
             <div class="flex justify-between">

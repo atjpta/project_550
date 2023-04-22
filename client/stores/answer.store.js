@@ -34,9 +34,9 @@ export const answerStore = defineStore("answerStore", {
             const id = await answerService.create(data);
         },
 
-        async getBy(id) {
+        async getBy(id, filter) {
             const user = useAuth.user ? useAuth.user.id : '';
-            this.list_answer = await answerService.getBy(id, user)
+            this.list_answer = await answerService.getBy(id, user, filter)
             this.list_answer.forEach((e, i) => {
                 this.list_answer[i].createdAt = this.setTime(this.list_answer[i].createdAt);
             });

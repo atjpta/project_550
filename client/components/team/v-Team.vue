@@ -12,9 +12,7 @@
               <div>
                 <nuxtLink class="" :to="`/team/${data?._id}/read/post`">
                   <!-- tên team -->
-                  <div
-                    class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500"
-                  >
+                  <div class="text-2xl font-bold uppercase text-base-content hover:text-sky-500 duration-500">
                     {{ data?.name }}
                   </div>
                 </nuxtLink>
@@ -23,11 +21,7 @@
               <!-- phần tùy chọn cho chủ nhóm -->
               <div v-if="data?.role == 'chief'" class="flex justify-end">
                 <div class="space-x-1 flex justify-end">
-                  <nuxtLink
-                    :to="`/team/edit/${data?._id ?? data?.id}`"
-                    class="tooltip"
-                    data-tip="sửa team"
-                  >
+                  <nuxtLink :to="`/team/edit/${data?._id ?? data?.id}`" class="tooltip" data-tip="sửa team">
                     <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
@@ -44,45 +38,29 @@
               <!-- phần tùy chọn cho người đọc -->
               <div v-else class="dropdown dropdown-end flex justify-end">
                 <div class="tooltip" data-tip="lưu nhóm">
-                  <div
-                    v-if="loading2 != 'save'"
-                    @click="openDialogSignin(save)"
-                    :class="classSave"
-                    class="btn btn-ghost btn-square mr-1"
-                  >
+                  <div v-if="loading2 != 'save'" @click="openDialogSignin(save)" :class="classSave"
+                    class="btn btn-ghost btn-square mr-1">
                     <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
                   </div>
-                  <div
-                    v-if="loading2 == 'save'"
-                    class="btn btn-circle btn-ghots loading mr-1"
-                  ></div>
+                  <div v-if="loading2 == 'save'" class="btn btn-circle btn-ghots loading mr-1"></div>
                 </div>
                 <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
-                  <div
-                    @click="openDialogJoinTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-secondary mr-1"
-                  >
+                  <div @click="openDialogJoinTeam()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-secondary mr-1">
                     gia nhập
                   </div>
                 </div>
 
                 <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
-                  <div
-                    @click="openDialogDeleteRequest()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-warning mr-1"
-                  >
+                  <div @click="openDialogDeleteRequest()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-warning mr-1">
                     hủy gia nhập
                   </div>
                 </div>
 
                 <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
-                  <div
-                    @click="openDialogOutTeam()"
-                    :class="[loading ? 'loading' : '']"
-                    class="btn btn-ghost text-error mr-1"
-                  >
+                  <div @click="openDialogOutTeam()" :class="[loading ? 'loading' : '']"
+                    class="btn btn-ghost text-error mr-1">
                     thoát
                   </div>
                 </div>
@@ -93,11 +71,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in data?.tag" :key="i._id" class="">
-                <nuxt-link
-                  :to="`/tag/${i._id}/post`"
-                  class="btn btn-outline btn-sm mr-1 mt-1"
-                  >{{ "#" + i.name }}</nuxt-link
-                >
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+                }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -114,13 +89,10 @@
             {{ slmember }}
           </div>
         </div>
-        <div v-if="data?.status[0].name == 'private'">
+        <div v-if="data?.status == 'private'">
           <div class="italic font-semibold mt-5">
             nhóm riêng tư
-            <div
-              class="tooltip"
-              data-tip="cần tham gia nhóm mới có thể thấy được thêm thông tin"
-            >
+            <div class="tooltip" data-tip="cần tham gia nhóm mới có thể thấy được thêm thông tin">
               <div class="btn-xs btn btn-outline btn-info rounded-full text-xs scale-75">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>

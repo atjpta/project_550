@@ -8,15 +8,12 @@ const schema = mongoose.Schema(
         },
         name: String,
         introduce: String,
-        status: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "status"
-        }],
+        status: String,
         tag: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "tag"
         }],
-        
+
     },
 
     {

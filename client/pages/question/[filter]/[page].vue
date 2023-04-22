@@ -125,11 +125,12 @@ function openDialogSignin() {
 }
 
 async function getApi() {
+  loadingSkeleton.value = true;
+
   if (useSearch.mark.question != 1) {
     await useSearch.getQuestion();
     useSearch.mark.question = 1;
   }
-  loadingSkeleton.value = true;
   try {
     useQuestion.list = await useQuestion.findPerFilter(
       route.params.filter,

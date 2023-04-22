@@ -33,23 +33,6 @@
           <TagVInputTag :data="useQuestion.question_edit.tag" />
         </div>
 
-        <!-- chọn trạng thái -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn trạng thái bài viết
-            <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
-          <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
-          </select>
-        </div>
-
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
           <div class="text-xl font-extrabold mt-5">
@@ -143,27 +126,11 @@ const useQuestion = questionStore();
 const route = useRoute();
 const selectStatus = ref();
 
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (selectStatus.value) {
-      if (selectStatus.value[0]?.name == e.name) {
-        selectStatus.value = e;
-        return;
-      }
-    } else if (e.name == "public") {
-      selectStatus.value = e;
-    }
-  });
-  return useStatus.getPost;
-});
-
 const emit = defineEmits(["save"]);
 
 function getdata() {
   useQuestion.question_edit.author = useUser.user;
-  useQuestion.question_edit.status = selectStatus.value;
   useQuestion.question_edit.content = quill.value.getContents();
-  useQuestion.question_edit.team = useTopic.topic.team[0] ?? {};
   useQuestion.question_edit.topic = {
     id: useTopic.topic._id,
     name: useTopic.topic.name,

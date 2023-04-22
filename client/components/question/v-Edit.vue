@@ -50,69 +50,63 @@
             </option>
           </select>
         </div>
-        <div v-if="!useQuestion.question_edit?.course?.name">
-          <!-- phần chọn serise -->
-          <div>
-            <div class="text-xl font-extrabold mt-5 mb-2">
-              Chọn chủ đề câu hỏi
-              <div class="tooltip" data-tip="cần có chủ đề câu hỏi trước">
-                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-                </div>
+        <!-- phần chọn serise -->
+        <div>
+          <div class="text-xl font-extrabold mt-5 mb-2">
+            Chọn chủ đề câu hỏi
+            <div class="tooltip" data-tip="cần có chủ đề câu hỏi trước">
+              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
             </div>
-            <select v-model="useQuestion.question_edit.topic" class="select-sm select select-primary w-full max-w-xs">
-              <option :value="{}">Không có</option>
-              <option :value="i" v-for="i in list_topic" :key="i">
-                {{ i.name }}
-              </option>
-            </select>
           </div>
-          <nuxt-link to="/topic/edit">
-            <div class="btn btn-ghost btn-xs italic lowercase">
-              tạo chủ đề câu hỏi mới?
-            </div>
-          </nuxt-link>
-          <!-- phần chọn team -->
+          <select v-model="useQuestion.question_edit.topic" class="select-sm select select-primary w-full max-w-xs">
+            <option :value="{}">Không có</option>
+            <option :value="i" v-for="i in list_topic" :key="i">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+        <nuxt-link to="/topic/edit">
+          <div class="btn btn-ghost btn-xs italic lowercase">tạo chủ đề câu hỏi mới?</div>
+        </nuxt-link>
+        <!-- phần chọn team -->
 
-          <div>
-            <div class="text-xl font-extrabold mt-5 mb-2">
-              Chọn nhóm
-              <div class="tooltip" data-tip="Cần tham gia nhóm trước">
-                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-                </div>
+        <div>
+          <div class="text-xl font-extrabold mt-5 mb-2">
+            Chọn nhóm
+            <div class="tooltip" data-tip="Cần tham gia nhóm trước">
+              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
+                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
             </div>
-            <select v-model="useQuestion.question_edit.team"
-              v-if="!useQuestion.question_edit.topic?.team && list_team.length > 0"
-              class="select-sm select select-primary w-full max-w-xs">
-              <option :value="{}">Chung</option>
-              <option :value="i" v-for="i in list_team" :key="i">{{ i.name }}</option>
-            </select>
-            <select disabled v-if="useQuestion.question_edit.topic?.team || list_team.length == 0"
-              class="select-sm select select-primary w-full max-w-xs">
-              <option v-if="list_team.length == 0">Chung</option>
-              <option v-if="list_team.length == 1">
-                {{ list_team[0].name }}
-              </option>
-            </select>
           </div>
-          <!-- chọn trạng thái -->
-          <div>
-            <div class="text-xl font-extrabold mt-5 mb-2">
-              Chọn trạng thái bài viết
-              <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
-                <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                  <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-                </div>
-              </div>
-            </div>
-            <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
-              <option :value="i" v-for="i in list_status" :key="i">
-                {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-              </option>
-            </select>
+          <select v-model="useQuestion.question_edit.team" class="select-sm select select-primary w-full max-w-xs">
+            <option :value="{}">Chung</option>
+            <option :value="i" v-for="i in useTeam.List_team_ByUser" :key="i">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- chọn trang thái -->
+
+        <div class="text-xl font-extrabold mt-5 mb-2">Chọn trạng thái</div>
+        <div class="w-full max-w-xs">
+          <div data-tip="mọi người đều xem được câu hỏi" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">công khai</span>
+              <input @click="useQuestion.question_edit.status = 'public'" type="radio" name="radio-10"
+                class="radio checked:bg-red-500" :checked="useQuestion.question_edit.status == 'public'" />
+            </label>
+          </div>
+          <div data-tip="câu hỏi chỉ có bạn thấy được" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">riêng tư</span>
+              <input :checked="useQuestion.question_edit.status == 'private'"
+                @click="useQuestion.question_edit.status = 'private'" type="radio" name="radio-10"
+                class="radio checked:bg-blue-500" />
+            </label>
           </div>
         </div>
 
@@ -204,33 +198,18 @@ const preview = ref(false);
 const useCourse = courseStore();
 const useUser = userStore();
 const useAuth = authStore();
-const useStatus = statusStore();
 const useTeam = teamStore();
 const useTopic = topicStore();
 const useQuestion = questionStore();
 const route = useRoute();
 const useAlert = alertStore();
-const selectStatus = ref();
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (selectStatus.value) {
-      if (selectStatus.value[0]?.name == e.name) {
-        selectStatus.value = e;
-        return;
-      }
-    } else if (e.name == "public") {
-      selectStatus.value = e;
-    }
-  });
-  return useStatus.getPost;
-});
 
 const list_topic = computed(() => {
   if (!useQuestion.question_edit.topic) {
     useQuestion.question_edit.topic = {};
   }
   let list = [];
-  useTopic.List_topic.forEach((e) => {
+  useTopic.List_topic2.forEach((e) => {
     if (e.team) {
       useTeam.List_team_ByUser.forEach((ee) => {
         if (e.team._id == ee._id) {
@@ -279,7 +258,6 @@ const emit = defineEmits(["save"]);
 
 function getdata() {
   useQuestion.question_edit.author = useUser.user;
-  useQuestion.question_edit.status = selectStatus.value;
   useQuestion.question_edit.content = quill.value.getContents();
 }
 
@@ -305,12 +283,7 @@ async function getApi() {
       return navigateTo("/");
     }
     useQuestion.question_edit = useQuestion.question;
-    if (useQuestion.question_edit.status[0]) {
-      selectStatus.value = {
-        id: useQuestion.question_edit.status[0]._id,
-        name: useQuestion.question_edit.status[0].name,
-      };
-    }
+
     if (useQuestion.question_edit.course) {
       useCourse.list.forEach((e, i) => {
         if (e.id == useQuestion.question_edit.course._id) {
@@ -331,7 +304,6 @@ onMounted(() => {
   useTeam.reset();
   useTeam.findByUser(useAuth.user.id);
   useTopic.getEdit();
-  useStatus.findAll();
   useCourse.findAll();
   getApi();
 });

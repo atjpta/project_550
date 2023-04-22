@@ -2,7 +2,7 @@
   <div class="mt-5">
     <!-- btn chuyển trang -->
     <div class="flex justify-end">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm lg:btn-md mb-5">
+      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm mb-5">
         tạo bài viết
       </button>
     </div>
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="space-y-3 mt-5" v-if="dataPerPage[0]">
+      <div class="space-y-3" v-if="dataPerPage[0]">
         <div v-for="(i, n) in dataPerPage" :key="i._id">
           <TeamManagerVMonoPost :data="i" />
           <div v-if="n < usePost.list.length - 1" class="divider"></div>
@@ -27,7 +27,7 @@
     </div>
     <!-- btn chuyển trang -->
 
-    <div class="form-control mx-auto w-fit my-3">
+    <div v-if="dataPerPage[0]" class="form-control mx-auto w-fit my-3">
       <div class="input-group lg:input-group-md input-group-sm">
         <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />

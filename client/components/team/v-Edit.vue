@@ -1,9 +1,8 @@
 <template>
-  <div :class="
-    !preview
+  <div :class="!preview
       ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10'
       : ''
-  " class="p-5 rounded-2xl">
+    " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
         <div class="text-4xl text-center font-extrabold">Chỉnh sửa nhóm</div>
@@ -40,22 +39,25 @@
           </div>
           <TagVInputTag :data="useTeam.team_edit?.tag" />
         </div>
-        <!-- chọn trạng thái -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Trạng thái của nhóm
-            <div class="tooltip" data-tip="riêng tư là các bài viết bị ẩn đi">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
 
-          <select v-model="useTeam.team_edit.status" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
-          </select>
+        <!-- chọn trang thái -->
+
+        <div class="text-xl font-extrabold mt-5 mb-2">Chọn trạng thái</div>
+        <div class="w-full max-w-xs">
+          <div data-tip="mọi người đều xem được bài viết" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">công khai</span>
+              <input @click="useTeam.team_edit.status = 'public'" type="radio" name="radio-10"
+                class="radio checked:bg-red-500" :checked="useTeam.team_edit.status == 'public'" />
+            </label>
+          </div>
+          <div data-tip="bài viết và câu hỏi chỉ thành viên thấy được" class="form-control tooltip w-full">
+            <label class="label cursor-pointer">
+              <span class="label-text">riêng tư</span>
+              <input :checked="useTeam.team_edit.status == 'private'" @click="useTeam.team_edit.status = 'private'"
+                type="radio" name="radio-10" class="radio checked:bg-blue-500" />
+            </label>
+          </div>
         </div>
 
         <!-- phần nội dung bài viết -->
@@ -87,10 +89,10 @@
       <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
         chỉnh tiếp
       </div>
-      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-sm btn-primary">
+      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
         lưu
       </div>
-      <div @click="useRouter().back()" class="btn btn-outline btn-sm btn-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
     </div>
   </div>
 </template>

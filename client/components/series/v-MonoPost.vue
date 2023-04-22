@@ -23,7 +23,7 @@
               </div>
 
               <div v-if="isAuthor">
-                <li v-if="data.series" @click="openDialogRemoveSeries()" class="hover-bordered">
+                <!-- <li v-if="data.series" @click="openDialogRemoveSeries()" class="hover-bordered">
                   <a>
                     <div>
                       <OtherVIcon class-icon="text-warning" icon="fa-solid fa-xmark" />
@@ -38,7 +38,7 @@
                       thêm vào
                     </div>
                   </a>
-                </li>
+                </li> -->
                 <li @click="navigateTo(`/post/edit/${data._id}`)" class="hover-bordered">
                   <a>
                     <div>
@@ -190,7 +190,7 @@ function openDialogAddSeries() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "nhóm và chuỗi bài viết của bài viết sẽ bị thay đổi",
+        content: "bạn muốn thêm bài viết này?",
         btn1: "ok",
         btn2: "hủy",
       },

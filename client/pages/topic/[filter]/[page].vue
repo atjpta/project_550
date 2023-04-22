@@ -106,11 +106,12 @@ function openDialogSignin() {
 }
 
 async function getApi() {
+  loadingSkeleton.value = true;
+
   if (useSearch.mark.Topic != 1) {
     await useSearch.getTopic();
     useSearch.mark.Topic = 1;
   }
-  loadingSkeleton.value = true;
   try {
     useTopic.reset();
     // await useTopic.findAll();

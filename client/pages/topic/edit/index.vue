@@ -18,10 +18,8 @@ const loading = ref(false);
 function formatData(listtag) {
   const data = {
     author: topic.author.id,
-    status: [topic.status.id],
     name: topic.name,
     introduce: topic.introduce,
-    team: topic.team._id,
     image_cover_url: useImage.url ?? topic.image_cover_url,
   };
   return data;

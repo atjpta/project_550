@@ -22,7 +22,7 @@ function formatData(listtag) {
     author: question.author.id,
     content: question.content,
     topic: question.topic.id,
-    status: [question.status.id],
+    status: "public",
     title: question.title,
     team: question.team._id || question.team.id,
   };

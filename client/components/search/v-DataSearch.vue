@@ -28,7 +28,7 @@
         <!-- post -->
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_post" :key="i._id">
-            <div @click="goTo('post', i._id)"
+            <div @click="goTo('post', i._id, i)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="bài viết" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-lines" />
@@ -58,7 +58,7 @@
 
         <div class="w-full space-y-2">
           <div v-for="i in useSearch.list_search_question" :key="i._id">
-            <div @click="goTo('question', i._id)"
+            <div @click="goTo('question', i._id, i)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
               <div data-tip="câu hỏi" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-circle-question" />
@@ -136,10 +136,15 @@
 </template>
 
 <script setup>
+import { authStore } from "~/stores/auth.store";
+import { postStore } from "~/stores/post.store";
+import { questionStore } from "~/stores/question.store";
 import { searchStore } from "~~/stores/search.store";
 
 const useSearch = searchStore();
-
+const usePost = postStore();
+const useQuestion = questionStore();
+const useAuth = authStore();
 const sumLength = computed(() => {
   return (
     useSearch.list_search_post.length +
@@ -154,7 +159,43 @@ const sumLength = computed(() => {
   );
 });
 
-function goTo(type, id) {
+async function goReadPost(post) {
+  if (useAuth.user && useAuth.user.id == post.author[0]._id) {
+  } else {
+    try {
+      await usePost.update({
+        id: post._id,
+        view: post.view + 1,
+      });
+      post.view += 1;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+async function goReadQ(q) {
+  if (useAuth.user && useAuth.user.id == q.author[0]._id) {
+  } else {
+    try {
+      await usePost.update({
+        id: q._id,
+        view: q.view + 1,
+      });
+      q.view += 1;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+function goTo(type, id, model) {
+  if (type == "post") {
+    goReadPost(model);
+  }
+  if (type == "question") {
+    goReadPost(model);
+  }
   navigateTo(`/${type}/${id}`);
 }
 </script>

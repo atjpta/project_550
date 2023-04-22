@@ -3,9 +3,7 @@
     <transition name="bounce">
       <div class="">
         <div class="mb-3">
-          <div
-            class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14"
-          >
+          <div class="glass rounded-2xl ring-0 p-2 my-2 lg:flex justify-between sticky top-14">
             <div class="w-fit">
               <div class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
                 <!-- tác giả -->
@@ -23,21 +21,15 @@
             </div>
             <!-- các btn -->
             <div class="flex mt-1 space-x-3">
-              <div class="btn-disabled btn-sm lg:btn-md btn btn-outline btn-square">
+              <div class="btn-disabled btn-sm lg:btn-md btn btn-ghost btn-square">
                 <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
               </div>
               <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon
-                  class-icon="text-xl mr-1 text-warning"
-                  icon="fa-solid fa-star"
-                />
+                <OtherVIcon class-icon="text-xl mr-1 text-warning" icon="fa-solid fa-star" />
                 <div class="text-2xl">0</div>
               </div>
               <div class="btn-sm lg:btn-md btn btn-ghost">
-                <OtherVIcon
-                  class-icon="text-xl mr-1 text-info"
-                  icon="fa-solid fa-file-lines"
-                />
+                <OtherVIcon class-icon="text-xl mr-1 text-info" icon="fa-solid fa-file-lines" />
                 <div class="text-2xl">0</div>
               </div>
             </div>
@@ -46,11 +38,7 @@
         <div class="flex">
           <!-- ảnh team -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img
-              class="rounded-2xl w-32 h-32"
-              :src="useImage.previewImage || data.image_cover_url"
-              alt=""
-            />
+            <img class="rounded-2xl w-32 h-32" :src="useImage.previewImage || data.image_cover_url" alt="" />
           </div>
           <div class="w-full">
             <div class="flex justify-between">
@@ -72,7 +60,7 @@
           </div>
         </div>
         <!-- phần team -->
-        <div v-if="data.team.name" class="mt-5">
+        <div v-if="data.team?.name" class="mt-5">
           <div class="text-2xl font-semibold">Nhóm</div>
           <div class="btn btn-ghost justify-start">{{ data.team.name }}</div>
         </div>

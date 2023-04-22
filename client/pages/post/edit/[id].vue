@@ -1,103 +1,68 @@
 <template>
   <div>
-    <PostVEdit @save="saveEdit" :loading="loading" />
+    <PostVEdit :data="data" @save="saveEdit" :loading="loading" />
   </div>
 </template>
 
 <script setup>
-import { statusStore } from "~/stores/status.store";
+import { authStore } from "~/stores/auth.store";
 import { alertStore } from "~~/stores/alert.store";
 import { imageStore } from "~~/stores/image.store";
 import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
-import { teamStore } from "~~/stores/team.store";
-const useTeam = teamStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
 const useAlert = alertStore();
-const useStatus = statusStore();
-let post = usePost.post_edit;
+const useAuth = authStore();
+const route = useRoute();
+const data = ref({});
 const loading = ref(false);
+
 function formatData(listtag) {
-  const data = {
-    id: post.id,
-    content: post.content,
-    course: (post.course.id || post.course._id) ?? " ",
-    status: [post.status.id],
-    title: post.title,
-    image_cover_url: useImage.url ?? post.image_cover_url,
+  const dataS = {
+    id: route.params.id,
+    content: data.value.content,
+    title: data.value.title,
+    status: data.value.status,
+    course: (data.value.course.id || data.value.course._id) ?? " ",
+    series: (data.value.series.id || data.value.series._id) ?? " ",
+    team: (data.value.team.id || data.value.team._id) ?? " ",
+    image_cover_url: useImage.url ?? data.value.image_cover_url,
   };
-  if (data.course != " ") {
-    data.series = " ";
-    data.team = " ";
-    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
-  } else {
-    data.series = (post.series.id || post.series._id) ?? " ";
-    data.team = (post.team.id || post.team._id) ?? " ";
-  }
   if (listtag) {
-    const array = Array.from(post.tag);
+    const array = Array.from(data.value.tag);
     const tag = listtag;
     array.forEach((e) => {
-      tag.push(e.id ?? e._id);
+      tag.push(e.id);
     });
-    data.tag = tag;
+    dataS.tag = tag;
   } else {
-    const array = Array.from(post.tag);
+    const array = Array.from(data.value.tag);
     const tag = [];
     array.forEach((e) => {
-      tag.push(e.id ?? e._id);
+      tag.push(e.id);
     });
-    data.tag = tag;
+    dataS.tag = tag;
   }
-  return data;
-}
-
-function checkTeam() {
-  let check = false;
-  const id = post.team.id || post.team._id;
-  if (id) {
-    if (useTeam.List_team_ByUser[0]) {
-      useTeam.List_team_ByUser.forEach((e) => {
-        if (e._id == id) {
-          check = true;
-          return;
-        }
-      });
-    } else {
-      return false;
-    }
-  } else {
-    return true;
-  }
-  return check;
+  return dataS;
 }
 
 async function saveEdit() {
-  post = usePost.post_edit;
-  if (!(post.content.ops[0].insert != "\n" && post.title)) {
+  if (!(data.value.content.ops[0].insert != "\n" && data.value.title)) {
     useAlert.setError("phải nhập đủ tiêu đề và nội dung");
     return;
-  }
-  let check;
-  if (!post.course) {
-    check = checkTeam();
-    if (!check) {
-      useAlert.setError("bạn không còn trong nhóm " + usePost.post_edit.team.name);
-      return;
-    }
   }
 
   loading.value = true;
   try {
-    const listtag = await useTag.createAll(post.tag);
-    const data = formatData(listtag);
+    const listtag = await useTag.createAll(data.value.tag);
+    const dataS = formatData(listtag);
     if (useImage.url) {
       await useImage.uploadImage();
-      data.image_cover_url = useImage.url;
+      dataS.image_cover_url = useImage.url;
     }
-    await usePost.update(data);
+    await usePost.update(dataS);
     usePost.resetPostEdit();
     useRouter().back();
   } catch (error) {
@@ -106,6 +71,40 @@ async function saveEdit() {
     loading.value = false;
   }
 }
+
+async function getApi() {
+  if (route.params.id) {
+    await usePost.findOneEdit(route.params.id);
+    if (usePost.post.author._id != useAuth.user.id) {
+      useAlert.setWarning("bạn không có quyền truy cập");
+      return navigateTo("/");
+    }
+    data.value = usePost.post;
+    if (!data.value.course) {
+      data.value.course = {};
+    } else {
+      data.value.course = {
+        id: usePost.post.course._id,
+        name: usePost.post.course.name,
+      };
+    }
+    if (!data.value.series) {
+      data.value.series = {};
+    } else {
+      data.value.series = {
+        id: usePost.post.series._id,
+        name: usePost.post.series.name,
+      };
+    }
+    if (!data.value.team) {
+      data.value.team = {};
+    }
+  }
+}
+
+onMounted(() => {
+  getApi();
+});
 
 definePageMeta({
   middleware: "guest",

@@ -15,13 +15,12 @@ const useSeries = seriesStore();
 let series;
 const loading = ref(false);
 
-function formatData(listtag) {
+function formatData() {
   const data = {
     id: series.id,
-    status: [series.status.id],
+    status: series.status,
     name: series.name,
     introduce: series.introduce,
-    team: series.team._id ?? " ",
     image_cover_url: useImage.url ?? series.image_cover_url,
   };
   return data;

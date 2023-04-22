@@ -13,6 +13,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -24,6 +25,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -34,6 +36,7 @@ export default {
             method: "get",
         })
         if (error.value) {
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -45,6 +48,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -56,6 +60,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -67,6 +72,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -78,6 +84,7 @@ export default {
         })
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         return data.value
@@ -93,6 +100,7 @@ export default {
 
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -110,6 +118,7 @@ export default {
         if (error.value) {
 
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -128,6 +137,7 @@ export default {
             useAlert.setWarning('không có trang này')
             navigateTo('/')
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -146,6 +156,7 @@ export default {
             useAlert.setWarning('không có trang này')
             navigateTo('/')
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -162,6 +173,7 @@ export default {
 
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         // useAlert.setSuccess("test thành công");
@@ -179,6 +191,7 @@ export default {
 
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("tạo thành công");
@@ -197,6 +210,7 @@ export default {
 
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("Sửa thành công");
@@ -213,6 +227,7 @@ export default {
 
         if (error.value) {
             // useAlert.setError(error.value.data)
+            console.log(error.value.data);
             throw new Error(error.value.data);
         }
         useAlert.setSuccess("xóa thành công");

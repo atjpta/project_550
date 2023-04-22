@@ -1,7 +1,7 @@
 <template>
   <div :class="preview
-      ? 'bg-base-100'
-      : 'bg-gradient-to-r from-warning/5 via-warning/5 to-pink-500/0'
+    ? 'bg-base-100'
+    : 'bg-gradient-to-r from-warning/5 via-warning/5 to-pink-500/0'
     " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
@@ -31,43 +31,6 @@
             </div>
           </div>
           <TagVInputTag :data="useQuestion.question_edit.tag" />
-        </div>
-        <!-- phần chọn serise -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn chủ đề câu hỏi
-            <div class="tooltip" data-tip="cần có chuỗi bài viết trước">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
-          <select v-model="useQuestion.question_edit.topic" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="{}">Không có</option>
-            <option :value="i" v-for="i in list_topic" :key="i">
-              {{ i.name }}
-            </option>
-          </select>
-        </div>
-        <nuxt-link to="/topic/edit">
-          <div class="btn btn-ghost btn-xs italic lowercase">tạo chủ đề câu hỏi mới?</div>
-        </nuxt-link>
-
-        <!-- chọn trạng thái -->
-        <div>
-          <div class="text-xl font-extrabold mt-5 mb-2">
-            Chọn trạng thái bài viết
-            <div class="tooltip" data-tip="riêng tư là chỉ bạn có thể thấy">
-              <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
-                <OtherVIcon class-icon="" icon="fa-solid fa-info" />
-              </div>
-            </div>
-          </div>
-          <select v-model="selectStatus" class="select-sm select select-primary w-full max-w-xs">
-            <option :value="i" v-for="i in list_status" :key="i">
-              {{ i.name == "public" ? "Công khai" : "Riêng tư" }}
-            </option>
-          </select>
         </div>
 
         <!-- phần nội dung bài viết -->
@@ -156,36 +119,16 @@ const preview = ref(false);
 
 const useUser = userStore();
 const useAuth = authStore();
-const useStatus = statusStore();
 const useTeam = teamStore();
 const useTopic = topicStore();
 const useQuestion = questionStore();
 const route = useRoute();
 const selectStatus = ref();
 
-const list_status = computed(() => {
-  useStatus.getPost.forEach((e) => {
-    if (selectStatus.value) {
-      if (selectStatus.value[0]?.name == e.name) {
-        selectStatus.value = e;
-        return;
-      }
-    } else if (e.name == "public") {
-      selectStatus.value = e;
-    }
-  });
-  return useStatus.getPost;
-});
-
-const list_topic = computed(() => {
-  useQuestion.question_edit.topic = {};
-  return useTopic.List_topic;
-});
 const emit = defineEmits(["save"]);
 
 function getdata() {
   useQuestion.question_edit.author = useUser.user;
-  useQuestion.question_edit.status = selectStatus.value;
   useQuestion.question_edit.content = quill.value.getContents();
   useQuestion.question_edit.team = useTeam.team;
 }
@@ -206,7 +149,6 @@ const setContent = () => {
 
 async function getApi() {
   await useTopic.findByUserTeam(useAuth.user.id, route.params.id);
-  await useStatus.findAll();
   await useTeam.findOneEdit(route.params.id);
 }
 

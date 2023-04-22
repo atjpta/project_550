@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PostVEdit @save="save" :loading="loading" />
+    <PostVEdit :data="data" @save="save" :loading="loading" />
   </div>
 </template>
 
@@ -9,97 +9,71 @@ import { imageStore } from "~~/stores/image.store";
 import { postStore } from "~~/stores/post.store";
 import { tagStore } from "~~/stores/tag.store";
 import { alertStore } from "~~/stores/alert.store";
-import { teamStore } from "~~/stores/team.store";
-import { statusStore } from "~/stores/status.store";
 
 const useAlert = alertStore();
 const useImage = imageStore();
 const useTag = tagStore();
 const usePost = postStore();
-const useTeam = teamStore();
-const useStatus = statusStore();
-let post;
+const data = ref({
+  course: {},
+  series: {},
+  team: {},
+  status: "public",
+  tag: new Set(),
+});
 const loading = ref(false);
 
 function formatData(listtag) {
-  const data = {
-    author: post.author.id,
-    content: post.content,
-    status: [post.status.id],
-    title: post.title,
-    course: post.course.id,
-    image_cover_url: useImage.url ?? post.image_cover_url,
+  const dataS = {
+    author: data.value.author.id,
+    content: data.value.content,
+    title: data.value.title,
+    status: data.value.status,
+    image_cover_url: useImage.url ?? data.value.image_cover_url,
   };
-  if (data.course) {
-    data.status = [useStatus.getPublic.id || useStatus.getPublic._id];
-  } else {
-    data.team = post.team.id || post.team._id;
-    data.series = post.series.id;
+  if (data.value.course) {
+    dataS.course = data.value.course.id ?? data.value.course._id;
+  }
+  if (data.value.series) {
+    dataS.series = data.value.series.id ?? data.value.series._id;
+  }
+  if (data.value.team) {
+    dataS.team = data.value.team.id ?? data.value.team._id;
   }
   if (listtag) {
-    const array = Array.from(post.tag);
+    const array = Array.from(data.value.tag);
     const tag = listtag;
     array.forEach((e) => {
       tag.push(e.id);
     });
-    data.tag = tag;
+    dataS.tag = tag;
   } else {
-    const array = Array.from(post.tag);
+    const array = Array.from(data.value.tag);
     const tag = [];
     array.forEach((e) => {
       tag.push(e.id);
     });
-    data.tag = tag;
+    dataS.tag = tag;
   }
-  return data;
-}
-
-function checkTeam() {
-  let check = false;
-  const id = post.team.id || post.team._id;
-  if (id) {
-    if (useTeam.List_team_ByUser[0]) {
-      useTeam.List_team_ByUser.forEach((e) => {
-        if (e._id == id) {
-          check = true;
-          return;
-        }
-      });
-    } else {
-      return false;
-    }
-  } else {
-    return true;
-  }
-  return check;
+  return dataS;
 }
 
 async function save() {
-  post = usePost.post_edit;
-  if (!(post.content.ops[0].insert != "\n" && post.title)) {
-    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
-    return;
-  }
-  let check;
-  if (!post.course) {
-    check = checkTeam();
-    if (!check) {
-      useAlert.setError("bạn không còn trong nhóm " + usePost.post_edit.team.name);
-      return;
-    }
-  }
-
   loading.value = true;
   try {
-    const listtag = await useTag.createAll(post.tag);
-    const data = formatData(listtag);
+    if (!(data.value.content.ops[0].insert != "\n" && data.value.title)) {
+      useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+      return;
+    }
+    const listtag = await useTag.createAll(data.value.tag);
+    const dataSS = formatData(listtag);
     if (useImage.url) {
       await useImage.uploadImage();
-      data.image_cover_url = useImage.url;
+      dataSS.image_cover_url = useImage.url;
     }
-    const id = await usePost.create(data);
-    usePost.resetPostEdit();
+    const id = await usePost.create(dataSS);
     useRouter().back();
+    useAlert.setSuccess("tạo bài viết thành công");
   } catch (error) {
     console.log(error);
   } finally {

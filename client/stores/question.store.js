@@ -17,6 +17,8 @@ export const questionStore = defineStore("questionStore", {
             question_edit: {
                 tag: new Set(),
                 course: {},
+                status: "public",
+                team: {},
             },
             question: {
                 tag: new Set(),
@@ -24,6 +26,8 @@ export const questionStore = defineStore("questionStore", {
                 status: {},
                 course: {},
                 content: {},
+                team: {},
+
             },
             list: [],
             listNoTopic: [],
@@ -43,12 +47,15 @@ export const questionStore = defineStore("questionStore", {
             this.question_edit = {
                 tag: new Set(),
                 course: {},
+                team: {},
+                status: "public",
             }
             this.question = {
                 tag: new Set(),
                 author: {},
                 status: {},
                 course: {},
+                team: {},
                 content: {},
             }
         },
@@ -58,6 +65,9 @@ export const questionStore = defineStore("questionStore", {
                 this.question.tag = new Set(this.question.tag)
             } else {
                 this.question.tag = new Set()
+            }
+            if (!this.question.team) {
+                this.question.team = {}
             }
         },
 
