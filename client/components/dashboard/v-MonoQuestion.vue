@@ -5,6 +5,7 @@
       <!-- tiêu đề -->
       <div class="text-left w-full ml-5">
         {{ data.title }}
+        <div v-if="!data.check" class="italic">*câu hỏi chưa được duyệt</div>
       </div>
 
       <!-- các nút chức năng -->

@@ -10,7 +10,7 @@
             <!-- các nút chức năng -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
                 <div data-tip="xem chi tiết" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
-                    <div class="h-10 w-10 btn btn-sm btn-ghost text-info">
+                    <div @click="navigateTo(`/course/${data.id}/review`)" class="h-10 w-10 btn btn-sm btn-ghost text-info">
                         <OtherVIcon icon="fa-solid fa-eye" />
                     </div>
                 </div>

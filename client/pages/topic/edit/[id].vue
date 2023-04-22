@@ -40,6 +40,8 @@ async function save() {
     }
     await useTopic.update(data);
     useTopic.resettopicEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

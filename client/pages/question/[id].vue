@@ -446,7 +446,7 @@ onMounted(() => {
 });
 
 const title = computed(() => {
-  return useQuestion.question.title;
+  return useQuestion.question?.title;
 });
 
 useHead({

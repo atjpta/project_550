@@ -40,6 +40,8 @@ async function save() {
     }
     const id = await useSeries.create(data);
     useSeries.resetSeriesEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

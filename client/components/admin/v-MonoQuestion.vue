@@ -16,12 +16,18 @@
         </nuxt-link>
       </div>
       <!-- tiêu đề -->
-      <div class="text-left w-full ml-5">
+      <div class="text-left w-full ml-5 truncate">
         {{ data.title }}
       </div>
 
       <!-- các nút chức năng -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-5 pr-5">
+        <div :data-tip="data.check ? 'đã duyệt' : 'duyệt câu hỏi'" :class="data.check ? 'text-success' : ''"
+          class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+          <div @click="checkQuestion()" :class="loadingCheck ? 'loading' : ''" class="h-10 w-10 btn btn-sm btn-ghost">
+            <OtherVIcon icon="fa-solid fa-check" />
+          </div>
+        </div>
         <div @click="showDataReport()" data-tip="xem báo cáo"
           class="h-10 w-10 indicator flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-primary">
           <OtherVIcon icon="fa-solid fa-flag" />
@@ -149,6 +155,58 @@ async function deleteModel(input) {
     console.log(error);
   } finally {
     loading.value = "";
+  }
+}
+
+const loadingCheck = ref(false);
+
+function checkQuestion() {
+  if (props.data.check) {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn muốn hủy duyệt bài viết này?",
+        btn1: "hủy duyệt",
+        btn2: "hủy",
+      },
+      async () => {
+        try {
+          loadingCheck.value = true;
+          await useQuestion.update({
+            id: props.data._id,
+            check: false,
+          });
+          loadingCheck.value = false;
+          useAlert.setSuccess("đã hủy duyệt thành công");
+          await useRouteS.refreshData();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    );
+  } else {
+    useDialog.showDialog(
+      {
+        title: "Thông báo cực căng!",
+        content: "bạn muốn duyệt bài viết này?",
+        btn1: "duyệt",
+        btn2: "hủy",
+      },
+      async () => {
+        try {
+          loadingCheck.value = true;
+          await useQuestion.update({
+            id: props.data._id,
+            check: true,
+          });
+          loadingCheck.value = false;
+          useAlert.setSuccess("đã duyệt thành công");
+          await useRouteS.refreshData();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    );
   }
 }
 

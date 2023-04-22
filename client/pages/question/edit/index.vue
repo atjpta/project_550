@@ -91,6 +91,8 @@ async function save() {
     const data = formatData(listtag);
     const id = await useQuestion.create(data);
     useQuestion.resetQuestionEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

@@ -40,6 +40,8 @@ async function save() {
     }
     const id = await useTopic.create(data);
     useTopic.resettopicEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

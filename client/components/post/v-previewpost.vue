@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-2xl">
     <!-- các tùy chọn -->
-    <div class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between sticky ring-0 top-3">
+    <div class="glass z-10 rounded-2xl p-2 my-2 lg:flex justify-between sticky ring-0 top-14">
       <div class="w-fit">
         <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" to="/user/1">
           <!-- tác giả -->
@@ -55,14 +55,14 @@
     </div>
     <!-- bài viết -->
     <div class="">
-      <img class="rounded-2xl mx-auto" :src="useImage.previewImage || data.image_cover_url" alt="" />
+      <img class="rounded-2xl mx-auto min-h-[70vh]" :src="useImage.previewImage || data.image_cover_url" alt="" />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
       <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />
       </div>
       <!-- tag -->
       <div class="mt-4 flex flex-wrap">
-        <div v-for="i in data.tag" :key="i" class="btn btn-ghost btn-sm mr-1 mt-1">
+        <div v-for="i in data.tag" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
           {{ "#" + i.name }}
         </div>
       </div>

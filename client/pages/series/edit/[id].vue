@@ -41,6 +41,8 @@ async function save() {
     }
     await useSeries.update(data);
     useSeries.resetSeriesEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

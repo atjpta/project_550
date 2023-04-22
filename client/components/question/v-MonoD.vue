@@ -1,11 +1,10 @@
 <template>
   <div>
     <transition name="bounce">
-      <div :class="
-        data.choice.length
+      <div :class="data.choice.length
           ? ' from-teal-500/10 via-teal-500/5 to-pink-500/0'
           : ' from-warning/10 via-warning/5 to-pink-500/0'
-      " class="p-5 hover:bg-gradient-to-l indicator w-full">
+        " class="p-5 hover:bg-gradient-to-l indicator w-full">
         <div>
           <!-- phần đầu -->
           <!-- phần tùy chọn cho người đọc -->
@@ -65,9 +64,8 @@
               {{ valVote }}
             </div>
             <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="
-                data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-              " />
+              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+                " />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
             <div class="tooltip" data-tip="lượt bình luận">
@@ -81,6 +79,7 @@
               </div>
             </div>
           </div>
+          <div v-if="!data.check" class="italic">*câu hỏi chưa được duyệt</div>
         </div>
       </div>
     </transition>

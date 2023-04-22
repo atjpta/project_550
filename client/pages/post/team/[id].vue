@@ -60,6 +60,8 @@ async function save() {
     }
     const id = await usePost.create(data);
     usePost.resetPostEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

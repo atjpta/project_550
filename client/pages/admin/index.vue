@@ -94,7 +94,7 @@ const menuAdmin = ref([
     slReport: computed(() => {
       let sl = 0;
       useReport.list_question.forEach((e) => {
-        if (e.slReport > 0) {
+        if (e.slReport > 0 || !e.check) {
           sl++;
         }
       });

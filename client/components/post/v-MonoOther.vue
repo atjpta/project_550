@@ -3,7 +3,7 @@
     <!-- <div class="h-60 w-96 glass rounded-sm">{{ data }}</div> -->
     <div @click="goReadPost()">
       <div class="card rounded-md w-96 bg-base-100 cursor-pointer hover:bg-base-200">
-        <div class="card-body">
+        <div class="card-body w-full">
           <div class="w-fit">
             <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
               :to="`/user/${data?.author[0]?._id}/overview`">
@@ -23,7 +23,11 @@
               </div>
             </nuxtLink>
           </div>
-          <h2 class="card-title text-2xl">{{ data.title }}</h2>
+          <div class="card-title text-2xl truncate h-12">
+            <div class="text-2xl truncate">
+              {{ data.title }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

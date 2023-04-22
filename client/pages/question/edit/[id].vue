@@ -92,6 +92,8 @@ async function saveEdit() {
     }
     await useQuestion.update(data);
     useQuestion.resetQuestionEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

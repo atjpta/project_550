@@ -15,6 +15,25 @@ export const imageStore = defineStore("imageStore", {
     getters: {
     },
     actions: {
+
+        convertToValidFileName(str) {
+            // Chuyển đổi chuỗi tiếng Việt sang dạng không dấu
+            str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Loại bỏ các ký tự không hợp lệ
+            str = str.replace(/[^a-zA-Z0-9_\-]/g, "");
+
+            // Thay thế khoảng trắng bằng dấu gạch ngang
+            str = str.replace(/\s+/g, "-");
+
+            // Giới hạn độ dài tên file
+            str = str.substring(0, 50);
+
+            return str;
+        },
+
+
+
         async previewFiles(event) {
             this.reset();
             const file = event.target.files[0];
@@ -24,10 +43,13 @@ export const imageStore = defineStore("imageStore", {
             };
             theReader.readAsDataURL(file);
             this.image = file
+            const fileExt = file.name.split('.').pop()
+            this.name = this.convertToValidFileName(file.name.split('.')[0]) + `.${fileExt}`;
             this.url = config.url.apiimage + file.name;
-            this.name = file.name;
             console.log(this.url);
+
         },
+
 
         async uploadImage() {
             await imageService.upload(this.name, this.image);

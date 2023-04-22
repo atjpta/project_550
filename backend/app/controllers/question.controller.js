@@ -110,7 +110,8 @@ exports.findOtherByTag = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -268,7 +269,8 @@ exports.findRandom = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -426,7 +428,8 @@ exports.findByCourse = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -538,10 +541,11 @@ exports.findByAdmin = async (req, res, next) => {
                     "author._id": 1,
                     "author.name": 1,
                     'author.avatar_url': 1,
+                    'check': 1
                 }
             },
             {
-                $sort: { 'slReport': -1, 'createdAt': -1 }
+                $sort: { 'check': 1, 'slReport': -1, 'createdAt': -1 }
             }
         ])
         return res.send(document)
@@ -657,7 +661,8 @@ exports.findPerFilter = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -829,7 +834,8 @@ exports.findByOther = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -865,7 +871,7 @@ exports.findByOther = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
-
+                    'check': 1,
                 }
             },
 
@@ -1161,7 +1167,8 @@ exports.findByTopic = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -1291,7 +1298,8 @@ exports.findByTeam = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
 
@@ -1410,14 +1418,6 @@ exports.findByAuthor = async (req, res, next) => {
                     as: 'tag',
                 },
             },
-            {
-                $lookup: {
-                    from: 'status',
-                    localField: 'status',
-                    foreignField: '_id',
-                    as: 'status',
-                },
-            },
 
             {
                 $lookup: {
@@ -1476,6 +1476,7 @@ exports.findByAuthor = async (req, res, next) => {
                     'team': 1,
                     'answer': 1,
                     'choice': 1,
+                    'check': 1,
                 }
             },
             {
@@ -1592,7 +1593,8 @@ exports.findByTag = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -1658,6 +1660,7 @@ exports.create = async (req, res, next) => {
         status: req.body.status,
         course: req.body.course,
         view: parseInt(0),
+        check: false,
     })
     try {
         const document = modelO.save().then(savedDoc => {
@@ -1791,7 +1794,8 @@ exports.findAll = async (req, res, next) => {
             },
             {
                 $match: {
-                    status: 'public'
+                    status: 'public',
+                    check: true,
                 }
             },
             {
@@ -2030,9 +2034,10 @@ exports.findOne = async (req, res, next) => {
                 $sort: { 'createdAt': -1 }
             }
         ])
-        if (!document) {
+        if (document.length == 0) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
+        console.log(document);
         return res.json(document);
     } catch (error) {
         return next(
@@ -2221,7 +2226,7 @@ exports.findOneGuest = async (req, res, next) => {
                 $sort: { 'createdAt': -1 }
             }
         ])
-        if (!document) {
+        if (document.length == 0) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
         return res.json(document);

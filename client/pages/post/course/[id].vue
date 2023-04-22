@@ -72,8 +72,11 @@ async function save() {
             data.image_cover_url = useImage.url;
         }
         const id = await usePost.create(data);
+
         usePost.resetPostEdit();
         await useNotification.create(dataNotification);
+        useImage.url = null;
+
         useRouter().back();
     } catch (error) {
         console.log(error);

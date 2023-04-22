@@ -72,6 +72,7 @@ async function save() {
       dataSS.image_cover_url = useImage.url;
     }
     const id = await usePost.create(dataSS);
+    useImage.url = null;
     useRouter().back();
     useAlert.setSuccess("tạo bài viết thành công");
   } catch (error) {

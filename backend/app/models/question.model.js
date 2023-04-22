@@ -25,6 +25,7 @@ const schema = mongoose.Schema(
         title: String,
         content: Object,
         status: String,
+        check: Boolean,
         view: {
             type: Intl,
             defaule: 0,

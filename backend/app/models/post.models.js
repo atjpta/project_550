@@ -29,6 +29,7 @@ const schema = mongoose.Schema(
             type: String,
         },
         status: String,
+
         view: {
             type: Intl,
             defaule: 0,

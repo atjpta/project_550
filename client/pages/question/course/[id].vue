@@ -65,10 +65,11 @@ async function save() {
   try {
     const listtag = await useTag.createAll(question.tag);
     const data = formatData(listtag);
-    console.log(data);
     const id = await useQuestion.create(data);
     useQuestion.resetQuestionEdit();
     await useNotification.create(dataNotification);
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

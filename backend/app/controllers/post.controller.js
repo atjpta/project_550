@@ -1630,7 +1630,7 @@ exports.findOne = async (req, res, next) => {
                 $sort: { 'createdAt': -1 }
             }
         ])
-        if (!document) {
+        if (document.length == 0) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
         return res.json(document);
@@ -1783,7 +1783,7 @@ exports.findOneGuest = async (req, res, next) => {
                 $sort: { 'createdAt': -1 }
             }
         ])
-        if (!document) {
+        if (document.length == 0) {
             return next(res.status(404).json({ Message: "không thể tìm thấy model" }));
         }
         return res.json(document);

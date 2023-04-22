@@ -78,7 +78,8 @@
     </div>
     <!-- bài viết -->
     <div>
-      <img class="rounded-2xl mx-auto" :src="useImage.previewImage || data.image_cover_url" alt="" />
+      <img v-if="useImage.previewImage || data.image_cover_url" class="rounded-2xl mx-auto min-h-[70vh]"
+        :src="useImage.previewImage || data.image_cover_url" alt="" />
       <div class="text-4xl font-bold uppercase mt-2">{{ data.title }}</div>
       <div class="-z-30">
         <QuillEditor ref="quill" :readOnly="true" theme="bubble" :toolbar="[]" />

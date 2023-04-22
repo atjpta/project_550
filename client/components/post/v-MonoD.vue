@@ -90,7 +90,7 @@
           <!-- ảnh bìa và tiêu đề -->
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
-              <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
+              <img class="rounded-2xl my-2 min-h-[50vh]" :src="data.image_cover_url" alt="" />
               <div class="font-bold text-4xl">{{ data.title }}</div>
             </div>
           </div>

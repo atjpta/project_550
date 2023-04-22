@@ -3,7 +3,7 @@
     <transition name="bounce">
       <div
         class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5">
-        <div>
+        <div class="w-full">
           <!-- phần đầu -->
           <div class="flex justify-between">
             <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
@@ -74,9 +74,9 @@
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
               <div class="overflow-hidden rounded-2xl my-2 mx-auto">
-                <img class="rounded-2xl hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
+                <img class="rounded-2xl hover:scale-110 duration-500 w-full" :src="data.image_cover_url" alt="" />
               </div>
-              <div class="font-bold text-4xl">
+              <div class="font-bold text-4xl truncate h-12">
                 {{ data.title }}
               </div>
             </div>

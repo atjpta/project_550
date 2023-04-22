@@ -34,14 +34,14 @@ function formatData(listtag) {
     const array = Array.from(data.value.tag);
     const tag = listtag;
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     dataS.tag = tag;
   } else {
     const array = Array.from(data.value.tag);
     const tag = [];
     array.forEach((e) => {
-      tag.push(e.id);
+      tag.push(e.id ?? e._id);
     });
     dataS.tag = tag;
   }
@@ -64,6 +64,8 @@ async function saveEdit() {
     }
     await usePost.update(dataS);
     usePost.resetPostEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);

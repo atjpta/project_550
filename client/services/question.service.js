@@ -209,7 +209,7 @@ export default {
         if (error.value) {
             useAlert.setWarning('không có trang này')
             navigateTo('/')
-            useAlert.setError(error.value.data)
+            // useAlert.setError(error.value.data)
 
             throw new Error(error.value.data);
         }
@@ -228,8 +228,6 @@ export default {
         })
 
         if (error.value) {
-            useAlert.setWarning('không có trang này')
-            navigateTo('/')
             useAlert.setError('không có trang này')
             return navigateTo('/')
             throw new Error(error.value.data);
@@ -252,7 +250,7 @@ export default {
             useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        useAlert.setSuccess("tạo thành công");
+        useAlert.setSuccess("tạo thành công!! hãy chờ duyệt câu hỏi");
         return data.value
     },
 } 

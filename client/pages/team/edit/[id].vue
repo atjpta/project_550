@@ -59,6 +59,8 @@ async function saveEdit() {
     }
     await useTeam.update(data);
     useTeam.resetTeamEdit();
+    useImage.url = null;
+
     useRouter().back();
   } catch (error) {
     console.log(error);
