@@ -8,12 +8,18 @@
         <label tabindex="0" class="btn btn-ghost text-2xl">
           <OtherVIcon icon="fa-solid fa-bell" />
         </label>
-        <ul tabindex="0"
-          class="dropdown-content rounded-2xl shadow h-[calc(93vh)] overflow-y-auto bg-base-100 w-72 sm:w-96">
+        <ul
+          tabindex="0"
+          class="dropdown-content rounded-2xl shadow h-[calc(93vh)] overflow-y-auto bg-base-100 w-72 sm:w-96"
+        >
           <div v-if="useNotification.list_notification[0]">
             <div class="text-end">
-              <div @click="markAll()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-ghost italic">
-                đánh dấu tất cả đã đọc
+              <div
+                @click="markAll()"
+                :class="[loading ? 'loading' : '']"
+                class="btn btn-sm btn-ghost italic"
+              >
+                Đánh dấu tất cả đã đọc
               </div>
             </div>
             <div class="space-y-3">
@@ -22,9 +28,12 @@
               </li>
             </div>
             <div class="text-end">
-              <div @click="openDialogDeleteAllNotification()" :class="[loading ? 'loading' : '']"
-                class="btn btn-sm btn-ghost italic">
-                xóa tất cả thông báo
+              <div
+                @click="openDialogDeleteAllNotification()"
+                :class="[loading ? 'loading' : '']"
+                class="btn btn-sm btn-ghost italic"
+              >
+                Xóa tất cả thông báo
               </div>
             </div>
           </div>
@@ -67,9 +76,9 @@ function openDialogDeleteAllNotification() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa tất cả thông báo?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa tất cả thông báo?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {

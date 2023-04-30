@@ -24,6 +24,7 @@ const schema = mongoose.Schema(
         }],
         title: String,
         content: Object,
+        contentOnlyText: String,
         status: String,
         check: Boolean,
         view: {
@@ -42,5 +43,7 @@ schema.method('toJSON', function () {
     object.id = _id;
     return object;
 });
+
+schema.index({ title: "text", contentOnlyText: 'text' });
 
 module.exports = mongoose.model("question", schema);

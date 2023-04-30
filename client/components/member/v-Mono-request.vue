@@ -22,14 +22,14 @@
         <div
           @click="openDialogJoin()"
           class="btn btn-primary btn-sm btn-outline tooltip flex"
-          data-tip="cho vào nhóm"
+          data-tip="Cho vào nhóm"
         >
           <OtherVIcon icon="fa-solid fa-check" />
         </div>
         <div
           @click="openDialogDelete()"
           :class="[loading ? 'loading' : '']"
-          data-tip="hủy yêu cần"
+          data-tip="Hủy yêu cần"
           class="btn btn-sm btn-error btn-outline tooltip flex"
         >
           <OtherVIcon icon="fa-solid fa-x" />
@@ -64,7 +64,7 @@ async function update() {
 
   const dataNotifi = {
     to: props.data.user._id,
-    content: `bạn đã tham gia vào nhóm "${useTeam.team[0].name}"`,
+    content: `Bạn đã tham gia vào nhóm "${useTeam.team[0].name}"`,
     url: route.fullPath,
     type: "info",
   };
@@ -85,9 +85,9 @@ function openDialogDelete() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn hủy bỏ yêu cầu của người dùng này?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn hủy bỏ yêu cầu của người dùng này?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
@@ -108,9 +108,9 @@ function openDialogJoin() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn cho người dùng này thành thành viên của nhóm nhóm?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn cho người dùng này thành thành viên của nhóm nhóm?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       update();

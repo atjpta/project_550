@@ -3,7 +3,7 @@
     <nuxtLink class="" :to="`/team/${data.team?._id}/read/post`">
       <transition name="bounce">
         <div
-          class="rounded-2xl p-5 hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10">
+          class="rounded-md p-5 hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10">
           <div class="flex">
             <!-- ảnh team -->
             <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
@@ -23,8 +23,8 @@
               <!-- tag -->
               <div class="mt-4 flex">
                 <div v-for="i in data.tag" :key="i._id" class="">
-                  <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                  }}</nuxt-link>
+                  <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" +
+                    i.name }}</nuxt-link>
                 </div>
               </div>
             </div>
@@ -99,9 +99,9 @@ async function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa Nhóm?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa Nhóm?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {
@@ -123,9 +123,9 @@ function openDialogDeleteRequest() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn hủy bỏ yêu cầu?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn hủy bỏ yêu cầu?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
@@ -147,7 +147,7 @@ function openDialogOutTeam() {
     {
       title: "Thông báo cực căng!",
       content: "bạn chắc chắn muốn thoát khỏi nhóm?",
-      btn1: "ok",
+      btn1: "Ok",
       btn2: "hủy",
     },
     async () => {
@@ -189,7 +189,7 @@ async function openDialogJoinTeam() {
       {
         title: "Thông báo cực căng!",
         content: "bạn cần đăng nhập để sử dụng chức năng",
-        btn1: "ok",
+        btn1: "Ok",
         btn2: "hủy",
       },
       () => {

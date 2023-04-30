@@ -1,9 +1,9 @@
 <template>
   <div class="my-5">
     <!-- tiêu đề -->
-    <div class="flex justify-between text-xl font-black uppercase mb-2">
-      <div class="basis-1/3">tác giả</div>
-      <div>tiêu đề</div>
+    <div class="flex justify-between text-xl  mb-2">
+      <div class="basis-1/3">Tác giả</div>
+      <div>Tiêu đề</div>
       <div class="basis-1/3"></div>
     </div>
     <!-- loadingSkeleton -->
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">không có bài viết nào cả !?</div>
+        <div class="text-center text-2xl my-10">Không có bài viết nào cả !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->

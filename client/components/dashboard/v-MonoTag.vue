@@ -5,11 +5,11 @@
       <div>
         <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
         <div class="indent-8 overflow-hidden">
-          {{ data.introduce || "chưa có mô tả về tag này" }}
+          {{ data.introduce || "Chưa có mô tả về tag này" }}
         </div>
       </div>
       <div class="flex justify-end">
-        <nuxtLink :to="`/tag/${data._id}/post`" data-tip="xem chi tiết"
+        <nuxtLink :to="`/tag/${data._id}/post`" data-tip="Xem chi tiết"
           class="flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info">
           <OtherVIcon icon="fa-solid fa-eye" />
         </nuxtLink>
@@ -29,15 +29,15 @@
         <input v-model="nameT" type="text" class="input input-sm bg-inherit border-primary w-full" />
       </div>
       <div class="ml-3">
-        <textarea v-model="introduceT" rows="3" placeholder="nhập lời giới thiệu"
+        <textarea v-model="introduceT" rows="3" placeholder="Nhập lời giới thiệu..."
           class="h-20 mt-4 textarea textarea-xs w-full bg-inherit border-primary"></textarea>
       </div>
       <!-- <div class="indent-8 h-24 overflow-auto">{{ data.introduce }}</div> -->
       <div class="flex justify-end space-x-1">
         <div @click="update()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
-          lưu
+          Lưu
         </div>
-        <div @click="cancelEdit()" class="btn btn-sm text-error btn-ghost">hủy</div>
+        <div @click="cancelEdit()" class="btn btn-sm text-error btn-ghost">Hủy</div>
       </div>
     </div>
 
@@ -69,15 +69,15 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa tag này?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa tag này?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {
           await useTag.deleteOne(props.data._id);
           await useTag.findByAuthor(useAuth.user.id);
-          useAlert.setSuccess("xóa thành công ");
+          useAlert.setSuccess("Xóa thành công ");
         } catch (error) {
           console.log(error);
         }

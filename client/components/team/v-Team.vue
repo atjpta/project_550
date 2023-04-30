@@ -21,13 +21,13 @@
               <!-- phần tùy chọn cho chủ nhóm -->
               <div v-if="data?.role == 'chief'" class="flex justify-end">
                 <div class="space-x-1 flex justify-end">
-                  <nuxtLink :to="`/team/edit/${data?._id ?? data?.id}`" class="tooltip" data-tip="sửa team">
+                  <nuxtLink :to="`/team/edit/${data?._id ?? data?.id}`" class="tooltip" data-tip="Sửa team">
                     <div class="btn btn-ghost text-primary">
                       <OtherVIcon icon="fa-solid fa-pen-to-square" />
                     </div>
                   </nuxtLink>
 
-                  <div class="tooltip" data-tip="xóa team">
+                  <div class="tooltip" data-tip="Xóa team">
                     <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                       <OtherVIcon icon="fa-solid fa-trash-can" />
                     </div>
@@ -37,31 +37,31 @@
 
               <!-- phần tùy chọn cho người đọc -->
               <div v-else class="dropdown dropdown-end flex justify-end">
-                <div class="tooltip" data-tip="lưu nhóm">
+                <div class="tooltip" data-tip="Lưu nhóm">
                   <div v-if="loading2 != 'save'" @click="openDialogSignin(save)" :class="classSave"
                     class="btn btn-ghost btn-square mr-1">
                     <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
                   </div>
                   <div v-if="loading2 == 'save'" class="btn btn-circle btn-ghots loading mr-1"></div>
                 </div>
-                <div v-if="isRequest == 'join'" class="tooltip" data-tip="xin vào nhóm">
+                <div v-if="isRequest == 'join'" class="tooltip" data-tip="Xin vào nhóm">
                   <div @click="openDialogJoinTeam()" :class="[loading ? 'loading' : '']"
                     class="btn btn-ghost text-secondary mr-1">
-                    gia nhập
+                    Gia nhập
                   </div>
                 </div>
 
-                <div v-if="isRequest == 'loading'" class="tooltip" data-tip="hủy xin vào">
+                <div v-if="isRequest == 'loading'" class="tooltip" data-tip="Hủy xin vào">
                   <div @click="openDialogDeleteRequest()" :class="[loading ? 'loading' : '']"
                     class="btn btn-ghost text-warning mr-1">
-                    hủy gia nhập
+                    Hủy gia nhập
                   </div>
                 </div>
 
-                <div v-if="isRequest == 'joined'" class="tooltip" data-tip="thoát nhóm">
+                <div v-if="isRequest == 'joined'" class="tooltip" data-tip="Thoát nhóm">
                   <div @click="openDialogOutTeam()" :class="[loading ? 'loading' : '']"
                     class="btn btn-ghost text-error mr-1">
-                    thoát
+                    Thoát
                   </div>
                 </div>
               </div>
@@ -71,8 +71,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in data?.tag" :key="i._id" class="">
-                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                }}</nuxt-link>
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" +
+                  i.name }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -80,19 +80,19 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm nhóm">
+          <div class="tooltip" data-tip="Điểm nhóm">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ valVote }}
           </div>
-          <div class="tooltip" data-tip="số lượng thành viên">
+          <div class="tooltip" data-tip="Số lượng thành viên">
             <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
             {{ slmember }}
           </div>
         </div>
         <div v-if="data?.status == 'private'">
           <div class="italic font-semibold mt-5">
-            nhóm riêng tư
-            <div class="tooltip" data-tip="cần tham gia nhóm mới có thể thấy được thêm thông tin">
+            Nhóm riêng tư
+            <div class="tooltip" data-tip="Cần tham gia nhóm mới có thể thấy được thêm thông tin">
               <div class="btn-xs btn btn-outline btn-info rounded-full text-xs scale-75">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
@@ -191,15 +191,15 @@ async function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa nhóm?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa nhóm?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {
           await useMember.deleteAllByTeam(props.data._id || props.data.id);
           await useTeam.deleteOne(props.data?._id || props.data?.id);
-          useAlert.setSuccess("xóa nhóm thành công");
+          useAlert.setSuccess("Xóa nhóm thành công");
           return navigateTo("/team");
         } catch (error) {
           console.log(error);
@@ -213,16 +213,16 @@ function openDialogDeleteRequest() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn hủy bỏ yêu cầu?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn hủy bỏ yêu cầu?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
         await useTeam.findOne(route.params.id);
-        useAlert.setSuccess("đã hủy đơn gia nhập");
+        useAlert.setSuccess("Đã hủy đơn gia nhập");
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -237,16 +237,16 @@ function openDialogOutTeam() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn thoát khỏi nhóm?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn thoát khỏi nhóm?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
         loading.value = true;
         await useMember.deleteOne(idMember);
         await useTeam.findOne(route.params.id);
-        useAlert.setSuccess("đã thoát nhóm thành công");
+        useAlert.setSuccess("Đã thoát nhóm thành công");
       } catch (error) {
         console.log(error);
         console.log("lỗi xóa ");
@@ -280,9 +280,9 @@ async function openDialogJoinTeam() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để sử dụng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để sử dụng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = route.fullPath;
@@ -297,9 +297,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");

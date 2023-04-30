@@ -6,6 +6,15 @@ export const reviewStore = defineStore("reviewStore", {
         return {
             list: [],
             review: {},
+            reviewDefault: {
+                level: 0,
+                quality: 0,
+                useful: 0,
+                importance: 0,
+                popularity: 0,
+                size: 0,
+            },
+
             reviewEdit: {},
             maxLength: 0,
         };

@@ -1,10 +1,14 @@
 <template>
   <div>
     <transition name="bounce">
-      <div :class="data.choice.length
-          ? ' from-teal-500/10 via-teal-500/5 to-pink-500/0'
-          : ' from-warning/10 via-warning/5 to-pink-500/0'
-        " class="p-5 hover:bg-gradient-to-l indicator w-full">
+      <div
+        :class="
+          data.choice.length
+            ? ' from-teal-500/10 via-teal-500/5 to-pink-500/0'
+            : ' from-warning/10 via-warning/5 to-pink-500/0'
+        "
+        class="p-5 hover:bg-gradient-to-l indicator w-full"
+      >
         <div>
           <!-- phần đầu -->
           <!-- phần tùy chọn cho người đọc -->
@@ -12,7 +16,10 @@
             <label tabindex="0" class="btn btn-ghost">
               <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
             </label>
-            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+            <ul
+              tabindex="0"
+              class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
               <div v-if="!isAuthor">
                 <li @click="openDialogReport()" class="hover-bordered">
                   <a>
@@ -23,11 +30,17 @@
                   </a>
                 </li>
               </div>
-              <div>
-                <li @click="navigateTo(`/question/edit/${data._id}`)" class="hover-bordered">
+              <div v-if="isAuthor">
+                <li
+                  @click="navigateTo(`/question/edit/${data._id}`)"
+                  class="hover-bordered"
+                >
                   <a>
                     <div>
-                      <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
+                      <OtherVIcon
+                        class-icon="text-primary"
+                        icon="fa-solid fa-pen-to-square"
+                      />
                       sửa câu hỏi
                     </div>
                   </a>
@@ -47,32 +60,39 @@
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
               <img class="rounded-2xl my-2 mx-auto" :src="data.image_cover_url" alt="" />
-              <div class="font-bold text-4xl">{{ data.title }}</div>
+              <div class="font-medium text-2xl">{{ data.title }}</div>
             </div>
           </div>
           <!-- tag -->
           <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-              }}</nuxt-link>
+              <nuxt-link
+                :to="`/tag/${i._id}/post`"
+                class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1"
+                >{{ "#" + i.name }}</nuxt-link
+              >
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
           <div class="flex space-x-5 mt-2">
-            <div class="tooltip" data-tip="điểm câu hỏi">
+            <div class="tooltip" data-tip="Điểm câu hỏi">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
-            <div class="tooltip" data-tip="lượt trả lời">
-              <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
-                " />
+            <div class="tooltip" data-tip="Lượt trả lời">
+              <OtherVIcon
+                :class-icon="data.choice.length > 0 ? 'text-success' : ''"
+                :icon="
+                  data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
+                "
+              />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt bình luận">
+            <div class="tooltip" data-tip="Lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt xem">
+            <div class="tooltip" data-tip="Lượt xem">
               <div>
                 <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
                 {{ data.view }}
@@ -125,9 +145,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa bài viết?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useQuestion.deleteOne(props.data._id);
@@ -154,8 +174,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Bài viết này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -169,9 +189,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Dăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

@@ -13,7 +13,7 @@ const useMember = memberStore();
 
 onUpdated(() => {
   if (!useMember.isEditT) {
-    useAlert.setWarning("bạn không có quyền truy cập");
+    useAlert.setWarning("Bạn không có quyền truy cập");
     return navigateTo("/");
   }
 });

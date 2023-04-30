@@ -2,12 +2,15 @@
   <div>
     <transition name="bounce">
       <div
-        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5"
+      >
         <div class="w-full">
           <!-- phần đầu -->
           <div class="flex justify-between">
-            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
-              :to="`/user/${data?.author[0]?._id}/overview`">
+            <nuxtLink
+              class="hover:text-sky-500 hover:scale-110 duration-500"
+              :to="`/user/${data?.author[0]?._id}/overview`"
+            >
               <!-- tác giả -->
               <div class="flex">
                 <div class="avatar">
@@ -25,43 +28,50 @@
             </nuxtLink>
 
             <div class="flex space-x-2">
-              <div v-if="isEditT" class="tooltip" data-tip="xóa bài viết ra khỏi nhóm">
-                <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
-                  <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
-                </div>
-              </div>
-
               <!-- phần tùy chọn cho người đọc -->
               <div class="indicator-item mt-10 mr-10 dropdown dropdown-left indicator">
                 <label tabindex="0" class="btn btn-ghost">
                   <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                 </label>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <ul
+                  tabindex="0"
+                  class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
                   <div v-if="!isAuthor">
                     <li @click="openDialogReport()" class="hover-bordered">
                       <a>
                         <div>
                           <OtherVIcon icon="fa-solid fa-flag" />
-                          báo cáo
+                          Báo cáo
                         </div>
                       </a>
                     </li>
                   </div>
+
                   <!-- edit cho tác giả -->
                   <div v-if="isAuthor">
-                    <li @click="navigateTo(`/post/edit/${data._id}`)" class="hover-bordered">
+                    <li
+                      @click="navigateTo(`/post/edit/${data._id}`)"
+                      class="hover-bordered"
+                    >
                       <a>
                         <div>
-                          <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                          sửa
+                          <OtherVIcon
+                            class-icon="text-primary"
+                            icon="fa-solid fa-pen-to-square"
+                          />
+                          Sửa
                         </div>
                       </a>
                     </li>
                     <li @click="openDialogDelete()" class="hover-bordered">
                       <a>
                         <div>
-                          <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                          xóa
+                          <OtherVIcon
+                            class-icon="text-error"
+                            icon="fa-solid fa-trash-can"
+                          />
+                          Xóa
                         </div>
                       </a>
                     </li>
@@ -74,9 +84,13 @@
           <div @click="goReadPost()" class="cursor-pointer">
             <div class="hover:text-info">
               <div class="overflow-hidden rounded-2xl my-2 mx-auto">
-                <img class="rounded-2xl hover:scale-110 duration-500 w-full" :src="data.image_cover_url" alt="" />
+                <img
+                  class="rounded-2xl hover:scale-110 duration-500 w-full"
+                  :src="data.image_cover_url"
+                  alt=""
+                />
               </div>
-              <div class="font-bold text-4xl truncate h-12">
+              <div class="font-medium text-2xl truncate">
                 {{ data.title }}
               </div>
             </div>
@@ -84,21 +98,24 @@
           <!-- tag -->
           <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-              }}</nuxt-link>
+              <nuxt-link
+                :to="`/tag/${i._id}/post`"
+                class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1"
+                >{{ "#" + i.name }}</nuxt-link
+              >
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
           <div class="flex space-x-5 mt-2">
-            <div class="tooltip" data-tip="điểm bài viết">
+            <div class="tooltip" data-tip="Điểm bài viết">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
-            <div class="tooltip" data-tip="lượt bình luận">
+            <div class="tooltip" data-tip="Lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt xem">
+            <div class="tooltip" data-tip="Lượt xem">
               <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
               {{ data.view }}
             </div>
@@ -153,9 +170,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa bài viết?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await usePost.deleteOne(props.data._id);
@@ -170,9 +187,9 @@ function openDialogRemoveTeam() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết ra khỏi nhóm?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa bài viết ra khỏi nhóm?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await usePost.update({
@@ -202,8 +219,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Bài viết này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -217,9 +234,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

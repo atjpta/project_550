@@ -12,11 +12,11 @@
             </NuxtLink>
             <!-- các trạng thái của team  -->
             <div class="flex space-x-5">
-              <div class="tooltip" data-tip="điểm series">
+              <div class="tooltip" data-tip="Điểm chuỗi bài viết">
                 <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                 {{ data.valScore }}
               </div>
-              <div class="tooltip" data-tip="số bài viết">
+              <div class="tooltip" data-tip="Số bài viết">
                 <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
                 {{ data.post[0]?.count || 0 }}
               </div>
@@ -26,7 +26,7 @@
             <div>
               <div>
                 <div class="flex space-x-2 justify-end">
-                  <div v-if="isEditT" class="tooltip" data-tip="xóa series ra khỏi nhóm">
+                  <div v-if="isEditT" class="tooltip" data-tip="Xóa chuỗi bài viết ra khỏi nhóm">
                     <div @click="openDialogRemoveTeam()" class="btn btn-ghost">
                       <OtherVIcon class-icon="text-warning text-xl" icon="fa-solid fa-x" />
                     </div>
@@ -42,7 +42,7 @@
                           <a>
                             <div>
                               <OtherVIcon icon="fa-solid fa-flag" />
-                              báo cáo
+                              Báo cáo
                             </div>
                           </a>
                         </li>
@@ -52,7 +52,7 @@
                           <a>
                             <div>
                               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                              sửa
+                              Sửa
                             </div>
                           </a>
                         </li>
@@ -60,7 +60,7 @@
                           <a>
                             <div>
                               <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                              xóa
+                              Xóa
                             </div>
                           </a>
                         </li>
@@ -79,8 +79,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap ml-5">
               <div v-for="i in list_tag" :key="i._id" class="">
-                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                }}</nuxt-link>
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" +
+                  i.name }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -158,9 +158,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa series này?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa series này?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useSeries.deleteOne(props.data._id);
@@ -176,9 +176,9 @@ function openDialogRemoveTeam() {
       {
         title: "Thông báo cực căng!",
         content:
-          "bạn chắc chắn muốn xóa chuỗi bài viết này ra khỏi nhóm? Tất cả bài viết trong chuỗi bài viết này sẽ không còn trong nhóm này nữa",
-        btn1: "ok",
-        btn2: "hủy",
+          "Bạn chắc chắn muốn xóa chuỗi bài viết này ra khỏi nhóm? Tất cả bài viết trong chuỗi bài viết này sẽ không còn trong nhóm này nữa",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useSeries.update({
@@ -196,8 +196,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Chuỗi bài viết này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -212,8 +212,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

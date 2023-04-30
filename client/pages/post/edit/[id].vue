@@ -50,7 +50,7 @@ function formatData(listtag) {
 
 async function saveEdit() {
   if (!(data.value.content.ops[0].insert != "\n" && data.value.title)) {
-    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
     return;
   }
 
@@ -78,7 +78,7 @@ async function getApi() {
   if (route.params.id) {
     await usePost.findOneEdit(route.params.id);
     if (usePost.post.author._id != useAuth.user.id) {
-      useAlert.setWarning("bạn không có quyền truy cập");
+      useAlert.setWarning("Bạn không có quyền truy cập");
       return navigateTo("/");
     }
     data.value = usePost.post;
@@ -113,7 +113,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "sửa bài viết",
+  title: "Sửa bài viết",
 });
 </script>
 

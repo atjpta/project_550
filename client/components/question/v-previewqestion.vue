@@ -21,7 +21,7 @@
       <!-- các btn -->
       <div class="flex">
         <div class="flex justify-evenly mr-2">
-          <div data-tip="tăng điểm" class="tooltip">
+          <div data-tip="Tăng điểm" class="tooltip">
             <div v-if="loading != 'up'" @click="openDialogSignin(up)" :class="classUp"
               class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
@@ -32,7 +32,7 @@
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div data-tip="giảm điểm" class="tooltip">
+          <div data-tip="Giảm điểm" class="tooltip">
             <div v-if="loading != 'down'" @click="openDialogSignin(down)" :class="classDown"
               class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
@@ -65,7 +65,7 @@
       </div>
       <!-- tag -->
       <div class="mt-4">
-        <div v-for="i in data.tag" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
+        <div v-for="i in data.tag" :key="i" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">
           {{ i.name }}
         </div>
       </div>
@@ -76,7 +76,7 @@
       <div>
         <!-- phần topic -->
         <div v-if="data.topic?.name" class="mt-5">
-          <div class="text-2xl font-semibold">chủ đề</div>
+          <div class="text-2xl font-semibold">Chủ đề</div>
           <div class="btn btn-ghost justify-start">{{ data.topic?.name }}</div>
         </div>
         <!-- phần team -->
@@ -91,7 +91,7 @@
 
     <div id="comment" class="text-2xl font-semibold mb-2">
       Nhập bình luận
-      <div class="tooltip" data-tip="gõ @ để tag tên">
+      <div class="tooltip" data-tip="Gõ @ để tag tên">
         <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
           <OtherVIcon class-icon="" icon="fa-solid fa-info" />
         </div>

@@ -5,11 +5,7 @@
         <div class="flex">
           <!-- ảnh team -->
           <div class="mx-auto min-w-max w-32 min-h-max h-32 mr-3">
-            <img
-              class="rounded-2xl w-32 h-32"
-              :src="useImage.previewImage || data.image_cover_url"
-              alt=""
-            />
+            <img class="rounded-2xl w-32 h-32" :src="useImage.previewImage || data.image_cover_url" alt="" />
           </div>
           <div class="w-full">
             <div class="flex justify-between">
@@ -24,11 +20,7 @@
             <div class="text-xl">{{ data.introduce }}</div>
             <!-- tag -->
             <div class="mt-4">
-              <div
-                v-for="i in data.tag"
-                :key="i._id"
-                class="btn btn-outline btn-sm mr-1 mt-1"
-              >
+              <div v-for="i in data.tag" :key="i._id" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">
                 {{ "#" + i.name }}
               </div>
             </div>
@@ -37,11 +29,11 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm nhóm">
+          <div class="tooltip" data-tip="Điểm nhóm">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             0
           </div>
-          <div class="tooltip" data-tip="số lượng thành viên">
+          <div class="tooltip" data-tip="Số lượng thành viên">
             <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
             0
           </div>

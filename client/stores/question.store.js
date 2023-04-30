@@ -28,7 +28,9 @@ export const questionStore = defineStore("questionStore", {
                 content: {},
                 team: {},
 
+
             },
+            title: "",
             list: [],
             listNoTopic: [],
         };

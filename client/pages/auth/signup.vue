@@ -10,7 +10,7 @@ const title = computed(() => {
 });
 
 useHead({
-  title: "đăng kí",
+  title: "Đăng kí",
 });
 </script>
 

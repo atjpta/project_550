@@ -15,7 +15,7 @@
       </div>
       <div v-else>
         <div class="text-center text-2xl my-10">
-          chưa bài viết có tag #{{ useTag.tag.name }} nào cả!!!
+          Chưa bài viết có tag #{{ useTag.tag.name }} nào cả!!!
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         </button>
         <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
+            Trang {{ i }}
           </option>
         </select>
         <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">

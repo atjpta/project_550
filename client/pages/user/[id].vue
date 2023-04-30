@@ -1,9 +1,11 @@
 <template>
   <div class="">
     <UserVInfo />
-    <div class="flex flex-wrap mt-3">
+    <div class="tabs mt-3">
       <div v-for="i in menuDashboard" :key="i">
-        <nuxtLink :to="`/user/${route.params.id}` + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
+        <nuxtLink :to="`/user/${route.params.id}` + i.url"
+          :class="`/user/${route.params.id}` + i.url == route.path ? 'tab-active' : ''"
+          class="tab tab-bordered uppercase font-medium">
           <div>
             {{ i.title }}
           </div>
@@ -23,23 +25,23 @@ const useAuth = authStore();
 const route = useRoute();
 const menuDashboard = ref([
   {
-    title: "tổng quan",
+    title: "Tổng quan",
     url: "/overview",
   },
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/post",
   },
   {
-    title: "chuỗi bài viết",
+    title: "Chuỗi bài viết",
     url: "/series",
   },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/question",
   },
   {
-    title: "chủ đề",
+    title: "Chủ đề",
     url: "/topic",
   },
 ]);

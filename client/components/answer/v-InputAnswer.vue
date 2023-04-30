@@ -4,7 +4,13 @@
       {{ data.content }}
     </div>
     <div>
-      <QuillEditor @text-change="getdata()" ref="quill" theme="snow" toolbar="full" />
+      <QuillEditor
+        placeholder="Nhập câu trả lời..."
+        @text-change="getdata()"
+        ref="quill"
+        theme="snow"
+        toolbar="full"
+      />
     </div>
 
     <div
@@ -12,8 +18,8 @@
       :class="[loading ? 'loading' : '']"
       class="btn btn-primary btn-sm btn-outline my-2"
     >
-      <OtherVIcon icon="fa-solid fa-paper-plane" />
-      gửi
+      <OtherVIcon icon="fa-solid fa-paper-plane mr-1" />
+      Gửi
     </div>
   </div>
 </template>

@@ -1,13 +1,18 @@
 <template>
   <div>
     <span
-      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block">
+      class="italic before:h-[98%] before:my-auto py-1 before:block before:absolute before:-inset-1 before:-skew-y-3 before:-skew-x-12 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 relative inline-block"
+    >
       <span class="relative text-white text-3xl font-black px-5">Theo dõi</span>
     </span>
 
-    <div class="flex flex-wrap mt-3">
+    <div class="tabs mt-3">
       <div v-for="i in menuDashboard" :key="i">
-        <nuxtLink :to="'/follow' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
+        <nuxtLink
+          :to="'/follow' + i.url"
+          :class="'/follow' + i.url == route.path ? 'tab-active' : ''"
+          class="tab tab-bordered uppercase font-medium"
+        >
           <div>
             {{ i.title }}
           </div>
@@ -27,35 +32,35 @@ const useAuth = authStore();
 const route = useRoute();
 const menuDashboard = ref([
   {
-    title: "môn học",
+    title: "Môn học",
     url: "/course",
   },
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/post",
   },
   {
-    title: "chuỗi bài viết",
+    title: "Chuỗi bài viết",
     url: "/series",
   },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/question",
   },
   {
-    title: "chủ đề",
+    title: "Chủ đề",
     url: "/topic",
   },
   {
-    title: "người dùng",
+    title: "Người dùng",
     url: "/user",
   },
   {
-    title: "nhóm",
+    title: "Nhóm",
     url: "/team",
   },
   {
-    title: "thẻ tag",
+    title: "Thẻ tag",
     url: "/tag",
   },
 ]);
@@ -72,7 +77,7 @@ onMounted(() => {
 });
 
 useHead({
-  title: "theo dõi",
+  title: "Theo dõi",
 });
 </script>
 

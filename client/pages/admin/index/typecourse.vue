@@ -1,8 +1,8 @@
 <template>
   <div class="my-5">
     <div class="flex justify-end">
-      <div @click="openDialogCreate()" class="btn btn-success btn-outline btn-sm">
-        tạo loại môn học
+      <div @click="openDialogCreate()" class="btn btn-success btn-sm">
+        Tạo loại môn học
       </div>
     </div>
 
@@ -28,15 +28,27 @@
 
     <div v-if="useTypeCourse.list[0]" class="form-control mx-auto w-fit">
       <div class="input-group lg:input-group-md input-group-sm">
-        <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+        <button
+          @click="goToPre()"
+          :disabled="selectPage == 1"
+          class="btn lg:btn-md btn-sm"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
+            Trang {{ i }}
           </option>
         </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>
@@ -109,9 +121,9 @@ function openDialogCreate() {
   useDialog.showDialogInput(
     {
       title: "Tạo loại môn học",
-      content: "nhập tên loại môn học",
-      btn1: "tạo",
-      btn2: "hủy",
+      content: "Nhập tên loại môn học",
+      btn1: "Lưu",
+      btn2: "Hủy",
     },
     async (input) => {
       try {

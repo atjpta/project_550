@@ -22,26 +22,26 @@
 
       <!-- các nút chức năng -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
-        <div data-tip="xóa bài viết khỏi nhóm" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+        <div data-tip="Xóa bài viết khỏi nhóm" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
           <div :class="[loading ? 'deleteModel ' : '']" @click="openDialogRemoveTeam()"
             class="h-10 w-10 btn btn-sm btn-ghost text-warning">
             <OtherVIcon icon="fa-solid fa-xmark" />
           </div>
         </div>
 
-        <nuxtLink :to="`/post/${data._id}`" data-tip="xem chi tiết"
+        <nuxtLink :to="`/post/${data._id}`" data-tip="Xem chi tiết"
           class="h-10 w-10 flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info">
           <OtherVIcon icon="fa-solid fa-eye" />
         </nuxtLink>
 
-        <div v-if="isAuthor" data-tip="sửa" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
+        <div v-if="isAuthor" data-tip="Sửa" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
           <nuxtLink :to="`/post/edit/${data._id}`" :class="[loading == 'text-primary' ? 'loading ' : '']"
             class="h-10 w-10 btn btn-sm btn-ghost text-primary">
             <OtherVIcon icon="fa-solid fa-edit" />
           </nuxtLink>
         </div>
 
-        <div v-if="isAuthor" data-tip="xóa bài viết"
+        <div v-if="isAuthor" data-tip="Xóa bài viết"
           class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
           <div :class="[loading ? 'deleteModel ' : '']" @click="openDialogDelete()"
             class="h-10 w-10 btn btn-sm btn-ghost text-error">
@@ -80,9 +80,9 @@ function openDialogDelete() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn xóa bài viết?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn xóa bài viết?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
@@ -101,9 +101,9 @@ function openDialogRemoveTeam() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa bài viết ra khỏi nhóm?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa bài viết ra khỏi nhóm?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {
@@ -111,7 +111,7 @@ function openDialogRemoveTeam() {
             id: props.data._id,
             team: " ",
           });
-          useAlert.setSuccess("xóa thành công");
+          useAlert.setSuccess("Xóa thành công");
           await useRouteS.refreshData();
         } catch (error) {
           console.log(error);

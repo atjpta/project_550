@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const DB = require("../models");
-const model = DB.quenstion;
+const model = DB.question;
 const ObjectId = mongoose.Types.ObjectId;
 
 
@@ -1659,6 +1659,7 @@ exports.create = async (req, res, next) => {
         team: req.body.team,
         status: req.body.status,
         course: req.body.course,
+        contentOnlyText: req.body.contentOnlyText,
         view: parseInt(0),
         check: false,
     })
@@ -2015,6 +2016,7 @@ exports.findOne = async (req, res, next) => {
                     'choice': 1,
                     'answer': 1,
                     'course._id': 1,
+                    'check': -1,
                     'course.name': 1,
                     isPublic: {
                         $cond: {
@@ -2208,6 +2210,7 @@ exports.findOneGuest = async (req, res, next) => {
                     'answer': 1,
                     'course._id': 1,
                     'course.name': 1,
+                    'check': 1,
                     isPublic: {
                         $cond: {
                             if: {

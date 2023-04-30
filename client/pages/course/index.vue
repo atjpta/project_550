@@ -2,14 +2,15 @@
     <div>
         <div v-if="!loadingSkeletonMenu">
             <!-- các btn -->
-            <div class="flex flex-wrap">
+            <div class="tabs">
                 <div v-for="i in useTypeCourse.list" :key="i.id" class="">
-                    <div @click="selectTab = i.id" :class="[selectTab == i.id ? 'router-link-active' : '']"
-                        class="btn btn-outline btn-sm mr-1 mb-1">
+                    <div @click="selectTab = i.id" :class="[selectTab == i.id ? 'router-link-active tab-active' : '']"
+                        class="tab tab-bordered uppercase font-medium">
                         {{ i.name }}
                     </div>
                 </div>
             </div>
+
             <!--dnội dung -->
             <div v-for="i in useTypeCourse.list" :key="i.id" class="">
                 <div v-show="i.id == selectTab">
@@ -60,7 +61,7 @@ onMounted(() => {
 });
 
 useHead({
-    title: "môn học",
+    title: "Môn học",
 });
 </script>
 

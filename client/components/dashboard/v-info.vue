@@ -12,7 +12,7 @@
             <div v-if="!openEditName" class="flex space-x-2">
               <div class="text-3xl font-semibold">{{ useUser.user.name }}</div>
               <div v-if="manager" @click="openEditNameF()" class="btn btn-ghost text-primary btn-sm tooltip flex w-fit"
-                data-tip="sửa tên">
+                data-tip="Sửa tên">
                 <OtherVIcon icon="fa-solid fa-pen-to-square" />
               </div>
             </div>
@@ -20,10 +20,10 @@
           </div>
           <div v-if="openEditName" class="flex space-x-1">
             <div @click="updateName()" :class="loading ? 'loading' : ''" class="btn btn-primary btn-sm mt-1">
-              lưu
+              Lưu
             </div>
             <div @click="closeEditNameF()" class="btn btn-ghost text-error btn-sm mt-1">
-              hủy
+              Hủy
             </div>
           </div>
         </div>
@@ -33,24 +33,24 @@
           <div>
             <div v-if="!openEditIntroduce" class="">
               <div class="">
-                {{ useUser.user.introduce || "chưa có lời giới thiệu" }}
+                {{ useUser.user.introduce || "Chưa có lời giới thiệu" }}
               </div>
               <div v-if="manager" @click="openEditIntroduceF()"
-                class="btn btn-ghost text-primary btn-sm tooltip flex w-fit" data-tip="sửa lời giới thiệu">
+                class="btn btn-ghost text-primary btn-sm tooltip flex w-fit" data-tip="Sửa lời giới thiệu">
                 <OtherVIcon icon="fa-solid fa-pen-to-square" />
               </div>
             </div>
 
             <!-- xs -->
-            <textarea v-if="openEditIntroduce" v-model="introduce" rows="5" placeholder="nhập lời giới thiệu"
+            <textarea v-if="openEditIntroduce" v-model="introduce" rows="5" placeholder="Nhập lời giới thiệu..."
               class="textarea textarea-xs w-full textarea-primary h-20"></textarea>
           </div>
           <div v-if="openEditIntroduce" class="flex space-x-1">
             <div @click="updateIntroduce()" :class="loading ? 'loading' : ''" class="btn btn-primary btn-sm mt-1">
-              lưu
+              Lưu
             </div>
             <div @click="closeEditIntroduceF()" class="btn btn-ghost text-error btn-sm mt-1">
-              hủy
+              Hủy
             </div>
           </div>
         </div>

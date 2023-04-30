@@ -66,7 +66,7 @@
                           <a>
                             <div>
                               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                              sửa
+                              Sửa
                             </div>
                           </a>
                         </li>
@@ -74,7 +74,7 @@
                           <a>
                             <div>
                               <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                              xóa
+                              Xóa
                             </div>
                           </a>
                         </li>
@@ -100,7 +100,7 @@
       <div class="ml-5 mt-1 flex items-center">
         <div @click="openInputRep()" class="btn btn-sm btn-ghost text-primary">
           Nhập bình luận
-          <div class="tooltip ml-2" data-tip="gõ @ để tag tên">
+          <div class="tooltip ml-2" data-tip="Gõ @ để tag tên">
             <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
               <OtherVIcon class-icon="" icon="fa-solid fa-info" />
             </div>
@@ -108,10 +108,10 @@
         </div>
         <div v-if="countCmt > 0">
           <div @click="showChildCmt()" v-show="!childCmt" class="btn btn-ghost btn-xs italic lowercase">
-            hiện {{ countCmt }} bình luận
+            Hiện {{ countCmt }} bình luận
           </div>
           <div @click="childCmt = !childCmt" v-show="childCmt" class="btn btn-ghost btn-xs italic lowercase">
-            ẩn {{ countCmt }} bình luận
+            Ẩn {{ countCmt }} bình luận
           </div>
         </div>
       </div>
@@ -464,9 +464,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");
@@ -483,9 +483,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa câu trả lời?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa câu trả lời?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useAnswer.deleteOne(props.data._id);

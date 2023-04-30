@@ -6,16 +6,20 @@
     <!-- chuyển chế độ -->
     <div v-if="useMember.isEditT" class="my-1">
       <div @click="goTo()" v-if="!manager" class="btn btn-primary btn-sm btn-outline">
-        chế độ quản lý
+        Chế độ quản lý
       </div>
       <div @click="goTo()" v-if="manager" class="btn btn-primary btn-sm btn-outline">
-        chế độ xem
+        Chế độ xem
       </div>
     </div>
-    <div class="mb-4 flex flex-wrap">
+    <div class="mb-4 tabs">
       <div v-for="i in menu" :key="i.title">
-        <nuxt-link :to="`/team/${route.params.id}${i.url}`" class="btn btn-outline btn-sm mr-1 mb-1">{{ i.title
-        }}</nuxt-link>
+        <nuxt-link
+          :to="`/team/${route.params.id}${i.url}`"
+          :class="`/team/${route.params.id}${i.url}` == route.path ? 'tab-active' : ''"
+          class="tab tab-bordered uppercase font-medium"
+          >{{ i.title }}</nuxt-link
+        >
       </div>
     </div>
     <NuxtPage v-if="useTeam.team[0]?.status == 'public' || useMember.isMember" />
@@ -45,7 +49,7 @@ const menu = computed(() => {
 
 const menuDashboard = ref([
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/read/post",
   },
   // {
@@ -53,7 +57,7 @@ const menuDashboard = ref([
   //   url: "/read/series",
   // },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/read/question",
   },
   // {
@@ -61,14 +65,14 @@ const menuDashboard = ref([
   //   url: "/read/topic",
   // },
   {
-    title: "thành viên",
+    title: "Thành viên",
     url: "/read/member",
   },
 ]);
 
 const menuDashboardManager = ref([
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/manager/post",
   },
   // {
@@ -76,7 +80,7 @@ const menuDashboardManager = ref([
   //   url: "/manager/series",
   // },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/manager/question",
   },
   // {
@@ -84,7 +88,7 @@ const menuDashboardManager = ref([
   //   url: "/manager/topic",
   // },
   {
-    title: "thành viên",
+    title: "Thành viên",
     url: "/manager/member",
   },
   {

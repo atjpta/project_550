@@ -5,16 +5,17 @@
 
     <div>
       <div @click="goTo()" v-if="!manager" class="btn btn-primary btn-sm btn-outline">
-        chế độ quản lý
+        Chế độ quản lý
       </div>
       <div @click="goTo()" v-if="manager" class="btn btn-primary btn-sm btn-outline">
-        chế độ xem
+        Chế độ xem
       </div>
     </div>
     <!-- nút chuyển trang -->
-    <div class="flex flex-wrap mt-3">
+    <div class="tabs mt-3">
       <div v-for="i in menu" :key="i">
-        <nuxtLink :to="'/dashboard' + i.url" class="btn btn-sm btn-outline mr-1 mb-1">
+        <nuxtLink :to="'/dashboard' + i.url" :class="'/dashboard' + i.url == route.path ? 'tab-active' : ''"
+          class="tab tab-bordered uppercase font-medium">
           <div>
             {{ i.title }}
           </div>
@@ -44,50 +45,50 @@ const menu = computed(() => {
 
 const menuDashboard = ref([
   {
-    title: "tổng quan",
+    title: "Tổng quan",
     url: "/read/overview",
   },
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/read/post",
   },
   {
-    title: "chuỗi bài viết",
+    title: "Chuỗi bài viết",
     url: "/read/series",
   },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/read/question",
   },
   {
-    title: "chủ đề",
+    title: "Chủ đề",
     url: "/read/topic",
   },
 ]);
 
 const menuDashboardManager = ref([
   {
-    title: "bài viết",
+    title: "Bài viết",
     url: "/manager/post",
   },
   {
-    title: "chuỗi bài viết",
+    title: "Chuỗi bài viết",
     url: "/manager/series",
   },
   {
-    title: "câu hỏi",
+    title: "Câu hỏi",
     url: "/manager/question",
   },
   {
-    title: "chủ đề",
+    title: "Chủ đề",
     url: "/manager/topic",
   },
   {
-    title: "nhóm",
+    title: "Nhóm",
     url: "/manager/team",
   },
   {
-    title: "thẻ tag",
+    title: "Thẻ tag",
     url: "/manager/tag",
   },
 ]);
@@ -127,7 +128,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "trang cá nhân",
+  title: "Trang cá nhân",
 });
 </script>
 

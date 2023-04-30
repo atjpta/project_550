@@ -1,30 +1,38 @@
 <template>
-  <div :class="preview
-      ? 'bg-base-100'
-      : 'bg-gradient-to-r from-warning/5 via-warning/5 to-pink-500/0'
-    " class="p-5 rounded-2xl">
+  <div
+    :class="
+      preview
+        ? 'bg-base-100'
+        : 'bg-gradient-to-r from-warning/5 via-warning/5 to-pink-500/0'
+    "
+    class="p-5 rounded-2xl"
+  >
     <transition name="bounce">
       <div v-show="preview == false">
-        <div class="text-4xl text-center font-extrabold">Chỉnh sửa câu hỏi</div>
+        <div class="text-4xl text-center">Chỉnh sửa câu hỏi</div>
         <!-- tiêu đề -->
         <div>
-          <div class="text-xl font-extrabold mt-5">
+          <div class="text-2xl mt-5">
             Tiêu đề
-            <div class="tooltip" data-tip="không được để trống">
+            <div class="tooltip" data-tip="Không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
                 <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
               </div>
             </div>
           </div>
-          <input v-model="useQuestion.question_edit.title" placeholder="nhập tiêu đề" type="text"
-            class="input input-primary w-full" />
+          <input
+            v-model="useQuestion.question_edit.title"
+            placeholder="Nhập tiêu đề..."
+            type="text"
+            class="input input-primary w-full"
+          />
         </div>
 
         <!-- phần tag của bài viết -->
         <div>
-          <div class="text-xl font-extrabold mt-5">
-            Chọn tag
-            <div class="tooltip" data-tip="được chọn tối đa 5 tag">
+          <div class="text-2xl mt-5">
+            Thẻ tag
+            <div class="tooltip" data-tip="Được chọn tối đa 5 tag">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
               </div>
@@ -35,9 +43,9 @@
 
         <!-- phần nội dung bài viết -->
         <div class="flex justify-between mt-5 mb-2">
-          <div class="text-xl font-extrabold mt-5">
+          <div class="text-2xl mt-5">
             Nội dung
-            <div class="tooltip" data-tip="không được để trống">
+            <div class="tooltip" data-tip="Không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
                 <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
               </div>
@@ -46,8 +54,14 @@
         </div>
 
         <div class="min-h-[30vh]">
-          <QuillEditor class="min-h-[30vh]" :modules="modules" placeholder="nhập nội dung" ref="quill" theme="snow"
-            toolbar="full" />
+          <QuillEditor
+            class="min-h-[30vh]"
+            :modules="modules"
+            placeholder="Nhập nội dung..."
+            ref="quill"
+            theme="snow"
+            toolbar="full"
+          />
         </div>
       </div>
     </transition>
@@ -59,13 +73,25 @@
     </transition>
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
-      <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
+      <div
+        v-if="preview == false"
+        @click="showPreview()"
+        class="btn btn-outline btn-sm btn-info"
+      >
         xem trước
       </div>
-      <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
+      <div
+        v-if="preview == true"
+        @click="preview = false"
+        class="btn btn-outline btn-sm btn-info"
+      >
         chỉnh tiếp
       </div>
-      <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
+      <div
+        @click="save()"
+        :class="[loading ? 'loading' : '']"
+        class="btn btn-sm btn-primary"
+      >
         lưu
       </div>
       <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
@@ -135,6 +161,7 @@ function getdata() {
     id: useTopic.topic._id,
     name: useTopic.topic.name,
   };
+  useQuestion.question_edit.contentOnlyText = quill.value.getText();
 }
 
 function save() {

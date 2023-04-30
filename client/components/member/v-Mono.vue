@@ -21,10 +21,10 @@
       <!-- các btn -->
       <div v-if="isEdit" class="flex space-x-1">
         <div @click="openEdit = !openEdit" class="btn btn-primary btn-sm btn-outline tooltip flex"
-          data-tip="chỉnh chức vụ">
+          data-tip="Chỉnh chức vụ">
           <OtherVIcon icon="fa-solid fa-pen-to-square" />
         </div>
-        <div @click="openDialogDelete()" :class="[loading ? 'loading' : '']" data-tip="xóa khỏi nhóm"
+        <div @click="openDialogDelete()" :class="[loading ? 'loading' : '']" data-tip="Xóa khỏi nhóm"
           class="btn btn-sm btn-error btn-outline tooltip flex">
           <OtherVIcon icon="fa-solid fa-x" />
         </div>
@@ -109,9 +109,9 @@ function openDialogDelete() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn xóa thành viên này ra khỏi nhóm?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn xóa thành viên này ra khỏi nhóm?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {

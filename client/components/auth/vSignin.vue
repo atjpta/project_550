@@ -59,7 +59,7 @@
             :class="[loading ? 'loading' : '']"
             class="btn btn-primary btn-outline w-44"
           >
-            đăng nhập
+            Đăng nhập
           </button>
         </div>
       </div>
@@ -89,8 +89,8 @@ const FormSchema = Yup.object().shape({
     .min(2, "Tên phải ít nhất 2 ký tự.")
     .max(50, "Tên có nhiều nhất 50 ký tự."),
   password: Yup.string()
-    .required("vui lòng điền mật khẩu.")
-    .min(2, "mật phải ít nhất 2 ký tự."),
+    .required("Vui lòng điền mật khẩu.")
+    .min(2, "Mật phải ít nhất 2 ký tự."),
 });
 
 async function handleLogin(user) {

@@ -6,8 +6,8 @@
     </span>
     <!-- các nut lọc -->
     <div class="flex justify-end">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm">
-        tạo Nhóm mới
+      <button @click="openDialogSignin()" class="btn  btn-success btn-sm">
+        Tạo Nhóm mới
       </button>
     </div>
 
@@ -84,9 +84,9 @@ function openDialogSignin() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo nhóm mới",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo nhóm mới",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");
@@ -129,7 +129,7 @@ onMounted(() => {
 });
 
 useHead({
-  title: "nhóm",
+  title: "Nhóm",
 });
 </script>
 

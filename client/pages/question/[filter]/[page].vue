@@ -6,14 +6,15 @@
     </span> -->
     <!-- các nut lọc -->
     <div class="flex justify-between">
-      <div class="flex flex-wrap">
+      <div class="tabs">
         <nuxtLink :to="i.url" v-for="i in datafilter" :key="i"
-          :class="i.filter == route.params.filter ? 'router-link-active' : ''" class="mr-1 mb-1 btn btn-outline btn-sm">
+          :class="i.filter == route.params.filter ? ' router-link-active tab-active' : ''"
+          class="tab tab-bordered uppercase font-medium">
           {{ i.name }}
         </nuxtLink>
       </div>
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm">
-        tạo câu hỏi
+      <button @click="openDialogSignin()" class="btn btn-success btn-sm">
+        Tạo câu hỏi
       </button>
     </div>
 
@@ -40,7 +41,7 @@
         </button>
         <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
+            Trang {{ i }}
           </option>
         </select>
         <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
@@ -72,22 +73,22 @@ const maxPage = computed(() => {
 });
 const datafilter = ref([
   {
-    name: "mới nhất",
+    name: "Mới nhất",
     url: "/question/new/1",
     filter: "new",
   },
   {
-    name: "điểm cao nhất",
+    name: "Điểm cao nhất",
     url: "/question/vote/1",
     filter: "vote",
   },
   {
-    name: "xem nhiều nhất",
+    name: "Xem nhiều nhất",
     url: "/question/view/1",
     filter: "view",
   },
   {
-    name: "chưa trả lời",
+    name: "Chưa trả lời",
     url: "/question/unreply/1",
     filter: "unreply",
   },
@@ -110,9 +111,9 @@ function openDialogSignin() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo câu hỏi",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo câu hỏi",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");
@@ -155,7 +156,7 @@ onUnmounted(() => {
 });
 
 useHead({
-  title: "câu hỏi",
+  title: "Câu hỏi",
 });
 </script>
 

@@ -15,11 +15,11 @@
                 {{ data.name }}
               </div>
               <div class="text-sm space-x-3">
-                <div class="tooltip" data-tip="điểm người dùng">
+                <div class="tooltip" data-tip="Điểm người dùng">
                   <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                   {{ data.total_count }}
                 </div>
-                <div class="tooltip" data-tip="số người theo dõi">
+                <div class="tooltip" data-tip="Số người theo dõi">
                   <OtherVIcon class-icon="text-info" icon="fa-solid fa-user" />
                   {{ data.followsCount }}
                 </div>
@@ -38,7 +38,7 @@
                 <a>
                   <div>
                     <OtherVIcon icon="fa-solid fa-flag" />
-                    báo cáo
+                    Báo cáo
                   </div>
                 </a>
               </li>
@@ -74,8 +74,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Người dùng này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -89,9 +89,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

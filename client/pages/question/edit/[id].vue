@@ -25,6 +25,7 @@ function formatData(listtag) {
     content: question.content,
     status: question.status,
     title: question.title,
+    contentOnlyText: question.contentOnlyText,
     topic: (question.topic.id || question.topic._id) ?? " ",
     team: (question.team.id || question.team._id) ?? " ",
     course: (question.course.id || question.course._id) ?? " ",
@@ -70,7 +71,7 @@ function checkTeam() {
 async function saveEdit() {
   question = useQuestion.question_edit;
   if (!(question.content.ops[0].insert != "\n" && question.title)) {
-    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
     return;
   }
 
@@ -78,7 +79,7 @@ async function saveEdit() {
   if (!question.course) {
     check = checkTeam();
     if (!check) {
-      useAlert.setError("bạn không còn trong nhóm " + usePost.post_edit.team.name);
+      useAlert.setError("Bạn không còn trong nhóm " + usePost.post_edit.team.name);
       return;
     }
   }
@@ -93,7 +94,7 @@ async function saveEdit() {
     await useQuestion.update(data);
     useQuestion.resetQuestionEdit();
     useImage.url = null;
-
+    useAlert.setSuccess("Sửa thành công");
     useRouter().back();
   } catch (error) {
     console.log(error);
@@ -106,7 +107,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "sửa câu hỏi",
+  title: "Sửa câu hỏi",
 });
 </script>
 

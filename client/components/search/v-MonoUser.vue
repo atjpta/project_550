@@ -2,7 +2,10 @@
   <div>
     <div class="glass rounded-2xl h-20 p-2">
       <div class="flex justify-between">
-        <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/user/${data._id}/overview`">
+        <nuxtLink
+          class="hover:text-sky-500 hover:scale-110 duration-500"
+          :to="`/user/${data._id}/overview`"
+        >
           <!-- tác giả -->
           <div class="flex">
             <div class="avatar">
@@ -15,11 +18,11 @@
                 {{ data.name }}
               </div>
               <div class="text-sm space-x-3">
-                <div class="tooltip" data-tip="điểm người dùng">
+                <div class="tooltip" data-tip="Điểm người dùng">
                   <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                   {{ data.total_count }}
                 </div>
-                <div class="tooltip" data-tip="số người theo dõi">
+                <div class="tooltip" data-tip="Số người theo dõi">
                   <OtherVIcon class-icon="text-info" icon="fa-solid fa-user" />
                   {{ data.followsCount }}
                 </div>
@@ -32,12 +35,15 @@
           <label tabindex="0" class="btn btn-ghost">
             <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
           </label>
-          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+          <ul
+            tabindex="0"
+            class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
             <li @click="openDialogReport()" class="hover-bordered">
               <a>
                 <div>
                   <OtherVIcon icon="fa-solid fa-flag" />
-                  báo cáo
+                  Báo cáo
                 </div>
               </a>
             </li>
@@ -72,8 +78,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Người dùng này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({

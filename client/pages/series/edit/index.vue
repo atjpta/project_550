@@ -28,7 +28,7 @@ function formatData() {
 async function save() {
   series = useSeries.series_edit;
   if (!(series.introduce && series.name)) {
-    useAlert.setError("phải nhập đủ tên và tóm tắt");
+    useAlert.setError("Phải nhập đủ tên và tóm tắt");
     return;
   }
   loading.value = true;
@@ -58,7 +58,7 @@ const title = computed(() => {
 });
 
 useHead({
-  title: "tạo chuỗi bài viết",
+  title: "Tạo chuỗi bài viết",
 });
 </script>
 

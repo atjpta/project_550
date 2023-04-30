@@ -1,7 +1,7 @@
 <template>
   <div :class="!preview
-      ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10'
-      : ''
+    ? 'bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10'
+    : ''
     " class="p-5 rounded-2xl">
     <transition name="bounce">
       <div v-show="preview == false">
@@ -10,13 +10,13 @@
         <div>
           <div class="text-xl font-extrabold mt-5">
             Tên nhóm
-            <div class="tooltip" data-tip="không được để trống">
+            <div class="tooltip" data-tip="Không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
                 <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
               </div>
             </div>
           </div>
-          <input v-model="useTeam.team_edit.name" placeholder="nhập tiêu đề" type="text"
+          <input v-model="useTeam.team_edit.name" placeholder="Nhập tên nhóm..." type="text"
             class="input input-primary w-full" />
         </div>
 
@@ -30,7 +30,7 @@
         <!-- phần tag của bài viết -->
         <div>
           <div class="text-xl font-extrabold mt-5">
-            Chọn tag
+            Thẻ tag
             <div class="tooltip" data-tip="được chọn tối đa 5 tag">
               <div class="btn-xs btn btn-info btn-outline rounded-full h-1 w-6">
                 <OtherVIcon class-icon="" icon="fa-solid fa-info" />
@@ -44,16 +44,16 @@
 
         <div class="text-xl font-extrabold mt-5 mb-2">Chọn trạng thái</div>
         <div class="w-full max-w-xs">
-          <div data-tip="mọi người đều xem được bài viết" class="form-control tooltip w-full">
+          <div data-tip="Mọi người đều xem được bài viết" class="form-control tooltip w-full">
             <label class="label cursor-pointer">
-              <span class="label-text">công khai</span>
+              <span class="label-text">Công khai</span>
               <input @click="useTeam.team_edit.status = 'public'" type="radio" name="radio-10"
                 class="radio checked:bg-red-500" :checked="useTeam.team_edit.status == 'public'" />
             </label>
           </div>
-          <div data-tip="bài viết và câu hỏi chỉ thành viên thấy được" class="form-control tooltip w-full">
+          <div data-tip="Bài viết và câu hỏi chỉ thành viên thấy được" class="form-control tooltip w-full">
             <label class="label cursor-pointer">
-              <span class="label-text">riêng tư</span>
+              <span class="label-text">Riêng tư</span>
               <input :checked="useTeam.team_edit.status == 'private'" @click="useTeam.team_edit.status = 'private'"
                 type="radio" name="radio-10" class="radio checked:bg-blue-500" />
             </label>
@@ -64,13 +64,13 @@
         <div class="mt-5 mb-2">
           <div class="text-xl font-extrabold mt-5">
             Lời giới thiệu
-            <div class="tooltip" data-tip="không được để trống">
+            <div class="tooltip" data-tip="Không được để trống">
               <div class="btn-xs btn btn-ghost rounded-full h-1 w-6">
                 <OtherVIcon class-icon="text-error" icon="fa-solid fa-star-of-life" />
               </div>
             </div>
           </div>
-          <textarea v-model="useTeam.team_edit.introduce" placeholder="nhập nội dung" type="text"
+          <textarea v-model="useTeam.team_edit.introduce" placeholder="Nhập nội dung..." type="text"
             class="textarea textarea-primary w-full h-20" />
         </div>
       </div>
@@ -84,15 +84,15 @@
     <!-- các nút btn -->
     <div class="flex justify-end space-x-5 my-5">
       <div v-if="preview == false" @click="showPreview()" class="btn btn-outline btn-sm btn-info">
-        xem trước
+        Xem trước
       </div>
       <div v-if="preview == true" @click="preview = false" class="btn btn-outline btn-sm btn-info">
-        chỉnh tiếp
+        Chỉnh tiếp
       </div>
       <div @click="save()" :class="[loading ? 'loading' : '']" class="btn btn-sm btn-primary">
-        lưu
+        Lưu
       </div>
-      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">hủy</div>
+      <div @click="useRouter().back()" class="btn btn-ghost btn-sm text-error">Hủy</div>
     </div>
   </div>
 </template>
@@ -164,7 +164,7 @@ async function getApi() {
   if (route.params.id) {
     await useMember.checkIsChief(route.params.id, useAuth.user.id);
     if (!useMember.isChief) {
-      useAlert.setWarning("bạn không có quyền truy cập");
+      useAlert.setWarning("Bạn Không có quyền truy cập");
       return navigateTo("/");
     }
     await useTeam.findOneEdit(route.params.id);

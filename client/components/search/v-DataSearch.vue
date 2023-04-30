@@ -16,7 +16,7 @@
           <div v-for="i in useSearch.list_search_course" :key="i.id">
             <div @click="navigateTo(`/course/${i.id}/review`)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="môn học" class="mr-5 tooltip text">
+              <div data-tip="Môn học" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-book" />
               </div>
               <div class="overflow-hidden truncate">
@@ -30,7 +30,7 @@
           <div v-for="i in useSearch.list_search_post" :key="i._id">
             <div @click="goTo('post', i._id, i)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="bài viết" class="mr-5 tooltip text">
+              <div data-tip="Bài viết" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-lines" />
               </div>
               <div class="overflow-hidden truncate">
@@ -45,7 +45,7 @@
           <div v-for="i in useSearch.list_search_series" :key="i._id">
             <div @click="goTo('series', i._id)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="chuỗi bài viết" class="mr-5 tooltip text">
+              <div data-tip="Chuỗi bài viết" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-layer-group" />
               </div>
               <div class="overflow-hidden truncate">
@@ -60,7 +60,7 @@
           <div v-for="i in useSearch.list_search_question" :key="i._id">
             <div @click="goTo('question', i._id, i)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="câu hỏi" class="mr-5 tooltip text">
+              <div data-tip="Câu hỏi" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-file-circle-question" />
               </div>
               <div class="overflow-hidden truncate">
@@ -75,7 +75,7 @@
           <div v-for="i in useSearch.list_search_topic" :key="i._id">
             <div @click="goTo('topic', i._id)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="chủ đề" class="mr-5 tooltip text">
+              <div data-tip="Chủ đề" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-layer-group" />
               </div>
               <div class="overflow-hidden truncate">
@@ -90,7 +90,7 @@
           <div v-for="i in useSearch.list_search_user" :key="i._id">
             <div @click="goTo('user', i._id)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="người dùng" class="mr-5 tooltip text">
+              <div data-tip="Người dùng" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-users" />
               </div>
               <div class="overflow-hidden truncate">
@@ -105,7 +105,7 @@
           <div v-for="i in useSearch.list_search_team" :key="i._id">
             <div @click="goTo('team', i._id)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="nhóm" class="mr-5 tooltip text">
+              <div data-tip="Nhóm" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-building-user" />
               </div>
               <div class="overflow-hidden truncate">
@@ -120,7 +120,7 @@
           <div v-for="i in useSearch.list_search_tag" :key="i._id">
             <div @click="goTo('tag', i._id)"
               class="bg-base-100 shadow-sm shadow-primary flex h-12 rounded-md p-2 cursor-pointer">
-              <div data-tip="tag" class="mr-5 tooltip text">
+              <div data-tip="Tag" class="mr-5 tooltip text">
                 <OtherVIcon icon="fa-solid fa-tag" />
               </div>
               <div class="overflow-hidden truncate">

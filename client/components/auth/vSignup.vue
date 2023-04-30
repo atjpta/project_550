@@ -127,7 +127,7 @@
             :class="[loading ? 'loading' : '']"
             class="btn btn-primary btn-outline w-44"
           >
-            đăng kí
+            Đăng kí
           </button>
         </div>
       </div>
@@ -150,23 +150,23 @@ const loading = ref(false);
 const showPassWord = ref("password");
 const userFormSchema = Yup.object().shape({
   username: Yup.string()
-    .required("vui lòng điền tài khoản.")
+    .required("Vui lòng điền tài khoản.")
     .min(2, "Tên phải ít nhất 2 ký tự.")
     .max(50, "Tên có nhiều nhất 50 ký tự."),
   name: Yup.string()
-    .required("vui lòng điền tên.")
+    .required("Vui lòng điền tên.")
     .min(2, "Tên phải ít nhất 2 ký tự.")
     .max(50, "Tên có nhiều nhất 50 ký tự."),
   email: Yup.string()
     .email("E-mail không đúng.")
-    .required("vui lòng điền E-mail.")
+    .required("Vui lòng điền E-mail.")
     .max(50, "E-mail tối đa 50 ký tự."),
   password: Yup.string()
-    .required("vui lòng điền mật khẩu.")
-    .min(2, "mật phải ít nhất 2 ký tự."),
+    .required("Vui lòng điền mật khẩu.")
+    .min(2, "Mật phải ít nhất 2 ký tự."),
   repassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Mật khẩu không đúng!")
-    .required("vui lòng điền lại mật khẩu."),
+    .required("Vui lòng điền lại mật khẩu."),
 });
 async function handleRegister(user) {
   loading.value = true;

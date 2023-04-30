@@ -21,7 +21,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">không có câu hỏi nào !?</div>
+        <div class="text-center text-2xl my-10">Không có câu hỏi nào !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->

@@ -19,7 +19,7 @@
               <OtherVIcon class-icon="text-2xl" icon="fa-solid fa-caret-down" />
             </div>
 
-            <div class="tooltip" data-tip="trả lời bình luận">
+            <div class="tooltip" data-tip="Trả lời bình luận">
               <div @click="openInputRep()" class="btn-sm btn-circle btn btn-ghost">
                 <OtherVIcon class-icon="text-xl" icon="fa-solid fa-share" />
               </div>
@@ -59,10 +59,10 @@
     <!-- phần hiện ẩn cmt con -->
     <div v-if="countCmt > 0" class="ml-5">
       <div @click="showChildCmt()" v-show="!childCmt" class="btn btn-ghost btn-xs italic lowercase">
-        hiện {{ countCmt }} bình luận con
+        Hiện {{ countCmt }} bình luận con
       </div>
       <div @click="childCmt = !childCmt" v-show="childCmt" class="btn btn-ghost btn-xs italic lowercase">
-        ẩn {{ countCmt }} bình luận con
+        Ẩn {{ countCmt }} bình luận con
       </div>
     </div>
     <!-- input rep cmt -->
@@ -349,9 +349,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");

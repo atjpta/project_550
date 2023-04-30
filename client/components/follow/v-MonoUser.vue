@@ -17,11 +17,11 @@
               {{ data.user[0].name }}
             </div>
             <div class="text-sm space-x-3">
-              <div class="tooltip" data-tip="điểm người dùng">
+              <div class="tooltip" data-tip="Điểm người dùng">
                 <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                 {{ data.total_count }}
               </div>
-              <div class="tooltip" data-tip="số người theo dõi">
+              <div class="tooltip" data-tip="Số người theo dõi">
                 <OtherVIcon class-icon="text-info" icon="fa-solid fa-user" />
                 {{ data.followsCount }}
               </div>

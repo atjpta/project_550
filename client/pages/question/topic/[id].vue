@@ -23,6 +23,7 @@ function formatData(listtag) {
     content: question.content,
     topic: question.topic.id,
     status: "public",
+    contentOnlyText: question.contentOnlyText,
     title: question.title,
     team: question.team._id,
   };

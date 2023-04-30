@@ -4,9 +4,10 @@
       <TagVTag />
     </div>
     <div>
-      <div class="flex flex-wrap mt-3">
+      <div class="tabs mt-3">
         <div v-for="i in menuDashboard" :key="i">
-          <nuxtLink :to="i.url" class="btn btn-sm btn-outline mr-1 mb-1 indicator">
+          <nuxtLink :to="i.url" :class="route.path == i.url ? 'tab-active' : ''"
+            class="tab tab-bordered uppercase font-medium indicator">
             <div>
               {{ i.title }}
               <div v-show="i?.sl > 0" class="indicator-item badge badge-secondary border-0 mr-2">

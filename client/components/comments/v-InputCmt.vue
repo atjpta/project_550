@@ -5,6 +5,7 @@
     </div>
     <div>
       <QuillEditor
+        placeholder="Nhập bình luận..."
         :on-update:content="gettagname()"
         @text-change="getdata()"
         ref="quill"
@@ -49,8 +50,8 @@
       :class="[loading ? 'loading' : '']"
       class="btn btn-primary btn-sm btn-outline my-2"
     >
-      <OtherVIcon icon="fa-solid fa-paper-plane" />
-      gửi
+      <OtherVIcon icon="fa-solid fa-paper-plane mr-1" />
+      Gửi
     </div>
   </div>
 </template>

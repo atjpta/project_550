@@ -25,7 +25,7 @@
         <!-- các btn -->
         <div class="flex mt-1">
           <div class="flex justify-evenly mr-2">
-            <div class="tooltip" data-tip="lưu series">
+            <div class="tooltip" data-tip="Lưu series">
               <div
                 v-if="loading != 'save'"
                 @click="openDialogSignin(save)"
@@ -45,7 +45,7 @@
               v-if="useFollow.follow && useAuth.user"
               class="ml-1 tooltip"
               :data-tip="
-                useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'
+                useFollow.follow.notification ? 'Tắt thông báo' : 'Bật thông báo'
               "
             >
               <div
@@ -64,7 +64,7 @@
               </div>
             </div>
 
-            <div class="tooltip" data-tip="điểm series">
+            <div class="tooltip" data-tip="Điểm series">
               <div class="btn-sm lg:btn-md btn btn-ghost">
                 <OtherVIcon
                   class-icon="text-xl mr-1 text-warning"
@@ -74,7 +74,7 @@
               </div>
             </div>
 
-            <div class="tooltip" data-tip="điểm series">
+            <div class="tooltip" data-tip="Điểm series">
               <div class="btn-sm lg:btn-md btn btn-ghost">
                 <OtherVIcon
                   class-icon="text-xl mr-1 text-info"
@@ -111,7 +111,7 @@
             <div v-for="i in list_tag" :key="i._id" class="">
               <nuxt-link
                 :to="`/tag/${i._id}/post`"
-                class="btn btn-outline btn-sm mr-1 mt-1"
+                class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1"
                 >{{ "#" + i.name }}</nuxt-link
               >
             </div>
@@ -206,9 +206,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");

@@ -10,7 +10,7 @@
       <div class="flex justify-around">
         <nuxtLink :to="`/tag/${data._id}/post`">
           <div class="text-center">
-            <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
+            <div class="btn text-info btn-ghost btn-sm">Xem thêm</div>
           </div>
         </nuxtLink>
         <div class="space-x-1">
@@ -71,9 +71,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa tag này?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa tag này?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useTag.deleteOne(props.data._id);

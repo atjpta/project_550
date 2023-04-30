@@ -8,7 +8,7 @@ const member = require('./member.models')
 const team = require('./team.models')
 const answer = require('./answer.models')
 const notification = require('./notification.models')
-const quenstion = require('./question.model')
+const question = require('./question.model')
 const topic = require('./topic.models')
 const comment = require('./comment.models')
 const notificationtypeM = require('./notificationtype.models')
@@ -42,7 +42,7 @@ module.exports = {
     team,
     answer,
     notification,
-    quenstion,
+    question,
     topic,
     comment,
     notificationtype,

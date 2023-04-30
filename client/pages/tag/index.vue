@@ -102,7 +102,7 @@ onMounted(() => {
 });
 
 useHead({
-  title: "thẻ tag",
+  title: "Thẻ tag",
 });
 </script>
 

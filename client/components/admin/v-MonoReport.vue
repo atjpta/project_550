@@ -3,7 +3,10 @@
     <div class="flex justify-between items-center">
       <!-- tác giả -->
       <div class="basis-1/3">
-        <nuxt-link :to="`/user/${data.author[0]._id}/overview`" class="flex items-center space-x-3 hover:text-info">
+        <nuxt-link
+          :to="`/user/${data.author[0]._id}/overview`"
+          class="flex items-center space-x-3 hover:text-info"
+        >
           <div class="avatar">
             <div class="mask mask-squircle w-12 h-12">
               <img :src="data.author[0].avatar_url" />
@@ -21,8 +24,12 @@
 
       <!-- các nút chức năng -->
       <div class="flex flex-wrap lg:flex-nowrap">
-        <div data-tip="xóa báo cáo" class="flex tooltip tooltip-left lg:tooltip-top">
-          <div :class="[loading ? 'loading ' : '']" @click="deleteOne()" class="btn btn-sm btn-ghost text-error">
+        <div data-tip="Xóa báo cáo" class="flex tooltip tooltip-left lg:tooltip-top">
+          <div
+            :class="[loading ? 'loading ' : '']"
+            @click="deleteOne()"
+            class="btn btn-sm btn-ghost text-error"
+          >
             <OtherVIcon icon="fa-solid fa-x" />
           </div>
         </div>

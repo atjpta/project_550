@@ -6,6 +6,7 @@ import topicService from "~~/services/topic.service";
 import teamService from "~~/services/team.service";
 import tagService from "~~/services/tag.service";
 import userService from "~~/services/user.service";
+import searchService from "~/services/search.service";
 import courseService from "~/services/course.service";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
@@ -29,6 +30,7 @@ export const searchStore = defineStore("searchStore", {
             keySave: '',
             mark: {},
             loadingSkeleton: false,
+            data: [],
         };
     },
     getters: {
@@ -167,6 +169,11 @@ export const searchStore = defineStore("searchStore", {
         setTime(time) {
             dayjs.extend(relativeTime)
             return dayjs(time).fromNow()
+        },
+
+        async search(textSearch) {
+            this.data = await searchService.search(textSearch)
+            return
         },
 
         async getApi() {

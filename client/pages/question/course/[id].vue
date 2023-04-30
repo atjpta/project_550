@@ -26,6 +26,7 @@ function formatData(listtag) {
     author: question.author.id,
     content: question.content,
     title: question.title,
+    contentOnlyText: question.contentOnlyText,
     course: question.course.id,
     status: "public",
   };
@@ -82,7 +83,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "tạo câu hỏi",
+  title: "Tạo câu hỏi",
 });
 </script>
 

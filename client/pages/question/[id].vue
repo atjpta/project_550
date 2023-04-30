@@ -16,13 +16,13 @@
         </div>
       </div>
       <!-- chọn cái xem -->
-      <div class="flex flex-wrap">
-        <div @click="selectviewcmt = false" :class="!selectviewcmt ? 'text-primary' : ''"
-          class="btn btn-sm btn-outline mr-1 mb-1">
+      <div class="tabs mt-10 mb-3">
+        <div @click="selectviewcmt = false" :class="!selectviewcmt ? 'tab-active text-primary' : ''"
+          class="tab tab-bordered uppercase font-medium">
           xem câu trả lời
         </div>
-        <div @click="selectviewcmt = true" :class="selectviewcmt ? 'text-primary' : ''"
-          class="btn btn-sm btn-outline mr-1 mb-1">
+        <div @click="selectviewcmt = true" :class="selectviewcmt ? 'tab-active text-primary' : ''"
+          class="tab tab-bordered uppercase font-medium">
           xem bình luận
         </div>
       </div>
@@ -40,10 +40,9 @@
           <div>
             <div @click="filterCmt = !filterCmt" class="btn btn-sm btn-ghost mb-2">
               <div class="tooltip ml-2" data-tip="lọc bình luận">
-                <div class="btn-xs btn btn-info btn-ghost h-1 w-6">
-                  <OtherVIcon class-icon="text-primary" icon="fa-solid fa-filter" />
-                </div>
+                <OtherVIcon class-icon="text-primary mr-1" icon="fa-solid fa-filter" />
               </div>
+
               {{ filterCmt ? "điểm cao nhất" : "mới nhất" }}
             </div>
           </div>
@@ -95,9 +94,7 @@
             <div>
               <div @click="filterAnswer = !filterAnswer" class="btn btn-sm btn-ghost mb-2">
                 <div class="tooltip ml-2" data-tip="lọc bình luận">
-                  <div class="btn-xs btn btn-info btn-ghost h-1 w-6">
-                    <OtherVIcon class-icon="text-primary" icon="fa-solid fa-filter" />
-                  </div>
+                  <OtherVIcon class-icon="text-primary mr-1" icon="fa-solid fa-filter" />
                 </div>
                 {{ filterAnswer ? "điểm cao nhất" : "mới nhất" }}
               </div>
@@ -269,7 +266,7 @@ const sendAnswer = async () => {
     author: useAuth.user.id,
     authorModel: useQuestion.question.author[0]._id,
     model: useQuestion.question._id,
-    content: `bạn có câu trả lời mới về câu hỏi "${useQuestion.question.title}"`,
+    content: `Bạn có câu trả lời mới về câu hỏi "${useQuestion.question.title}"`,
     url: route.fullPath,
     type: "info",
   };
@@ -313,7 +310,7 @@ const send = async () => {
     author: useAuth.user.id,
     authorModel: useQuestion.question.author[0]._id,
     model: useQuestion.question._id,
-    content: `bạn có bình luận mới về câu hỏi "${useQuestion.question.title}"`,
+    content: `Bạn có bình luận mới về câu hỏi "${useQuestion.question.title}"`,
     url: route.fullPath,
     type: "info",
     // listTagName: list,
@@ -346,9 +343,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");
@@ -363,11 +360,10 @@ function openDialogSignin(cb) {
 async function getOther() {
   try {
     if (useQuestion.question.tag) {
-      const index = Math.floor(Math.random() * useQuestion.question.tag.length);
-      listOther.value = await useQuestion.findOther(
-        route.params.id,
-        useQuestion.question.tag[index]
-      );
+      const index = Math.floor(Math.random() * useQuestion.question.tag.size);
+      const array = Array.from(useQuestion.question.tag);
+
+      listOther.value = await useQuestion.findOther(route.params.id, array[index]._id);
     } else {
       listOther.value = await useQuestion.findOther(route.params.id);
     }
@@ -381,16 +377,20 @@ async function getApi() {
   try {
     useCmt.list_cmt = [];
     await useQuestion.findOne(route.params.id);
-    if (!useQuestion.question.isPublic) {
-      if (useQuestion.question.author[0]._id != useAuth.user?.id) {
-        useAlert.setWarning("câu hỏi riêng tư, bạn không thể vào được!!");
-        return navigateTo("/");
-      }
-      if (!useAuth.user) {
-        useAlert.setWarning("câu hỏi riêng tư, bạn không thể vào được!!");
-        return navigateTo("/");
+    if (!useQuestion.question.isPublic || !useQuestion.question.check) {
+      if (useUser.isAdmin) {
+      } else {
+        if (useQuestion.question.author[0]._id != useAuth.user?.id) {
+          useAlert.setWarning("Câu hỏi riêng tư, bạn không thể vào được!!");
+          return navigateTo("/");
+        }
+        if (!useAuth.user) {
+          useAlert.setWarning("Câu hỏi riêng tư, bạn không thể vào được!!");
+          return navigateTo("/");
+        }
       }
     }
+
     await useUser.findAll();
     await useCmt.getBy("post", route.params.id);
     await useAnswer.getBy(route.params.id);

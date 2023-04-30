@@ -97,7 +97,7 @@ export default {
             // useAlert.setError(error.value.data)
             throw new Error(error.value.data);
         }
-        useAlert.setSuccess("sửa thành công");
+        useAlert.setSuccess("Sửa thành công");
         return data.value
     },
     findOne: async (id) => {

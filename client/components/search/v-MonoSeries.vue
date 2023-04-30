@@ -22,7 +22,7 @@
                       <a>
                         <div>
                           <OtherVIcon icon="fa-solid fa-flag" />
-                          báo cáo
+                          Báo cáo
                         </div>
                       </a>
                     </li>
@@ -31,13 +31,13 @@
                 <!-- edit cho tác giả -->
                 <div v-if="isAuthor">
                   <div class="space-x-2 flex justify-end">
-                    <nuxtLink :to="`/series/edit/${data._id}`" class="tooltip" data-tip="sửa chuỗi bài viết">
+                    <nuxtLink :to="`/series/edit/${data._id}`" class="tooltip" data-tip="Sửa chuỗi bài viết">
                       <div class="btn btn-ghost text-primary">
                         <OtherVIcon icon="fa-solid fa-pen-to-square" />
                       </div>
                     </nuxtLink>
 
-                    <div class="tooltip" data-tip="xóa chuỗi bài viết">
+                    <div class="tooltip" data-tip="Xóa chuỗi bài viết">
                       <div @click="openDialogDelete()" class="btn btn-ghost text-error">
                         <OtherVIcon icon="fa-solid fa-trash-can" />
                       </div>
@@ -55,8 +55,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in list_tag" :key="i._id" class="">
-                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                }}</nuxt-link>
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" +
+                  i.name }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -64,11 +64,11 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm series">
+          <div class="tooltip" data-tip="Điểm series">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ data.valScore }}
           </div>
-          <div class="tooltip" data-tip="số bài viết">
+          <div class="tooltip" data-tip="Số bài viết">
             <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
             {{ data.post[0]?.count || 0 }}
           </div>

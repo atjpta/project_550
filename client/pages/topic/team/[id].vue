@@ -30,7 +30,7 @@ function formatData(listtag) {
 async function save() {
   topic = useTopic.topic_edit;
   if (!(topic.introduce && topic.name)) {
-    useAlert.setError("phải nhập đủ tên và tóm tắt ");
+    useAlert.setError("Phải nhập đủ tên và tóm tắt ");
     return;
   }
   loading.value = true;
@@ -58,7 +58,7 @@ const title = computed(() => {
 });
 
 useHead({
-  title: "tạo chủ đề",
+  title: "Tạo chủ đề",
 });
 </script>
 

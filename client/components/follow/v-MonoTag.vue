@@ -1,6 +1,7 @@
 <template>
   <div
-    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5">
+    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5"
+  >
     <div class="flex justify-between">
       <div class="text-xl font-bold uppercase"># {{ data.tags[0].name }}</div>
       <!-- phần tùy chọn cho người đọc -->
@@ -10,12 +11,15 @@
             <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
           </div>
         </label>
-        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+        >
           <li class="hover-bordered">
             <a>
               <div @click="openDialogReport()">
                 <OtherVIcon icon="fa-solid fa-flag" />
-                báo cáo Nhóm
+                Báo cáo
               </div>
             </a>
           </li>
@@ -23,7 +27,7 @@
             <a>
               <div @click="openDialogRemoveSave(removeSave)">
                 <OtherVIcon icon="fa-solid fa-x" />
-                bỏ lưu tag
+                Bỏ lưu
               </div>
             </a>
           </li>
@@ -35,7 +39,7 @@
     </div> -->
     <nuxtLink :to="`/tag/${data.tags[0]._id}/post`">
       <div class="text-center">
-        <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
+        <div class="btn text-info btn-ghost btn-sm">Xem thêm</div>
       </div>
     </nuxtLink>
     <div class="text-sm italic lowercase text-right opacity-75">
@@ -75,9 +79,9 @@ function openDialogRemoveSave(cb) {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn xóa tag này ra khỏi danh sách lưu trữ",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn xóa tag này ra khỏi danh sách lưu trữ",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     () => {
       cb();

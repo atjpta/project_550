@@ -19,6 +19,8 @@ const report = require('./report.routes')
 const typecourse = require('./typecourse.routes')
 const course = require('./course.routes')
 const review = require('./review.routes')
+const search = require('./search.routes')
+const elastic = require('./elastic.routes')
 exports.Start = (app) => {
     auth(app)
     image(app)
@@ -41,4 +43,6 @@ exports.Start = (app) => {
     typecourse(app)
     course(app)
     review(app)
+    search(app)
+    elastic(app)
 }

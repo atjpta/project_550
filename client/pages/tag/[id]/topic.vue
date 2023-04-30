@@ -15,7 +15,7 @@
       </div>
       <div v-else>
         <div class="text-center text-2xl my-10">
-          chưa chủ đề có tag #{{ useTag.tag.name }} nào cả!!!
+          Chưa chủ đề có tag #{{ useTag.tag.name }} nào cả!!!
         </div>
       </div>
     </div>
@@ -26,12 +26,20 @@
         <button @click="goToPre()" class="btn lg:btn-md btn-sm">
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
         </button>
-        <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+        <select
+          v-model="selectPage"
+          @change="goToPage()"
+          class="select select-bordered lg:select-md select-sm"
+        >
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
+            Trang {{ i }}
           </option>
         </select>
-        <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+        <button
+          @click="goToNext()"
+          :disabled="selectPage == maxPage"
+          class="btn btn-sm lg:btn-md text-2xl"
+        >
           <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
         </button>
       </div>

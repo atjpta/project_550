@@ -1,10 +1,14 @@
 <template>
   <div
-    class="w-full duration-500 hover:bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-3 rounded-2xl">
+    class="w-full duration-500 hover:bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-3 rounded-2xl"
+  >
     <div class="flex justify-between items-center">
       <!-- tác giả -->
       <div class="basis-1/3">
-        <nuxt-link :to="`/user/${data.author[0]._id}/overview`" class="flex items-center space-x-3 hover:text-info">
+        <nuxt-link
+          :to="`/user/${data.author[0]._id}/overview`"
+          class="flex items-center space-x-3 hover:text-info"
+        >
           <div class="avatar">
             <div class="mask mask-squircle w-12 h-12">
               <img :src="data.author[0].avatar_url" />
@@ -22,28 +26,48 @@
 
       <!-- các nút chức năng -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 pr-5">
-        <div @click="showDataReport()" data-tip="xem báo cáo"
-          class="h-10 w-10 indicator flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-primary">
+        <div
+          @click="showDataReport()"
+          data-tip="Xem báo cáo"
+          class="h-10 w-10 indicator flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-primary"
+        >
           <OtherVIcon icon="fa-solid fa-flag" />
-          <span v-if="data.reports.length > 0" class="indicator-item mt-2 mr-2 badge badge-secondary">{{ data.slReport
-          }}</span>
+          <span
+            v-if="data.reports.length > 0"
+            class="indicator-item mt-2 mr-2 badge badge-secondary"
+            >{{ data.slReport }}</span
+          >
         </div>
-        <nuxtLink :to="`/topic/${data._id}`" data-tip="xem chi tiết"
-          class="h-10 w-10 flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info">
+        <nuxtLink
+          :to="`/topic/${data._id}`"
+          data-tip="Xem chi tiết"
+          class="h-10 w-10 flex tooltip tooltip-left lg:tooltip-top btn btn-sm btn-ghost text-info"
+        >
           <OtherVIcon icon="fa-solid fa-eye" />
         </nuxtLink>
 
-        <div data-tip="cảnh báo chủ sở hữu" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
-          <div :class="[loading == 'warning' ? 'loading ' : '']"
-            @click="openDialogInput(warning, 'hãy cảnh báo gì đó cho người dùng')"
-            class="h-10 w-10 btn btn-sm btn-ghost text-warning">
+        <div
+          data-tip="Cảnh báo chủ sở hữu"
+          class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top"
+        >
+          <div
+            :class="[loading == 'warning' ? 'loading ' : '']"
+            @click="openDialogInput(warning, 'Hãy cảnh báo gì đó cho người dùng')"
+            class="h-10 w-10 btn btn-sm btn-ghost text-warning"
+          >
             <OtherVIcon icon="fa-solid fa-triangle-exclamation" />
           </div>
         </div>
 
-        <div data-tip="xóa chủ đề" class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top">
-          <div :class="[loading ? 'deleteModel ' : '']" @click="openDialogInput(deleteModel, 'nhập lí do xóa chủ đề này')"
-            class="h-10 w-10 btn btn-sm btn-ghost text-error">
+        <div
+          data-tip="Xóa chủ đề"
+          class="uppercase font-medium flex tooltip tooltip-left lg:tooltip-top"
+        >
+          <div
+            :class="[loading ? 'deleteModel ' : '']"
+            @click="openDialogInput(deleteModel, 'Nhập lí do xóa chủ đề này')"
+            class="h-10 w-10 btn btn-sm btn-ghost text-error"
+          >
             <OtherVIcon icon="fa-solid fa-trash" />
           </div>
         </div>
@@ -53,13 +77,19 @@
       <div class="divider"></div>
       <div class="ml-10">
         <div class="flex items-center justify-between font-black uppercase mb-2">
-          <div class="">người báo cáo</div>
-          <div>nội dung</div>
+          <div class="">Người báo cáo</div>
+          <div>Nội dung</div>
 
-          <div data-tip="xóa tất cả báo cáo" class="font-medium flex tooltip tooltip-left lg:tooltip-top">
-            <div :class="[loading == 'deleteByModel' ? 'loading ' : '']" @click="deleteByModel()"
-              class="btn btn-sm btn-ghost text-error">
-              xóa tất cả
+          <div
+            data-tip="xóa tất cả báo cáo"
+            class="font-medium flex tooltip tooltip-left lg:tooltip-top"
+          >
+            <div
+              :class="[loading == 'deleteByModel' ? 'loading ' : '']"
+              @click="deleteByModel()"
+              class="btn btn-sm btn-ghost text-error"
+            >
+              Xóa tất cả
             </div>
           </div>
         </div>
@@ -97,7 +127,7 @@ const loading = ref("");
 function showDataReport() {
   showReport.value = !showReport.value;
   if (props.data.reports.length == 0) {
-    useAlert.setInfo("chủ đề này không có báo cáo nào cả!!!!!!");
+    useAlert.setInfo("Chủ đề này không có báo cáo nào cả!!!!!!");
   }
 }
 
@@ -106,7 +136,7 @@ async function deleteByModel() {
   try {
     await useReport.deleteByModel(props.data._id);
     await useRouteS.refreshData();
-    useAlert.setSuccess(" đã xóa thành công");
+    useAlert.setSuccess("Đã xóa thành công");
   } catch (error) {
     console.log(error);
   } finally {
@@ -119,12 +149,12 @@ async function warning(input) {
   try {
     const dataNotifi = {
       to: props.data.author[0]._id,
-      content: `chủ đề "${props.data.name}" của bạn bị cảnh báo:  ${input}`,
+      content: `Chủ đề "${props.data.name}" của bạn bị cảnh báo:  ${input}`,
       url: `/topic/${props.data._id}`,
       type: "warning",
     };
     await await useNotification.createOne(dataNotifi);
-    useAlert.setSuccess("đã gửi cảnh báo đi thành công");
+    useAlert.setSuccess("Đã gửi cảnh báo đi thành công");
   } catch (error) {
     console.log(error);
   } finally {
@@ -137,12 +167,13 @@ async function deleteModel(input) {
   try {
     const dataNotifi = {
       to: props.data.author[0]._id,
-      content: `chủ đề "${props.data.name}" của bạn đã bị xóa vì:  ${input}`,
+      content:
+        `Chủ đề "${props.data.name}" của bạn đã bị xóa ` + input ? `vì: ${input}` : "",
       type: "error",
     };
     await useTopic.deleteOne(props.data._id);
     await useNotification.createOne(dataNotifi);
-    useAlert.setSuccess(" đã xóa thành công");
+    useAlert.setSuccess("Đã xóa thành công");
     await useRouteS.refreshData();
   } catch (error) {
     console.log(error);
@@ -156,8 +187,8 @@ function openDialogInput(cb, contentT) {
     {
       title: "Thông báo cực căng!",
       content: contentT,
-      btn1: "gửi",
-      btn2: "hủy",
+      btn1: "Gửi",
+      btn2: "Hủy",
     },
     cb
   );

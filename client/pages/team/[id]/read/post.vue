@@ -2,8 +2,8 @@
   <div class="mt-5">
     <!-- btn chuyển trang -->
     <div class="flex justify-end">
-      <button @click="openDialogSignin()" class="btn btn-outline btn-success btn-sm mb-5">
-        tạo bài viết
+      <button @click="openDialogSignin()" class="btn  btn-success btn-sm mb-5">
+        Tạo bài viết
       </button>
     </div>
 
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">không có bài viết nào !?</div>
+        <div class="text-center text-2xl my-10">Không có bài viết nào !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->
@@ -33,7 +33,7 @@
         </button>
         <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
           <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-            trang {{ i }}
+            Trang {{ i }}
           </option>
         </select>
         <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
@@ -90,9 +90,9 @@ function openDialogSignin() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");

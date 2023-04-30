@@ -9,9 +9,11 @@
       <div class="divider"></div>
 
       <div class="flex justify-center uppercase text-3xl font-bold mt-5">
-        danh sách câu hỏi
-        <div data-tip="các Câu hỏi riêng tư sẽ không hiện "
-          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2">
+        Danh sách câu hỏi
+        <div
+          data-tip="Các câu hỏi riêng tư sẽ không hiện "
+          class="flex tooltip tooltip-left lg:tooltip-top btn-xs btn btn-outline btn-info rounded-full h-1 w-6 mt-2 ml-2"
+        >
           <OtherVIcon class-icon="" icon="fa-solid fa-info" />
         </div>
       </div>
@@ -19,9 +21,11 @@
       <!-- các btn -->
       <div class="flex justify-end my-3 lg:flex">
         <div>
-          <div @click="navigateTo(`/question/topic/${route.params.id}`)"
-            class="btn btn-outline btn-success btn-sm mt-1 lg:mt-0">
-            {{ "tạo thêm câu hỏi vào Topic" }}
+          <div
+            @click="navigateTo(`/question/topic/${route.params.id}`)"
+            class="btn btn-success btn-sm mt-1 lg:mt-0"
+          >
+            {{ "Tạo thêm câu hỏi vào Topic" }}
           </div>
         </div>
       </div>
@@ -36,15 +40,27 @@
 
       <div v-if="dataPerPage[0]" class="form-control mx-auto w-fit my-3">
         <div class="input-group lg:input-group-md input-group-sm">
-          <button @click="goToPre()" :disabled="selectPage == 1" class="btn lg:btn-md btn-sm">
+          <button
+            @click="goToPre()"
+            :disabled="selectPage == 1"
+            class="btn lg:btn-md btn-sm"
+          >
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-left" />
           </button>
-          <select v-model="selectPage" @change="goToPage()" class="select select-bordered lg:select-md select-sm">
+          <select
+            v-model="selectPage"
+            @change="goToPage()"
+            class="select select-bordered lg:select-md select-sm"
+          >
             <option :value="i" :disabled="i == selectPage" v-for="i in maxPage" :key="i">
-              trang {{ i }}
+              Trang {{ i }}
             </option>
           </select>
-          <button @click="goToNext()" :disabled="selectPage == maxPage" class="btn btn-sm lg:btn-md text-2xl">
+          <button
+            @click="goToNext()"
+            :disabled="selectPage == maxPage"
+            class="btn btn-sm lg:btn-md text-2xl"
+          >
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-angle-right" />
           </button>
         </div>
@@ -107,9 +123,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");

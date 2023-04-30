@@ -25,9 +25,7 @@
         <div>
           <div @click="filterCmt = !filterCmt" class="btn btn-sm btn-ghost mb-2">
             <div class="tooltip ml-2" data-tip="lọc bình luận">
-              <div class="btn-xs btn btn-info btn-ghost h-1 w-6">
-                <OtherVIcon class-icon="text-primary" icon="fa-solid fa-filter" />
-              </div>
+              <OtherVIcon class-icon="text-primary mr-1" icon="fa-solid fa-filter" />
             </div>
             {{ filterCmt ? "điểm cao nhất" : "mới nhất" }}
           </div>
@@ -153,7 +151,7 @@ const send = async () => {
     author: useAuth.user.id,
     authorModel: usePost.post.author[0]._id,
     model: usePost.post._id,
-    content: `bạn có bình luận mới về bài viết "${usePost.post.title}"`,
+    content: `Bạn có bình luận mới về bài viết "${usePost.post.title}"`,
     url: route.fullPath + "#comment",
     type: "info",
     // listTagName: list,
@@ -186,9 +184,9 @@ function openDialogSignin(cb) {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để dùng chức năng",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để dùng chức năng",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         navigateTo("/auth/signin");
@@ -203,8 +201,9 @@ function openDialogSignin(cb) {
 async function getOther() {
   try {
     if (usePost.post.tag) {
-      const index = Math.floor(Math.random() * usePost.post.tag.length);
-      listOther.value = await usePost.findOther(route.params.id, usePost.post.tag[index]);
+      const index = Math.floor(Math.random() * usePost.post.tag.size);
+      const array = Array.from(usePost.post.tag);
+      listOther.value = await usePost.findOther(route.params.id, array[index]._id);
     } else {
       listOther.value = await usePost.findOther(route.params.id);
     }
@@ -239,15 +238,19 @@ async function getApi() {
     useCmt.list_cmt = [];
     await usePost.findOne(route.params.id);
     if (!usePost.post.isPublic) {
-      if (usePost.post.author[0]._id != useAuth.user?.id) {
-        useAlert.setWarning("bài viết riêng tư, bạn không thể vào được!!");
-        return navigateTo("/");
-      }
-      if (!useAuth.user) {
-        useAlert.setWarning("bài viết riêng tư, bạn không thể vào được!!");
-        return navigateTo("/");
+      if (useUser.isAdmin) {
+      } else {
+        if (usePost.post.author[0]._id != useAuth.user?.id) {
+          useAlert.setWarning("Bài viết riêng tư, bạn không thể vào được!!");
+          return navigateTo("/");
+        }
+        if (!useAuth.user) {
+          useAlert.setWarning("Bài viết riêng tư, bạn không thể vào được!!");
+          return navigateTo("/");
+        }
       }
     }
+
     await useUser.findAll();
     await useCmt.getBy("post", route.params.id);
     await getOther();

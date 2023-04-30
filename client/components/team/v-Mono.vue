@@ -2,7 +2,7 @@
   <div>
     <transition name="bounce">
       <div
-        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-md p-5">
         <div class="flex">
           <div>
             <!-- ảnh team -->
@@ -15,11 +15,11 @@
 
             <!-- các trạng thái của team  -->
             <div class="flex space-x-5 mt-2">
-              <div class="tooltip" data-tip="điểm nhóm">
+              <div class="tooltip" data-tip="Điểm nhóm">
                 <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                 {{ valVote }}
               </div>
-              <div class="tooltip" data-tip="số lượng thành viên">
+              <div class="tooltip" data-tip="Số lượng thành viên">
                 <OtherVIcon class-icon="text-info" icon="fa-solid fa-users-line" />
                 {{ slmember }}
               </div>
@@ -48,7 +48,7 @@
                       <a>
                         <div>
                           <OtherVIcon icon="fa-solid fa-flag" />
-                          báo cáo
+                          Báo cáo
                         </div>
                       </a>
                     </li>
@@ -59,7 +59,7 @@
                       <a>
                         <div>
                           <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                          sửa
+                          Sửa
                         </div>
                       </a>
                     </li>
@@ -67,7 +67,7 @@
                       <a>
                         <div>
                           <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash" />
-                          xóa
+                          Xóa
                         </div>
                       </a>
                     </li>
@@ -80,8 +80,8 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in data.tag" :key="i._id" class="">
-                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                }}</nuxt-link>
+                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" +
+                  i.name }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -159,9 +159,9 @@ async function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa Nhóm?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa Nhóm?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         try {
@@ -184,9 +184,9 @@ function openDialogDeleteRequest() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn hủy bỏ yêu cầu?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn hủy bỏ yêu cầu?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
@@ -207,9 +207,9 @@ function openDialogOutTeam() {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn thoát khỏi nhóm?",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn thoát khỏi nhóm?",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     async () => {
       try {
@@ -249,9 +249,9 @@ async function openDialogJoinTeam() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để sử dụng chức năng",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để sử dụng chức năng",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = route.fullPath;
@@ -267,8 +267,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Nhóm này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -282,9 +282,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

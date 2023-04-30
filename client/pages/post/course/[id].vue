@@ -52,14 +52,14 @@ function formatData(listtag) {
 async function save() {
     post = usePost.post_edit;
     if (!(post.content.ops[0].insert != "\n" && post.title)) {
-        useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+        useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
         return;
     }
     loading.value = true;
 
     const dataNotification = {
         model: route.params.id,
-        content: `bạn có bài viết mới trong môn học "${useCourse.course.name}"`,
+        content: `Bạn có bài viết mới trong môn học "${useCourse.course.name}"`,
         url: `/course/${useCourse.course.id}/post`,
         type: "info",
     };
@@ -89,7 +89,7 @@ definePageMeta({
 });
 
 useHead({
-    title: "tạo bài viết",
+    title: "Tạo bài viết",
 });
 </script>
 

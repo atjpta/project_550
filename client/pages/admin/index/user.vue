@@ -1,7 +1,7 @@
 <template>
   <div class="my-5">
     <!-- tiêu đề -->
-    <div class="flex justify-between text-xl font-black uppercase mb-2">
+    <div class="flex justify-between text-xl mb-2">
       <div class="basis-1/3">Tên</div>
       <div></div>
       <div class="basis-1/3"></div>
@@ -17,17 +17,16 @@
       <div class="space-y-5 my-5" v-if="dataPerPage[0]">
         <div v-for="(i, n) in dataPerPage" :key="i._id">
           <AdminVMonoUser :data="i" />
-          <div v-if="
-            n <
+          <div v-if="n <
             (useReport.list_search_user.length > size
               ? size
               : useReport.list_search_user.length) -
             1
-          " class="divider"></div>
+            " class="divider"></div>
         </div>
       </div>
       <div v-else>
-        <div class="text-center text-2xl my-10">không có người dùng nào !?</div>
+        <div class="text-center text-2xl my-10">Không có người dùng nào !?</div>
       </div>
     </div>
     <!-- btn chuyển trang -->

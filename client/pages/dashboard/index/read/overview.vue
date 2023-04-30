@@ -15,7 +15,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon="text-info text-2xl" icon="fa-solid fa-file-lines" />
           </div>
-          <div class="stat-title">bài viết</div>
+          <div class="stat-title">Bài viết</div>
           <div class="stat-value">{{ useUser.overview.postCount || 0 }}</div>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon="text-primary text-2xl" icon="fa-solid fa-layer-group" />
           </div>
-          <div class="stat-title">series</div>
+          <div class="stat-title">Chuỗi bài viết</div>
           <div class="stat-value">{{ useUser.overview.seriesCount || 0 }}</div>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon="text-info text-2xl" icon="fa-solid fa-file-circle-question" />
           </div>
-          <div class="stat-title">câu hỏi</div>
+          <div class="stat-title">Câu hỏi</div>
           <div class="stat-value">{{ useUser.overview.questionCount || 0 }}</div>
         </div>
       </div>
@@ -42,7 +42,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon="text-secondary text-2xl" icon="fa-solid fa-layer-group" />
           </div>
-          <div class="stat-title">topic</div>
+          <div class="stat-title">Chủ đề</div>
           <div class="stat-value">{{ useUser.overview.topicCount || 0 }}</div>
         </div>
       </div>
@@ -51,7 +51,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon=" text-2xl" icon="fa-solid fa-share" />
           </div>
-          <div class="stat-title">câu trả lời</div>
+          <div class="stat-title">Câu trả lời</div>
           <div class="stat-value">{{ useUser.overview.answerCount || 0 }}</div>
         </div>
       </div>
@@ -60,7 +60,7 @@
           <div class="stat-figure">
             <OtherVIcon class-icon="text-error text-2xl" icon="fa-solid fa-heart" />
           </div>
-          <div class="stat-title">theo dõi</div>
+          <div class="stat-title">Theo dõi</div>
           <div class="stat-value">{{ useUser.overview.followsCount }}</div>
         </div>
       </div>

@@ -27,13 +27,13 @@
             <!-- edit cho tác giả -->
             <div v-if="isAuthor">
               <div class="space-x-2 static flex">
-                <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="sửa bài viết">
+                <nuxtLink :to="`/post/edit/${data._id}`" class="tooltip" data-tip="Sửa ">
                   <div class="btn btn-ghost">
                     <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
                   </div>
                 </nuxtLink>
 
-                <div class="tooltip" data-tip="xóa bài viết">
+                <div class="tooltip" data-tip="Xóa ">
                   <div @click="openDialogDelete()" class="btn btn-ghost">
                     <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
                   </div>
@@ -51,7 +51,7 @@
                   <a>
                     <div>
                       <OtherVIcon icon="fa-solid fa-flag" />
-                      báo cáo
+                      Báo cáo
                     </div>
                   </a>
                 </li>
@@ -70,21 +70,21 @@
           <!-- tag -->
           <div class="mt-4 flex flex-wrap">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" + i.name
               }}</nuxt-link>
             </div>
           </div>
           <!-- các trạng thái của bài viết  -->
           <div class="flex space-x-5 mt-2">
-            <div class="tooltip" data-tip="điểm bài viết">
+            <div class="tooltip" data-tip="Điểm bài viết">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
-            <div class="tooltip" data-tip="lượt bình luận">
+            <div class="tooltip" data-tip="Lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt xem">
+            <div class="tooltip" data-tip="Lượt xem">
               <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
               {{ data.view }}
             </div>

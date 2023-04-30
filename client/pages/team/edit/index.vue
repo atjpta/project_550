@@ -46,7 +46,7 @@ function formatData(listtag) {
 async function save() {
   team = useTeam.team_edit;
   if (!(team.introduce && team.name)) {
-    useAlert.setError("phải nhập đủ tên và lời giới thiệu");
+    useAlert.setError("Phải nhập đủ tên và lời giới thiệu");
     return;
   }
   loading.value = true;
@@ -73,7 +73,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "tạo nhóm",
+  title: "Tạo nhóm",
 });
 </script>
 

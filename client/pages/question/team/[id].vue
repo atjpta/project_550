@@ -23,6 +23,7 @@ function formatData(listtag) {
     content: question.content,
     topic: question.topic.id,
     status: "public",
+    contentOnlyText: question.contentOnlyText,
     title: question.title,
     team: question.team._id || question.team.id,
   };
@@ -47,7 +48,7 @@ function formatData(listtag) {
 async function save() {
   question = useQuestion.question_edit;
   if (!(question.content.ops[0].insert != "\n" && question.title)) {
-    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
     return;
   }
   loading.value = true;
@@ -74,7 +75,7 @@ const title = computed(() => {
 });
 
 useHead({
-  title: "tạo câu hỏi",
+  title: "Tạo câu hỏi",
 });
 </script>
 

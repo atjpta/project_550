@@ -1,6 +1,7 @@
 <template>
   <div
-    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5">
+    class="hover:bg-gradient-to-l bg-gradient-to-r from-primary/10 via-primary/5 to-pink-500/5 rounded-2xl border-l-4 border-primary p-5"
+  >
     <div class="flex justify-between">
       <div class="text-xl font-bold uppercase"># {{ data.name }}</div>
       <!-- phần tùy chọn cho người đọc -->
@@ -8,12 +9,15 @@
         <label tabindex="0" class="btn btn-ghost">
           <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
         </label>
-        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+        >
           <li @click="openDialogReport()" class="hover-bordered">
             <a>
               <div>
                 <OtherVIcon icon="fa-solid fa-flag" />
-                báo cáo
+                Báo cáo
               </div>
             </a>
           </li>
@@ -22,7 +26,7 @@
     </div>
     <nuxtLink :to="`/tag/${data._id}/post`">
       <div class="text-center">
-        <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
+        <div class="btn text-info btn-ghost btn-sm">Xem thêm</div>
       </div>
     </nuxtLink>
     <div class="text-sm italic lowercase text-right opacity-75">
@@ -55,8 +59,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Thẻ tag này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({

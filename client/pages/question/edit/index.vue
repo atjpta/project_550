@@ -27,6 +27,7 @@ function formatData(listtag) {
     status: question.status,
     title: question.title,
     team: question.team.id || question.team._id,
+    contentOnlyText: question.contentOnlyText,
     topic: question.topic.id,
     course: question.course.id,
   };
@@ -72,7 +73,7 @@ function checkTeam() {
 async function save() {
   question = useQuestion.question_edit;
   if (!(question.content.ops[0].insert != "\n" && question.title)) {
-    useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+    useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
     return;
   }
   let check;
@@ -80,7 +81,7 @@ async function save() {
     check = checkTeam();
     if (!check) {
       useAlert.setError(
-        "bạn không còn trong nhóm " + usequestion.question_edit.team.name
+        "Bạn không còn trong nhóm " + usequestion.question_edit.team.name
       );
       return;
     }
@@ -105,7 +106,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "tạo câu hỏi",
+  title: "Tạo câu hỏi",
 });
 </script>
 

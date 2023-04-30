@@ -33,13 +33,13 @@ async function save() {
       console.log(error);
     }
   } else {
-    useAlert.setWarning("bạn phải nhập đủ các tên, loại môn học và mô tả");
+    useAlert.setWarning("Bạn phải nhập đủ các tên, loại môn học và mô tả");
   }
   loading.value = false;
 }
 
 useHead({
-  title: "tạo môn học",
+  title: "Tạo môn học",
 });
 </script>
 

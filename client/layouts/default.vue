@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 min-w-full">
+  <div
+    class="bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 min-w-full"
+  >
     <OtherVDialog class="" />
 
     <div class="min-h-[calc(100vh-280px)]">
@@ -29,7 +31,17 @@
   background-color: transparent;
 }
 
+.btn {
+  text-transform: none;
+  font-size: 16px;
+}
+
 * p {
   font-size: 20px;
+}
+
+.tab {
+  text-transform: none;
+  font-size: 16px;
 }
 </style>

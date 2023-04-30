@@ -2,8 +2,8 @@
   <div>
     <transition name="bounce">
       <div :class="data.choice.length
-          ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
-          : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
+        ? 'bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-pink-500/0'
+        : 'bg-gradient-to-r from-warning/10 via-warning/5 to-pink-500/0'
         " class="rounded-2xl p-5 hover:bg-gradient-to-l">
         <div>
           <!-- phần đầu -->
@@ -37,7 +37,7 @@
                     <a>
                       <div>
                         <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo
+                        Báo cáo
                       </div>
                     </a>
                   </li>
@@ -63,7 +63,7 @@
                     <a>
                       <div>
                         <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                        sửa
+                        Sửa
                       </div>
                     </a>
                   </li>
@@ -71,7 +71,7 @@
                     <a>
                       <div>
                         <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                        xóa
+                        Xóa
                       </div>
                     </a>
                   </li>
@@ -89,26 +89,26 @@
           <!-- tag -->
           <div class="mt-4 flex">
             <div v-for="i in data.tag" :key="i._id" class="">
-              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
+              <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" + i.name
               }}</nuxt-link>
             </div>
           </div>
           <!-- các trạng thái của câu hỏi  -->
           <div class="flex space-x-5 mt-2">
-            <div class="tooltip" data-tip="điểm câu hỏi">
+            <div class="tooltip" data-tip="Điểm câu hỏi">
               <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
               {{ valVote }}
             </div>
-            <div class="tooltip" data-tip="lượt trả lời">
+            <div class="tooltip" data-tip="Lượt trả lời">
               <OtherVIcon :class-icon="data.choice.length > 0 ? 'text-success' : ''" :icon="data.choice.length > 0 ? 'fa-solid fa-check' : 'fa-solid fa-question'
                 " />
               {{ data.answer.length > 0 ? data.answer[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt bình luận">
+            <div class="tooltip" data-tip="Lượt bình luận">
               <OtherVIcon class-icon="text-primary" icon="fa-solid fa-comments" />
               {{ data.comment.length > 0 ? data.comment[0].count : "0" }}
             </div>
-            <div class="tooltip" data-tip="lượt xem">
+            <div class="tooltip" data-tip="Lượt xem">
               <OtherVIcon class-icon="text-info" icon="fa-solid fa-eye" />
               {{ data.view }}
             </div>
@@ -163,9 +163,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa câu hỏi?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa câu hỏi?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useQuestion.deleteOne(props.data._id);
@@ -238,8 +238,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Câu hỏi này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({

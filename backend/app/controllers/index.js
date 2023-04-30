@@ -19,6 +19,8 @@ const report = require('./report.controller')
 const typecourse = require('./typecourse.controller')
 const course = require('./course.controller');
 const review = require('./review.controller')
+const search = require('./search.controller')
+const elastic = require('./elastic.controller')
 module.exports = {
     auth,
     image,
@@ -41,4 +43,6 @@ module.exports = {
     typecourse,
     course,
     review,
+    search,
+    elastic,
 }

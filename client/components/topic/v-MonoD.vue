@@ -2,22 +2,32 @@
   <div>
     <transition name="bounce">
       <div
-        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0 rounded-md p-5">
+        class="indicator w-full hover:bg-gradient-to-l bg-gradient-to-r from-pink-500/10 via-pink-500/5 to-pink-500/0 rounded-md p-5"
+      >
         <div class="flex">
           <div>
             <!-- ảnh series -->
-            <NuxtLink :to="`/topic/${data._id}`"
-              class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl">
-              <img class="rounded-2xl w-32 h-32 hover:scale-110 duration-500" :src="data.image_cover_url" alt="" />
+            <NuxtLink
+              :to="`/topic/${data._id}`"
+              class="mx-auto min-w-max w-32 min-h-max h-32 mr-3 overflow-hidden rounded-2xl"
+            >
+              <img
+                class="rounded-2xl w-32 h-32 hover:scale-110 duration-500"
+                :src="data.image_cover_url"
+                alt=""
+              />
             </NuxtLink>
             <!-- các trạng thái của team  -->
             <div class="flex space-x-5 mt-2">
-              <div class="tooltip" data-tip="điểm topic">
+              <div class="tooltip" data-tip="Điểm topic">
                 <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
                 {{ data.valScore }}
               </div>
-              <div class="tooltip" data-tip="số câu hỏi">
-                <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-circle-question" />
+              <div class="tooltip" data-tip="Số câu hỏi">
+                <OtherVIcon
+                  class-icon="text-info"
+                  icon="fa-solid fa-file-circle-question"
+                />
                 {{ data.question[0]?.count || 0 }}
               </div>
             </div>
@@ -26,42 +36,59 @@
             <div class="">
               <div>
                 <!-- phần tùy chọn cho người đọc -->
-                <div class="dropdown dropdown-left flex justify-end indicator-item mt-10 mr-10">
+                <div
+                  class="dropdown dropdown-left flex justify-end indicator-item mt-10 mr-10"
+                >
                   <label tabindex="0" class="btn btn-ghost">
                     <OtherVIcon icon="fa-solid fa-ellipsis-vertical" />
                   </label>
-                  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <ul
+                    tabindex="0"
+                    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                  >
                     <div v-if="!isAuthor">
                       <li @click="openDialogReport()" class="hover-bordered">
                         <a>
                           <div>
                             <OtherVIcxon icon="fa-solid fa-flag" />
-                            báo cáo
+                            Báo cáo
                           </div>
                         </a>
                       </li>
                     </div>
                     <div v-if="isAuthor">
-                      <li @click="navigateTo(`/topic/edit/${data._id}`)" class="hover-bordered">
+                      <li
+                        @click="navigateTo(`/topic/edit/${data._id}`)"
+                        class="hover-bordered"
+                      >
                         <a>
                           <div>
-                            <OtherVIcon class-icon="text-primary" icon="fa-solid fa-pen-to-square" />
-                            sửa
+                            <OtherVIcon
+                              class-icon="text-primary"
+                              icon="fa-solid fa-pen-to-square"
+                            />
+                            Sửa
                           </div>
                         </a>
                       </li>
                       <li @click="openDialogDelete()" class="hover-bordered">
                         <a>
                           <div>
-                            <OtherVIcon class-icon="text-error" icon="fa-solid fa-trash-can" />
-                            xóa
+                            <OtherVIcon
+                              class-icon="text-error"
+                              icon="fa-solid fa-trash-can"
+                            />
+                            Xóa
                           </div>
                         </a>
                       </li>
                     </div>
                   </ul>
                 </div>
-                <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500" :to="`/topic/${data._id}`">
+                <nuxtLink
+                  class="hover:text-sky-500 hover:scale-110 duration-500"
+                  :to="`/topic/${data._id}`"
+                >
                   <!-- tên topic -->
                   <div class="text-2xl font-bold uppercase">
                     {{ data.name }}
@@ -73,8 +100,11 @@
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
               <div v-for="i in list_tag" :key="i._id" class="">
-                <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name
-                }}</nuxt-link>
+                <nuxt-link
+                  :to="`/tag/${i._id}/post`"
+                  class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1"
+                  >{{ "#" + i.name }}</nuxt-link
+                >
               </div>
             </div>
           </div>
@@ -151,9 +181,9 @@ function openDialogDelete() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn chắc chắn muốn xóa chủ đề này?",
-        btn1: "ok",
-        btn2: "hủy",
+        content: "Bạn chắc chắn muốn xóa chủ đề này?",
+        btn1: "Ok",
+        btn2: "Hủy",
       },
       async () => {
         await useTopic.deleteOne(props.data._id);
@@ -169,8 +199,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Chủ đề này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -184,9 +214,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

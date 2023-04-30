@@ -1,13 +1,18 @@
 const app = require('./app');
 const config = require('./app/config');
-const mongodb = require("mongoose");
+const mongoose = require("mongoose");
 const model = require('./app/models');
 
-const { default: mongoose } = require('mongoose');
-// báo strictQuery qq gì đó
+const { MongoClient } = require('mongodb')
+
+/*
+ * Requires the MongoDB Node.js Driver
+ * https://mongodb.github.io/node-mongodb-native
+ */
+
 mongoose.set("strictQuery", false);
 //connet to database
-mongodb.connect(config.db.uri)
+mongoose.connect(config.db.uri)
   .then(() => {
     console.log("Conneted to the database!");
     model.innitDB();
@@ -21,7 +26,7 @@ mongodb.connect(config.db.uri)
 //start sv
 const PORT = config.app.port;
 app.listen(PORT, () => {
-  console.log(`Sever is running on port${PORT}.`);
+  console.log(`Server is running on port${PORT}.`);
 });
 
 

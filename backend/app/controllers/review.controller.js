@@ -79,12 +79,12 @@ exports.findAvg = async (req, res, next) => {
             totalPopularity += parseInt(document2[i].popularity);
         }
 
-        document.level = totalLevel / document2.length;
-        document.quality = totalQuality / document2.length;
-        document.useful = totalUseful / document2.length;
-        document.importance = totalImportance / document2.length;
-        document.popularity = totalPopularity / document2.length;
-        document.size = document2.length
+        document.level = (totalLevel / document2.length).toFixed(1);
+        document.quality = (totalQuality / document2.length).toFixed(1);
+        document.useful = (totalUseful / document2.length).toFixed(1);
+        document.importance = (totalImportance / document2.length).toFixed(1);
+        document.popularity = (totalPopularity / document2.length).toFixed(1);
+        document.size = document2.length;
         return res.json(document);
     } catch (error) {
         return next(

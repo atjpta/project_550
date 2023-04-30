@@ -8,12 +8,12 @@
           <div v-if="!isSelf">
             <div v-if="!useFollow.follow" class="text-center m-5">
               <div @click="addFollow()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-primary">
-                theo dõi
+                Theo dõi
               </div>
             </div>
             <div v-else class="text-center m-5">
               <div @click="removeFollow()" :class="[loading ? 'loading' : '']" class="btn btn-outline btn-error">
-                hủy theo dõi
+                Hủy theo dõi
               </div>
             </div>
           </div>

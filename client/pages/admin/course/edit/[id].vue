@@ -19,6 +19,7 @@ const route = useRoute();
 async function save() {
   loading.value = true;
   const dataS = {
+    id: data.value.id,
     author: useAuth.user.id,
     name: data.value.name,
     introduce: data.value.introduce,
@@ -27,14 +28,14 @@ async function save() {
 
   if (dataS.name && dataS.introduce && dataS.type.length) {
     try {
-      await useModel.create(dataS);
-      useAlert.setSuccess("Thêm thành công");
+      await useModel.update(dataS);
+      useAlert.setSuccess("Sửa thành công");
       navigateTo("/admin/courses");
     } catch (error) {
       console.log(error);
     }
   } else {
-    useAlert.setWarning("bạn phải nhập đủ các tên, loại môn học và mô tả");
+    useAlert.setWarning("Bạn phải nhập đủ các tên, loại môn học và mô tả");
   }
   loading.value = false;
 }
@@ -54,7 +55,7 @@ onMounted(() => {
 });
 
 useHead({
-  title: "sửa môn học",
+  title: "Sửa môn học",
 });
 </script>
 

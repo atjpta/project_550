@@ -31,7 +31,7 @@
                     <a>
                       <div @click="openDialogReport()">
                         <OtherVIcon icon="fa-solid fa-flag" />
-                        báo cáo Nhóm
+                        báo cáo
                       </div>
                     </a>
                   </li>
@@ -39,7 +39,7 @@
                     <a>
                       <div @click="openDialogRemoveSave(removeSave)">
                         <OtherVIcon icon="fa-solid fa-x" />
-                        bỏ lưu chuỗi bài viết
+                        bỏ lưu
                       </div>
                     </a>
                   </li>
@@ -60,11 +60,11 @@
 
         <!-- các trạng thái của team  -->
         <div class="flex space-x-5 mt-2">
-          <div class="tooltip" data-tip="điểm series">
+          <div class="tooltip" data-tip="Điểm series">
             <OtherVIcon class-icon="text-warning" icon="fa-solid fa-star" />
             {{ data.valScore }}
           </div>
-          <div class="tooltip" data-tip="số bài viết">
+          <div class="tooltip" data-tip="Số bài viết">
             <OtherVIcon class-icon="text-info" icon="fa-solid fa-file-lines" />
             {{ data.post[0]?.count || 0 }}
           </div>
@@ -150,9 +150,9 @@ function openDialogRemoveSave(cb) {
   useDialog.showDialog(
     {
       title: "Thông báo cực căng!",
-      content: "bạn chắc chắn muốn xóa bài viết khỏi danh sách lưu trữ",
-      btn1: "ok",
-      btn2: "hủy",
+      content: "Bạn chắc chắn muốn xóa bài viết khỏi danh sách lưu trữ",
+      btn1: "Ok",
+      btn2: "Hủy",
     },
     () => {
       cb();

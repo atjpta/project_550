@@ -22,7 +22,7 @@
     </div>
     <nuxtLink :to="`/tag/${data._id}/post`">
       <div class="text-center">
-        <div class="btn text-info btn-ghost btn-sm">xem thêm</div>
+        <div class="btn text-info btn-ghost btn-sm">Xem thêm</div>
       </div>
     </nuxtLink>
     <div class="text-sm italic lowercase text-right opacity-75">
@@ -55,8 +55,8 @@ function openDialogReport() {
       {
         title: "Thông báo cực căng!",
         content: "Thẻ tag này có vấn để?!",
-        btn1: "gửi",
-        btn2: "hủy",
+        btn1: "Gửi",
+        btn2: "Hủy",
       },
       async (input) => {
         await useReport.create({
@@ -70,9 +70,9 @@ function openDialogReport() {
     useDialog.showDialog(
       {
         title: "Thông báo cực căng!",
-        content: "bạn cần đăng nhập để tạo bài viết",
-        btn1: "đăng nhập",
-        btn2: "hủy",
+        content: "Bạn cần đăng nhập để tạo bài viết",
+        btn1: "Đăng nhập",
+        btn2: "Hủy",
       },
       () => {
         useRouteS.redirectedFrom = useRoute().fullPath;

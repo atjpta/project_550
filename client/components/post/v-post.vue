@@ -23,7 +23,7 @@
       <!-- các btn -->
       <div class="flex">
         <div class="flex justify-evenly mr-2">
-          <div data-tip="tăng điểm" class="tooltip">
+          <div data-tip="Tăng điểm" class="tooltip">
             <div v-if="loading != 'up'" @click="openDialogSignin(up)" :class="classUp"
               class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-up" />
@@ -34,7 +34,7 @@
           <div class="btn-sm lg:btn-md btn btn-circle btn-ghost no-animation">
             <div class="text-2xl">{{ valVote }}</div>
           </div>
-          <div data-tip="giảm điểm" class="tooltip">
+          <div data-tip="Giảm điểm" class="tooltip">
             <div v-if="loading != 'down'" @click="openDialogSignin(down)" :class="classDown"
               class="btn-sm lg:btn-md btn btn-circle btn-ghost">
               <OtherVIcon class-icon="text-3xl" icon="fa-solid fa-caret-down" />
@@ -43,7 +43,7 @@
           <div v-if="loading == 'down'" class="btn-sm lg:btn-md btn btn-circle btn-ghost loading"></div>
         </div>
         <!-- lưu -->
-        <div data-tip="lưu" class="tooltip">
+        <div data-tip="Lưu" class="tooltip">
           <div v-if="loading != 'save'" @click="openDialogSignin(save)" :class="classSave"
             class="btn-sm lg:btn-md btn btn-ghost btn-square">
             <OtherVIcon class-icon="text-xl" icon="fa-solid fa-bookmark" />
@@ -52,7 +52,7 @@
         </div>
         <!-- thông báo  -->
         <div v-if="useFollow.follow && useAuth.user" class="ml-1 tooltip"
-          :data-tip="useFollow.follow.notification ? 'tắt thông báo' : 'bật thông báo'">
+          :data-tip="useFollow.follow.notification ? 'Tắt thông báo' : 'Bật thông báo'">
           <div @click="setOnAndoff()" :class="loading == 'notification' ? 'loading' : ''"
             class="btn-sm lg:btn-md btn btn-ghost btn-square">
             <OtherVIcon class-icon="text-xl text-warning" :icon="useFollow.follow.notification
@@ -87,7 +87,8 @@
       <!-- tag -->
       <div class="mt-4 flex flex-wrap">
         <div v-for="i in data.tag" :key="i._id" class="">
-          <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-outline btn-sm mr-1 mt-1">{{ "#" + i.name }}</nuxt-link>
+          <nuxt-link :to="`/tag/${i._id}/post`" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">{{ "#" + i.name
+          }}</nuxt-link>
         </div>
       </div>
       <!-- môn học -->

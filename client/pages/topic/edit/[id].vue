@@ -28,7 +28,7 @@ function formatData() {
 async function save() {
   topic = useTopic.topic_edit;
   if (!(topic.introduce && topic.name)) {
-    useAlert.setError("phải nhập đủ tên và tóm tắt ");
+    useAlert.setError("Phải nhập đủ tên và tóm tắt ");
     return;
   }
   loading.value = true;
@@ -54,7 +54,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "sửa chủ đề",
+  title: "Sửa chủ đề",
 });
 </script>
 

@@ -18,7 +18,7 @@
     <div>
       <SearchVInput
         @select_data="addtag"
-        :btnInput="{ name: 'thêm' }"
+        :btnInput="{ name: 'Thêm' }"
         :data="usetag.List_tag"
       />
     </div>

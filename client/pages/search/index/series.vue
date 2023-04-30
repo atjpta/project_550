@@ -8,9 +8,9 @@
       </div>
       <div v-else>
         <div class="text-center text-2xl my-10">
-          không tìm thấy chuỗi bài viết nào cả!?
+          Không tìm thấy chuỗi bài viết nào cả!?
         </div>
-        <div class="text-center text-2xl my-10">hãy thử nhập từ khóa khác</div>
+        <div class="text-center text-2xl my-10">Hãy thử nhập từ khóa khác</div>
       </div>
     </div>
   </div>

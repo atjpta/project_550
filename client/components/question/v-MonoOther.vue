@@ -5,7 +5,7 @@
       <div class="card rounded-md w-96 bg-base-100 cursor-pointer hover:bg-base-200">
         <div class="card-body">
           <div class="w-fit">
-            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500"
+            <nuxtLink class="hover:text-sky-500 hover:scale-110 duration-500 "
               :to="`/user/${data?.author[0]?._id}/overview`">
               <!-- tác giả -->
               <div class="flex">
@@ -23,7 +23,11 @@
               </div>
             </nuxtLink>
           </div>
-          <h2 class="card-title text-2xl">{{ data.title }}</h2>
+          <div class="card-title text-2xl tooltip" :data-tip="data.title">
+            <div class="text-2xl truncate">
+              {{ data.title }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

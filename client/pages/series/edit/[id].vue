@@ -29,7 +29,7 @@ function formatData() {
 async function save() {
   series = useSeries.series_edit;
   if (!(series.introduce && series.name)) {
-    useAlert.setError("phải nhập đủ tên và tóm tắt");
+    useAlert.setError("Phải nhập đủ tên và tóm tắt");
     return;
   }
   loading.value = true;
@@ -55,7 +55,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "sửa chuỗi bài viết",
+  title: "Sửa chuỗi bài viết",
 });
 </script>
 

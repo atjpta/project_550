@@ -62,7 +62,7 @@ async function save() {
   loading.value = true;
   try {
     if (!(data.value.content.ops[0].insert != "\n" && data.value.title)) {
-      useAlert.setError("phải nhập đủ tiêu đề và nội dung");
+      useAlert.setError("Phải nhập đủ tiêu đề và nội dung");
       return;
     }
     const listtag = await useTag.createAll(data.value.tag);
@@ -74,7 +74,7 @@ async function save() {
     const id = await usePost.create(dataSS);
     useImage.url = null;
     useRouter().back();
-    useAlert.setSuccess("tạo bài viết thành công");
+    useAlert.setSuccess("Tạo bài viết thành công");
   } catch (error) {
     console.log(error);
   } finally {
@@ -86,7 +86,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "tạo bài viết",
+  title: "Tạo bài viết",
 });
 </script>
 

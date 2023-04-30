@@ -51,7 +51,7 @@
             <div class="text-xl">{{ data.introduce }}</div>
             <!-- tag -->
             <div class="mt-4 flex flex-wrap">
-              <div v-for="i in 3" :key="i" class="btn btn-outline btn-sm mr-1 mt-1">
+              <div v-for="i in 3" :key="i" class="btn btn-ghost bg-base-100/50 btn-sm mr-1 mt-1">
                 {{ "#test" }}
               </div>
             </div>
